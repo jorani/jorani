@@ -94,3 +94,7 @@ $lang['No'] = 'No';
 
 $lang['global_ajax_timeout'] = '你的時段已過時請重新登錄';
 $lang['global_ajax_error'] = '未預期錯誤';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

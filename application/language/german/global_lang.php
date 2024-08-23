@@ -31,6 +31,9 @@ $lang['Accepted'] = 'Akzeptiert';
 $lang['Rejected'] = 'Abgelehnt';
 $lang['Cancellation'] = 'Annullierung';
 $lang['Canceled'] = 'Annulliert';
+
+$lang['Accepted_Telework'] = 'Akzeptierte Telearbeit';
+
 $lang['global_link_doc_page_calendar_individual'] = '';
 $lang['global_link_doc_page_calendar_yearly'] = '';
 $lang['global_link_doc_page_calendar_workmates'] = '';
@@ -68,7 +71,10 @@ $lang['global_link_doc_page_leaves_report'] = '';
 $lang['global_link_doc_page_leave_balance_report'] = '';
 $lang['Morning'] = 'Vormittag';
 $lang['Afternoon'] = 'Nachmittag';
+
 $lang['today'] = 'Heute';
+
+$lang['Whole day'] = 'Ganzer Tag';
 $lang['identifier'] = 'Identifikator';
 $lang['firstname'] = 'Vorname';
 $lang['lastname'] = 'Nachname';

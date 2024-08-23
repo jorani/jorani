@@ -78,6 +78,19 @@ class Admin extends CI_Controller {
                 $data['daysOffYears_count']++;
             }
         }
+        
+        if ($this->config->item('disable_telework') === FALSE) {
+            $this->load->model('teleworks_model');
+            $data['wrongDateTypeTeleworks'] = $this->teleworks_model->detectWrongDateTypes();            
+            $data['duplicatedTeleworks'] = $this->teleworks_model->detectDuplicatedRequests();
+            $data['overlappingTeleworks'] = $this->teleworks_model->detectOverlappingProblems();
+            
+            //Count the number of items (will be used for badges in tab
+            $data['duplicatedTeleworks_count'] = count($data['duplicatedTeleworks']);
+            $data['wrongDateTypeTeleworks_count'] = count($data['wrongDateTypeTeleworks']);
+            $data['overlappingTeleworks_count'] = count($data['overlappingTeleworks']);
+        }
+        
         $this->load->view('templates/header', $data);
         $this->load->view('menu/index', $data);
         $this->load->view('admin/diagnostic', $data);

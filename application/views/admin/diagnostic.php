@@ -29,6 +29,11 @@ $negativeOvertime_badge = ($negativeOvertime_count == 0)?'':'<span class="badge 
 $unusedContracts_badge = ($unusedContracts_count == 0)?'':'<span class="badge badge-info">' . $unusedContracts_count . '</span>&nbsp;';
 $leaveBalance_badge = ($leaveBalance_count == 0)?'':'<span class="badge badge-info">' . $leaveBalance_count . '</span>&nbsp;';
 $overlappingLeaves_badge = ($overlappingLeaves_count == 0)?'':'<span class="badge badge-info">' . $overlappingLeaves_count . '</span>&nbsp;';
+if ($this->config->item('disable_telework') == FALSE) {
+    $duplicatedTeleworks_badge = ($duplicatedTeleworks_count == 0)?'':'<span class="badge badge-info">' . $duplicatedTeleworks_count . '</span>&nbsp;';
+    $wrongDateTypeTeleworks_badge = ($wrongDateTypeTeleworks_count == 0)?'':'<span class="badge badge-info">' . $wrongDateTypeTeleworks_count . '</span>&nbsp;';
+    $overlappingTeleworks_badge = ($overlappingTeleworks_count == 0)?'':'<span class="badge badge-info">' . $overlappingTeleworks_count . '</span>&nbsp;';
+}
 
 ?>
 <ul class="nav nav-tabs">
@@ -40,6 +45,11 @@ $overlappingLeaves_badge = ($overlappingLeaves_count == 0)?'':'<span class="badg
     <li><a data-toggle="tab" href="#contracts"><?php echo $unusedContracts_badge . lang('admin_diagnostic_contract_tab');?></a></li>
     <li><a data-toggle="tab" href="#balance"><?php echo $leaveBalance_badge . lang('admin_diagnostic_balance_tab');?></a></li>
     <li><a data-toggle="tab" href="#overlapping"><?php echo $overlappingLeaves_badge . lang('admin_diagnostic_overlapping_tab');?>&nbsp;<i class="mdi mdi-test-tube mdi-rotate-45" title="Beta"></i></a></li>
+	<?php if ($this->config->item('disable_telework') == FALSE) {?>
+    	<li><a data-toggle="tab" href="#teleworkrequests"><?php echo $duplicatedTeleworks_badge . lang('admin_diagnostic_teleworks_requests_tab');?></a></li>
+        <li><a data-toggle="tab" href="#teleworkdatetypes"><?php echo $wrongDateTypeTeleworks_badge . lang('admin_diagnostic_teleworks_datetype_tab');?></a></li>
+        <li><a data-toggle="tab" href="#teleworkoverlapping"><?php echo $overlappingTeleworks_badge . lang('admin_diagnostic_teleworks_overlapping_tab');?>&nbsp;<i class="mdi mdi-test-tube mdi-rotate-45" title="Beta"></i></a></li>
+	<?php }?>
 </ul>
 
 <div class="tab-content">
@@ -328,6 +338,116 @@ $overlappingLeaves_badge = ($overlappingLeaves_count == 0)?'':'<span class="badg
     </table>
     <?php }?>
   </div><!-- Overlapping Leave Requests //-->
+  
+  <?php if ($this->config->item('disable_telework') == FALSE) {?>
+      <div class="tab-pane" id="teleworkrequests">
+    
+            <p><?php echo lang('admin_diagnostic_teleworks_requests_description');?></p>
+    
+            <?php if ($duplicatedTeleworks_count==0) {?>
+            <p><b><?php echo lang('admin_diagnostic_no_error');?></b></p>
+            <?php } else {?>
+            <table class="table table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                    <th><?php echo lang('admin_diagnostic_teleworks_requests_thead_id');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_requests_thead_employee');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_requests_thead_start_date');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_requests_thead_type');?></th>
+                </tr>
+              </thead>
+              <tbody>
+            <?php foreach ($duplicatedTeleworks as $telework):
+            $date = new DateTime($telework['startdate']);
+                $startdate = $date->format(lang('global_date_format'));?>
+                <tr>
+                    <td><a target="_blank" href="<?php echo base_url();?>teleworks/edit/<?php echo $telework['id'];?>"><?php echo $telework['id'];?></a></td>
+                    <td><?php echo $telework['user_label'];?></td>
+                    <td><?php echo $startdate;?></td>
+                    <td><?php echo $telework['type_label'];?></td>
+                </tr>
+                <?php endforeach ?>
+              </tbody>
+            </table>
+            <?php }?>
+      </div>
+      
+      <div class="tab-pane" id="teleworkdatetypes">
+    
+            <p><?php echo lang('admin_diagnostic_teleworks_datetype_description');?></p>
+    
+            <?php if ($wrongDateTypeTeleworks_count==0) {?>
+            <p><b><?php echo lang('admin_diagnostic_no_error');?></b></p>
+            <?php } else {?>
+            <table class="table table-bordered table-hover table-condensed">
+              <thead>
+                <tr>
+                    <th><?php echo lang('admin_diagnostic_teleworks_datetype_thead_id');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_datetype_thead_employee');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_datetype_thead_start_date');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_datetype_thead_start_type');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_datetype_thead_end_type');?></th>
+                    <th><?php echo lang('admin_diagnostic_teleworks_datetype_thead_status');?></th>
+                </tr>
+              </thead>
+              <tbody>
+            <?php foreach ($wrongDateTypeTeleworks as $dateTypeTelework):
+            $date = new DateTime($dateTypeTelework['startdate']);
+                $startdate = $date->format(lang('global_date_format'));?>
+                <tr>
+                    <td><a target="_blank" href="<?php echo base_url();?>teleworks/edit/<?php echo $dateTypeTelework['id'];?>"><?php echo $dateTypeTelework['id'];?></a></td>
+                    <td><?php echo $dateTypeTelework['user_label'];?></td>
+                    <td><?php echo $startdate;?></td>
+                    <td><?php echo lang($dateTypeTelework['startdatetype']);?></td>
+                    <td><?php echo lang($dateTypeTelework['enddatetype']);?></td>
+                    <td><?php echo lang($dateTypeTelework['status_label']);?></td>
+                </tr>
+                <?php endforeach ?>
+              </tbody>
+            </table>
+            <?php }?>
+      </div>
+      
+      <div class="tab-pane" id="teleworkoverlapping">
+        <p><?php echo lang('admin_diagnostic_teleworks_overlapping_description');?></a></p>
+    
+        <?php if ($overlappingTeleworks_count==0) {?>
+        <p><b><?php echo lang('admin_diagnostic_no_error');?></b></p>
+        <?php } else {?>
+        <table class="table table-bordered table-hover table-condensed">
+          <thead>
+            <tr>
+                <th><?php echo lang('admin_diagnostic_teleworks_overlapping_thead_id');?></th>
+                <th><?php echo lang('admin_diagnostic_teleworks_overlapping_thead_employee');?></th>
+                <th><?php echo lang('admin_diagnostic_teleworks_overlapping_thead_contract');?></th>
+                <th><?php echo lang('admin_diagnostic_teleworks_overlapping_thead_start_date');?></th>
+                <th><?php echo lang('admin_diagnostic_teleworks_overlapping_thead_end_date');?></th>
+                <th><?php echo lang('admin_diagnostic_teleworks_overlapping_thead_status');?></th>
+            </tr>
+          </thead>
+          <tbody>
+        <?php foreach ($overlappingTeleworks as $telework):
+        $date = new DateTime($telework['startdate']);
+            $startdate = $date->format(lang('global_date_format'));
+            $date = new DateTime($telework['enddate']);
+            $enddate = $date->format(lang('global_date_format'));?>
+            <tr>
+                <td><a target="_blank" href="<?php echo base_url();?>teleworks/edit/<?php echo $telework['id'];?>"><?php echo $telework['id'];?></a></td>
+                <td><?php echo $telework['user_label'];?></td>
+                <td>
+                    <a target="_blank" href="<?php echo base_url();?>contracts/edit/<?php echo $telework['contract_id'];?>"><?php echo $telework['contract_label'];?></a>
+                </td>
+                <td><?php echo $startdate;?></td>
+                <td><?php echo $enddate;?></td>            
+                <td><?php echo $telework['status_label'];?></td>
+            </tr>
+            <?php endforeach ?>
+          </tbody>
+        </table>
+        <?php }?>
+      </div><!-- Overlapping Telework Requests //-->
+  <?php }?>
+  
 
 </div>
     </div>

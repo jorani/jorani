@@ -81,3 +81,10 @@ $lang['September'] = 'September';
 $lang['October'] = 'Oktober';
 $lang['November'] = 'November';
 $lang['December'] = 'Dezember';
+
+$lang['Campaign'] = 'Kampagne';
+$lang['Floating'] = 'Schwimmende';
+$lang['telework_acronym'] = 'TT';
+$lang['telework_year'] = 'TT';
+$lang['time_organisation'] = 'Arbeitszeitregelungen';
+$lang['time_organisation_acronym'] = 'OA';

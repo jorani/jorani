@@ -101,3 +101,7 @@ $lang['No'] = 'No';
 
 $lang['global_ajax_timeout'] = 'شما زمان زیادی غیر فعال بوده و از سیستم خارج شدید، لطفاً دوباره وارد شوید.';
 $lang['global_ajax_error'] = 'خطای غیرمنتظره آجاکس';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

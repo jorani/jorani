@@ -33,6 +33,7 @@ $lang['Accepted'] = 'Acceptée';
 $lang['Rejected'] = 'Rejetée';
 $lang['Cancellation'] = 'Annulation';
 $lang['Canceled'] = 'Annulée';
+$lang['Accepted_Telework'] = 'Télétravail accepté';
 
 $lang['global_link_doc_page_calendar_individual'] = 'https://fr.jorani.org/ecrans/page-mon-calendrier.html';
 $lang['global_link_doc_page_calendar_yearly'] = 'https://fr.jorani.org/ecrans/page-calendrier-annuel.html';
@@ -79,6 +80,7 @@ $lang['global_link_doc_page_leaves_report'] = 'https://fr.jorani.org/ecrans/page
 $lang['Morning'] = 'Matin';
 $lang['Afternoon'] = 'Après-midi';
 $lang['today'] = 'aujourd\'hui';
+$lang['Whole day'] = 'Toute la journée';
 
 $lang['identifier'] = 'identifiant';
 $lang['firstname'] = 'prénom';

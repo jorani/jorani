@@ -86,3 +86,7 @@ $lang['Yes'] = 'نعم';
 $lang['No'] = 'لا';
 $lang['global_ajax_timeout'] = 'انتهت جلسة الولوج يرجى إعادة الدخول';
 $lang['global_ajax_error'] = 'خطأ شبكي غير متوقع';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

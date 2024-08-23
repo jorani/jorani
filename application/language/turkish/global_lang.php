@@ -94,3 +94,7 @@ $lang['No'] = 'No';
 
 $lang['global_ajax_timeout'] = 'Oturumunuzun süresi doldu, lütfen tekrar oturum açın';
 $lang['global_ajax_error'] = 'Beklenmedik Ajax hatası';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

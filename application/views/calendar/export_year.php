@@ -46,6 +46,11 @@ $months = array(
     lang('November') => $this->leaves_model->linear($employee, 11, $year, TRUE, TRUE, TRUE, TRUE),
     lang('December') => $this->leaves_model->linear($employee, 12, $year, TRUE, TRUE, TRUE, TRUE),
 );
+if ($this->config->item('disable_telework') === FALSE) {
+    foreach ($months as $month) {
+        $this->leaves_model->removeOverlappingTeleworks($month);
+    }
+}
 
 //Print the header with the values of the export parameters
 $sheet->setTitle(mb_strimwidth(lang('calendar_year_title'), 0, 28, "..."));  //Maximum 31 characters allowed in sheet title.
@@ -124,6 +129,13 @@ $styleBgDayOff = array(
         'startColor' => array('rgb' => '000000')
     )
 );
+if ($this->config->item('disable_telework') == FALSE)
+    $styleBgTWAccepted = array(
+        'fill' => array(
+            'fillType' => Fill::FILL_SOLID,
+            'startColor' => array('rgb' => '3a87ad')
+        )
+    );
 
 $line = 4;
 //Iterate on all employees of the selected entity
@@ -155,7 +167,7 @@ foreach ($months as $month_name => $month) {
               {
                 case 1: $sheet->getStyle($col . $line)->applyFromArray($styleBgPlanned); break;  // Planned
                 case 2: $sheet->getStyle($col . $line)->applyFromArray($styleBgRequested); break;  // Requested
-                case 3: $sheet->getStyle($col . $line)->applyFromArray($styleBgAccepted); break;  // Accepted
+                case 3: if($types[1] == 'Campaign' || $types[1] == 'Floating') $sheet->getStyle($col . $line)->applyFromArray($styleBgTWAccepted); else $sheet->getStyle($col . $line)->applyFromArray($styleBgAccepted); break;  // Accepted
                 case 4: $sheet->getStyle($col . $line)->applyFromArray($styleBgRejected); break;  // Rejected
                 case '5': $sheet->getStyle($col . $line)->applyFromArray($styleBgDayOff); break;    //Day off
                 case '6': $sheet->getStyle($col . $line)->applyFromArray($styleBgDayOff); break;    //Day off
@@ -164,7 +176,7 @@ foreach ($months as $month_name => $month) {
               {
                 case 1: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgPlanned); break;  // Planned
                 case 2: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRequested); break;  // Requested
-                case 3: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
+                case 3: if($types[0] == 'Campaign' || $types[0] == 'Floating') $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgTWAccepted); else $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
                 case 4: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRejected); break;  // Rejected
                 case '5': $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgDayOff); break;    //Day off
                 case '6': $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgDayOff); break;    //Day off
@@ -182,7 +194,7 @@ foreach ($months as $month_name => $month) {
                             // 4 : 'Rejected';
                             case 1: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgPlanned); break;  // Planned
                             case 2: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgRequested); break; // Requested
-                            case 3: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
+                            case 3: if($day->type == 'Campaign' || $day->type == 'Floating') $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgTWAccepted); else $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
                             case 4: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgRejected); break;  // Rejected
                         }
                         break;
@@ -192,7 +204,7 @@ foreach ($months as $month_name => $month) {
                       {
                           case 1: $sheet->getStyle($col . $line)->applyFromArray($styleBgPlanned); break;  // Planned
                           case 2: $sheet->getStyle($col . $line)->applyFromArray($styleBgRequested); break;  // Requested
-                          case 3: $sheet->getStyle($col . $line)->applyFromArray($styleBgAccepted); break;  // Accepted
+                          case 3: if($day->type == 'Campaign' || $day->type == 'Floating') $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgTWAccepted); else $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
                           case 4: $sheet->getStyle($col . $line)->applyFromArray($styleBgRejected); break;  // Rejected
                       }
                     break;
@@ -202,7 +214,7 @@ foreach ($months as $month_name => $month) {
                       {
                           case 1: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgPlanned); break;  // Planned
                           case 2: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRequested); break;  // Requested
-                          case 3: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
+                          case 3: if($day->type == 'Campaign' || $day->type == 'Floating') $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgTWAccepted); else $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
                           case 4: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRejected); break;  // Rejected
                       }
                     break;

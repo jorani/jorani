@@ -85,3 +85,7 @@ $lang['Yes'] = 'Áno';
 $lang['No'] = 'Nie';
 $lang['global_ajax_timeout'] = 'Prihlásenie vypršalo. Opätovne sa prihláste.';
 $lang['global_ajax_error'] = 'Neočakávaná Ajax chyba';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

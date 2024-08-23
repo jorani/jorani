@@ -85,3 +85,7 @@ $lang['Yes'] = 'Da';
 $lang['No'] = 'Nu';
 $lang['global_ajax_timeout'] = 'Sesiunea dumneavoastră a expirat. Logați-vă din nou.';
 $lang['global_ajax_error'] = 'Eroare neașteptată Ajax';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

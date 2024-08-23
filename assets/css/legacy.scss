@@ -199,6 +199,14 @@ html, body {
     background-color: #468847;
     color: white;
 }
+.allacceptedtw {
+    background-color: #3a87ad;
+    color: white;
+}
+.allacceptedto {
+    background-color: #9d159d;
+    color: white;
+}
 .allrejected {
     background-color: #ff0000;
     color: white;
@@ -347,6 +355,26 @@ html, body {
     background: linear-gradient(135deg, #468847 50%,#ffffff 50%); /* W3C */
 }
 
+.amacceptedtw {
+    color: white;
+    background: -moz-linear-gradient(-45deg, #3a87ad 50%, #ffffff 50%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(50%,#3a87ad), color-stop(50%,#ffffff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, #3a87ad 50%,#ffffff 50%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, #3a87ad 50%,#ffffff 50%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, #3a87ad 50%,#ffffff 50%); /* IE10+ */
+    background: linear-gradient(135deg, #3a87ad 50%,#ffffff 50%); /* W3C */
+}
+
+.amacceptedto {
+    color: white;
+    background: -moz-linear-gradient(-45deg, #9d159d 50%, #ffffff 50%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(50%,#9d159d), color-stop(50%,#ffffff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, #9d159d 50%,#ffffff 50%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, #9d159d 50%,#ffffff 50%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, #9d159d 50%,#ffffff 50%); /* IE10+ */
+    background: linear-gradient(135deg, #9d159d 50%,#ffffff 50%); /* W3C */
+}
+			   
 .amrejected {
     color: white;
     background: -moz-linear-gradient(-45deg, #ff0000 50%, #ffffff 50%); /* FF3.6+ */
@@ -386,6 +414,26 @@ html, body {
     background: -ms-linear-gradient(-45deg, #ffffff 50%,#468847 50%); /* IE10+ */
     background: linear-gradient(135deg, #ffffff 50%,#468847 50%); /* W3C */
 }
+	
+.pmacceptedtw {
+    color: white;
+    background: -moz-linear-gradient(-45deg, #ffffff 50%, #3a87ad 50%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(50%,#ffffff), color-stop(50%,#3a87ad)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, #ffffff 50%,#3a87ad 50%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, #ffffff 50%,#3a87ad 50%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, #ffffff 50%,#3a87ad 50%); /* IE10+ */
+    background: linear-gradient(135deg, #ffffff 50%,#3a87ad 50%); /* W3C */
+}
+
+.pmacceptedto {
+    color: white;
+    background: -moz-linear-gradient(-45deg, #ffffff 50%, #9d159d 50%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(50%,#ffffff), color-stop(50%,#9d159d)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, #ffffff 50%,#9d159d 50%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, #ffffff 50%,#9d159d 50%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, #ffffff 50%,#9d159d 50%); /* IE10+ */
+    background: linear-gradient(135deg, #ffffff 50%,#9d159d 50%); /* W3C */
+} 
 
 .pmrejected {
     color: white;

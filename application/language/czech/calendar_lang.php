@@ -90,3 +90,10 @@ $lang['September'] = 'Září';
 $lang['October'] = 'Říjen';
 $lang['November'] = 'Listopad';
 $lang['December'] = 'Prosinec';
+
+$lang['Campaign'] = 'Campaign';
+$lang['Floating'] = 'Floating';
+$lang['telework_acronym'] = 'TW';
+$lang['telework_year'] = 'TW';
+$lang['time organisation'] = 'Time organisation';
+$lang['time_organisation_acronym'] = 'TO';

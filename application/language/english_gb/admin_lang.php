@@ -7,7 +7,7 @@
  * @since         0.4.6
  */
 
-$lang['admin_diagnostic_title'] = 'Data & Config Diagnostic';
+lang['admin_diagnostic_title'] = 'Data & Config Diagnostic';
 $lang['admin_diagnostic_description'] = 'Detection of configuration and data problems';
 $lang['admin_diagnostic_no_error'] = 'No error';
 
@@ -37,7 +37,7 @@ $lang['admin_diagnostic_entitlements_thead_start_date'] = 'Start Date';
 $lang['admin_diagnostic_entitlements_thead_end_date'] = 'End Date';
 $lang['admin_diagnostic_entitlements_type_contract'] = 'Contract';
 $lang['admin_diagnostic_entitlements_type_employee'] = 'Employee';
-$lang['admin_diagnostic_entitlements_deletion_problem'] = 'Incomplete deletion into database.' ;
+$lang['admin_diagnostic_entitlements_deletion_problem'] = 'Incomplete deletion into database.';
 
 $lang['admin_diagnostic_daysoff_tab'] = 'Non-working days';
 $lang['admin_diagnostic_daysoff_description'] = 'Number of days (per contract) for which a non-working duration has been defined.';
@@ -54,6 +54,23 @@ $lang['admin_diagnostic_overtime_thead_employee'] = 'Employee';
 $lang['admin_diagnostic_overtime_thead_date'] = 'Date';
 $lang['admin_diagnostic_overtime_thead_duration'] = 'Duration';
 $lang['admin_diagnostic_overtime_thead_status'] = 'Status';
+
+$lang['admin_diagnostic_teleworks_requests_tab'] = 'Telework requests';
+$lang['admin_diagnostic_teleworks_requests_description'] = 'Telework requests accepted and duplicated';
+$lang['admin_diagnostic_teleworks_requests_thead_id'] = 'N°';
+$lang['admin_diagnostic_teleworks_requests_thead_employee'] = 'Employee';
+$lang['admin_diagnostic_teleworks_requests_thead_start_date'] = 'Start date';
+$lang['admin_diagnostic_teleworks_requests_thead_status'] = 'Status';
+$lang['admin_diagnostic_teleworks_requests_thead_type'] = 'Type';
+
+$lang['admin_diagnostic_teleworks_datetype_tab'] = 'Afternoon/Morning (TW)';
+$lang['admin_diagnostic_teleworks_datetype_description'] = 'Telework requests with wrong start/end type';
+$lang['admin_diagnostic_teleworks_datetype_thead_id'] = 'N°';
+$lang['admin_diagnostic_teleworks_datetype_thead_employee'] = 'Employee';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_date'] = 'Date';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_type'] = 'Start';
+$lang['admin_diagnostic_teleworks_datetype_thead_end_type'] = 'End';
+$lang['admin_diagnostic_teleworks_datetype_thead_status'] = 'Status';
 
 $lang['admin_diagnostic_contract_tab'] = 'Contracts';
 $lang['admin_diagnostic_contract_description'] = 'Unused contracts (check if the contract is not duplicated).';
@@ -76,6 +93,15 @@ $lang['admin_diagnostic_overlapping_thead_contract'] = 'Contract';
 $lang['admin_diagnostic_overlapping_thead_start_date'] = 'Start Date';
 $lang['admin_diagnostic_overlapping_thead_end_date'] = 'End Date';
 $lang['admin_diagnostic_overlapping_thead_status'] = 'Status';
+
+$lang['admin_diagnostic_teleworks_overlapping_tab'] = 'Overlapping (TW)';
+$lang['admin_diagnostic_teleworks_overlapping_description'] = 'Telework requests overlapping two annual periods';
+$lang['admin_diagnostic_teleworks_overlapping_thead_id'] = 'ID';
+$lang['admin_diagnostic_teleworks_overlapping_thead_employee'] = 'Employee';
+$lang['admin_diagnostic_teleworks_overlapping_thead_contract'] = 'Contract';
+$lang['admin_diagnostic_teleworks_overlapping_thead_start_date'] = 'Start date';
+$lang['admin_diagnostic_teleworks_overlapping_thead_end_date'] = 'End date';
+$lang['admin_diagnostic_teleworks_overlapping_thead_status'] = 'Status';
 
 $lang['admin_oauthclients_title'] = 'OAuth clients and sessions';
 $lang['admin_oauthclients_tab_clients'] = 'Clients';

@@ -15,16 +15,19 @@ $currentDay = (int)date('d');
 <h2><?php echo lang('calendar_year_title');?>&nbsp;<span class="muted">(<?php echo $employee_name;?>)</span>&nbsp;<?php echo $help;?></h2>
 
 <div class="row-fluid">
-    <div class="span4">
+    <div class="<?php if ($this->config->item('disable_telework') == FALSE) echo 'span6'; else echo 'span4'; ?>">
         <span class="label"><?php echo lang('Planned');?></span>&nbsp;
         <span class="label label-success"><?php echo lang('Accepted');?></span>&nbsp;
         <span class="label label-warning"><?php echo lang('Requested');?></span>&nbsp;
         <span class="label label-important" style="background-color: #ff0000;"><?php echo lang('Rejected');?></span>
+    	<?php if ($this->config->item('disable_telework') == FALSE) {?>
+    		<span class="label label-info"><?php echo lang('Accepted_Telework');?></span>
+    	<?php }?>
     </div>
-    <div class="span4">
+    <div class="<?php if ($this->config->item('disable_telework') == FALSE) echo 'span3'; else echo 'span4'; ?>">
         <a href="<?php echo base_url();?>calendar/year/export/<?php echo $employee_id;?>/<?php echo ($year);?>" class="btn btn-primary"><i class="mdi mdi-download"></i>&nbsp;<?php echo lang('calendar_year_button_export');?></a>
     </div>
-    <div class="span4">
+    <div class="<?php if ($this->config->item('disable_telework') == FALSE) echo 'span3'; else echo 'span4'; ?>">
         <div class="pull-right">
             <a href="<?php echo base_url();?>calendar/year/<?php echo $employee_id;?>/<?php echo (intval($year) - 1);?>" class="btn btn-primary"><i class="mdi mdi-chevron-left"></i>&nbsp;<?php echo (intval($year) - 1);?></a>
             <b><?php echo $year;?></b>
@@ -88,6 +91,7 @@ $currentDay = (int)date('d');
                 $status = $day->status;
                 $type = $day->type;
             }
+            if($type == 'Campaign' || $type == 'Floating') $title = '<span style="color: #fff">' . lang('telework_year') . '</span>'; else $title = '&nbsp;';
             //0 - Working day  _
             //1 - All day           []
             //2 - Morning        |\
@@ -97,16 +101,16 @@ $currentDay = (int)date('d');
             //6 - Afternoon Day Off /|
             //9 - Error in start/end types
             if ($display == 9) echo '<td'.($class?' class="'.$class.'"':'').'><img src="'.  base_url() .'assets/images/date_error.png"></td>';
-            if ($display == 0) echo '<td'.($class?' class="'.$class.'"':'').'>&nbsp;</td>';
-            if ($display == 3 || $display == 6) echo '<td'.($class?' '.$class:'').'>&nbsp;</td>';
-            if ($display == 4 || $display == 5) echo '<td title="' . $type .'" class="dayoff'.($class?' '.$class:'').'">&nbsp;</td>';
+            if ($display == 0) echo '<td'.($class?' class="'.$class.'"':'').'>' . $title . '</td>';
+            if ($display == 3 || $display == 6) echo '<td'.($class?' '.$class:'').'>' . $title . '</td>';
+            if ($display == 4 || $display == 5) echo '<td title="' . $type .'" class="dayoff'.($class?' '.$class:'').'">' . $title . '</td>';
             if ($display == 1 || $display == 2) {
                 switch ($status)
                 {
-                  case 1: echo '<td title="' . $type .'" class="allplanned'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Planned
-                  case 2: echo '<td title="' . $type .'" class="allrequested'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Requested
-                  case 3: echo '<td title="' . $type .'" class="allaccepted'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Accepted
-                  case 4: echo '<td title="' . $type .'" class="allrejected'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Rejected
+                  case 1: echo '<td title="' . $type .'" class="allplanned'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Planned
+                  case 2: echo '<td title="' . $type .'" class="allrequested'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Requested
+                  case 3: if($type == 'Campaign' || $type == 'Floating') echo '<td title="' . $type .'" class="allacceptedtw'.($class?' '.$class:'').'">' . $title . '</td>'; else echo '<td title="' . $type .'" class="allaccepted'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Accepted
+                  case 4: echo '<td title="' . $type .'" class="allrejected'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Rejected
                 }
             }
         $pad_day++;
@@ -143,17 +147,18 @@ $currentDay = (int)date('d');
                 $status = $day->status;
                 $type = $day->type;
             }
+            if($type == 'Campaign' || $type == 'Floating') $title = '<span style="color: #fff">' . lang('telework_year') . '</span>'; else $title = '&nbsp;';
             if ($display == 9) echo '<td'.($class?' class="'.$class.'"':'').'><img src="'.  base_url() .'assets/images/date_error.png"></td>';
-            if ($display == 0) echo '<td'.($class?' class="'.$class.'"':'').'>&nbsp;</td>';
-            if ($display == 2 || $display == 5) echo '<td'.($class?' class="'.$class.'"':'').'>&nbsp;</td>';
-            if ($display == 4 || $display == 6) echo '<td title="' . $type .'" class="dayoff'.($class?' '.$class:'').'">&nbsp;</td>';
+            if ($display == 0) echo '<td'.($class?' class="'.$class.'"':'').'>' . $title . '</td>';
+            if ($display == 2 || $display == 5) echo '<td'.($class?' class="'.$class.'"':'').'>' . $title . '</td>';
+            if ($display == 4 || $display == 6) echo '<td title="' . $type .'" class="dayoff'.($class?' '.$class:'').'">' . $title . '</td>';
             if ($display == 1 || $display == 3) {
                 switch ($status)
                 {
-                  case 1: echo '<td title="' . $type .'" class="allplanned'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Planned
-                  case 2: echo '<td title="' . $type .'" class="allrequested'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Requested
-                  case 3: echo '<td title="' . $type .'" class="allaccepted'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Accepted
-                  case 4: echo '<td title="' . $type .'" class="allrejected'.($class?' '.$class:'').'">&nbsp;</td>'; break;  // Rejected
+                  case 1: echo '<td title="' . $type .'" class="allplanned'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Planned
+                  case 2: echo '<td title="' . $type .'" class="allrequested'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Requested
+                  case 3: if($type == 'Campaign' || $type == 'Floating') echo '<td title="' . $type .'" class="allacceptedtw'.($class?' '.$class:'').'">' . $title . '</td>'; else echo '<td title="' . $type .'" class="allaccepted'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Accepted
+                  case 4: echo '<td title="' . $type .'" class="allrejected'.($class?' '.$class:'').'">' . $title . '</td>'; break;  // Rejected
                 }
             }
       } ?>

@@ -33,6 +33,7 @@ $lang['Accepted'] = 'Accepted';
 $lang['Rejected'] = 'Rejected';
 $lang['Cancellation'] = 'Cancellation';
 $lang['Canceled'] = 'Canceled';
+$lang['Accepted_Telework'] = 'Accepted telework';
 
 $lang['global_link_doc_page_calendar_individual'] = '';
 $lang['global_link_doc_page_calendar_yearly'] = '';
@@ -79,6 +80,7 @@ $lang['global_link_doc_page_leaves_report'] = '';
 $lang['Morning'] = 'Morning';
 $lang['Afternoon'] = 'Afternoon';
 $lang['today'] = 'today';
+$lang['Whole day'] = 'All day';
 
 $lang['identifier'] = 'identifier';
 $lang['firstname'] = 'firstname';

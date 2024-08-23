@@ -35,16 +35,35 @@ $lang['menu_hr_list_leaves_type'] = 'Liste der Typen';
 $lang['menu_hr_reports_divider'] = 'Reporte';
 $lang['menu_hr_report_leave_balance'] = 'Urlaubsstatistik';
 $lang['menu_hr_report_leaves'] = 'Urlaubsanfragen';
+
+$lang['menu_hr_report_teleworks'] = 'Anträge auf Telearbeit';
+$lang['menu_hr_report_weekly_teleworks'] = 'Telearbeitsanträge pro Woche';
+$lang['menu_hr_teleworks_divider'] = 'Telearbeit';
+$lang['menu_hr_list_telework_campaigns'] = 'Liste der Kampagnen';
+$lang['menu_hr_list_telework_rules'] = 'Regeln für Telearbeit';
+$lang['menu_hr_list_time_organisation'] = 'Zeiteinteilung';
+
 $lang['menu_validation_title'] = 'Kontrolle';
 $lang['menu_validation_delegations'] = 'Bevollmächtigungen';
 $lang['menu_validation_collaborators'] = 'Meine Mitarbeiter';
 $lang['menu_validation_leaves'] = 'Urlaube';
 $lang['menu_validation_overtime'] = 'Überstunden';
+
+$lang['menu_validation_teleworks'] = 'Gleitende Telearbeit';
+$lang['menu_validation_campaign_teleworks'] = 'Feste Telearbeit';
+
 $lang['menu_requests_title'] = 'Anfragen';
 $lang['menu_requests_leaves'] = 'Urlaube';
 $lang['menu_requests_overtime'] = 'Überstunden';
 $lang['menu_requests_list_extras'] = 'Stundenliste';
 $lang['menu_requests_request_extra'] = 'Stunden anfragen';
+
+$lang['menu_requests_telework'] = 'Telearbeit';
+$lang['menu_requests_list_telework'] = 'Liste der Telearbeitsanträge';
+$lang['menu_requests_request_telework'] = 'Einen Antrag auf Telearbeit stellen';
+$lang['menu_requests_request_campaign_telework'] = 'Einen festen Antrag auf Telearbeit für die Kampagne stellen';
+$lang['menu_teleworks_counters'] = 'Zähler';
+
 $lang['menu_leaves_counters'] = 'Zähler';
 $lang['menu_leaves_list_requests'] = 'Liste der Abwesenheitsanfragen';
 $lang['menu_leaves_create_request'] = 'Abwesenheit beantragen';

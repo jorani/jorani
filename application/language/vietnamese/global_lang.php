@@ -93,3 +93,7 @@ $lang['No'] = 'No';
 
 $lang['global_ajax_timeout'] = 'Phiên làm việc đã hết hạn vui lòng đăng nhập lại';
 $lang['global_ajax_error'] = 'Unexpected Ajax Error';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

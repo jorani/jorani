@@ -62,3 +62,19 @@ $lang['menu_calendar_collaborators'] = 'I miei collaboratori';
 $lang['menu_calendar_department'] = 'Reparto';
 $lang['menu_calendar_organization'] = 'Globale';
 $lang['menu_calendar_tabular'] = 'Tabellare';
+
+$lang['menu_hr_report_teleworks'] = 'Telework requests';
+$lang['menu_hr_report_weekly_teleworks'] = 'Telework requests per week';
+$lang['menu_hr_teleworks_divider'] = 'Telework';
+$lang['menu_hr_list_telework_campaigns'] = 'List of campaigns';
+$lang['menu_hr_list_telework_rules'] = 'Telework rules';
+$lang['menu_hr_list_time_organisation'] = 'Time organisations';
+
+$lang['menu_validation_teleworks'] = 'Floating telework';
+$lang['menu_validation_campaign_teleworks'] = 'Fixed telework';
+
+$lang['menu_requests_telework'] = 'Teleworks';
+$lang['menu_requests_list_telework'] = 'List of telework requests';
+$lang['menu_requests_request_telework'] = 'Make a floating telework request';
+$lang['menu_requests_request_campaign_telework'] = 'Make a fixed telework request for the campaign';
+$lang['menu_teleworks_counters'] = 'Counters';

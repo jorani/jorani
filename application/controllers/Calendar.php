@@ -14,7 +14,7 @@ if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
  * In opposition to the other pages of the application, some calendars can be public (no need to be logged in).
  */
 class Calendar extends CI_Controller {
-
+    
     /**
      * Default constructor
      * @author Benjamin BALET <benjamin.balet@gmail.com>
@@ -23,7 +23,7 @@ class Calendar extends CI_Controller {
         parent::__construct();
         //This controller differs from the others, because some calendars can be public
     }
-
+    
     /**
      * Display a yearly individual calendar
      * @param int $id identifier of the employee
@@ -54,7 +54,7 @@ class Calendar extends CI_Controller {
                 }
             }
         }
-
+        
         $data['employee_id'] = $employee;
         $data['employee_name'] =  $user['firstname'] . ' ' . $user['lastname'];
         //Load the leaves for all the months of the selected year
@@ -73,6 +73,11 @@ class Calendar extends CI_Controller {
             lang('November') => $this->leaves_model->linear($employee, 11, $year, TRUE, TRUE, TRUE, TRUE),
             lang('December') => $this->leaves_model->linear($employee, 12, $year, TRUE, TRUE, TRUE, TRUE),
         );
+        if ($this->config->item('disable_telework') === FALSE) {
+            foreach ($months as $month) {
+                $this->leaves_model->removeOverlappingTeleworks($month);
+            }
+        }
         $data['months'] = $months;
         $data['year'] = $year;
         $data['title'] = lang('calendar_year_title');
@@ -82,7 +87,7 @@ class Calendar extends CI_Controller {
         $this->load->view('calendar/year', $data);
         $this->load->view('templates/footer');
     }
-
+    
     /**
      * Display the page of the individual calendar (of the connected user)
      * Data (calendar events) is retrieved by AJAX from leaves' controller
@@ -103,7 +108,7 @@ class Calendar extends CI_Controller {
         $this->load->view('calendar/individual', $data);
         $this->load->view('templates/footer');
     }
-
+    
     /**
      * Display the page of the team calendar (users having the same manager
      * than the connected user)
@@ -122,7 +127,7 @@ class Calendar extends CI_Controller {
         $this->load->view('calendar/workmates', $data);
         $this->load->view('templates/footer');
     }
-
+    
     /**
      * Display the calendar of the employees managed by the connected user
      * Data (calendar events) is retrieved by AJAX from leaves' controller
@@ -140,7 +145,7 @@ class Calendar extends CI_Controller {
         $this->load->view('calendar/collaborators', $data);
         $this->load->view('templates/footer');
     }
-
+    
     /**
      * Display the calendar of the employees working in the same department
      * than the connected user.
@@ -167,7 +172,7 @@ class Calendar extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
-
+    
     /**
      * Display a global calendar filtered by organization/entity
      * Data (calendar events) is retrieved by AJAX from leaves' controller
@@ -214,7 +219,7 @@ class Calendar extends CI_Controller {
             $this->load->view('templates/footer');
         }
     }
-
+    
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      * This code is duplicated from controller/leaves for public access
@@ -233,7 +238,7 @@ class Calendar extends CI_Controller {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         }
     }
-
+    
     /**
      * Ajax endpoint : Send a list of fullcalendar events: List of all possible day offs
      * This code is duplicated from controller/contract for public access
@@ -252,7 +257,7 @@ class Calendar extends CI_Controller {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         }
     }
-
+    
     /**
      * Display a global tabular calendar
      * @param int $id identifier of the entity
@@ -283,10 +288,13 @@ class Calendar extends CI_Controller {
             $data['department'] = $this->organization_model->getName($id);
             $data['title'] = lang('calendar_tabular_title');
             $data['help'] = '';
-            $data['tabularPartialView'] = $this->load->view('calendar/tabular_partial', $data, TRUE);
-            $this->load->view('templates/header', $data);
-            $this->load->view('calendar/tabular', $data);
-            $this->load->view('templates/footer_simple');
+            if ($this->config->item('tabular_order_by_organization') === FALSE)
+                $data['tabularPartialView'] = $this->load->view('calendar/tabular_partial', $data, TRUE);
+            else
+                $data['tabularPartialView'] = $this->load->view('calendar/department_tabular_partial', $data, TRUE);
+                $this->load->view('templates/header', $data);
+                $this->load->view('calendar/tabular', $data);
+                $this->load->view('templates/footer_simple');
         } else {
             setUserContext($this);
             $this->lang->load('global', $this->language);
@@ -307,14 +315,17 @@ class Calendar extends CI_Controller {
             $data['department'] = $this->organization_model->getName($id);
             $data['title'] = lang('calendar_tabular_title');
             $data['help'] = $this->help->create_help_link('global_link_doc_page_calendar_tabular');
-            $data['tabularPartialView'] = $this->load->view('calendar/tabular_partial', $data, TRUE);
+            if ($this->config->item('tabular_order_by_organization') === FALSE)
+                $data['tabularPartialView'] = $this->load->view('calendar/tabular_partial', $data, TRUE);
+            else
+                $data['tabularPartialView'] = $this->load->view('calendar/department_tabular_partial', $data, TRUE);
             $this->load->view('templates/header', $data);
             $this->load->view('menu/index', $data);
             $this->load->view('calendar/tabular', $data);
             $this->load->view('templates/footer');
         }
     }
-
+    
     /**
      * Display a partial tabular widget. Used to reload only a part of the page.
      * @param int $id identifier of the entity
@@ -340,7 +351,10 @@ class Calendar extends CI_Controller {
             $data['year'] = $year;
             $data['children'] = $children;
             $data['displayTypes'] = $displayTypes;
-            $this->load->view('calendar/tabular_partial', $data);
+            if ($this->config->item('tabular_order_by_organization') === FALSE)
+                $this->load->view('calendar/tabular_partial', $data);
+            else
+                $this->load->view('calendar/department_tabular_partial', $data);
         } else {
             setUserContext($this);
             $this->lang->load('global', $this->language);
@@ -356,10 +370,13 @@ class Calendar extends CI_Controller {
             $data['year'] = $year;
             $data['children'] = $children;
             $data['displayTypes'] = $displayTypes;
-            $this->load->view('calendar/tabular_partial', $data);
+            if ($this->config->item('tabular_order_by_organization') === FALSE)
+                $this->load->view('calendar/tabular_partial', $data);
+            else
+                $this->load->view('calendar/department_tabular_partial', $data);
         }
     }
-
+    
     /**
      * Display a partial tabular widget. Used to reload only a part of the page.
      * The difference with tabularPartial function is that this view is not available
@@ -388,7 +405,7 @@ class Calendar extends CI_Controller {
         $data['displayTypes'] = $displayTypes;
         $this->load->view('calendar/tabular_partial', $data);
     }
-
+    
     /**
      * Export the tabular calendar into Excel. The presentation differs a bit according to the limitation of Excel
      * We'll get one line for the morning and one line for the afternoon
@@ -418,7 +435,7 @@ class Calendar extends CI_Controller {
         $data['tabular'] = $this->leaves_model->tabularList($id, $month, $year);
         $this->load->view('calendar/export_tabular', $data);
     }
-
+    
     /**
      * Export the tabular calendar into Excel. The presentation differs a bit according to the limitation of Excel
      * We'll get one line for the morning and one line for the afternoon
@@ -455,9 +472,12 @@ class Calendar extends CI_Controller {
         $data['children'] = $children;
         $data['displayTypes'] = $displayTypes;
         $data['tabular'] = $this->leaves_model->tabular($id, $month, $year, $children);
-        $this->load->view('calendar/export_tabular', $data);
+        if ($this->config->item('tabular_order_by_organization') === FALSE)
+            $this->load->view('calendar/export_tabular', $data);
+        else
+            $this->load->view('calendar/export_department_tabular', $data);
     }
-
+    
     /**
      * Export the yearly calendar into Excel. The presentation differs a bit according to the limitation of Excel
      * We'll get one line for the morning and one line for the afternoon

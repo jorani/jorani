@@ -29,6 +29,13 @@
             <tr><td>ics_enabled</td><td><?php echo ($this->config->item('ics_enabled') ? 'TRUE':'FALSE'); ?></td></tr>
             <tr><td>default_timezone</td><td><?php echo $this->config->item('default_timezone'); ?></td></tr>
             <tr><td>public_calendar</td><td><?php echo ($this->config->item('public_calendar') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>disable_telework</td><td><?php echo ($this->config->item('disable_telework') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>enable_teleworks_history</td><td><?php echo ($this->config->item('enable_teleworks_history') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>disable_edit_telework_duration</td><td><?php echo ($this->config->item('disable_edit_telework_duration') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>disable_campaign_telework</td><td><?php echo ($this->config->item('disable_campaign_telework') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>disable_time_organisation</td><td><?php echo ($this->config->item('disable_time_organisation') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>hide_time_orgnisation_in_cals</td><td><?php echo ($this->config->item('hide_time_orgnisation_in_cals') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>tabular_order_by_organization</td><td><?php echo ($this->config->item('tabular_order_by_organization') ? 'TRUE':'FALSE'); ?></td></tr>
           </tbody>
         </table>
 

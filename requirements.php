@@ -181,6 +181,24 @@ if ($configFileExists) {
                       <?php } else { ?>
                       <tr><td><i class="mdi mdi-alert"></i>&nbsp;Jorani can't write files</td>
                       <?php } ?><td>The folder local/upload/leaves/ must be writable.</td></tr>
+					  
+					  <?php if (is_writable(realpath('local/upload/teleworks/'))) {?>
+                      <tr><td><i class="mdi mdi-check"></i>&nbsp;Jorani can write files</td>
+                      <?php } else { ?>
+                      <tr><td><i class="mdi mdi-alert"></i>&nbsp;Jorani can't write files</td>
+                      <?php } ?><td>The folder local/upload/teleworks/ must be writable.</td></tr>
+                      
+                      <?php if (is_writable(realpath('local/upload/teleworkrules/'))) {?>
+                      <tr><td><i class="mdi mdi-check"></i>&nbsp;Jorani can write files</td>
+                      <?php } else { ?>
+                      <tr><td><i class="mdi mdi-alert"></i>&nbsp;Jorani can't write files</td>
+                      <?php } ?><td>The folder local/upload/teleworkrules/ must be writable.</td></tr>
+
+					  <?php if (is_writable(realpath('local/upload/timeorganisations/'))) {?>
+                      <tr><td><i class="mdi mdi-check"></i>&nbsp;Jorani can write files</td>
+                      <?php } else { ?>
+                      <tr><td><i class="mdi mdi-alert"></i>&nbsp;Jorani can't write files</td>
+                      <?php } ?><td>The folder local/upload/timeorganisations/ must be writable.</td></tr>
 
                       <?php if (extension_loaded('pdo_mysql')) {?>
                       <tr><td><i class="mdi mdi-check"></i>&nbsp;pdo_mysql is LOADED</td>

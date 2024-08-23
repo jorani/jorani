@@ -103,3 +103,7 @@ $lang['No'] = 'No';
 
 $lang['global_ajax_timeout'] = 'La sessione è scaduta, effettua nuovamente l\'accesso';
 $lang['global_ajax_error'] = 'Errore Ajax imprevisto';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

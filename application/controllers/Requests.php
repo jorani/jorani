@@ -203,9 +203,18 @@ class Requests extends CI_Controller {
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
         $data['title'] = lang('requests_collaborators_title');
+        if ($this->config->item('disable_telework') === FALSE) 
+            $this->lang->load('teleworkrequests', $this->language);
         $data['help'] = $this->help->create_help_link('global_link_doc_page_collaborators_list');
         $this->load->model('users_model');
+        $this->load->model('teleworks_model');
         $data['collaborators'] = $this->users_model->getCollaboratorsOfManager($this->user_id);
+        for ($i = 0; $i < count($data['collaborators']); $i ++){
+            $campaign_request = $this->teleworks_model->getRequestedCampaignTeleworksOfEmployee($data['collaborators'][$i]['id']);
+            $data['collaborators'][$i]['campaign_request'] = count($campaign_request);
+            $campaign_cancellation_request = $this->teleworks_model->getRequestedCampaignTeleworksOfEmployee($data['collaborators'][$i]['id'], array(LMS_CANCELLATION));
+            $data['collaborators'][$i]['campaign_cancellation_request'] = count($campaign_cancellation_request);
+        }
         $data['flash_partial_view'] = $this->load->view('templates/flash', $data, TRUE);
         $this->load->view('templates/header', $data);
         $this->load->view('menu/index', $data);
@@ -306,6 +315,7 @@ class Requests extends CI_Controller {
             $this->load->helper('form');
             $this->load->library('form_validation');
             $data['title'] = lang('hr_leaves_create_title');
+            $data['help'] = $this->help->create_help_link('global_link_doc_page_request_leave');
             $data['form_action'] = 'requests/createleave/' . $id;
             $data['source'] = 'requests/collaborators';
             $data['employee'] = $id;

@@ -85,3 +85,7 @@ $lang['Yes'] = 'Sí';
 $lang['No'] = 'No';
 $lang['global_ajax_timeout'] = 'La teva sessió ha expirat, si us plau torna a identificar-te';
 $lang['global_ajax_error'] = 'S\'ha produït una errada';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

@@ -102,3 +102,7 @@ $lang['No'] = 'No';
 
 $lang['global_ajax_timeout'] = 'Ваша сессия истекла. Выполните вход снова.';
 $lang['global_ajax_error'] = 'Неожиданная ошибка Ajax';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

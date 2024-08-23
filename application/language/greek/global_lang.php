@@ -91,3 +91,7 @@ $lang['Yes'] = 'Ναι';
 $lang['No'] = 'Όχι';
 $lang['global_ajax_timeout'] = 'Η συνεδρία σας έχει λήξει, παρακαλούμε συνδεθείτε ξανά';
 $lang['global_ajax_error'] = 'Απροσδόκητο σφάλμα Ajax';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

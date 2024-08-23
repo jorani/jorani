@@ -86,3 +86,7 @@ $lang['Yes'] = 'Sim';
 $lang['No'] = 'Não';
 $lang['global_ajax_timeout'] = 'A sua sessão expirou, por favor entre novamente';
 $lang['global_ajax_error'] = 'Erro Ajax inexperado';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

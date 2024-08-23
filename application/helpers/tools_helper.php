@@ -64,7 +64,15 @@ function getUserContext(CI_Controller $controller)
         } else {
             $data['requested_extra_count'] = 0;
         }
-        $data['requests_count'] = $data['requested_leaves_count'] + $data['requested_extra_count'];
+        if ($controller->config->item('disable_telework') == FALSE) {
+            $controller->load->model('teleworks_model');
+            $data['requested_teleworks_count'] = $controller->teleworks_model->countTeleworksRequestedToManager($controller->user_id);
+            $data['requested_campaign_teleworks_count'] = $controller->teleworks_model->countCampaignTeleworksRequestedToManager($controller->user_id);
+        } else {
+            $data['requested_teleworks_count'] = 0;
+            $data['requested_campaign_teleworks_count'] = 0;
+        }
+        $data['requests_count'] = $data['requested_leaves_count'] + $data['requested_extra_count'] + $data['requested_teleworks_count'] + $data['requested_campaign_teleworks_count'];
     }
     return $data;
 }
@@ -199,6 +207,141 @@ if (!function_exists('cal_days_in_month'))
         if (checkdate($month, 28, $year))
             return 28;
         return 0; // error
+    }
+}
+
+if (! function_exists('campaign_dates')) {
+
+    /**
+     *
+     * @param int $campaign campaign number
+     * @return campaign dates
+     */
+    function campaign_dates($campaign)
+    {
+        $year = date('Y');
+        $monthnumber = date('n');
+
+        if (($monthnumber > 2 && $monthnumber < 9 && $campaign == 1) || ($monthnumber <= 2 && $campaign == 2)) {
+            $startdate = $year . '-03-01';
+            $enddate = $year . '-08-31';
+        }
+
+        if (($monthnumber > 2 && $monthnumber < 9 && $campaign == 2) || ($monthnumber >= 9 && $campaign == 1)) {
+            $startdate = $year . '-09-01';
+            $enddate = date('Y-m-t', strtotime(($year + 1) . '-02-01'));
+        }
+
+        if ($monthnumber <= 2 && $campaign == 1) {
+            $startdate = ($year - 1) . '-09-01';
+            $enddate = date('Y-m-t', strtotime($year . '-02-01'));
+        }
+
+        if ($monthnumber >= 9 && $campaign == 2) {
+            $startdate = ($year + 1) . '-03-01';
+            $enddate = ($year + 1) . '-08-31';
+        }
+
+        return array(
+            'start' => $startdate,
+            'end' => $enddate
+        );
+    }
+}
+
+if (! function_exists('list_days_for_campaign')) {
+
+    /**
+     *
+     * @param int $campaign campaign number
+     * @param int $day day number
+     * @return list of campaign dates
+     */
+//     function list_days_for_campaign($campaign, $day)
+//     {
+//         $campaignDates = campaign_dates($campaign);
+
+//         $startdate = (new DateTime($campaignDates['start']))->modify('first ' . $day);
+//         $enddate = new DateTime($campaignDates['end']);
+
+//         $days = array();
+//         while ($startdate->format('Y-m-d') <= $enddate->format('Y-m-d')) {
+//             $days[] = $startdate->format('Y-m-d');
+//             $startdate->add(new \DateInterval('P1W'));
+//         }
+
+//         return $days;
+//     }
+
+    /**
+     *
+     * @param date $start start date of a campaign
+     * @param date $end end date of a campaign
+     * @param string $dayname name of the day
+     * @return list of campaign dates
+     */
+    function list_days_for_campaign($start, $end, $dayname)
+    {      
+        $start = new DateTime($start);
+        if ($start->format('l') == $dayname)
+            $days = array(
+                $start->format('Y-m-d')
+            );
+        else
+            $days = array();
+        $startdate = $start->modify('first ' . $dayname);
+        $enddate = new DateTime($end);
+
+        while ($startdate->format('Y-m-d') <= $enddate->format('Y-m-d')) {
+            $days[] = $startdate->format('Y-m-d');
+            $startdate->add(new \DateInterval('P1W'));
+        }
+
+        return $days;
+    }
+}
+
+if (! function_exists('get_week_dates')) {
+    
+    /**
+     *
+     * @param date $date           
+     * @param int $daynumber number of the day (0 = Sunday, 1 = Monday, etc...)
+     * @return date of the day
+     */   
+    function get_week_dates($date, $daynumber)
+    {
+        $date = new DateTime($date);
+        $week = $date->format('W');
+        $year = $date->format('Y');
+        
+        $timestamp = mktime( 0, 0, 0, 1, 1,  $year ) + ( $week * 7 * 24 * 60 * 60 );
+        $timestamp_for_day = $timestamp - 86400 * ( date( 'N', $timestamp ) - $daynumber );
+        
+        return date( 'Y-m-d', $timestamp_for_day );
+    }
+}
+
+if (! function_exists('get_week_dates_by_week')) {
+    
+    /**
+     *
+     * @param int $week week number
+     * @param int $year year
+     * @return date of monday to friday
+     */
+    function get_week_dates_by_week($week, $year)
+    {
+        $date = new DateTime();
+        $result = array();
+        $date->setISODate($year, $week);
+        $result['monday'] = $date->format('Y-m-d');
+        $result['tuesday'] = ($date->modify('+1 days'))->format('Y-m-d');
+        $result['wednesday'] = ($date->modify('+1 days'))->format('Y-m-d');
+        $result['thursday'] = ($date->modify('+1 days'))->format('Y-m-d');
+        $result['friday'] = ($date->modify('+1 days'))->format('Y-m-d');
+
+        return $result;
     }
 }
 

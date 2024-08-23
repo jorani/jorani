@@ -21,6 +21,9 @@
     <div class="span3"><span class="label"><?php echo lang('Planned');?></span></div>
     <div class="span3"><span class="label label-success"><?php echo lang('Accepted');?></span></div>
     <div class="span3"><span class="label label-warning"><?php echo lang('Requested');?></span></div>
+    <?php if ($this->config->item('disable_telework') == FALSE) {?>
+    	<div class="span3"><span class="label label-info"><?php echo lang('Accepted_Telework');?></span></div>
+    <?php }?>
     <div class="span3">&nbsp;</div>
 </div>
 

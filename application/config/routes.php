@@ -74,11 +74,15 @@ $route['hr/employees/create/leave'] = 'hr/createLeaveRequest';
 $route['hr/leaves/(:num)'] = 'hr/leaves/$1';
 $route['hr/leaves/export/(:num)'] = 'hr/exportLeaves/$1';
 $route['hr/overtime/(:num)'] = 'hr/overtime/$1';
+$route['hr/teleworks/(:num)'] = 'hr/teleworks/$1';
+$route['hr/teleworks/export/(:num)'] = 'hr/exportTeleworks/$1';
 $route['hr/counters/([^/]+)/(:num)'] = 'hr/counters/$1/$2';
 $route['hr/counters/([^/]+)/(:num)/(:num)'] = 'hr/counters/$1/$2/$3';
 $route['hr/overtime/export/(:num)'] = 'hr/exportOvertime/$1';
 $route['hr/entitleddays/(:num)'] = 'hr/entitleddays/$1';
 $route['hr/leaves/create/(:num)'] = 'hr/createleave/$1';
+$route['hr/teleworks/create/(:num)'] = 'hr/createtelework/$1';
+$route['hr/campaignteleworks/create/(:num)'] = 'hr/createcampaigntelework/$1';
 $route['hr/presence/([^/]+)/(:num)'] = 'hr/presence/$1/$2';
 $route['hr/presence/([^/]+)/(:num)/(:num)/(:num)'] = 'hr/presence/$1/$2/$3/$4';
 $route['hr/presence/export/([^/]+)/(:num)/(:num)/(:num)'] = 'hr/exportPresence/$1/$2/$3/$4';
@@ -124,6 +128,37 @@ $route['contracts/calendar/userdayoffs'] = 'contracts/userDayoffs';
 $route['contracts/calendar/alldayoffs'] = 'contracts/allDayoffs';
 $route['contracts/calendar/alldayoffs/lists'] = 'contracts/allDayoffsForList';
 $route['contracts'] = 'contracts';
+
+//_______________________________________________
+//HR edit telework campaigns
+$route['teleworkcampaigns/create'] = 'TeleworkCampaigns/create';
+$route['teleworkcampaigns/edit/(:num)'] = 'TeleworkCampaigns/edit/$1';
+$route['teleworkcampaigns/update'] = 'TeleworkCampaigns/update';
+$route['teleworkcampaigns/delete/(:num)'] = 'TeleworkCampaigns/delete/$1';
+$route['teleworkcampaigns/activate/(:num)'] = 'TeleworkCampaigns/activate/$1';
+$route['teleworkcampaigns/deactivate/(:num)'] = 'TeleworkCampaigns/deactivate/$1';
+$route['teleworkcampaigns'] = 'TeleworkCampaigns';
+$route['teleworkcampaigns/validate'] = 'TeleworkCampaigns/validate';
+
+//_______________________________________________
+//HR edit telework rules
+$route['teleworkrules/create'] = 'TeleworkRules/create';
+$route['teleworkrules/edit/(:num)'] = 'TeleworkRules/edit/$1';
+$route['teleworkrules/update'] = 'TeleworkRules/update';
+$route['teleworkrules/delete/(:num)'] = 'TeleworkRules/delete/$1';
+$route['teleworkrules/export'] = 'TeleworkRules/export';
+$route['teleworkrules/import'] = 'TeleworkRules/import';
+$route['teleworkrules'] = 'TeleworkRules';
+
+//_______________________________________________
+//HR edit time organisations
+$route['timeorganisations/create'] = 'TimeOrganisations/create';
+$route['timeorganisations/edit/(:num)'] = 'TimeOrganisations/edit/$1';
+$route['timeorganisations/update'] = 'TimeOrganisations/update';
+$route['timeorganisations/delete/(:num)'] = 'TimeOrganisations/delete/$1';
+$route['timeorganisations/export'] = 'TimeOrganisations/export';
+$route['timeorganisations/import'] = 'TimeOrganisations/import';
+$route['timeorganisations'] = 'TimeOrganisations';
 
 //_______________________________________________
 //HR Organization
@@ -242,6 +277,50 @@ $route['overtime/(:any)'] = 'overtime/index/$1';
 $route['overtime'] = 'overtime/index/requested';
 
 //_______________________________________________
+//Telework requests created by an employee
+$route['teleworks/counters'] = 'teleworks/counters';
+$route['teleworks/counters/(:num)'] = 'teleworks/counters/$1';
+$route['teleworks/export'] = 'teleworks/export';
+$route['teleworks/create'] = 'teleworks/create';
+$route['teleworks/createforcampaign'] = 'teleworks/createForCampaign';
+$route['teleworks/edit/(:num)'] = 'teleworks/edit/$1';
+$route['teleworks/request/(:num)'] = 'teleworks/requestLeave/$1';
+$route['teleworks/cancel/(:num)'] = 'teleworks/cancel/$1';
+$route['teleworks/update'] = 'teleworks/update';
+$route['teleworks/delete/(:num)'] = 'teleworks/delete/$1';
+$route['teleworks/(:num)/history'] = 'teleworks/history/$1';
+$route['teleworks/(:num)/comments/add'] = 'teleworks/createComment/$1';
+$route['teleworks/cancellation/(:num)'] = 'teleworks/cancellation/$1';
+$route['teleworks/reminder/(:num)'] = 'teleworks/reminder/$1';
+$route['teleworks/([^/]+)/(:num)'] = 'teleworks/view/$1/$2';
+$route['teleworks/validate'] = 'teleworks/validate';
+$route['teleworks'] = 'teleworks';
+
+//_______________________________________________
+//telework requests (submitted to the line manager)
+$route['teleworkrequests/createtelework/(:num)'] = 'TeleworkRequests/createtelework/$1';
+$route['teleworkrequests/createforcampaign/(:num)'] = 'TeleworkRequests/createcampaigntelework/$1';
+$route['teleworkrequests/export/(:any)'] = 'TeleworkRequests/export/$1';
+$route['teleworkrequests/exportforcampaign/(:any)/(:num)'] = 'TeleworkRequests/exportforcampaign/$1/$2';
+$route['teleworkrequests/exportall/(:any)/(:num)'] = 'TeleworkRequests/exportall/$1/$2';
+$route['teleworkrequests/accept/(:num)'] = 'TeleworkRequests/accept/$1';
+$route['teleworkrequests/acceptall/(:num)'] = 'TeleworkRequests/acceptAll/$1';
+$route['teleworkrequests/reject/(:num)'] = 'TeleworkRequests/reject/$1';
+$route['teleworkrequests/rejectall/(:num)'] = 'TeleworkRequests/rejectAll/$1';
+$route['teleworkrequests/cancellation/accept/(:num)'] = 'TeleworkRequests/acceptCancellation/$1';
+$route['teleworkrequests/cancellation/reject/(:num)'] = 'TeleworkRequests/rejectCancellation/$1';
+$route['teleworkrequests/delegations/(:num)'] = 'TeleworkRequests/delegations/$1';
+$route['teleworkrequests/delegations'] = 'TeleworkRequests/delegations';
+$route['teleworkrequests/ajax/delegations/delete'] = 'TeleworkRequests/deleteDelegations';
+$route['teleworkrequests/ajax/delegations/add'] = 'TeleworkRequests/addDelegations';
+$route['teleworkrequests/(:any)'] = 'TeleworkRequests/index/$1';
+$route['teleworkrequests'] = 'TeleworkRequests/index/requested';
+$route['teleworkrequests/campaignteleworks/(:any)/(:num)'] = 'TeleworkRequests/campaignteleworks/$1/$2';
+$route['teleworkrequests/campaignteleworks/(:num)'] = 'TeleworkRequests/campaignteleworks/requested/$1';
+$route['teleworkrequests/teleworks/(:any)/(:num)'] = 'TeleworkRequests/teleworks/$1/$2';
+$route['teleworkrequests/teleworks/(:num)'] = 'TeleworkRequests/teleworks/requested/$1';
+
+//_______________________________________________
 //Entitled days
 $route['entitleddays/user/(:num)'] = 'entitleddays/user/$1';
 $route['entitleddays/ajax/user'] = 'entitleddays/ajax_user';
@@ -260,6 +339,15 @@ $route['reports/leaves'] = 'reports/leaves';
 $route['reports/leaves/execute'] = 'reports/executeLeavesReport';
 $route['reports/leaves/export'] = 'reports/exportLeavesReport';
 $route['reports'] = 'reports';
+
+//_______________________________________________
+//Telework reports
+$route['teleworkreports/teleworks'] = 'TeleworkReports/teleworks';
+$route['teleworkreports/teleworks/execute'] = 'TeleworkReports/executeTeleworksReport';
+$route['teleworkreports/teleworks/export'] = 'TeleworkReports/exportTeleworksReport';
+$route['teleworkreports/byweek'] = 'TeleworkReports/byweek';
+$route['teleworkreports/byweek/execute'] = 'TeleworkReports/executeTeleworksReportByweek';
+$route['teleworkreports/byweek/export'] = 'TeleworkReports/exportTeleworksReportByweek';
 
 //_______________________________________________
 //HTTP API

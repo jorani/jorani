@@ -12,9 +12,16 @@ $lang['hr_employees_title'] = 'Liste der Angestellten';
 $lang['hr_employees_thead_tip_edit'] = 'User bearbeiten';
 $lang['hr_employees_thead_tip_entitlment'] = 'bezugsberechtigte Tage';
 $lang['hr_employees_thead_link_leaves'] = 'Urlaube';
+
+$lang['hr_employees_thead_link_teleworks'] = 'Telearbeit';
+
 $lang['hr_employees_thead_link_extra'] = 'Extras';
 $lang['hr_employees_thead_link_balance'] = 'Urlaubsstatistik';
 $lang['hr_employees_thead_link_create_leave'] = 'Urlaubsanfrage erstellen';
+
+$lang['hr_employees_thead_link_create_telework'] = 'Antrag auf gleitende Telearbeit erstellen';
+$lang['hr_employees_thead_link_create_campaign_telework'] = 'Festen Telearbeitsantrag für die Kampagne erstellen';
+
 $lang['hr_employees_thead_link_calendar'] = 'Jahreskalender';
 $lang['hr_employees_thead_link_presence'] = 'Anwesenheitsstatistik';
 $lang['hr_employees_thead_link_delegation'] = 'Delegationen';
@@ -132,12 +139,80 @@ $lang['hr_export_overtime_thead_status'] = 'Status';
 $lang['hr_export_overtime_thead_date'] = 'Datum';
 $lang['hr_export_overtime_thead_duration'] = 'Dauer';
 $lang['hr_export_overtime_thead_cause'] = 'Grund';
+
+$lang['hr_teleworks_create_title'] = 'Einen neuen Antrag auf gleitende Telearbeit erstellen';
+$lang['hr_teleworks_create_campaign_title'] = 'Einen festen Telearbeitsantrag für die Kampagne erstellen';
+$lang['hr_teleworks_create_field_start'] = 'Startdatum';
+$lang['hr_teleworks_create_field_end'] = 'Enddatum';
+$lang['hr_teleworks_create_field_recurrence'] = 'Wiederholung';
+$lang['hr_teleworks_create_field_duration'] = 'Dauer';
+$lang['hr_teleworks_create_field_campaign'] = 'Kampagne';
+$lang['hr_teleworks_create_field_duration_message'] = 'Sie überschreiten die zulässige Anzahl von Tagen';
+$lang['hr_teleworks_create_field_overlapping_message'] = 'In diesem Zeitraum haben wir einen Antrag auf Telearbeit';
+$lang['hr_teleworks_create_field_overlapping_leaves_message'] = 'In diesem Zeitraum haben wir einen Urlaubsantrag';
+$lang['hr_teleworks_create_field_overlapping_time_organisations_message'] = 'In diesem Zeitraum haben wir eine Arbeitszeitregelung.';
+$lang['hr_teleworks_create_field_past_date_message'] = 'Anträge auf Telearbeit zu früheren Terminen sind nicht möglich.';
+$lang['hr_teleworks_create_field_cause'] = 'Ursache (optional)';
+$lang['hr_teleworks_create_field_status'] = 'Status';
+$lang['hr_teleworks_create_field_day'] = 'Tag';
+$lang['hr_teleworks_create_field_campaign'] = 'Kampagne';
+$lang['hr_teleworks_current_campaign'] = 'Aktuelle Kampagne';
+$lang['hr_teleworks_next_campaign'] = 'Nächste Kampagne';
+$lang['hr_teleworks_create_button_create'] = 'Anwendung erstellen';
+$lang['hr_teleworks_create_button_cancel'] = 'Abbrechen';
+$lang['hr_teleworks_create_flash_msg_success'] = 'Der Telearbeitsantrag wurde erfolgreich erstellt';
+$lang['hr_teleworks_create_flash_msg_error'] = 'Der Telearbeitsantrag wurde erfolgreich erstellt oder geändert, aber Sie haben keinen Manager';
+$lang['hr_teleworks_flash_spn_list_days_off'] = '%s nicht gearbeitete Tage im Zeitraum';
+$lang['hr_teleworks_flash_msg_overlap_dayoff'] = 'Ihr Antrag fällt mit einem arbeitsfreien Tag zusammen';
+$lang['hr_teleworks_validate_mandatory_js_msg'] = '"Das Feld " + fieldname + " ist obligatorisch."';
+$lang['hr_teleworks_validate_flash_msg_no_contract'] = 'Es scheint, dass Sie keinen Vertrag haben. Bitte wenden Sie sich an einen Personalverantwortlichen';
+$lang['hr_teleworks_validate_flash_msg_overlap_period'] = 'Sie können keinen Telearbeitsantrag für zwei jährliche Telearbeitszeiträume erstellen. Bitte erstellen Sie zwei verschiedene Anwendungen';
+$lang['hr_teleworks_flash_msg_limit_exceeded'] = 'Ihr Antrag überschreitet die Anzahl der zulässigen Telearbeitstage pro Woche';
+$lang['hr_teleworks_flash_msg_halfday_telework'] = 'Der Antrag auf Telearbeit für einen halben Tag ist nicht zulässig';
+$lang['hr_teleworks_thead_link_accept_all'] = 'Alle akzeptieren';
+$lang['hr_teleworks_thead_link_reject_all'] = 'Alle ablehnen';
+    
+$lang['hr_teleworks_title'] = 'Liste der Anträge auf Telearbeit';
+$lang['hr_teleworks_html_title'] = 'Liste der Telearbeitsanträge für Mitarbeiter Nr.';
+$lang['hr_teleworks_thead_tip_edit'] = 'Bearbeiten';
+$lang['hr_teleworks_thead_tip_accept'] = 'Akzeptieren';
+$lang['hr_teleworks_thead_tip_reject'] = 'Ablehnen';
+$lang['hr_teleworks_thead_tip_delete'] = 'Löschen';
+$lang['hr_teleworks_thead_tip_history'] = 'Historie anzeigen';
+$lang['hr_teleworks_thead_id'] = 'ID';
+$lang['hr_teleworks_thead_status'] = 'Status';
+$lang['hr_teleworks_thead_start'] = 'Startdatum';
+$lang['hr_teleworks_thead_end'] = 'Enddatum';
+$lang['hr_teleworks_thead_duration'] = 'Dauer';
+$lang['hr_teleworks_thead_type'] = 'Typ';
+$lang['hr_teleworks_thead_campaign'] = 'Kampagne';
+$lang['hr_teleworks_button_export'] = 'Diese Liste exportieren';
+$lang['hr_teleworks_button_list'] = 'Mitarbeiterliste';
+$lang['hr_teleworks_popup_delete_title'] = 'Den Telearbeitsantrag löschen';
+$lang['hr_teleworks_popup_delete_message'] = 'Sie sind dabei, einen Telearbeitsantrag zu löschen, dieser Vorgang ist nicht umkehrbar';
+$lang['hr_teleworks_popup_delete_question'] = 'Möchten Sie fortfahren?';
+$lang['hr_teleworks_popup_delete_button_yes'] = 'Ja';
+$lang['hr_teleworks_popup_delete_button_no'] = 'Nein';
+$lang['hr_teleworks_deleted_title'] = 'Liste der gelöschten Telearbeitsanträge';
+    
+$lang['hr_export_teleworks_title'] = 'Liste der Telearbeitsanträge';
+$lang['hr_export_teleworks_thead_id'] = 'Nein';
+$lang['hr_export_teleworks_thead_status'] = 'Status';
+$lang['hr_export_teleworks_thead_start'] = 'Startdatum';
+$lang['hr_export_teleworks_thead_end'] = 'Enddatum';
+$lang['hr_export_teleworks_thead_duration'] = 'Dauer';
+$lang['hr_export_teleworks_thead_type'] = 'Typ';
+$lang['hr_export_teleworks_thead_campaign'] = 'Kampagne';
+
 $lang['hr_summary_title'] = 'Urlaubsstatistik für Angestellten #';
 $lang['hr_summary_thead_type'] = 'Art des Urlaubs';
 $lang['hr_summary_thead_available'] = 'Verfügbar';
 $lang['hr_summary_thead_taken'] = 'Belegt';
 $lang['hr_summary_thead_entitled'] = 'Bezugsberechtigt';
 $lang['hr_summary_thead_description'] = 'Beschreibung';
+
+$lang['hr_summary_flash_msg_error'] = 'Dieser Mitarbeiter hat keinen Vertrag';
+
 $lang['hr_summary_flash_msg_error'] = 'Dieser Mitarbeiter hat keinen Vertrag.';
 $lang['hr_summary_button_list'] = 'Liste der Angestellten';
 $lang['hr_summary_date_field'] = 'Datum des Reports';
@@ -164,3 +239,12 @@ $lang['hr_presence_no_contract'] = 'Der Mitarbeiter hat keinen Vertrag';
 $lang['hr_presence_please_check'] = 'Bitte überprüfen';
 $lang['hr_presence_leaves_list_title'] = 'Liste der Urlaube im Monat';
 $lang['hr_presence_button_export'] = 'Exportieren';
+
+$lang['hr_telework_campaigns_create_field_overlapping_message'] = 'Sie haben eine Kampagne im gleichen Zeitraum erstellt';
+    
+$lang['Campaign'] = 'Kampagne';
+$lang['Floating'] = 'Schwebend';
+    
+$lang['all_recurrence'] = 'Jede Woche';
+$lang['even_week'] = 'Gerade Wochen';
+$lang['odd_week'] = 'Ungerade Wochen';

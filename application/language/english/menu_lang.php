@@ -36,18 +36,31 @@ $lang['menu_hr_list_leaves_type'] = 'List of types';
 $lang['menu_hr_reports_divider'] = 'Reports';
 $lang['menu_hr_report_leave_balance'] = 'Leave balance';
 $lang['menu_hr_report_leaves'] = 'Leave requests';
+$lang['menu_hr_report_teleworks'] = 'Telework requests';
+$lang['menu_hr_report_weekly_teleworks'] = 'Telework requests per week';
+$lang['menu_hr_teleworks_divider'] = 'Telework';
+$lang['menu_hr_list_telework_campaigns'] = 'List of campaigns';
+$lang['menu_hr_list_telework_rules'] = 'Telework rules';
+$lang['menu_hr_list_time_organisation'] = 'Time organisations';
 
 $lang['menu_validation_title'] = 'Approval';
 $lang['menu_validation_delegations'] = 'Delegations';
 $lang['menu_validation_collaborators'] = 'My subordinates';
 $lang['menu_validation_leaves'] = 'Leaves';
 $lang['menu_validation_overtime'] = 'Overtime';
+$lang['menu_validation_teleworks'] = 'Floating telework';
+$lang['menu_validation_campaign_teleworks'] = 'Fixed telework';
 
 $lang['menu_requests_title'] = 'Requests';
 $lang['menu_requests_leaves'] = 'Leaves';
 $lang['menu_requests_overtime'] = 'Overtime';
 $lang['menu_requests_list_extras'] = 'List of OT Worked';
 $lang['menu_requests_request_extra'] = 'Submit an OT Request';
+$lang['menu_requests_telework'] = 'Teleworks';
+$lang['menu_requests_list_telework'] = 'List of telework requests';
+$lang['menu_requests_request_telework'] = 'Make a floating telework request';
+$lang['menu_requests_request_campaign_telework'] = 'Make a fixed telework request for the campaign';
+$lang['menu_teleworks_counters'] = 'Counters';
 
 $lang['menu_leaves_counters'] = 'Counters';
 $lang['menu_leaves_list_requests'] = 'List of leave requests';

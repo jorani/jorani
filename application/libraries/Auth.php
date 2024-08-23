@@ -121,6 +121,25 @@ class Auth {
             case 'create_contract' :
             case 'delete_contract' :
             case 'edit_contract' :
+            case 'list_telework_campaigns' :            
+            case 'view_telework_campaign' :
+            case 'create_telework_campaign' :
+            case 'delete_telework_campaign' :
+            case 'edit_telework_campaign' :
+            case 'list_telework_rules' :
+            case 'edit_telework_rule' :
+            case 'create_telework_rule' :
+            case 'delete_telework_rule' :
+            case 'edit_telework_rule' :
+            case 'import_telework_rules' :
+            case 'export_telework_rules' :
+            case 'list_time_organisations' :
+            case 'edit_time_organisation' :
+            case 'create_time_organisation' :
+            case 'delete_time_organisation' :
+            case 'edit_time_organisation' :
+            case 'import_time_organisations' :
+            case 'export_time_organisations' :
             case 'delete_positions' :
             case 'edit_positions' :
             case 'create_positions' :
@@ -139,6 +158,8 @@ class Auth {
             case 'native_report_balance':
             case 'native_report_leaves':
             case 'report_list' :
+            case 'native_teleworkreport_teleworks':
+            case 'teleworkreport_list' :
             case 'report_execute' :
                 if ($this->CI->session->userdata('is_hr') == true)
                     return true;
@@ -194,6 +215,18 @@ class Auth {
             case 'edit_extra' :
                 return true;
                 break;
+                
+            //Teleworks
+            case 'list_teleworks' :
+            case 'create_teleworks' :
+            case 'create_campaign_teleworks' :
+            case 'export_teleworks' :
+            case 'view_teleworks' :
+            case 'edit_teleworks' :
+            case 'counters_teleworks' :
+                return true;
+                break;
+                
             //Additionnal access logic: cannot view/edit/update the leave of another user except for admin/manager
             //Extra Request
             case 'list_overtime' :
@@ -210,6 +243,17 @@ class Auth {
             case 'reject_requests' :
                 return true;
                 break;
+                
+            //Additionnal access logic: cannot view/edit/update the leave of another user except for admin/manager
+            //Telework Request
+            case 'list_telework_requests' :
+            case 'accept_telework_requests' :
+            case 'reject_telework_requests' :
+            case 'accept_all_telework_requests' :
+            case 'reject_all_telework_requests' :
+                return true;
+                break;
+                
             //Access logic is in the controller : if the connected user manages nobody, the list will be empty
             //Calendar
             case 'individual_calendar' :

@@ -174,3 +174,81 @@ $lang['hr_presence_no_contract'] = 'El empleado no tiene contrato';
 $lang['hr_presence_please_check'] = 'Por favor, verificar ';
 $lang['hr_presence_leaves_list_title'] = 'Lista de permisos durante el mes';
 $lang['hr_presence_button_export'] = 'Exporta';
+
+$lang['hr_employees_thead_link_teleworks'] = 'Teleworks';
+
+$lang['hr_employees_thead_link_create_telework'] = 'Create floating telework request';
+$lang['hr_employees_thead_link_create_campaign_telework'] = 'Create fixed telework request for the campaign';
+
+$lang['hr_teleworks_create_title'] = 'Create a new floating telework request';
+$lang['hr_teleworks_create_campaign_title'] = 'Create a fixed telework request for the campaign';
+$lang['hr_teleworks_create_field_start'] = 'Start date';
+$lang['hr_teleworks_create_field_end'] = 'End date';
+$lang['hr_teleworks_create_field_recurrence'] = 'Recurrence';
+$lang['hr_teleworks_create_field_duration'] = 'Duration';
+$lang['hr_teleworks_create_field_campaign'] = 'Campaign';
+$lang['hr_teleworks_create_field_duration_message'] = 'You are exceeding the number of days allowed';
+$lang['hr_teleworks_create_field_overlapping_message'] = 'During this period, we have a request to telework.';
+$lang['hr_teleworks_create_field_overlapping_leaves_message'] = 'In this period, we have a request for a holiday.';
+$lang['hr_teleworks_create_field_overlapping_time_organisations_message'] = 'In this period, we have a working time arrangement.';
+$lang['hr_teleworks_create_field_past_date_message'] = 'Requests to telework on earlier dates are not possible.';
+$lang['hr_teleworks_create_field_cause'] = 'Cause (optional)';
+$lang['hr_teleworks_create_field_status'] = 'Status';
+$lang['hr_teleworks_create_field_day'] = 'Day';
+$lang['hr_teleworks_create_field_campaign'] = 'Campaign';
+$lang['hr_teleworks_current_campaign'] = 'Current campaign';
+$lang['hr_teleworks_next_campaign'] = 'Next campaign';
+$lang['hr_teleworks_create_button_create'] = 'Request telework';
+$lang['hr_teleworks_create_button_cancel'] = 'Cancel';
+$lang['hr_teleworks_create_flash_msg_success'] = 'The telework request was created successfully';
+$lang['hr_teleworks_create_flash_msg_error'] = 'The telework request was created or modified successfully, but you do not have a manager';
+$lang['hr_teleworks_flash_spn_list_days_off'] = '%s days not worked in the period';
+$lang['hr_teleworks_flash_msg_overlap_dayoff'] = 'Your request coincides with a day not worked.';
+$lang['hr_teleworks_validate_mandatory_js_msg'] = '"The field " + fieldname + " is mandatory."';
+$lang['hr_teleworks_validate_flash_msg_no_contract'] = 'It appears that you do not have a contract. Please contact a human resources manager';
+$lang['hr_teleworks_validate_flash_msg_overlap_period'] = 'You cannot create a telework request for two annual telework periods. Please create two different applications';
+$lang['hr_teleworks_flash_msg_limit_exceeded'] = 'Your request exceeds the number of telework days allowed per week';
+$lang['hr_teleworks_flash_msg_halfday_telework'] = 'The request to telework for half a day is not allowed';
+$lang['hr_teleworks_thead_link_accept_all'] = 'Accept all';
+$lang['hr_teleworks_thead_link_reject_all'] = 'Reject all';
+
+$lang['hr_teleworks_title'] = 'List of telework requests';
+$lang['hr_teleworks_html_title'] = 'List of telework requests from employee #';
+$lang['hr_teleworks_thead_tip_edit'] = 'Edit';
+$lang['hr_teleworks_thead_tip_accept'] = 'Accept';
+$lang['hr_teleworks_thead_tip_reject'] = 'Reject';
+$lang['hr_teleworks_thead_tip_delete'] = 'Delete';
+$lang['hr_teleworks_thead_tip_history'] = 'Display history';
+$lang['hr_teleworks_thead_id'] = 'ID';
+$lang['hr_teleworks_thead_status'] = 'Status';
+$lang['hr_teleworks_thead_start'] = 'Start date';
+$lang['hr_teleworks_thead_end'] = 'End date';
+$lang['hr_teleworks_thead_duration'] = 'Duration';
+$lang['hr_teleworks_thead_type'] = 'Type';
+$lang['hr_teleworks_thead_campaign'] = 'Campaign';
+$lang['hr_teleworks_button_export'] = 'Export this list';
+$lang['hr_teleworks_button_list'] = 'Employee list';
+$lang['hr_teleworks_popup_delete_title'] = 'Delete the telework request';
+$lang['hr_teleworks_popup_delete_message'] = 'You are about to delete a telework request, this procedure is irreversible';
+$lang['hr_teleworks_popup_delete_question'] = 'Do you want to continue?';
+$lang['hr_teleworks_popup_delete_button_yes'] = 'Yes';
+$lang['hr_teleworks_popup_delete_button_no'] = 'No';
+$lang['hr_teleworks_deleted_title'] = 'List of deleted telework requests';
+
+$lang['hr_export_teleworks_title'] = 'List of telework requests';
+$lang['hr_export_teleworks_thead_id'] = 'No';
+$lang['hr_export_teleworks_thead_status'] = 'Status';
+$lang['hr_export_teleworks_thead_start'] = 'Start date';
+$lang['hr_export_teleworks_thead_end'] = 'End date';
+$lang['hr_export_teleworks_thead_duration'] = 'Duration';
+$lang['hr_export_teleworks_thead_type'] = 'Type';
+$lang['hr_export_teleworks_thead_campaign'] = 'Campaign';
+
+$lang['hr_telework_campaigns_create_field_overlapping_message'] = 'You created a campaign during the same period';
+
+$lang['Campaign'] = 'Campaign';
+$lang['Floating'] = 'Floating';
+
+$lang['all_recurrence'] = 'Every week';
+$lang['even_week'] = 'Even weeks';
+$lang['odd_week'] = 'Odd weeks';

@@ -94,3 +94,7 @@ $lang['No'] = 'No';
 
 $lang['global_ajax_timeout'] = 'Váše přihlášení vypršelo prosíme přihlašte se znovu';
 $lang['global_ajax_error'] = 'Neočekávaná chyba Ajax';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

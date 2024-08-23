@@ -61,7 +61,7 @@ foreach ($events as $event) {
     $objLeave->cause = $event['cause'];
     $objLeave->duration = $event['duration'];
     $objLeave->typeName = $event['type_name'];
-    $objLeave->status = $leave['status'];
+    $objLeave->status = $event['status'];
     $objLeave->statusName = $event['status_name'];
     $fullObject = clone $objLeave;
     

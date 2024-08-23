@@ -35,3 +35,18 @@ $lang['email_extra_request_validation_title'] = 'Déclaration heure supplémenta
 
 $lang['email_password_forgotten_subject'] = 'Votre mot de passe a été modifié';
 $lang['email_password_forgotten_title'] = 'Votre mot de passe a été modifié';
+
+$lang['email_telework_request_creation_subject'] = 'Demande de télétravail de';
+$lang['email_campaign_telework_request_creation_subject'] = 'Demande de télétravail fixe pour la campagne de';
+$lang['email_telework_request_creation_title'] = 'Demande de télétravail';
+$lang['email_campaign_telework_request_creation_title'] = 'Demande de télétravail fixe pour la campagne';
+$lang['email_telework_request_cancellation_subject'] = 'Demande d\'annulation de télétravail de';
+$lang['email_telework_request_cancellation_title'] = 'Demande d\'annulation de télétravail';
+$lang['email_telework_cancel_accept_subject'] = 'Votre demande d\'annulation de télétravail a été acceptée';
+$lang['email_telework_cancel_reject_subject'] = 'Votre demande d\'annulation de télétravail a été refusée';
+
+$lang['email_telework_request_accept_subject'] = 'Votre demande de télétravail a été acceptée';
+$lang['email_telework_request_reject_subject'] = 'Votre demande de télétravail a été refusée';
+$lang['email_telework_request_validation_title'] = 'Demande de télétravail';
+
+$lang['email_telework_request_reminder'] = '[rappel]';

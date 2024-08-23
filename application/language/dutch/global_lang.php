@@ -87,3 +87,7 @@ $lang['Yes'] = 'Ja';
 $lang['No'] = 'Nee';
 $lang['global_ajax_timeout'] = 'Uw sessie is verlopen, u dient opnieuw in te loggen';
 $lang['global_ajax_error'] = 'Onverwachte Ajax fout';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

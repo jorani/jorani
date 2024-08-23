@@ -85,3 +85,7 @@ $lang['Yes'] = 'Igen';
 $lang['No'] = 'Nem';
 $lang['global_ajax_timeout'] = 'A munkameneted lejárt kérlek jelentkezz be újra';
 $lang['global_ajax_error'] = 'Váratlan Ajax Hiba';
+
+$lang['Accepted_Telework'] = 'Accepted telework';
+
+$lang['Whole day'] = 'All day';

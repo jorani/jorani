@@ -62,6 +62,18 @@ class Users_model extends CI_Model {
         $query = $this->db->get('users');
         return $query->result_array();
     }
+    
+    /**
+     * Get the list of employees sort by firstname 
+     * @return array record of users
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     */
+    public function getAllEmployeesSortedByFirstname() {
+        $this->db->select('id, firstname, lastname');
+        $this->db->order_by("firstname", "asc");
+        $query = $this->db->get('users');
+        return $query->result_array();
+    }
 
     /**
      * Get the list of employees and the name of their entities

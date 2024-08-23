@@ -37,7 +37,11 @@
     <div class="span2"><span class="label label-success"><?php echo lang('Accepted');?></span></div>
     <div class="span2"><span class="label label-warning"><?php echo lang('Requested');?></span></div>
     <div class="span2"><span class="label label-important" style="background-color: #ff0000;"><?php echo lang('Rejected');?></span></div>
-    <div class="span4">
+    <?php if ($this->config->item('disable_telework') == FALSE) {?>
+    	<div class="span2"><span class="label label-info"><?php echo lang('Accepted_Telework');?></span></div>
+    	<div class="span2">
+    <?php } else ?>
+    	<div class="span4">
         <?php if ($this->config->item('ics_enabled') == FALSE) {?>
         &nbsp;
         <?php } else {?>

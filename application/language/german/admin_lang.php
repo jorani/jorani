@@ -50,6 +50,24 @@ $lang['admin_diagnostic_overtime_thead_employee'] = 'Angestellter';
 $lang['admin_diagnostic_overtime_thead_date'] = 'Datum';
 $lang['admin_diagnostic_overtime_thead_duration'] = 'Dauer';
 $lang['admin_diagnostic_overtime_thead_status'] = 'Status';
+
+$lang['admin_diagnostic_teleworks_requests_tab'] = 'Anträge auf Telearbeit';
+$lang['admin_diagnostic_teleworks_requests_description'] = 'Telearbeitsanträge akzeptiert und dupliziert';
+$lang['admin_diagnostic_teleworks_requests_thead_id'] = 'Nein';
+$lang['admin_diagnostic_teleworks_requests_thead_employee'] = 'Mitarbeiter';
+$lang['admin_diagnostic_teleworks_requests_thead_start_date'] = 'Startdatum';
+$lang['admin_diagnostic_teleworks_requests_thead_status'] = 'Status';
+$lang['admin_diagnostic_teleworks_requests_thead_type'] = 'Typ';
+
+$lang['admin_diagnostic_teleworks_datetype_tab'] = 'Nachmittag/Morgen (TT)';
+$lang['admin_diagnostic_teleworks_datetype_description'] = 'Telearbeitsanträge mit falschem Start-/Endtyp';
+$lang['admin_diagnostic_teleworks_datetype_thead_id'] = 'Nein';
+$lang['admin_diagnostic_teleworks_datetype_thead_employee'] = 'Employee';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_date'] = 'Datum';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_type'] = 'Start';
+$lang['admin_diagnostic_teleworks_datetype_thead_end_type'] = 'Ende';
+$lang['admin_diagnostic_teleworks_datetype_thead_status'] = 'Status';
+
 $lang['admin_diagnostic_daysoff_description'] = 'Überstundenanfrage mit einer negativen Dauer';
 $lang['admin_diagnostic_daysoff_thead_id'] = 'ID';
 $lang['admin_diagnostic_daysoff_thead_employee'] = 'Angestellter';
@@ -68,14 +86,23 @@ $lang['admin_diagnostic_balance_thead_contract'] = 'Vertrag';
 $lang['admin_diagnostic_balance_thead_start_date'] = 'Anfangsdatum';
 $lang['admin_diagnostic_balance_thead_status'] = 'Status';
 
-$lang['admin_diagnostic_overlapping_tab'] = 'Overlapping';
-$lang['admin_diagnostic_overlapping_description'] = 'Leave requests overlapping on two yearly periods.';
+$lang['admin_diagnostic_overlapping_tab'] = 'Überschneidungen';
+$lang['admin_diagnostic_overlapping_description'] = 'Urlaubsanträge, die sich in zwei Jahresperioden überschneiden.';
 $lang['admin_diagnostic_overlapping_thead_id'] = 'ID';
-$lang['admin_diagnostic_overlapping_thead_employee'] = 'Employee';
-$lang['admin_diagnostic_overlapping_thead_contract'] = 'Contract';
-$lang['admin_diagnostic_overlapping_thead_start_date'] = 'Start Date';
-$lang['admin_diagnostic_overlapping_thead_end_date'] = 'End Date';
+$lang['admin_diagnostic_overlapping_thead_employee'] = 'Mitarbeiter';
+$lang['admin_diagnostic_overlapping_thead_contract'] = 'Vertrag';
+$lang['admin_diagnostic_overlapping_thead_start_date'] = 'Startdatum';
+$lang['admin_diagnostic_overlapping_thead_end_date'] = 'Enddatum';
 $lang['admin_diagnostic_overlapping_thead_status'] = 'Status';
+
+$lang['admin_diagnostic_teleworks_overlapping_tab'] = 'Überlappung (TT)';
+$lang['admin_diagnostic_teleworks_overlapping_description'] = 'Anträge auf Telearbeit, die sich über zwei Jahreszeiträume erstrecken.';
+$lang['admin_diagnostic_teleworks_overlapping_thead_id'] = 'ID';
+$lang['admin_diagnostic_teleworks_overlapping_thead_employee'] = 'Beschäftigter';
+$lang['admin_diagnostic_teleworks_overlapping_thead_contract'] = 'Vertrag';
+$lang['admin_diagnostic_teleworks_overlapping_thead_start_date'] = 'Startdatum';
+$lang['admin_diagnostic_teleworks_overlapping_thead_end_date'] = 'Enddatum';
+$lang['admin_diagnostic_teleworks_overlapping_thead_status'] = 'Status';
 
 $lang['admin_oauthclients_title'] = 'OAuth-Clients und -Sitzungen';
 $lang['admin_oauthclients_tab_clients'] = 'Clients';

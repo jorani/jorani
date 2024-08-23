@@ -273,6 +273,44 @@ class Hr extends CI_Controller {
         $this->load->view('hr/overtime', $data);
         $this->load->view('templates/footer');
     }
+    
+    /**
+     * Display the list of teleworks for a given employee
+     * @param int $id employee id
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     */
+    public function teleworks($id) {																										 
+        $this->auth->checkIfOperationIsAllowed('list_employees');
+        $data = getUserContext($this);							  
+        $this->lang->load('teleworks', $this->language);
+        $this->load->model('users_model');
+        $data['name'] = $this->users_model->getName($id);
+        //Check if exists
+        if ($data['name'] == "") {
+            redirect('notfound');
+        }
+        $this->lang->load('datatable', $this->language);
+															   
+        $data['title'] = lang('hr_teleworks_title');
+        $data['user_id'] = $id;
+        $this->load->model('teleworks_model');
+        $this->load->model('telework_campaign_model');
+        $data['campaigns'] = $this->telework_campaign_model->getTeleworkCampaigns();
+        $data['types'] = array(
+            'Campaign',
+            'Floating'
+        );
+        $data['teleworks'] = $this->teleworks_model->getTeleworksOfEmployee($id);
+        if ($this->config->item('enable_teleworks_history') === TRUE) {
+            $this->load->model('telework_history_model');
+            $data['deletedTeleworks'] = $this->telework_history_model->getDeletedTeleworkRequests($id);
+        }
+        $data['flash_partial_view'] = $this->load->view('templates/flash', $data, TRUE);
+        $this->load->view('templates/header', $data);
+        $this->load->view('menu/index', $data);
+        $this->load->view('hr/teleworks', $data);
+        $this->load->view('templates/footer');
+    }
 
     /**
      * Display the details of leaves taken/entitled for a given employee
@@ -369,6 +407,86 @@ class Hr extends CI_Controller {
             redirect('hr/employees');
         }
     }
+    
+    /**
+     * Create a telework request in behalf of an employee
+     * @param int $id Identifier of the employee
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     */
+    public function createtelework($id) {
+        $this->auth->checkIfOperationIsAllowed('list_employees');
+        $data = getUserContext($this);
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $data['title'] = lang('hr_teleworks_create_title');
+        $data['help'] = $this->help->create_help_link('global_link_doc_page_request_telework');
+        $data['form_action'] = 'hr/teleworks/create/' . $id;
+        $data['source'] = 'hr/employees';
+        $data['employee'] = $id;
+        
+        $this->form_validation->set_rules('startdate', lang('hr_teleworks_create_field_start'), 'required|strip_tags');
+        $this->form_validation->set_rules('startdatetype', 'Start Date type', 'required|strip_tags');
+        $this->form_validation->set_rules('enddate', lang('hr_teleworks_create_field_end'), 'required|strip_tags');
+        $this->form_validation->set_rules('enddatetype', 'End Date type', 'required|strip_tags');
+        $this->form_validation->set_rules('duration', lang('hr_teleworks_create_field_duration'), 'required|strip_tags');
+        $this->form_validation->set_rules('cause', lang('hr_teleworks_create_field_cause'), 'strip_tags');
+        $this->form_validation->set_rules('status', lang('hr_teleworks_create_field_status'), 'required|strip_tags');
+        
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->model('users_model');
+            $data['name'] = $this->users_model->getName($id);
+            $this->load->view('templates/header', $data);
+            $this->load->view('menu/index', $data);
+            $this->load->view('hr/createtelework');
+            $this->load->view('templates/footer');
+        } else {
+        	$this->load->model('teleworks_model');
+            $this->teleworks_model->setTeleworks($id);   //Return not used
+            $this->session->set_flashdata('msg', lang('hr_teleworks_create_flash_msg_success'));
+            //No mail is sent, because the HR Officer would set the leave status to accepted
+            redirect('hr/employees');
+        }
+    }
+    
+    /**
+     * Create telework requests for a campaign in behalf of an employee
+     * @param int $id Identifier of the employee
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     */
+    public function createcampaigntelework($id) {
+        $this->auth->checkIfOperationIsAllowed('list_employees');
+        $data = getUserContext($this);
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+        $this->lang->load('calendar_lang', $this->language);
+        $data['title'] = lang('hr_teleworks_create_campaign_title');
+        $data['help'] = $this->help->create_help_link('global_link_doc_page_request_telework');
+        $data['form_action'] = 'hr/campaignteleworks/create/' . $id;
+        $data['source'] = 'hr/employees';
+        $data['employee'] = $id;
+        
+        $this->form_validation->set_rules('campaign', lang('hr_teleworks_create_field_campaign'), 'required|strip_tags');
+        $this->form_validation->set_rules('recurrence', lang('teleworks_create_field_recurrence'), 'required|strip_tags');
+        $this->form_validation->set_rules('day', lang('hr_teleworks_create_field_day'), 'required|strip_tags');
+        $this->form_validation->set_rules('status', lang('hr_teleworks_create_field_status'), 'required|strip_tags');
+        
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->model('telework_campaign_model');            
+            $this->load->model('users_model');
+            $data['campaigns'] = $this->telework_campaign_model->getActiveCampaigns();
+            $data['name'] = $this->users_model->getName($id);
+            $this->load->view('templates/header', $data);
+            $this->load->view('menu/index', $data);
+            $this->load->view('hr/createforcampaign');
+            $this->load->view('templates/footer');
+        } else {
+        	$this->load->model('teleworks_model');
+            $this->teleworks_model->setTeleworksForCampaign($id);   //Return not used
+            $this->session->set_flashdata('msg', lang('hr_teleworks_create_flash_msg_success'));
+            //No mail is sent, because the HR Officer would set the leave status to accepted
+            redirect('hr/employees');
+        }
+    }
 
     /**
      * Display presence details for a given employee
@@ -432,9 +550,16 @@ class Hr extends CI_Controller {
 
         //tabular view of the leaves
         $data['linear'] = $this->leaves_model->linear($id, $month, $year, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE);
+        if ($this->config->item('disable_telework') === FALSE)
+            $data['linear'] = $this->leaves_model->removeOverlappingTeleworks($data['linear']);
         $data['leave_duration'] = $this->leaves_model->monthlyLeavesDuration($data['linear']);
         $data['work_duration'] = $opened_days - $data['leave_duration'];
         $data['leaves_detail'] = $this->leaves_model->monthlyLeavesByType($data['linear']);
+        if ($this->config->item('disable_time_organisation') === FALSE && $this->config->item('hide_time_orgnisation_in_cals') === FALSE) {
+            $this->load->model('time_organisation_model');
+            $timeorganisationdates = $this->time_organisation_model->getTimeOrganisationDatesToCalendar($id, $month, $year);
+            $this->leaves_model->addTimeOrganisationDatesToCalendar($data['linear'], $timeorganisationdates, $id);
+        }
 
         //List of accepted leave requests
         $data['leaves'] = $this->leaves_model->getAcceptedLeavesBetweenDates($id, $start, $end);
@@ -473,6 +598,18 @@ class Hr extends CI_Controller {
         $this->load->model('users_model');
         $data['id'] = $id;
         $this->load->view('hr/export_overtime', $data);
+    }
+    
+    /**
+     * Export the list of all telework requests of an employee into an Excel file
+     * @param int $id employee id
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     */
+    public function exportTeleworks($id) {
+        $this->load->model('teleworks_model');
+        $this->load->model('users_model');
+        $data['id'] = $id;
+        $this->load->view('hr/export_teleworks', $data);
     }
 
     /**
@@ -513,6 +650,8 @@ class Hr extends CI_Controller {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->load->model('leaves_model');
+        $this->load->model('teleworks_model');
+        $this->load->model('time_organisation_model');
         $this->load->model('users_model');
         $this->load->model('dayoffs_model');
         $this->load->model('contracts_model');

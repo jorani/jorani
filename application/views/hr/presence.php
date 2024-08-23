@@ -118,14 +118,16 @@
               <tr>
                 <?php foreach ($linear->days as $day) {
                     $overlapping = FALSE;
+                    $style = '';
                     if (strstr($day->display, ';')) {
                         $periods = explode(";", $day->display);
                         $statuses = explode(";", $day->status);
+                        $types = explode(";", $day->type);
                           switch (intval($statuses[1]))
                           {
                               case 1: $class = "planned"; break;  // Planned
                               case 2: $class = "requested"; break;  // Requested
-                              case 3: $class = "accepted"; break;  // Accepted
+                              case 3: if($types[1] == 'Campaign' || $types[1] == 'Floating') $class = "allacceptedtw"; elseif($types[1] == 'Time organisation') $class = "allacceptedto"; else $class = "accepted"; break; // Accepted
                               case 4: $class = "rejected"; break;  // Rejected
                               case 5: $class="dayoff"; break;
                               case 6: $class="dayoff"; break;
@@ -134,7 +136,7 @@
                           {
                               case 1: $class .= "planned"; break;  // Planned
                               case 2: $class .= "requested"; break;  // Requested
-                              case 3: $class .= "accepted"; break;  // Accepted
+                              case 3: if($types[0] == 'Campaign' || $types[0] == 'Floating') $class = "allacceptedtw"; elseif($types[0] == 'Time organisation') $class = "allacceptedto"; else $class = "accepted"; break; // Accepted
                               case 4: $class .= "rejected"; break;  // Rejected
                               case 5: $class .="dayoff"; break;
                               case 6: $class .="dayoff"; break;
@@ -145,7 +147,7 @@
                               {
                                   case 1: $class = "allplanned"; break;  // Planned
                                   case 2: $class = "allrequested"; break;  // Requested
-                                  case 3: $class = "allaccepted"; break;  // Accepted
+                                  case 3: if($types[0] == 'Campaign' || $types[0] == 'Floating') $class = "allacceptedtw"; elseif($types[0] == 'Time organisation') $class = "allacceptedto"; else $class = "allaccepted"; break; // Accepted
                                   case 4: $class = "allrejected"; break;  // Rejected
                                   //The 2 cases below would be weird...
                                   case 5: $class ="dayoff"; break;
@@ -164,7 +166,7 @@
                                 {
                                     case 1: $class = "allplanned"; break;  // Planned
                                     case 2: $class = "allrequested"; break;  // Requested
-                                    case 3: $class = "allaccepted"; break;  // Accepted
+                                    case 3: if($day->type == 'Campaign' || $day->type == 'Floating') $class = "allacceptedtw"; elseif($day->type == 'Time organisation') $class = "allacceptedto"; else $class = "allaccepted"; break; // Accepted
                                     case 4: $class = "allrejected"; break;  // Rejected
                                 }
                                 break;
@@ -173,7 +175,7 @@
                                 {
                                     case 1: $class = "amplanned"; break;  // Planned
                                     case 2: $class = "amrequested"; break;  // Requested
-                                    case 3: $class = "amaccepted"; break;  // Accepted
+                                    case 3: if($day->type == 'Campaign' || $day->type == 'Floating') $class = "amacceptedtw"; elseif($day->type == 'Time organisation') $class = "amacceptedto"; else $class = "amaccepted"; break; // Accepted
                                     case 4: $class = "amrejected"; break;  // Rejected
                                 }
                               break;
@@ -182,7 +184,7 @@
                                 {
                                     case 1: $class = "pmplanned"; break;  // Planned
                                     case 2: $class = "pmrequested"; break;  // Requested
-                                    case 3: $class = "pmaccepted"; break;  // Accepted
+                                    case 3: if($day->type == 'Campaign' || $day->type == 'Floating') $class = "pmacceptedtw"; elseif($day->type == 'Time organisation') $class = "pmacceptedto"; else $class = "pmaccepted"; break; // Accepted
                                     case 4: $class = "pmrejected"; break;  // Rejected
                                 }
                               break;
@@ -203,7 +205,30 @@
                           if ($overlapping) {
                               echo '<td title="' . $day->type . '" class="' . $class . '"><img src="' . base_url() . 'assets/images/date_error.png"></td>';
                           } else {
-                              echo '<td title="' . $day->type . '" class="' . $class . '">&nbsp;</td>';
+                              //Acronyms of types
+                              if ($day->acronym != "") {
+                                  $acronyms = explode(";", $day->acronym);
+                                  if (count($acronyms) == 1) {
+                                      //One leave request
+                                      if ((substr($class, 0, 2) == "am")) {
+                                          //Diagonal top left
+                                          $style = 'padding:1px; font-size: 0.7em;';
+                                      }
+                                      if((substr($class, 0, 2) == "pm")) {
+                                          //Diagonal bottom right
+                                          $style = 'vertical-align: bottom; text-align: right; padding:1px; font-size: 0.7em;';
+                                      }
+                                      echo "<td title='$day->type' class='$class' style='$style'>$day->acronym</td>";
+                                  } else {
+                                      echo "<td class='$class' style='font-size: 0.7em;'>";
+                                      echo '  <span title="' . $day->type . '" class="pull-left">' . $acronyms[0] . '</span>';
+                                      echo '  <span title="' . $day->type . '" class="pull-right" >' . $acronyms[1] . '</span>';
+                                      echo '</td>';
+                                  }
+                              } else {
+                                  //We don't display the acronyms of type or it is not available
+                                  echo "<td title='$day->type' style='$style' class='$class'>&nbsp;</td>";
+                              }
                           }
                       }
                } ?>

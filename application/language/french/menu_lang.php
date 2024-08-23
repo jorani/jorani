@@ -36,18 +36,31 @@ $lang['menu_hr_list_leaves_type'] = 'Liste des types';
 $lang['menu_hr_reports_divider'] = 'Rapports';
 $lang['menu_hr_report_leave_balance'] = 'État des congés';
 $lang['menu_hr_report_leaves'] = 'Demandes de congé';
+$lang['menu_hr_report_teleworks'] = 'Demandes de télétravail';
+$lang['menu_hr_report_weekly_teleworks'] = 'Demandes de télétravail par semaine';
+$lang['menu_hr_teleworks_divider'] = 'Télétravail';
+$lang['menu_hr_list_telework_campaigns'] = 'Liste des campagnes';
+$lang['menu_hr_list_telework_rules'] = 'Les règles du télétravail';
+$lang['menu_hr_list_time_organisation'] = 'Les aménagements de temps';
 
 $lang['menu_validation_title'] = 'Validation';
 $lang['menu_validation_delegations'] = 'Délégations';
 $lang['menu_validation_collaborators'] = 'Mes collaborateurs';
 $lang['menu_validation_leaves'] = 'Absences';
 $lang['menu_validation_overtime'] = 'Heures supp.';
+$lang['menu_validation_teleworks'] = 'Télétravail flottant';
+$lang['menu_validation_campaign_teleworks'] = 'Télétravail fixe';
 
 $lang['menu_requests_title'] = 'Demandes';
 $lang['menu_requests_leaves'] = 'Congés';
 $lang['menu_requests_overtime'] = 'Heures supplémentaires';
 $lang['menu_requests_list_extras'] = 'Liste heures supp.';
 $lang['menu_requests_request_extra'] = 'Déclarer Heures supp.';
+$lang['menu_requests_telework'] = 'Télétravail';
+$lang['menu_requests_list_telework'] = 'Liste des demandes de télétravail';
+$lang['menu_requests_request_telework'] = 'Faire une demande de télétravail flottant';
+$lang['menu_requests_request_campaign_telework'] = 'Faire une demande de télétravail fixe pour la campagne';
+$lang['menu_teleworks_counters'] = 'Compteurs';
 
 $lang['menu_leaves_counters'] = 'Compteurs';
 $lang['menu_leaves_list_requests'] = 'Liste des demandes de congé';

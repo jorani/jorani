@@ -520,6 +520,93 @@ CREATE TABLE IF NOT EXISTS `parameters` (
 KEY `param_name` (`name`, `scope`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Application parameters';
 
+--
+-- Structure of table `teleworks`
+--
+CREATE TABLE IF NOT EXISTS `teleworks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier of the telework request',
+  `startdate` date DEFAULT NULL COMMENT 'Start date of the telework request',
+  `enddate` date DEFAULT NULL COMMENT 'End date of the telework request',
+  `status` int(11) DEFAULT NULL COMMENT 'Identifier of the status of the telework request (Requested, Accepted, etc.). See status table.',
+  `campaign` int(11) DEFAULT NULL COMMENT 'Identifier of the telework campaign',
+  `employee` int(11) DEFAULT NULL COMMENT 'Employee requesting the telework request',
+  `cause` text COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Reason of the telework request',
+  `startdatetype` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Morning/Afternoon',
+  `enddatetype` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Morning/Afternoon',
+  `duration` decimal(10,3) DEFAULT NULL COMMENT 'Length of the telework request',
+  `type` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Type of the telework request (Campaign, Floating, etc.).',
+  `comments` text COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Comments on telework request (JSon)',
+  `document` blob DEFAULT NULL COMMENT 'Optional supporting document',
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`),
+  KEY `employee` (`employee`),
+  KEY `campaign` (`campaign`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Telework requests' AUTO_INCREMENT=1;
+
+--
+-- Structure of table `teleworks_history`
+--
+CREATE TABLE IF NOT EXISTS `teleworks_history` (
+  `id` int(11) NOT NULL,
+  `startdate` date DEFAULT NULL,
+  `enddate` date DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `campaign` int(11) DEFAULT NULL,
+  `employee` int(11) DEFAULT NULL,
+  `cause` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `startdatetype` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `enddatetype` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `duration` decimal(10,2) DEFAULT NULL,
+  `type` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comments` text COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Comments on telework request',
+  `document` blob DEFAULT NULL COMMENT 'Optional supporting document',
+  `change_id` int(11) NOT NULL AUTO_INCREMENT,
+  `change_type` int(11) NOT NULL,
+  `changed_by` int(11) NOT NULL,
+  `change_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`change_id`),
+  KEY `changed_by` (`changed_by`),
+  KEY `change_date` (`change_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='List of changes in telework requests table' AUTO_INCREMENT=1;
+
+--
+-- Structure of table `telework_campaign`
+--
+CREATE TABLE IF NOT EXISTS `telework_campaign` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier of the telework campaign',
+  `name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Name of the telework campaign',
+  `startdate` date NOT NULL COMMENT 'Start date of the telework campaign',
+  `enddate` date NOT NULL COMMENT 'End date of the telework campaign',
+  `active` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'Status of the telework campaign (1 = active, 0 = inactive)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Telework campaign' AUTO_INCREMENT=1;
+
+--
+-- Structure of table `telework_rule`
+--
+CREATE TABLE IF NOT EXISTS `telework_rule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier of the telework rule',
+  `organization` int(11) NOT NULL COMMENT 'Identifier of the organization',
+  `limit` int(11) NOT NULL COMMENT 'Number of days accepted for telecommuting in a week',
+  `delay` int(11) NOT NULL COMMENT 'Deadline to be respected before a telework request',
+  PRIMARY KEY (`id`),
+  KEY `organization` (`organization`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
+
+--
+-- Structure of table `time_organisation`
+--
+CREATE TABLE IF NOT EXISTS `time_organisation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique identifier of the time organisation',
+  `employee` int(11) NOT NULL COMMENT 'Unique identifier of the employee',
+  `duration` decimal(10,3) NOT NULL COMMENT 'Duration of organised time',
+  `day` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Day of organised time (Monday, Tuesday, Wednesday, Thursday, Friday)',
+  `daytype` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Whole day/Morning/Afternoon',
+  `recurrence` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Weeks (All/Even/Odd)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `employee` (`employee`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

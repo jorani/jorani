@@ -91,3 +91,10 @@ $lang['September'] = 'Tháng 9';
 $lang['October'] = 'Tháng 10';
 $lang['November'] = 'Tháng 11';
 $lang['December'] = 'Tháng 12';
+
+$lang['Campaign'] = 'Campaign';
+$lang['Floating'] = 'Floating';
+$lang['telework_acronym'] = 'TW';
+$lang['telework_year'] = 'TW';
+$lang['time organisation'] = 'Time organisation';
+$lang['time_organisation_acronym'] = 'TO';

@@ -55,6 +55,23 @@ $lang['admin_diagnostic_overtime_thead_date'] = 'Date';
 $lang['admin_diagnostic_overtime_thead_duration'] = 'Durée';
 $lang['admin_diagnostic_overtime_thead_status'] = 'Statut';
 
+$lang['admin_diagnostic_teleworks_requests_tab'] = 'Demandes de télétravail';
+$lang['admin_diagnostic_teleworks_requests_description'] = 'Demandes de télétravail acceptées et dupliquées';
+$lang['admin_diagnostic_teleworks_requests_thead_id'] = 'N°';
+$lang['admin_diagnostic_teleworks_requests_thead_employee'] = 'Employé';
+$lang['admin_diagnostic_teleworks_requests_thead_start_date'] = 'Date début';
+$lang['admin_diagnostic_teleworks_requests_thead_status'] = 'Statut';
+$lang['admin_diagnostic_teleworks_requests_thead_type'] = 'Type';
+
+$lang['admin_diagnostic_teleworks_datetype_tab'] = 'Après-midi/Matin (TT)';
+$lang['admin_diagnostic_teleworks_datetype_description'] = 'Demandes de télétravail avec un mauvais type de début/fin';
+$lang['admin_diagnostic_teleworks_datetype_thead_id'] = 'N°';
+$lang['admin_diagnostic_teleworks_datetype_thead_employee'] = 'Employé';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_date'] = 'Date';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_type'] = 'Début';
+$lang['admin_diagnostic_teleworks_datetype_thead_end_type'] = 'Fin';
+$lang['admin_diagnostic_teleworks_datetype_thead_status'] = 'Statut';
+
 $lang['admin_diagnostic_contract_tab'] = 'Contrats';
 $lang['admin_diagnostic_contract_description'] = 'Contrats non utilisés (vérifier si le contrat n\'est pas en double).';
 $lang['admin_diagnostic_contract_thead_id'] = 'N°';
@@ -76,6 +93,15 @@ $lang['admin_diagnostic_overlapping_thead_contract'] = 'Contrat';
 $lang['admin_diagnostic_overlapping_thead_start_date'] = 'Date début';
 $lang['admin_diagnostic_overlapping_thead_end_date'] = 'Date fin';
 $lang['admin_diagnostic_overlapping_thead_status'] = 'Statut';
+
+$lang['admin_diagnostic_teleworks_overlapping_tab'] = 'Chevauchement (TT)';
+$lang['admin_diagnostic_teleworks_overlapping_description'] = 'Demandes de télétravail chevauchant deux périodes annuelles.';
+$lang['admin_diagnostic_teleworks_overlapping_thead_id'] = 'ID';
+$lang['admin_diagnostic_teleworks_overlapping_thead_employee'] = 'Employé';
+$lang['admin_diagnostic_teleworks_overlapping_thead_contract'] = 'Contrat';
+$lang['admin_diagnostic_teleworks_overlapping_thead_start_date'] = 'Date début';
+$lang['admin_diagnostic_teleworks_overlapping_thead_end_date'] = 'Date fin';
+$lang['admin_diagnostic_teleworks_overlapping_thead_status'] = 'Statut';
 
 $lang['admin_oauthclients_title'] = 'Clients et sessions OAuth';
 $lang['admin_oauthclients_tab_clients'] = 'Clients';

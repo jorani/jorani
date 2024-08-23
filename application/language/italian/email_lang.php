@@ -36,3 +36,18 @@ $lang['email_extra_request_validation_title'] = 'Richieste di straordinario';
 
 $lang['email_password_forgotten_subject'] = 'La tua password è stata reimpostata';
 $lang['email_password_forgotten_title'] = 'La tua password è stata reimpostata';
+
+$lang['email_telework_request_creation_subject'] = 'Telework request for';
+$lang['email_campaign_telework_request_creation_subject'] = 'Fixed telework request for the campaign of';
+$lang['email_telework_request_creation_title'] = 'Telework request';
+$lang['email_campaign_telework_request_creation_title'] = 'Fixed telework request for the campaign of';
+$lang['email_telework_request_cancellation_subject'] = 'Telework cancellation request from';
+$lang['email_telework_request_cancellation_title'] = 'Telework cancellation request from';
+$lang['email_telework_cancel_accept_subject'] = 'Your telework cancellation request has been accepted';
+$lang['email_telework_cancel_reject_subject'] = 'Your telework cancellation request has been refused';
+
+$lang['email_telework_request_accept_subject'] = 'Your telework request has been accepted';
+$lang['email_telework_request_reject_subject'] = 'Your telework request has been declined';
+$lang['email_telework_request_validation_title'] = 'Telework request';
+
+$lang['email_telework_request_reminder'] = '[reminder]';

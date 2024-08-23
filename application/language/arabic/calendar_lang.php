@@ -80,3 +80,10 @@ $lang['September'] = 'أيلول';
 $lang['October'] = 'تشرين الأول';
 $lang['November'] = 'تشرين الثاني';
 $lang['December'] = 'كانون الأول';
+
+$lang['Campaign'] = 'Campaign';
+$lang['Floating'] = 'Floating';
+$lang['telework_acronym'] = 'TW';
+$lang['telework_year'] = 'TW';
+$lang['time organisation'] = 'Time organisation';
+$lang['time_organisation_acronym'] = 'TO';

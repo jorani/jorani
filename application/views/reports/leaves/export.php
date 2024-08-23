@@ -61,6 +61,8 @@ foreach ($users as $user) {
         $leave_duration = 0;
         for ($ii = 1; $ii <13; $ii++) {
             $linear = $this->leaves_model->linear($user->id, $ii, $year, FALSE, FALSE, TRUE, FALSE);
+            if ($this->config->item('disable_telework') === FALSE)
+                $linear = $this->leaves_model->removeOverlappingTeleworks($linear);
             $leave_duration += $this->leaves_model->monthlyLeavesDuration($linear);
             $leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);
             //Init type columns
@@ -80,6 +82,8 @@ foreach ($users as $user) {
         $work_duration = $opened_days - $leave_duration;
     } else {
         $linear = $this->leaves_model->linear($user->id, $month, $year, FALSE, FALSE, TRUE, FALSE);
+        if ($this->config->item('disable_telework') === FALSE)
+            $linear = $this->leaves_model->removeOverlappingTeleworks($linear);
         $leave_duration = $this->leaves_model->monthlyLeavesDuration($linear);
         $work_duration = $opened_days - $leave_duration;
         $leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);

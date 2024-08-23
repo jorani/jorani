@@ -87,3 +87,29 @@ $lang['admin_oauthclients_confirm_delete'] = 'هل انت متأكد من الإ
 $lang['admin_oauthclients_tab_sessions'] = 'جلسات الولوج';
 $lang['admin_oauthclients_tab_sessions_description'] = 'قائمة جلسات ولوج شبكية REST API OAuth';
 $lang['admin_oauthclients_button_purge'] = 'تطهير';
+
+$lang['admin_diagnostic_teleworks_requests_tab'] = 'Telework requests';
+$lang['admin_diagnostic_teleworks_requests_description'] = 'Telework requests accepted and duplicated';
+$lang['admin_diagnostic_teleworks_requests_thead_id'] = 'N°';
+$lang['admin_diagnostic_teleworks_requests_thead_employee'] = 'Employee';
+$lang['admin_diagnostic_teleworks_requests_thead_start_date'] = 'Start date';
+$lang['admin_diagnostic_teleworks_requests_thead_status'] = 'Status';
+$lang['admin_diagnostic_teleworks_requests_thead_type'] = 'Type';
+
+$lang['admin_diagnostic_teleworks_datetype_tab'] = 'Afternoon/Morning (TW)';
+$lang['admin_diagnostic_teleworks_datetype_description'] = 'Telework requests with wrong start/end type';
+$lang['admin_diagnostic_teleworks_datetype_thead_id'] = 'N°';
+$lang['admin_diagnostic_teleworks_datetype_thead_employee'] = 'Employee';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_date'] = 'Date';
+$lang['admin_diagnostic_teleworks_datetype_thead_start_type'] = 'Start';
+$lang['admin_diagnostic_teleworks_datetype_thead_end_type'] = 'End';
+$lang['admin_diagnostic_teleworks_datetype_thead_status'] = 'Status';
+
+$lang['admin_diagnostic_teleworks_overlapping_tab'] = 'Overlapping (TW)';
+$lang['admin_diagnostic_teleworks_overlapping_description'] = 'Telework requests overlapping two annual periods';
+$lang['admin_diagnostic_teleworks_overlapping_thead_id'] = 'ID';
+$lang['admin_diagnostic_teleworks_overlapping_thead_employee'] = 'Employee';
+$lang['admin_diagnostic_teleworks_overlapping_thead_contract'] = 'Contract';
+$lang['admin_diagnostic_teleworks_overlapping_thead_start_date'] = 'Start date';
+$lang['admin_diagnostic_teleworks_overlapping_thead_end_date'] = 'End date';
+$lang['admin_diagnostic_teleworks_overlapping_thead_status'] = 'Status';
