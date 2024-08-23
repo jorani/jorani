@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller allows a manager to list and manage leave requests submitted to him
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.1.0
@@ -484,7 +484,7 @@ class Requests extends CI_Controller {
             $result[$user['id']]['identifier'] = $user['identifier'];
             $result[$user['id']]['firstname'] = $user['firstname'];
             $result[$user['id']]['lastname'] = $user['lastname'];
-            $date = new DateTime($user['datehired']);
+            $date = new DateTime(is_null($user['datehired'])?"":$user['datehired']);
             $result[$user['id']]['datehired'] = $date->format(lang('global_date_format'));
             $result[$user['id']]['position'] = $user['position_name'];
             foreach ($data['types'] as $type) {

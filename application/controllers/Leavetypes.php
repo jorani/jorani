@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller allows to manage the list of leave types
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.1.0
@@ -88,7 +88,7 @@ class LeaveTypes extends CI_Controller {
             $this->types_model->updateTypes($id,
                     $this->input->post('name'),
                     $this->input->post('deduct_days_off'),
-                    $this->input->post('acronym'));
+                    mb_substr($this->input->post('acronym'), 0, 10));
             $this->session->set_flashdata('msg', lang('leavetypes_popup_update_flash_msg'));
             redirect('leavetypes');
         }

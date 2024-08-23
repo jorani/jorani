@@ -3,26 +3,26 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['date_year'] = "年";
-$lang['date_years'] = "年";
-$lang['date_month'] = "月";
-$lang['date_months'] = "月";
-$lang['date_week'] = "週";
-$lang['date_weeks'] = "週";
-$lang['date_day'] = "日";
-$lang['date_days'] = "日";
-$lang['date_hour'] = "時間";
-$lang['date_hours'] = "時間";
-$lang['date_minute'] = "分";
-$lang['date_minutes'] = "分";
-$lang['date_second'] = "秒";
-$lang['date_seconds'] = "秒";
+$lang['date_year'] = '年';
+$lang['date_years'] = '年';
+$lang['date_month'] = '月';
+$lang['date_months'] = '月';
+$lang['date_week'] = '週';
+$lang['date_weeks'] = '週';
+$lang['date_day'] = '日';
+$lang['date_days'] = '日';
+$lang['date_hour'] = '時間';
+$lang['date_hours'] = '時間';
+$lang['date_minute'] = '分';
+$lang['date_minutes'] = '分';
+$lang['date_second'] = '秒';
+$lang['date_seconds'] = '秒';
 
 $lang['UM12']	= '(UTC -12:00) ベーカー/ハウランド島';
 $lang['UM11']	= '(UTC -11:00) サモア, ニウエ';

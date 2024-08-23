@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller contains the actions allowing an employee to list and manage its overtime requests
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.1.0

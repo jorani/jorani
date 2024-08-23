@@ -3,7 +3,7 @@
  * This controller is the entry point for the REST API used by mobile and HTML5
  * Clients. They use CORS requests. Each call to end points uses BasicAuth 
  * except the preflight exchange. So it should be used with a TLS connection
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.3.0

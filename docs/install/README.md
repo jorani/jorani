@@ -151,13 +151,10 @@ Then add this to your php location block, this will be located in your vhost fil
 
 If you are running nginx, tune your configuration (see <code>/etc/nginx/nginx.conf</code>).
 
-## Tested environments
+# Migration
 
-* Raspbian ARM - Apache + PHP
-* Raspbian ARM - ngnix + php-fpm
-* Windows 10 / 64 - WAMP
-* Windows 8 / 64 - WAMP
-* Windows 7 / 64 - WAMP
-* Windows XP / 32 - WAMP
-* Centos - Apache + PHP
-* Ubuntu 13.10 to 16.04 x86_64 - ngnix + php-fpm or HHVM or Apache
+It is recommended to change the file log extension to log instead of php in order to prevent security exploits based on log injection.
+If you migrate from an older version of Jorani, please add this variable into the configuration:
+
+    $config['log_file_extension'] = 'log';
+

@@ -2,7 +2,7 @@
 /**
  * This view builds a Spreadsheet file containing the list of employees (from HR menu).
  * It differs from the Admin menu, because it doesn't export technical information
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.2.0
@@ -47,5 +47,4 @@ foreach(range('A', 'G') as $colD) {
     $sheet->getColumnDimension($colD)->setAutoSize(TRUE);
 }
 
-$spreadsheet->exportName = 'employees';
-writeSpreadsheet($spreadsheet);
+writeSpreadsheet($spreadsheet, 'employees');

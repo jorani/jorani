@@ -4,7 +4,7 @@
  *
  * @author CodeIgniter community
  * @author Mutasim Ridlo, S.Kom
- * @copyright Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license http://opensource.org/licenses/MIT MIT License
  * @link https://codeigniter.com
  */
@@ -38,7 +38,7 @@ $lang['cal_apr'] = 'Apr';
 $lang['cal_may'] = 'Mei';
 $lang['cal_jun'] = 'Jun';
 $lang['cal_jul'] = 'Jul';
-$lang['cal_aug'] = 'Ags';
+$lang['cal_aug'] = 'Agu';
 $lang['cal_sep'] = 'Sep';
 $lang['cal_oct'] = 'Okt';
 $lang['cal_nov'] = 'Nov';

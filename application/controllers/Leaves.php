@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller contains the actions allowing an employee to list and manage its leave requests
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.1.0
@@ -182,7 +182,7 @@ class Leaves extends CI_Controller {
       $newComment = new stdClass;
       $newComment->type = "comment";
       $newComment->author = $this->session->userdata('id');
-      $newComment->value = $this->input->post('comment');
+      $newComment->value = $this->input->post('comment', TRUE);
       $newComment->date = date("Y-n-j");
       if ($oldComment != NULL){
         array_push($oldComment->comments, $newComment);
@@ -820,17 +820,17 @@ class Leaves extends CI_Controller {
         header("Content-Type: application/json");
         $id = $this->input->post('id', TRUE);
         $type = $this->input->post('type', TRUE);
-        //The above parameters could cause an SQL injection vulnerability due to the non standard
-        //SQL query in leave_model::detectOverlappingLeaves
         $date = $this->input->post('startdate', TRUE);
         $d = DateTime::createFromFormat('Y-m-d', $date);
         $startdate = ($d && $d->format('Y-m-d') === $date)?$date:'1970-01-01';
+        $startdate = preg_replace("([^0-9-])", "", $startdate);
         $date = $this->input->post('enddate', TRUE);
         $d = DateTime::createFromFormat('Y-m-d', $date);
         $enddate = ($d && $d->format('Y-m-d') === $date)?$date:'1970-01-01';
+        $enddate = preg_replace("([^0-9-])", "", $enddate);
         $startdatetype = $this->input->post('startdatetype', TRUE);     //Mandatory field checked by frontend
         $enddatetype = $this->input->post('enddatetype', TRUE);       //Mandatory field checked by frontend
-        $leave_id = $this->input->post('leave_id', TRUE);
+        $leave_id = intval($this->input->post('leave_id', TRUE));
         $leaveValidator = new stdClass;
         $deductDayOff = FALSE;
         if (isset($id) && isset($type)) {

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2018, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,9 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2018, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -48,8 +49,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/database/
+ * @link		https://codeigniter.com/userguide3/database/
  */
+#[\AllowDynamicProperties]
 abstract class CI_DB_driver {
 
 	/**
@@ -142,7 +144,7 @@ abstract class CI_DB_driver {
 	 *
 	 * @var	int
 	 */
-	public $port			= '';
+	public $port			= NULL;
 
 	/**
 	 * Persistent connection flag
@@ -891,6 +893,18 @@ abstract class CI_DB_driver {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Returns TRUE if a transaction is currently active
+	 *
+	 * @return	bool
+	 */
+	public function trans_active()
+	{
+		return (bool) $this->_trans_depth;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
 	 * Begin Transaction
 	 *
 	 * @param	bool	$test_mode
@@ -1308,19 +1322,13 @@ abstract class CI_DB_driver {
 	 */
 	public function list_fields($table)
 	{
-		// Is there a cached result?
-		if (isset($this->data_cache['field_names'][$table]))
-		{
-			return $this->data_cache['field_names'][$table];
-		}
-
 		if (FALSE === ($sql = $this->_list_columns($table)))
 		{
 			return ($this->db_debug) ? $this->display_error('db_unsupported_function') : FALSE;
 		}
 
 		$query = $this->query($sql);
-		$this->data_cache['field_names'][$table] = array();
+		$fields = array();
 
 		foreach ($query->result_array() as $row)
 		{
@@ -1342,10 +1350,10 @@ abstract class CI_DB_driver {
 				}
 			}
 
-			$this->data_cache['field_names'][$table][] = $row[$key];
+			$fields[] = $row[$key];
 		}
 
-		return $this->data_cache['field_names'][$table];
+		return $fields;
 	}
 
 	// --------------------------------------------------------------------
@@ -1570,6 +1578,7 @@ abstract class CI_DB_driver {
 				'\s+EXISTS\s*\(.*\)',        // EXISTS(sql)
 				'\s+NOT EXISTS\s*\(.*\)',    // NOT EXISTS(sql)
 				'\s+BETWEEN\s+',                 // BETWEEN value AND value
+				'\s+NOT BETWEEN\s+',             // NOT BETWEEN value AND value
 				'\s+IN\s*\(.*\)',            // IN(list)
 				'\s+NOT IN\s*\(.*\)',        // NOT IN (list)
 				'\s+LIKE\s+\S.*('.$_les.')?',    // LIKE 'expr'[ ESCAPE '%s']

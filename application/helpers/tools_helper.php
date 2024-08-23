@@ -1,7 +1,7 @@
 <?php
 /**
  * This helper contains a list of functions used throughout the application
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.2.0
@@ -140,9 +140,10 @@ function sendMailByWrapper(CI_Controller $controller, $subject, $message, $to, $
 /**
  * Finalize the export to a spreadsheet. Called from an export view.
  * @param $spreadsheet reference to the spreadsheet to be exported
+ * @param $exportName Excel filename
  * @author Benjamin BALET <benjamin.balet@gmail.com>
  */
-function writeSpreadsheet(&$spreadsheet)
+function writeSpreadsheet(&$spreadsheet, $exportName='')
 {
     $CI =& get_instance();
     $format = 'xlsx';
@@ -150,7 +151,7 @@ function writeSpreadsheet(&$spreadsheet)
     if (in_array($CI->config->item('spreadsheet_format'), array('ods', 'xlsx'))) {
         $format = $CI->config->item('spreadsheet_format');
     }
-    $filename = $spreadsheet->exportName . '.' . $format;
+    $filename = $exportName . '.' . $format;
     $CI->output->set_header('Cache-Control: max-age=0');
     $CI->output->set_header('Content-Disposition: attachment;filename="' . $filename . '"');
     switch ($format) {

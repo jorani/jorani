@@ -3,7 +3,7 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
@@ -31,16 +31,16 @@ $lang['cal_wednesday'] = 'બુઘવાર';
 $lang['cal_thursday'] = 'ગુરુવાર';
 $lang['cal_friday'] = 'શુક્રવાર';
 $lang['cal_saturday'] = 'શનીવાર';
-$lang['cal_jan'] = 'જાન';
-$lang['cal_feb'] = 'ફેબ';
+$lang['cal_jan'] = 'જાન્યુ';
+$lang['cal_feb'] = 'ફેબ્રુ';
 $lang['cal_mar'] = 'માર્ચ';
 $lang['cal_apr'] = 'અેપ';
 $lang['cal_may'] = 'મે';
 $lang['cal_jun'] = 'જુન';
 $lang['cal_jul'] = 'જુલ';
 $lang['cal_aug'] = 'આોગ';
-$lang['cal_sep'] = 'સપ';
-$lang['cal_oct'] = 'આોકટ';
+$lang['cal_sep'] = 'સપ્ટે';
+$lang['cal_oct'] = 'આોક્ટો';
 $lang['cal_nov'] = 'નવે';
 $lang['cal_dec'] = 'ડિસે';
 $lang['cal_january'] = 'જાન્યુઆરી';
@@ -51,7 +51,7 @@ $lang['cal_mayl'] = 'મે';
 $lang['cal_june'] = 'જુન';
 $lang['cal_july'] = 'જુલાઈ';
 $lang['cal_august'] = 'ઓગસ્ટ';
-$lang['cal_september'] = 'સપટેમ્બર';
+$lang['cal_september'] = 'સપ્ટેમ્બર';
 $lang['cal_october'] = 'ઓક્ટોબર';
-$lang['cal_november'] = 'નોવેમંબર';
+$lang['cal_november'] = 'નવેમ્બર';
 $lang['cal_december'] = 'ડિસેમ્બર';

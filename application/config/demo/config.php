@@ -188,6 +188,20 @@ $config['function_trigger']	= 'm';
 $config['directory_trigger']	= 'd'; // experimental not currently in use
 
 /*
+  |--------------------------------------------------------------------------
+  | Log File Extension
+  |--------------------------------------------------------------------------
+  |
+  | The default filename extension for log files. The default 'php' allows for
+  | protecting the log files via basic scripting, when they are to be stored
+  | under a publicly accessible directory.
+  |
+  | Note: Leaving it blank will default to 'php'.
+  |
+ */
+$config['log_file_extension'] = 'log';
+
+/*
 |--------------------------------------------------------------------------
 | Error Logging Threshold
 |--------------------------------------------------------------------------

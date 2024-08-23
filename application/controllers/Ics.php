@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller serves all the ICS (webcal, ical) feeds exposed by Jorani.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.4.0
@@ -93,13 +93,12 @@ class Ics extends CI_Controller {
     public function dayoffs($userId, $contract) {
         //Get timezone and language of the user
         $this->getTimezoneAndLanguageOfUser($userId);
+        $vcalendar = new VObject\Component\VCalendar();
+
         //Load the list of day off associated to the contract
         $this->load->model('dayoffs_model');
         $result = $this->dayoffs_model->getDaysOffForContract($contract);
-        if (empty($result)) {
-            echo "";
-        } else {
-            $vcalendar = new VObject\Component\VCalendar();
+        if (!empty($result)) {
             foreach ($result as $event) {
                 $startdate = new \DateTime($event->date, new \DateTimeZone($this->timezone));
                 $enddate = new \DateTime($event->date, new \DateTimeZone($this->timezone));
@@ -129,8 +128,8 @@ class Ics extends CI_Controller {
                     'DTEND' => $enddate
                 ));    
             }
-            echo $vcalendar->serialize();
         }
+        echo $vcalendar->serialize();
     }
     
     /**

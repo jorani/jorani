@@ -1,7 +1,7 @@
 <?php
 /**
  * This Model contains all the business logic and the persistence layer for leave request objects.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.1.0
@@ -690,7 +690,8 @@ class Leaves_model extends CI_Model {
         if (isset($json_parsed)){
           array_push($json_parsed->comments, $commentObject);
         }else {
-          $json_parsed->comments = array($commentObject);
+            $json_parsed = new stdClass;
+            $json_parsed->comments = array($commentObject);
         }
         $comment_change = new stdClass;
         $comment_change->type = "change";
@@ -1381,8 +1382,8 @@ class Leaves_model extends CI_Model {
     public function all($startDate, $endDate) {
         $this->db->select("users.id as user_id, users.firstname, users.lastname, leaves.*", FALSE);
         $this->db->join('users', 'users.id = leaves.employee');
-        $this->db->where('( (leaves.startdate <= ' . $this->db->escape($startDate) . ' AND leaves.enddate >= ' . $this->db->escape($endDate) . ')' .
-                                   ' OR (leaves.startdate >= ' . $this->db->escape($endDate) . ' AND leaves.enddate <= ' . $this->db->escape($endDate) . '))');
+        $this->db->where('( (leaves.startdate >= ' . $this->db->escape($startDate) . ' AND leaves.enddate <= ' . $this->db->escape($endDate) . ')' .
+                                   ' OR (leaves.startdate <= ' . $this->db->escape($endDate) . ' AND leaves.enddate >= ' . $this->db->escape($endDate) . '))');
         $this->db->order_by('startdate', 'desc');
         return $this->db->get('leaves')->result();
     }

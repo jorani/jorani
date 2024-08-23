@@ -2,7 +2,7 @@
 -- Jorani Schema upgrade to 1.0.0
 --
 -- @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
--- @copyright  Copyright (c) 2014-2019 Benjamin BALET
+-- @copyright  Copyright (c) 2014-2023 Benjamin BALET
 
 -- Clean model from tables that are now into 3rd party applications
 -- Fix default values for database
@@ -38,6 +38,7 @@ ALTER TABLE `excluded_types` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_un
 ALTER TABLE `leaves_history` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE `org_lists_employees` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE `org_lists` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE oauth_clients CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE `oauth_applications` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Enlarge the login field so as to allow using an email address

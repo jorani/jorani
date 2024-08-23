@@ -2,7 +2,7 @@
 /**
  * This view displays the profile (basic information) of the connected user.
  * If ICS feed is activated, a link allows the user to import non-working days into a remote calendar application.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.3.0
@@ -49,8 +49,10 @@
         <div class="row-fluid">
             <div class="span6"><strong><?php echo lang('users_myprofile_field_hired');?></strong></div>
             <div class="span6"><?php
-        $date = new DateTime($user['datehired']);
-        echo $date->format(lang('global_date_format'));
+        if (!is_null($user['datehired'])) {
+            $date = new DateTime($user['datehired']);
+            echo $date->format(lang('global_date_format'));            
+        }
         ?></div>
         </div>
 

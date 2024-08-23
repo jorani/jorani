@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller is the entry point for the REST API
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link       https://github.com/bbalet/jorani
  * @since      0.3.0
@@ -13,10 +13,12 @@ define("TOKEN_URL", API_HOST . '/token');
 
 /**
  * @OA\Server(url=API_HOST)
- * @OA\Info(title="Jorani HTTP API", version="1.1")
- */
-
-/**
+ * @OA\Info(
+ *     title="Jorani HTTP API",
+ *     description="Leave & Overtime Management System",
+ *     version="1.1"
+ * )
+ *
  * @OA\SecurityScheme(
  *     type="oauth2",
  *     name="jorani_auth",
@@ -30,9 +32,7 @@ define("TOKEN_URL", API_HOST . '/token');
  *         }
  *     )
  * )
- */
-
-/**
+ *
  * This class implements a HTTP API served through an OAuth2 server.
  * In order to use it, you need to insert an OAuth2 client into the database, for example :
  * INSERT INTO oauth_clients (client_id, client_secret, redirect_uri) VALUES ("testclient", "testpass", "http://fake/");
@@ -67,9 +67,9 @@ class Api extends CI_Controller {
      * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
     public function doc() {
-        $openapi = \OpenApi\scan(__DIR__);
+        $openapi = \OpenApi\Generator::scan([__FILE__]);
         $this->output
-            ->set_content_type('application/json')
+            ->set_content_type('Content-Type: application/x-yaml')
             ->set_output($openapi->toJson());
     }
 
@@ -82,20 +82,6 @@ class Api extends CI_Controller {
     }
 
     /**
-     * @OA\Schema(
-     *   schema="Contract",
-     *   description="A contract groups employees having the same days off and entitlement rules",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of a contract"),
-     *   @OA\Property(property="name", type="string", description="Name of the contract"),
-     *   @OA\Property(property="startentdate", type="string", pattern="^\d{2}/\d{2}$", description="Day and month numbers of the left boundary"),
-     *   @OA\Property(property="endentdate", type="string", pattern="^\d{2}/\d{2}$", description="Day and month numbers of the right boundary"),
-     *   @OA\Property(property="weekly_duration", type="string", description="Approximate duration of work per week (in minutes)"),
-     *   @OA\Property(property="daily_duration", type="string", description="Approximate duration of work per day and (in minutes)"),
-     *   @OA\Property(property="default_leave_type", type="string", description="default leave type for the contract (overwrite default type set in config file)."),
-     * )
-     */
-
-    /**
      * @OA\Get(
      *     path="/contracts/",
      *     description="Get the list of contracts",
@@ -103,6 +89,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of contracts",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Contract")
      *         ),
      *     ),
@@ -111,9 +98,7 @@ class Api extends CI_Controller {
      *         {"jorani_auth": {}}
      *     }
      * )
-     */
-
-    /**
+     *
      * @OA\Get(
      *     path="/contracts/{contract_id}",
      *     description="Get a specific contract",
@@ -157,22 +142,6 @@ class Api extends CI_Controller {
     }
 
     /**
-     * @OA\Schema(
-     *   schema="Entitledday",
-     *   description="Add or substract entitlement on employees or contracts (can be the result of an OT)",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of an entitlement"),
-     *   @OA\Property(property="contract", type="integer", description="If entitlement is credited to a contract, Id of contract"),
-     *   @OA\Property(property="employee", type="integer", description="If entitlement is credited to an employee, Id of employee"),
-     *   @OA\Property(property="overtime", type="integer", description="Optional Link to an overtime request, if the credit is due to an OT"),
-     *   @OA\Property(property="startdate", type="string", format="date", description="Left boundary of the credit validity (YYYY-MM-DD)"),
-     *   @OA\Property(property="enddate", type="string", format="date", description="Right boundary of the credit validity. Duration cannot exceed one year (YYYY-MM-DD)"),
-     *   @OA\Property(property="type", type="integer", description="Leave type"),
-     *   @OA\Property(property="days", type="number", description="Number of days (can be negative so as to deduct/adjust entitlement)"),
-     *   @OA\Property(property="description", type="string", description="Description of a credit / debit (entitlement / adjustment)"),
-     * )
-     */
-
-    /**
      * @OA\Get(
      *     path="/entitleddayscontract/{contract_id}",
      *     description="Get the list of entitled days for a given contract",
@@ -182,6 +151,7 @@ class Api extends CI_Controller {
      *        in="path",
      *        required=true,
      *        @OA\Schema(
+     *           type="array",
      *           type="integer",
      *        )
      *     ),
@@ -189,6 +159,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of entitled days",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Entitledday")
      *         ),
      *     ),
@@ -306,6 +277,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of entitled days",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Entitledday")
      *         ),
      *     ),
@@ -414,22 +386,6 @@ class Api extends CI_Controller {
     }
 
     /**
-     * @OA\Schema(
-     *   schema="LeavesSummary",
-     *   description="Leaves counter of a given employee",
-     *   @OA\Items(
-     *      @OA\Property(property="type", type="string", description="Leave type"),
-     *      @OA\Items(
-     *         @OA\Property(property="entitled", type="number", description="Ent"),
-     *         @OA\Property(property="taken", type="number", description="Taken"),
-     *         @OA\Property(property="left", type="string", description="Taken"),
-     *         @OA\Property(property="misc", type="string", description="Misc")
-     *      )
-     *   )
-     * )
-     */
-
-    /**
      * @OA\Get(
      *     path="/leavessummary/{employee_id}",
      *     @OA\Parameter(
@@ -445,6 +401,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="Get the leaves counter of a given employee",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/LeavesSummary")
      *         ),
      *     ),
@@ -454,9 +411,8 @@ class Api extends CI_Controller {
      *         {"jorani_auth": {}}
      *     }
      * )
-     */
-
-    /**
+     *
+     * 
      * @OA\Get(
      *     path="/leavessummary/{employee_id}/{refTmp}",
      *     description="Get the leaves counter of a given employee",
@@ -482,6 +438,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="Leaves counter",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/LeavesSummary")
      *         ),
      *     ),
@@ -535,35 +492,6 @@ class Api extends CI_Controller {
     }
     
     /**
-     * @OA\Schema(
-     *   schema="Leave",
-     *   description="Leave request",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of a leave request"),
-     *   @OA\Property(property="startdate", type="string", format="date", description="Start date of the leave request"),
-     *   @OA\Property(property="enddate", type="string", format="date", description="End date of the leave request"),
-     *   @OA\Property(property="status", type="integer", description="Identifier of the status of the leave request (Requested, Accepted, etc.). See status table."),
-     *   @OA\Property(property="employee", type="integer", description="Employee requesting the leave request"),
-     *   @OA\Property(property="cause", type="string", description="Reason of the leave request"),
-     *   @OA\Property(property="startdatetype", type="string", description="Morning/Afternoon"),
-     *   @OA\Property(property="enddatetype", type="string", description="Morning/Afternoon"),
-     *   @OA\Property(property="duration", type="integer", description="Length of the leave request"),
-     *   @OA\Property(property="type", type="integer", description="Identifier of the type of the leave request (Paid, Sick, etc.). See type table.'"),
-     *   @OA\Property(
-     *      property="comments",
-     *      description="Comments on leave request (JSON)",
-     *      @OA\Items(
-     *         @OA\Property(property="type", type="string", description="Type of comment (change or comment)"),
-     *         @OA\Property(property="status_number", type="number", description="If comment of type change, new status id"),
-     *         @OA\Property(property="date", format="date", type="string", description="Date of the comment"),
-     *         @OA\Property(property="author", type="string", description="Identifier of the employee commenting the request"),
-     *         @OA\Property(property="value", type="string", description="If comment of type comment, the content of comment")
-     *      )
-     *   ),
-     *   @OA\Property(property="document", type="string", description="Optional supporting document"),
-     * )
-     */
-
-    /**
      * @OA\Get(
      *     path="/leaves/{start_date}/{end_date}",
      *     description="Get all the leave requests stored into the database",
@@ -589,6 +517,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of leave requests",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Leave")
      *         ),
      *     ),
@@ -637,17 +566,6 @@ class Api extends CI_Controller {
     }
 
     /**
-     * @OA\Schema(
-     *   schema="LeaveType",
-     *   description="Leave type",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of the type"),
-     *   @OA\Property(property="name", type="string", description="Name of the leave type"),
-     *   @OA\Property(property="acronym", type="string", description="Acronym of the leave type"),
-     *   @OA\Property(property="deduct_days_off", type="boolean", description="Deduct days off when computing the balance of the leave type"),
-     * )
-     */
-
-    /**
      * @OA\Get(
      *     path="/leavetypes/",
      *     description="Get the list of leave types",
@@ -655,6 +573,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of leave types",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/LeaveType")
      *         ),
      *     ),
@@ -765,16 +684,6 @@ class Api extends CI_Controller {
     }
     
     /**
-     * @OA\Schema(
-     *   schema="Position",
-     *   description="Job Position",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of the position"),
-     *   @OA\Property(property="name", type="string", description="Name of the position"),
-     *   @OA\Property(property="description", type="string", description="Description of the position"),
-     * )
-     */
-    
-    /**
      * @OA\Get(
      *     path="/positions/",
      *     description="Get the list of positions",
@@ -782,6 +691,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of positions",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Position")
      *         ),
      *     ),
@@ -804,17 +714,6 @@ class Api extends CI_Controller {
                 ->set_output(json_encode($result));
         }
     }
-
-    /**
-     * @OA\Schema(
-     *   schema="Department",
-     *   description="Department in the Organization",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of the department"),
-     *   @OA\Property(property="name", type="string", description="Name of the department"),
-     *   @OA\Property(property="parent_id", type="integer", description="Parent department (or -1 if root)"),
-     *   @OA\Property(property="supervisor", type="integer", description="This user will receive a copy of accepted and rejected leave requests"),
-     * )
-     */
 
      /**
      * @OA\Get(
@@ -868,32 +767,6 @@ class Api extends CI_Controller {
             }
         }
     }
-
-    /**
-     * @OA\Schema(
-     *   schema="User",
-     *   description="User/Employee",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of the user"),
-     *   @OA\Property(property="firstname", type="string", description="First name"),
-     *   @OA\Property(property="lastname", type="string", description="Last name"),
-     *   @OA\Property(property="login", type="string", description="Identfier used to login (can be an email address)"),
-     *   @OA\Property(property="email", type="string", description="Email address"),
-     *   @OA\Property(property="role", type="integer", description="Role of the employee (binary mask). See table roles."),
-     *   @OA\Property(property="manager", type="integer", description="Employee validating the requests of the employee"),
-     *   @OA\Property(property="country", type="integer", description="Country code (for later use)"),
-     *   @OA\Property(property="organization", type="integer", description="Entity where the employee has a position"),
-     *   @OA\Property(property="contract", type="integer", description="Contract of the employee"),
-     *   @OA\Property(property="position", type="integer", description="Position of the employee"),
-     *   @OA\Property(property="datehired", type="string", description="Date hired / Started"),
-     *   @OA\Property(property="identifier", type="string", description="Internal/company identifier"),
-     *   @OA\Property(property="language", type="string", description="Language ISO code"),
-     *   @OA\Property(property="ldap_path", type="string", description="LDAP Path for complex authentication schemes"),
-     *   @OA\Property(property="active", type="boolean", description="Is user active"),
-     *   @OA\Property(property="timezone", type="string", description="Timezone of user"),
-     *   @OA\Property(property="calendar", type="string", description="External Calendar address"),
-     *   @OA\Property(property="user_properties", type="string", description="External Calendar address"),
-     * )
-     */
 
     /**
      * @OA\Get(
@@ -994,6 +867,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of leave requests",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Leave")
      *         ),
      *     ),
@@ -1028,19 +902,6 @@ class Api extends CI_Controller {
     }
 
     /**
-     * @OA\Schema(
-     *   schema="Overtime",
-     *   description="Overtime worked (extra time request)",
-     *   @OA\Property(property="id", type="integer", description="Unique identifier of the overtime request"),
-     *   @OA\Property(property="employee", type="integer", description="Employee requesting the OT"),
-     *   @OA\Property(property="date", format="date", type="string", description="Date when the OT was done (YYYY-MM-DD)"),
-     *   @OA\Property(property="duration", type="number", description="Duration of the OT"),
-     *   @OA\Property(property="cause", type="string", description="Reason why the OT was done"),
-     *   @OA\Property(property="status", type="integer", description="Status of OT (Planned, Requested, Accepted, Rejected)"),
-     * )
-     */
-
-    /**
      * @OA\Get(
      *     path="/userextras/{employee_id}",
      *     description="Get all the overtime requests of an employee",
@@ -1057,6 +918,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of overtime requests",
      *         @OA\JsonContent(
+     *             type="array",
      *             @OA\Items(ref="#/components/schemas/Overtime")
      *         ),
      *     ),
@@ -1089,21 +951,7 @@ class Api extends CI_Controller {
                 ->set_output(json_encode($result));
         }
     }
-
-    /**
-     * @OA\Schema(
-     *   schema="MonthlyPresence",
-     *   description="Overtime worked (extra time request)",
-     *   @OA\Property(property="leaves", type="number", description="Number of leave taken"),
-     *   @OA\Property(property="dayoffs", type="number", description="Number of non working days"),
-     *   @OA\Property(property="total", type="number", description="Total number of days in the month"),
-     *   @OA\Property(property="start", type="string", description="First day of the month (YYYY-MM-DD)"),
-     *   @OA\Property(property="end", type="string", description="Last day of the month (YYYY-MM-DD)"),
-     *   @OA\Property(property="open", type="number", description="Number of opened days (Total - Days off)"),
-     *   @OA\Property(property="work", type="number", description="Number of worked days (Total - Days off - Leaves)"),
-     * )
-     */
-    
+   
     /**
      * @OA\Get(
      *     path="/monthlypresence/{employee_id}/{month}/{year}",
@@ -1718,6 +1566,7 @@ class Api extends CI_Controller {
      *         response=200,
      *         description="List of users attached to the entity",
      *         @OA\JsonContent(
+     *            type="array",
      *            @OA\Items(ref="#/components/schemas/User")
      *         ),
      *     ),
@@ -1791,3 +1640,180 @@ class Api extends CI_Controller {
     }
     
 }
+
+
+/**
+ * @OA\Schema(
+ *   schema="Contract",
+ *   description="A contract groups employees having the same days off and entitlement rules",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of a contract"),
+ *   @OA\Property(property="name", type="string", description="Name of the contract"),
+ *   @OA\Property(property="startentdate", type="string", pattern="^\d{2}/\d{2}$", description="Day and month numbers of the left boundary"),
+ *   @OA\Property(property="endentdate", type="string", pattern="^\d{2}/\d{2}$", description="Day and month numbers of the right boundary"),
+ *   @OA\Property(property="weekly_duration", type="string", description="Approximate duration of work per week (in minutes)"),
+ *   @OA\Property(property="daily_duration", type="string", description="Approximate duration of work per day and (in minutes)"),
+ *   @OA\Property(property="default_leave_type", type="string", description="default leave type for the contract (overwrite default type set in config file)."),
+ * )
+ */
+class Contract {}
+
+/**
+ * @OA\Schema(
+ *   schema="Entitledday",
+ *   description="Add or substract entitlement on employees or contracts (can be the result of an OT)",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of an entitlement"),
+ *   @OA\Property(property="contract", type="integer", description="If entitlement is credited to a contract, Id of contract"),
+ *   @OA\Property(property="employee", type="integer", description="If entitlement is credited to an employee, Id of employee"),
+ *   @OA\Property(property="overtime", type="integer", description="Optional Link to an overtime request, if the credit is due to an OT"),
+ *   @OA\Property(property="startdate", type="string", format="date", description="Left boundary of the credit validity (YYYY-MM-DD)"),
+ *   @OA\Property(property="enddate", type="string", format="date", description="Right boundary of the credit validity. Duration cannot exceed one year (YYYY-MM-DD)"),
+ *   @OA\Property(property="type", type="integer", description="Leave type"),
+ *   @OA\Property(property="days", type="number", description="Number of days (can be negative so as to deduct/adjust entitlement)"),
+ *   @OA\Property(property="description", type="string", description="Description of a credit / debit (entitlement / adjustment)"),
+ * )
+ */
+class Entitledday {}
+
+/**
+ * @OA\Schema(
+ *   schema="LeavesSummary",
+ *   description="Leaves counter of a given employee",
+ *   type="array",
+ *   @OA\Items(
+ *      @OA\Property(property="type", type="string", description="Leave type"),
+ *      @OA\Property(
+ *         property="counters",
+ *         type="array",
+ *         @OA\Items(
+ *            @OA\Property(property="entitled", type="number", description="Ent"),
+ *            @OA\Property(property="taken", type="number", description="Taken"),
+ *            @OA\Property(property="left", type="string", description="Taken"),
+ *            @OA\Property(property="misc", type="string", description="Misc")
+ *         )
+ *      )
+ *   )
+ * )
+ */
+class LeavesSummary {}
+
+/**
+ * @OA\Schema(
+ *   schema="Leave",
+ *   description="Leave request",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of a leave request"),
+ *   @OA\Property(property="startdate", type="string", format="date", description="Start date of the leave request"),
+ *   @OA\Property(property="enddate", type="string", format="date", description="End date of the leave request"),
+ *   @OA\Property(property="status", type="integer", description="Identifier of the status of the leave request (Requested, Accepted, etc.). See status table."),
+ *   @OA\Property(property="employee", type="integer", description="Employee requesting the leave request"),
+ *   @OA\Property(property="cause", type="string", description="Reason of the leave request"),
+ *   @OA\Property(property="startdatetype", type="string", description="Morning/Afternoon"),
+ *   @OA\Property(property="enddatetype", type="string", description="Morning/Afternoon"),
+ *   @OA\Property(property="duration", type="integer", description="Length of the leave request"),
+ *   @OA\Property(property="type", type="integer", description="Identifier of the type of the leave request (Paid, Sick, etc.). See type table.'"),
+ *   @OA\Property(
+ *      property="comments",
+ *      description="Comments on leave request (JSON)",
+ *      type="array",
+ *      @OA\Items(
+ *         @OA\Property(property="type", type="string", description="Type of comment (change or comment)"),
+ *         @OA\Property(property="status_number", type="number", description="If comment of type change, new status id"),
+ *         @OA\Property(property="date", format="date", type="string", description="Date of the comment"),
+ *         @OA\Property(property="author", type="string", description="Identifier of the employee commenting the request"),
+ *         @OA\Property(property="value", type="string", description="If comment of type comment, the content of comment")
+ *      )
+ *   ),
+ *   @OA\Property(property="document", type="string", description="Optional supporting document"),
+ * )
+ */
+class Leave {}
+
+/**
+ * @OA\Schema(
+ *   schema="Position",
+ *   description="Job Position",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of the position"),
+ *   @OA\Property(property="name", type="string", description="Name of the position"),
+ *   @OA\Property(property="description", type="string", description="Description of the position"),
+ * )
+ */
+class Position {}
+
+/**
+ * @OA\Schema(
+ *   schema="LeaveType",
+ *   description="Leave type",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of the type"),
+ *   @OA\Property(property="name", type="string", description="Name of the leave type"),
+ *   @OA\Property(property="acronym", type="string", description="Acronym of the leave type"),
+ *   @OA\Property(property="deduct_days_off", type="boolean", description="Deduct days off when computing the balance of the leave type"),
+ * )
+ */
+class LeaveType {}
+
+/**
+ * @OA\Schema(
+ *   schema="Department",
+ *   description="Department in the Organization",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of the department"),
+ *   @OA\Property(property="name", type="string", description="Name of the department"),
+ *   @OA\Property(property="parent_id", type="integer", description="Parent department (or -1 if root)"),
+ *   @OA\Property(property="supervisor", type="integer", description="This user will receive a copy of accepted and rejected leave requests"),
+ * )
+ */
+class Department {}
+
+/**
+ * @OA\Schema(
+ *   schema="User",
+ *   description="User/Employee",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of the user"),
+ *   @OA\Property(property="firstname", type="string", description="First name"),
+ *   @OA\Property(property="lastname", type="string", description="Last name"),
+ *   @OA\Property(property="login", type="string", description="Identfier used to login (can be an email address)"),
+ *   @OA\Property(property="email", type="string", description="Email address"),
+ *   @OA\Property(property="role", type="integer", description="Role of the employee (binary mask). See table roles."),
+ *   @OA\Property(property="manager", type="integer", description="Employee validating the requests of the employee"),
+ *   @OA\Property(property="country", type="integer", description="Country code (for later use)"),
+ *   @OA\Property(property="organization", type="integer", description="Entity where the employee has a position"),
+ *   @OA\Property(property="contract", type="integer", description="Contract of the employee"),
+ *   @OA\Property(property="position", type="integer", description="Position of the employee"),
+ *   @OA\Property(property="datehired", type="string", description="Date hired / Started"),
+ *   @OA\Property(property="identifier", type="string", description="Internal/company identifier"),
+ *   @OA\Property(property="language", type="string", description="Language ISO code"),
+ *   @OA\Property(property="ldap_path", type="string", description="LDAP Path for complex authentication schemes"),
+ *   @OA\Property(property="active", type="boolean", description="Is user active"),
+ *   @OA\Property(property="timezone", type="string", description="Timezone of user"),
+ *   @OA\Property(property="calendar", type="string", description="External Calendar address"),
+ *   @OA\Property(property="user_properties", type="string", description="External Calendar address"),
+ * )
+ */
+class User {}
+
+/**
+ * @OA\Schema(
+ *   schema="Overtime",
+ *   description="Overtime worked (extra time request)",
+ *   @OA\Property(property="id", type="integer", description="Unique identifier of the overtime request"),
+ *   @OA\Property(property="employee", type="integer", description="Employee requesting the OT"),
+ *   @OA\Property(property="date", format="date", type="string", description="Date when the OT was done (YYYY-MM-DD)"),
+ *   @OA\Property(property="duration", type="number", description="Duration of the OT"),
+ *   @OA\Property(property="cause", type="string", description="Reason why the OT was done"),
+ *   @OA\Property(property="status", type="integer", description="Status of OT (Planned, Requested, Accepted, Rejected)"),
+ * )
+ */
+class Overtime {}
+
+/**
+ * @OA\Schema(
+ *   schema="MonthlyPresence",
+ *   description="Overtime worked (extra time request)",
+ *   @OA\Property(property="leaves", type="number", description="Number of leave taken"),
+ *   @OA\Property(property="dayoffs", type="number", description="Number of non working days"),
+ *   @OA\Property(property="total", type="number", description="Total number of days in the month"),
+ *   @OA\Property(property="start", type="string", description="First day of the month (YYYY-MM-DD)"),
+ *   @OA\Property(property="end", type="string", description="Last day of the month (YYYY-MM-DD)"),
+ *   @OA\Property(property="open", type="number", description="Number of opened days (Total - Days off)"),
+ *   @OA\Property(property="work", type="number", description="Number of worked days (Total - Days off - Leaves)"),
+ * )
+ */
+class MonthlyPresence {}

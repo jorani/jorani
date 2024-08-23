@@ -2,7 +2,7 @@
 /**
  * This view exports into a Spreadsheet file the native report listing the approved leave requests of employees attached to an entity.
  * This report is launched by the user from the view reports/leaves.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.4.3
@@ -162,5 +162,4 @@ for ($ii=1; $ii <$max; $ii++) {
     $sheet->getColumnDimension($col)->setAutoSize(TRUE);
 }
 
-$spreadsheet->exportName = 'leave_requests_'. $month . '_' . $year;
-writeSpreadsheet($spreadsheet);
+writeSpreadsheet($spreadsheet, 'leave_requests_'. $month . '_' . $year);

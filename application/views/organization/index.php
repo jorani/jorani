@@ -1,7 +1,7 @@
 <?php
 /**
  * This view displays the organization tree and allows to attach and detach employees from sub-entities.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.1.0

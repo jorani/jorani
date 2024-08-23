@@ -11,22 +11,22 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "sabre/vobject": "^4.1",
-        "phpseclib/phpseclib": "^2.0.29",
-        "bshaffer/oauth2-server-php": "^1.9",
+        "sabre/vobject": "^4.5.3",
+        "phpseclib/phpseclib": "^2.0.42",
+        "bshaffer/oauth2-server-php": "^1.13.0",
         "league/oauth2-client": "^2.2",
         "league/oauth2-google": "^2.0",
-        "sabre/xml": "~1.5",
-        "sabre/uri": "1",
-        "phpoffice/phpspreadsheet": "^1.8.2",
+        "sabre/xml": "^4.0.0",
+        "sabre/uri": "^3.0.0",
+        "phpoffice/phpspreadsheet": "^1.28",
         "jpgraph/jpgraph": "^4.0.2",
-        "respect/validation": "^1.1.31",
-        "onelogin/php-saml": "^3.4.1",
-        "zircote/swagger-php": "^3.0.1",
-        "phpmailer/phpmailer": "^6.1.8"
+        "respect/validation": "^2.2.4",
+        "onelogin/php-saml": "^4.1.0",
+        "zircote/swagger-php": "^4.7.10",
+        "phpmailer/phpmailer": "^6.8.0"
     },
     "require-dev": {
-        "guzzlehttp/guzzle": "^6.3.3",
+        "guzzlehttp/guzzle": "^7.4.3",
         "sepia/po-parser": "^5.1.7"
     }
 }

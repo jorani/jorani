@@ -41,7 +41,7 @@ Use bbalet / bbalet for login / password.
 * Download or clone Jorani. If you clone, please update the vendor folder with `composer`.
 * Upload the content of this folder on your server (in <code>/var/www/...</code>).
 * Create a database with <code>/sql/lms.sql</code> script.
-* Create a user with SELECT, INSERT, UPDATE, DELETE, EXECUTE permissions on the database.
+* Create a user with SELECT, INSERT, UPDATE, DELETE, EXECUTE permissions on the database (**Jorani uses MySQL functions**).
 * Update <code>/application/config/database.php</code> according to your database settings.
 * Update the end of <code>/application/config/email.php</code> with your e-mails settings.
 * Update the end of <code>/application/config/config.php</code> if you want to change the default behaviour.
@@ -62,31 +62,3 @@ Use bbalet / bbalet for login / password.
 
 * Github and Google group users for their ideas and tests.
 * All participants of the Transifex project.
-
-### Third party libraries and components
-
-We thank the following open source projects for the components used by Jorani:
-
-#### Backend
-
-* CodeIgniter MVC framework http://www.codeigniter.com/
-* RSA Encryption in pure PHP https://github.com/phpseclib/phpseclib
-* Excel import/export https://github.com/PHPOffice/PHPExcel
-* OAuth2 Server https://github.com/bshaffer/oauth2-server-php
-* OAuth2 Client https://github.com/thephpleague/oauth2-client
-* OAuth2 Google Provider https://github.com/thephpleague/oauth2-google
-* Sabre/VObject https://github.com/fruux/sabre-vobject
-* PHPMailer https://github.com/PHPMailer/PHPMailer
-* PHPMailer CI wrapper https://github.com/ivantcholakov/codeigniter-phpmailer
-
-#### Frontend
-
-* bootstrap 2.3, bootbox, datepicker
-* JQuery and JQuery-UI
-* FullCalendar https://fullcalendar.io/
-* Datatable https://datatables.net/
-* Moment (JS dates library) http://momentjs.com/
-* Select2 https://select2.org/
-* JavaScript Cookie https://github.com/js-cookie/js-cookie
-* clipboard.js https://github.com/zenorocha/clipboard.js
-* Google noto fonts https://www.google.com/get/noto/

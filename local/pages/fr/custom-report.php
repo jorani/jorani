@@ -205,7 +205,7 @@ arcs.append("svg:text").attr("transform", function(d){
 <?php 
 $url_export = base_url() . 'excel-export' .
         '?cboYear=' . $year . 
-        '&txtEntity=' . urlencode($entity_name) . 
+        '&txtEntity=' . urlencode(is_null($entity_name)?"":$entity_name) .  
         '&txtEntityID=' . $entity . 
         '&chkIncludeChildren=' . $include_children;
  ?>

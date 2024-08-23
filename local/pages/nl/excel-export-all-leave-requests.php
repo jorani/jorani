@@ -66,5 +66,4 @@ foreach(range('A', 'G') as $colD) {
 }
 
 //Export Excel file
-$spreadsheet->exportName = 'excel-export';
-writeSpreadsheet($spreadsheet);
+writeSpreadsheet($spreadsheet, 'excel-export');

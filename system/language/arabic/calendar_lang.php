@@ -3,7 +3,7 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
@@ -24,7 +24,7 @@ $lang['cal_thu']		= 'خم';
 $lang['cal_fri']		= 'جم';
 $lang['cal_sat']		= 'سب';
 $lang['cal_sunday']		= 'الأحد';
-$lang['cal_monday']		= 'الإثنين';
+$lang['cal_monday']		= 'الإتنين';
 $lang['cal_tuesday']	= 'الثلاثاء';
 $lang['cal_wednesday']	= 'الأربعاء';
 $lang['cal_thursday']	= 'الخميس';

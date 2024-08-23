@@ -2,7 +2,7 @@
 /**
  * This view exports a yearly calendar of the leave taken by a user (can be displayed by HR or manager)
  * It builds an Excel 2007 file downloaded by the browser.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.4.3
@@ -261,5 +261,4 @@ $sheet->getPageSetup()->setFitToPage(TRUE);
 $sheet->getPageSetup()->setFitToWidth(1);
 $sheet->getPageSetup()->setFitToHeight(0);
 
-$spreadsheet->exportName = 'year';
-writeSpreadsheet($spreadsheet);
+writeSpreadsheet($spreadsheet, 'year');

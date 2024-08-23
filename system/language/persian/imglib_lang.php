@@ -3,7 +3,7 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
@@ -23,7 +23,7 @@ $lang['imglib_libpath_invalid'] = 'آدرس کتابخانه تصویر صحیح
 $lang['imglib_image_process_failed'] = 'پردازش تصویر با خطا مواجه شده. لطفا اطمینان حاصل کنید که سرور شما پروتوکل انتخاب شده را پشتیبانی کرده و آدرس کتابخانه تصویر درست است.';
 $lang['imglib_rotation_angle_required'] = 'برای چرخاندن تصویر نیاز به یک زاویه چرخش است.';
 $lang['imglib_invalid_path'] = 'آدرس تصویر صحیح نیست.';
-$lang['imglib_invalid_image'] = 'The provided image is not valid.';
+$lang['imglib_invalid_image'] = 'تصویر داده شده معتبر نیست.';
 $lang['imglib_copy_failed'] = 'عملیات کپی تصویر با شکست مواجه شد.';
 $lang['imglib_missing_font'] = 'فونتی برای استفاده پیدا نشد.';
 $lang['imglib_save_failed'] = 'عدم موفقیت در ذخیره تصویر. لطفاً اطمینان حاصل کنید پوشه مقصد قابل نوشتن است.';

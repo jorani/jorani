@@ -3,7 +3,7 @@
  * Utility script that finds unused strings in CI's i18n PHP arrays
  * This script helps to find mistakes (so don't delete a string before checking if it should be used)
  * Usage example: php unused.php > list_unused.txt
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.3.0

@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller serves the administration pages
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.4.2
@@ -176,17 +176,4 @@ class Admin extends CI_Controller {
         redirect('admin/oauthclients#sessions');
     }
     
-    /**
-     * Output a QRCode containing the URL of the Jorani instance and the e-mail of the connected user
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
-     */
-    public function qrCode() {
-        require_once(APPPATH . 'third_party/QRCode.php');
-        $this->load->model('users_model');
-        $user = $this->users_model->getUsers($this->user_id);
-        $qr = new QRCodeGenerator\QRCode();
-        $qr = $qr->getMinimumQRCode(base_url() . '#' . $user['login'] .
-                 '#' . $user['email'], QR_ERROR_CORRECT_LEVEL_L);
-        echo $qr->printHTML();
-    }
 }

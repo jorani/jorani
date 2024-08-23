@@ -111,5 +111,4 @@ $chart1->setTopLeftPosition('E3');
 $chart1->setBottomRightPosition('K20');
 $sheet->addChart($chart1);
 
-$spreadsheet->exportName = 'excel-export';
-writeSpreadsheet($spreadsheet);
+writeSpreadsheet($spreadsheet, 'excel-export');

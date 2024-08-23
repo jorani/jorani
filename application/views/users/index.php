@@ -1,7 +1,7 @@
 <?php
 /**
  * This view displays the list of users.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link       https://github.com/bbalet/jorani
  * @since      0.1.0
@@ -28,20 +28,24 @@
     </thead>
     <tbody>
 <?php foreach ($users as $users_item): ?>
-    <tr>
+    <tr data-id="<?php echo $users_item['id']; ?>">
         <td data-order="<?php echo $users_item['id']; ?>">
             <?php echo $users_item['id'] ?>&nbsp;
             <div class="pull-right">
+            <?php if ($users_item['id'] != $this->session->userdata('id')) { ?>
                 <?php if ($users_item['active']) { ?>
-                <a href="<?php echo base_url();?>users/disable/<?php echo $users_item['id'] ?>" title="<?php echo lang('users_index_thead_tip_active');?>"><i class="mdi mdi-account-off nolink"></i></a>
+                <a href="#" class="action-disable" data-id="<?php echo $users_item['id'];?>" title="<?php echo lang('users_index_thead_tip_active');?>"><i class="mdi mdi-account-off nolink"></i></a>
                 <?php } else { ?>
-                <a href="<?php echo base_url();?>users/enable/<?php echo $users_item['id'] ?>" title="<?php echo lang('users_index_thead_tip_inactive');?>"><i class="mdi mdi-account mdi-dark mdi-inactive"></i></a>
+                <a href="#" class="action-enable" data-id="<?php echo $users_item['id'];?>" title="<?php echo lang('users_index_thead_tip_inactive');?>"><i class="mdi mdi-account mdi-dark mdi-inactive"></i></a>
                 <?php } ?>
+            <?php } ?>
                 &nbsp;
                 <a href="<?php echo base_url();?>users/edit/<?php echo $users_item['id'] ?>" title="<?php echo lang('users_index_thead_tip_edit');?>"><i class="mdi mdi-account-edit nolink"></i></a>
                 &nbsp;
+                <?php if ($users_item['id'] != $this->session->userdata('id')) { ?>
                 <a href="#" class="confirm-delete" data-id="<?php echo $users_item['id'];?>" title="<?php echo lang('users_index_thead_tip_delete');?>"><i class="mdi mdi-delete nolink"></i></a>
                 &nbsp;
+                <?php } ?>
                 <a href="<?php echo base_url();?>users/reset/<?php echo $users_item['id'] ?>" title="<?php echo lang('users_index_thead_tip_reset');?>" data-target="#frmResetPwd" data-toggle="modal"><i class="mdi mdi-lock nolink"></i></a>
             </div>
         </td>
@@ -79,7 +83,7 @@
         <p><?php echo lang('users_index_popup_delete_question');?></p>
     </div>
     <div class="modal-footer">
-        <a href="#" class="btn btn-danger" id="lnkDeleteUser"><?php echo lang('users_index_popup_delete_button_yes');?></a>
+        <a href="#" class="btn btn-danger" id="action-delete"><?php echo lang('users_index_popup_delete_button_yes');?></a>
         <a href="#" onclick="$('#frmConfirmDelete').modal('hide');" class="btn"><?php echo lang('users_index_popup_delete_button_no');?></a>
     </div>
 </div>
@@ -119,11 +123,34 @@
 
 <link href="<?php echo base_url();?>assets/datatable/DataTables-1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
 <script type="text/javascript" src="<?php echo base_url();?>assets/datatable/DataTables-1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="<?php echo base_url();?>assets/js/bootbox.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
+
+    <?php if ($this->config->item('csrf_protection') == TRUE) {?>
+    $.ajaxSetup({
+        data: {
+            <?php echo $this->security->get_csrf_token_name();?>: "<?php echo $this->security->get_csrf_hash();?>",
+        }
+    });
+    <?php }?>
+
+    //Global Ajax error handling mainly used for session expiration
+    $( document ).ajaxError(function(event, jqXHR, settings, errorThrown) {
+        $('#frmModalAjaxWait').modal('hide');
+        if (jqXHR.status == 401) {
+            bootbox.alert("<?php echo lang('global_ajax_timeout');?>", function() {
+                //After the login page, we'll be redirected to the current page
+                location.reload();
+            });
+        } else { //Oups
+            bootbox.alert("<?php echo lang('global_ajax_error');?>");
+        }
+    });
+
     //Transform the HTML table in a fancy datatable
-    $('#users').dataTable({
+    oTable = $('#users').DataTable({
         stateSave: true,
         language: {
             decimal:            "<?php echo lang('datatable_sInfoThousands');?>",
@@ -152,10 +179,9 @@ $(document).ready(function() {
     $("#frmResetPwd").alert();
     $("#frmImportUsers").alert();
 
-    //On showing the confirmation pop-up, add the user id at the end of the delete url action
+    //On showing the confirmation pop-up, add the user id as an attribute of the delete url link
     $('#frmConfirmDelete').on('show', function() {
-        var link = "<?php echo base_url();?>users/delete/" + $(this).data('id');
-        $("#lnkDeleteUser").attr('href', link);
+        $("#action-delete").attr('data-id', $(this).data('id'));
     });
 
     //Display a modal pop-up so as to confirm if a user has to be deleted or not
@@ -164,6 +190,37 @@ $(document).ready(function() {
     $("#users tbody").on('click', '.confirm-delete',  function(){
         var id = $(this).data('id');
         $('#frmConfirmDelete').data('id', id).modal('show');
+    });
+
+    //Enable a user
+    $("#users tbody").on('click', '.action-enable',  function(){
+        var id = $(this).data('id');
+        var ref = $(this);
+        $.post( "<?php echo base_url();?>users/account", { operation: "enable", id: id }).done(function() {
+            ref.attr('class', 'action-disable');
+            ref.attr('title', '<?php echo lang('users_index_thead_tip_active');?>');
+            ref.children(":first").attr('class', 'mdi mdi-account-off nolink');
+        });
+    });
+
+    //Disable a user
+    $("#users tbody").on('click', '.action-disable',  function(){
+        var id = $(this).data('id');
+        var ref = $(this);
+        $.post( "<?php echo base_url();?>users/account", { operation: "disable", id: id }).done(function() {
+            ref.attr('class', 'action-enable');
+            ref.attr('title', '<?php echo lang('users_index_thead_tip_inactive');?>');
+            ref.children(":first").attr('class', 'mdi mdi-account mdi-dark mdi-inactive');
+        });
+    });
+
+    //Delete a user
+    $("#action-delete").on('click',  function(){
+        var id = $(this).data('id');
+        $.post( "<?php echo base_url();?>users/account", { operation: "delete", id: id }).done(function() {
+            oTable.rows('tr[data-id="' + id + '"]').remove().draw();
+            $('#frmConfirmDelete').modal('hide');
+        });
     });
 
     //Prevent to load always the same content (refreshed each time)

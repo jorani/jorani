@@ -10,7 +10,7 @@ services:
       - MYSQL_USER=jorani
       - MYSQL_PASSWORD=jorani
   mysql:
-    image: mysql:5
+    image: mysql:8
     ports:
       - "3306:3306"
     environment:

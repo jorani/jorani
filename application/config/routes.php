@@ -40,7 +40,6 @@
 
 //_______________________________________________
 //Admin : global features
-$route['admin/qrcode'] = 'admin/qrCode';
 $route['admin/settings'] = 'admin/settings';
 $route['admin/diagnostic'] = 'admin/diagnostic';
 $route['admin/oauthclients'] = 'admin/oauthClients';
@@ -58,10 +57,8 @@ $route['users/export'] = 'users/export';
 $route['users/reset/(:num)'] = 'users/reset/$1';
 $route['users/create'] = 'users/create';
 $route['users/edit/(:num)'] = 'users/edit/$1';
-$route['users/delete/(:num)'] = 'users/delete/$1';
 $route['users/check/login'] = 'users/checkLoginByAjax';
-$route['users/enable/(:num)'] = 'users/enable/$1';
-$route['users/disable/(:num)'] = 'users/disable/$1';
+$route['users/account']['POST'] = 'users/account';
 $route['users'] = 'users';
 
 //_______________________________________________

@@ -2,7 +2,7 @@
 -- Jorani Schema upgrade to 0.4.0
 -- 
 -- @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
--- @copyright  Copyright (c) 2014-2019 Benjamin BALET
+-- @copyright  Copyright (c) 2014-2023 Benjamin BALET
 
 -- New features:
 --      * Define delegates for a manager (employees who can accept/reject requests in behalf of a manager)

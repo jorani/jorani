@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller serves the user management pages and tools.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.4.2
@@ -46,34 +46,34 @@ class Users extends CI_Controller {
     }
 
     /**
-     * Set a user as active (TRUE) or inactive (FALSE)
-     * @param int $id User identifier
-     * @param bool $active active (TRUE) or inactive (FALSE)
+     * Account management (activate/disable/delete) is done by a 
+     * POST request with a CSRF token for an improved security
      * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function active($id, $active) {
+    public function account() {
         $this->auth->checkIfOperationIsAllowed('list_users');
-        $this->users_model->setActive($id, $active);
-        $this->session->set_flashdata('msg', lang('users_edit_flash_msg_success'));
-        redirect('users');
-    }
-
-    /**
-     * Enable a user
-     * @param int $id User identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
-     */
-    public function enable($id) {
-        $this->active($id, TRUE);
-    }
-
-    /**
-     * Disable a user
-     * @param int $id User identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
-     */
-    public function disable($id) {
-        $this->active($id, FALSE);
+        $id = $this->input->post('id');
+        $operation = $this->input->post('operation');
+        //Test if user exists
+        $data['users_item'] = $this->users_model->getUsers($id);
+        if (empty($data['users_item'])) {
+            redirect('notfound');
+        } else {
+            switch ($operation) {
+                case 'enable': 
+                    $this->users_model->setActive($id, TRUE);
+                    log_message('error', 'User #' . $id . ' has been enabled by user #' . $this->session->userdata('id'));
+                    break;
+                case 'disable':
+                    $this->users_model->setActive($id, FALSE);
+                    log_message('error', 'User #' . $id . ' has been disabled by user #' . $this->session->userdata('id'));
+                    break;
+                case 'delete':
+                    $this->auth->checkIfOperationIsAllowed('delete_user');
+                    $this->users_model->deleteUser($id);
+                    log_message('error', 'User #' . $id . ' has been deleted by user #' . $this->session->userdata('id'));
+            }
+        }
     }
 
     /**
@@ -192,25 +192,6 @@ class Users extends CI_Controller {
                 redirect('users');
             }
         }
-    }
-
-    /**
-     * Delete a user. Log it as an error.
-     * @param int $id User identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
-     */
-    public function delete($id) {
-        $this->auth->checkIfOperationIsAllowed('delete_user');
-        //Test if user exists
-        $data['users_item'] = $this->users_model->getUsers($id);
-        if (empty($data['users_item'])) {
-            redirect('notfound');
-        } else {
-            $this->users_model->deleteUser($id);
-        }
-        log_message('error', 'User #' . $id . ' has been deleted by user #' . $this->session->userdata('id'));
-        $this->session->set_flashdata('msg', lang('users_delete_flash_msg_success'));
-        redirect('users');
     }
 
     /**

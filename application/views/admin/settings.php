@@ -1,7 +1,7 @@
 <?php
 /**
  * This view displays a portion of the configuration file (the part containing the application parameters).
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.4.3
@@ -22,6 +22,7 @@
             <tr><td>default_leave_type</td><td><?php echo $this->config->item('default_leave_type'); ?></td></tr>
             <tr><td>disable_edit_leave_duration</td><td><?php echo ($this->config->item('disable_edit_leave_duration') ? 'TRUE':'FALSE'); ?></td></tr>
             <tr><td>delete_rejected_requests</td><td><?php echo ($this->config->item('delete_rejected_requests') ? 'TRUE':'FALSE'); ?></td></tr>
+            <tr><td>disallow_requests_without_credit</td><td><?php echo ($this->config->item('disallow_requests_without_credit') ? 'TRUE':'FALSE'); ?></td></tr>
             <tr><td>edit_rejected_requests</td><td><?php echo ($this->config->item('edit_rejected_requests') ? 'TRUE':'FALSE'); ?></td></tr>
             <tr><td>requests_by_manager</td><td><?php echo ($this->config->item('requests_by_manager') ? 'TRUE':'FALSE'); ?></td></tr>
             <tr><td>languages</td><td><?php echo $this->config->item('languages'); ?></td></tr>

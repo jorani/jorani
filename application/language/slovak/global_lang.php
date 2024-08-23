@@ -1,7 +1,7 @@
 <?php
 /**
  * Translation file
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link       https://github.com/bbalet/jorani
  * @since      1.0.0
@@ -14,9 +14,9 @@ $lang['global_msg_error_forbidden'] = 'Operácia (%s) nie je udelená';
 $lang['global_msg_wait'] = 'Čakajte prosím';
 $lang['global_msg_old_browser'] = 'Internet Explorer 8 a staršie verzie nie sú podporované. Aktualizujte na IE9 alebo použite Firefox, Chrome a pod.';
 $lang['global_msg_not_found'] = 'Objekt nenájdený. Možno sa pokúšate o prístup k objektu, ktorý bol zmazaný.';
-$lang['global_date_format'] = 'm/d/R';
-$lang['global_date_js_format'] = 'mm/dd/rr';
-$lang['global_date_momentjs_format'] = 'MM/DD/RRRR';
+$lang['global_date_format'] = 'm/d/Y';
+$lang['global_date_js_format'] = 'mm/dd/yy';
+$lang['global_date_momentjs_format'] = 'MM/DD/YYYY';
 $lang['global_msg_new_version_available'] = 'A new version is available.';
 $lang['global_msg_your_version_is_dev'] = 'You are using a development version.';
 $lang['global_msg_your_version_is_up_to_date'] = 'Your version is up to date.';

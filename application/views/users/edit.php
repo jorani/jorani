@@ -1,7 +1,7 @@
 <?php
 /**
  * This view allows to modify an employee record.
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.1.0
@@ -151,13 +151,17 @@ if (isset($_GET['source'])) {
 <div class="row">
     <div class="span4">
         <input type="hidden" name="datehired" id="datehired"  value="<?php
-            $date = new DateTime($users_item['datehired']);
-            echo $date->format('Y-m-d');?>"/>
+            if (!is_null($users_item['datehired'])) {
+                $date = new DateTime($users_item['datehired']);
+                echo $date->format('Y-m-d');
+            }?>"/>
         <div class="control-group">
             <label class="control-label" for="viz_datehired"><?php echo lang('users_edit_field_hired');?></label>
             <div class="controls">
                 <input type="text" id="viz_datehired" name="viz_datehired" value="<?php
-                    echo $date->format(lang('global_date_format'));?>" />
+                if (!is_null($users_item['datehired'])) {
+                    echo $date->format(lang('global_date_format'));
+                }?>" />
             </div>
         </div>
     </div>

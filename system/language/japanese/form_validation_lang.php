@@ -3,7 +3,7 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
@@ -14,9 +14,10 @@ $lang['form_validation_isset']			= '{field}欄は値がなければいけませ�
 $lang['form_validation_valid_email']		= '{field}欄はメールアドレスとして正しい形式でなければいけません';
 $lang['form_validation_valid_emails']		= '{field}欄は正しいメールアドレスでなければいけません';
 $lang['form_validation_valid_url']		= '{field}欄は正しいURLでなければいけません';
-$lang['form_validation_valid_ip']		= '{field}欄は正しいIPアドレスだければいけません';
+$lang['form_validation_valid_ip']		= '{field}欄は正しいIPアドレスでなければいけません';
+$lang['form_validation_valid_base64']		= '{field}欄は正しいBASE64文字列でなければいけません';
 $lang['form_validation_min_length']		= '{field}欄は{param}文字以上、でなければいけません';
-$lang['form_validation_max_length']		= '{field}欄は{param}文字より短くなければなりません';
+$lang['form_validation_max_length']		= '{field}欄は{param}文字以下、でなければいけません';
 $lang['form_validation_exact_length']		= '{field}欄は{param}文字でなければいけません';
 $lang['form_validation_alpha']	 = '{field}欄は英字だけです';
 $lang['form_validation_alpha_numeric']	= '{field}欄は英数字のみです';

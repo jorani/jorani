@@ -4,7 +4,7 @@
  *
  * @author	CodeIgniter community
  * @author	Grigoris Charamidis
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
@@ -28,3 +28,4 @@ $lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'Η ρουτίνα αντίγραφο της εικόνας απέτυχε.';
 $lang['imglib_missing_font'] = 'Αδυναμία να βρεθεί η γραμματοσειρά που χρησιμοποιείται.';
 $lang['imglib_save_failed'] = 'Αδυναμία στην αποθήκευση εικόνας. Παρακαλώ βεβαιωθείτε οτι η εικόνα και ο κατάλογος είναι εγγράψιμοι.';
+$lang['imglib_invalid_image'] = 'Η παρεχόμενη εικόνα δεν είναι έγκυρη.';

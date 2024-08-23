@@ -1,7 +1,7 @@
 <?php
 /**
  * This view builds a Spreadsheet file containing the list of leave requests created by an employee (from HR menu).
- * @copyright  Copyright (c) 2014-2019 Benjamin BALET
+ * @copyright  Copyright (c) 2014-2023 Benjamin BALET
  * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
  * @link            https://github.com/bbalet/jorani
  * @since         0.2.0
@@ -51,5 +51,4 @@ foreach(range('A', 'F') as $colD) {
     $sheet->getColumnDimension($colD)->setAutoSize(TRUE);
 }
 
-$spreadsheet->exportName = 'leaves';
-writeSpreadsheet($spreadsheet);
+writeSpreadsheet($spreadsheet, 'leaves');

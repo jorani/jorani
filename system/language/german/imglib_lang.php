@@ -3,7 +3,7 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014-2019, British Columbia Institute of Technology (https://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
@@ -23,7 +23,7 @@ $lang['imglib_libpath_invalid'] = 'Der Pfad zu Ihrem Bilder-Verzeichnis ist fals
 $lang['imglib_image_process_failed'] = 'Die Bildbearbeitung schlug fehl. Bitte überprüfen Sie, dass Ihr Server das gewählte Protokoll unterstützt und dass der Pfad zu den Bildern korrekt ist.';
 $lang['imglib_rotation_angle_required'] = 'Es muss ein Winkel zur Drehung des Bildes angegeben werden.';
 $lang['imglib_invalid_path'] = 'Der Pfad zum Bild ist falsch.';
-$lang['imglib_invalid_image'] = 'The provided image is not valid.';
+$lang['imglib_invalid_image'] = 'Das angegebene Bild ist ungültig.';
 $lang['imglib_copy_failed'] = 'Die Routine zum Kopieren des Bildes schlug fehl.';
 $lang['imglib_missing_font'] = 'Es konnte kein geeigneter Zeichensatz gefunden werden.';
 $lang['imglib_save_failed'] = 'Das Bild konnte nicht gespeichert werden. Stellen Sie sicher, dass die benötigten Verzeichnis beschreibbar ist.';
