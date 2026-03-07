@@ -1,40 +1,62 @@
 <?php
 /**
  * Email template.You can change the content of this template
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.1.0
  */
 ?>
 <html lang="sk">
-    <head>
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta charset="UTF-8">
-        <style>
-            table {width:50%;margin:5px;border-collapse:collapse;}
-            table, th, td {border: 1px solid black;}
-            th, td {padding: 20px;}
-            h5 {color:red;}
-        </style>
-    </head>
-    <body>
-        <h3>{Title}</h3>
-        {Firstname} {Lastname} predložil/a prácu nadčas. Pozrite detaily nižšie:<br />
-        <table border="0">
-            <tr>
-                <td>Dátum &nbsp;</td><td>{Date}</td>
-            </tr>
-            <tr>
-                <td>Trvanie &nbsp;</td><td>{Duration}</td>
-            </tr>
-            <tr>
-                <td>Dôvod &nbsp;</td><td>{Cause}</td>
-            </tr>
-        </table>
-        <a href="{UrlAccept}">Schváliť</a>
-        <a href="{UrlReject}">Zamietnuť</a>
-        <hr>
-        <h5>*** Toto je automaticky generovaná správa, neodpovedajte prosím na túto správu ***</h5>
-    </body>
+
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta charset="UTF-8">
+    <style>
+        table {
+            width: 50%;
+            margin: 5px;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 20px;
+        }
+
+        h5 {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>{Title}</h3>
+    {Firstname} {Lastname} predložil/a prácu nadčas. Pozrite detaily nižšie:<br />
+    <table border="0">
+        <tr>
+            <td>Dátum &nbsp;</td>
+            <td>{Date}</td>
+        </tr>
+        <tr>
+            <td>Trvanie &nbsp;</td>
+            <td>{Duration}</td>
+        </tr>
+        <tr>
+            <td>Dôvod &nbsp;</td>
+            <td>{Cause}</td>
+        </tr>
+    </table>
+    <a href="{UrlAccept}">Schváliť</a>
+    <a href="{UrlReject}">Zamietnuť</a>
+    <hr>
+    <h5>*** Toto je automaticky generovaná správa, neodpovedajte prosím na túto správu ***</h5>
+</body>
+
 </html>

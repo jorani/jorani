@@ -1,21 +1,24 @@
 <?php
 /**
  * This helper contains a list of functions used throughout the application
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.2.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.2.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * Check if user is connected, redirect to login form otherwise
  * Set the user context by retrieving infos from session
  * @param CI_Controller $controller reference to CI Controller object
- * @author Benjamin BALET <benjamin.balet@gmail.com>
+ * 
  */
-function setUserContext(CI_Controller $controller) {
+function setUserContext(CI_Controller $controller)
+{
     //Memorize the last displayed page except for Ajax queries
     if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') !== 'XMLHttpRequest') {
         $controller->session->set_userdata('last_page', current_url());
@@ -30,7 +33,7 @@ function setUserContext(CI_Controller $controller) {
         }
     }
     $controller->fullname = $controller->session->userdata('firstname') . ' ' .
-            $controller->session->userdata('lastname');
+        $controller->session->userdata('lastname');
     $controller->is_manager = $controller->session->userdata('is_manager');
     $controller->is_admin = $controller->session->userdata('is_admin');
     $controller->is_hr = $controller->session->userdata('is_hr');
@@ -44,7 +47,7 @@ function setUserContext(CI_Controller $controller) {
  * Prepare an array containing information about the current user
  * @param CI_Controller $controller reference to CI Controller object
  * @return array data to be passed to the view
- * @author Benjamin BALET <benjamin.balet@gmail.com>
+ * 
  */
 function getUserContext(CI_Controller $controller)
 {
@@ -52,9 +55,9 @@ function getUserContext(CI_Controller $controller)
     $data['is_manager'] = $controller->is_manager;
     $data['is_admin'] = $controller->is_admin;
     $data['is_hr'] = $controller->is_hr;
-    $data['user_id'] =  $controller->user_id;
+    $data['user_id'] = $controller->user_id;
     $data['language'] = $controller->session->userdata('language');
-    $data['language_code'] =  $controller->session->userdata('language_code');
+    $data['language_code'] = $controller->session->userdata('language_code');
     if ($controller->is_manager === TRUE) {
         $controller->load->model('leaves_model');
         $data['requested_leaves_count'] = $controller->leaves_model->countLeavesRequestedToManager($controller->user_id);
@@ -74,10 +77,11 @@ function getUserContext(CI_Controller $controller)
  * Set the user context by retrieving infos from session
  * and load these data into the array passed to the view
  * @see setUserContext and getUserContext
- * @author Benjamin BALET <benjamin.balet@gmail.com>
+ * 
  */
-function getCIUserContext() {
-    $controller = & get_instance();
+function getCIUserContext()
+{
+    $controller = &get_instance();
     setUserContext($controller);
     return getUserContext($controller);
 }
@@ -86,13 +90,13 @@ function getCIUserContext() {
  * Sanitizes an input (GET/POST) coming from outside a form (eg Ajax request)
  * @param string $value value to be cleansed from characters that prevent Jorani to work
  * @return string value where problematic characters have been removed
- * @author Benjamin BALET <benjamin.balet@gmail.com>
+ * 
  */
 function sanitize($value)
 {
     $value = trim($value);
-    $value = str_replace('\\','',$value);
-    $value = strtr($value,array_flip(get_html_translation_table(HTML_ENTITIES)));
+    $value = str_replace('\\', '', $value);
+    $value = strtr($value, array_flip(get_html_translation_table(HTML_ENTITIES)));
     $value = strip_tags($value);
     $value = htmlspecialchars($value);
     return $value;
@@ -105,7 +109,7 @@ function sanitize($value)
  * @param string $message Message of the e-mail
  * @param string $to Recipient of the e-mail
  * @param string $cc (optional) Copied to recipients
- * @author Benjamin BALET <benjamin.balet@gmail.com>
+ * 
  */
 function sendMailByWrapper(CI_Controller $controller, $subject, $message, $to, $cc = NULL)
 {
@@ -113,13 +117,13 @@ function sendMailByWrapper(CI_Controller $controller, $subject, $message, $to, $
     if ($controller->config->item('subject_prefix') !== NULL) {
         $controller->email->subject($controller->config->item('subject_prefix') . ' ' . $subject);
     } else {
-       $controller->email->subject('[Jorani] ' . $subject);
+        $controller->email->subject('[Jorani] ' . $subject);
     }
     $controller->email->set_encoding('quoted-printable');
     if (($controller->config->item('from_mail') !== NULL) && ($controller->config->item('from_name') !== NULL)) {
         $controller->email->from($controller->config->item('from_mail'), $controller->config->item('from_name'));
     } else {
-       $controller->email->from('do.not@reply.me', 'LMS');
+        $controller->email->from('do.not@reply.me', 'LMS');
     }
     $controller->email->to($to);
     if (!is_null($cc)) {
@@ -133,9 +137,9 @@ function sendMailByWrapper(CI_Controller $controller, $subject, $message, $to, $
  * Finalize the export to a spreadsheet. Called from an export view.
  * @param $spreadsheet reference to the spreadsheet to be exported
  * @param $exportName Excel filename
- * @author Benjamin BALET <benjamin.balet@gmail.com>
+ * 
  */
-function writeSpreadsheet(&$spreadsheet, $exportName='')
+function writeSpreadsheet(&$spreadsheet, $exportName = '')
 {
     $CI =& get_instance();
     $format = 'xlsx';
@@ -169,19 +173,19 @@ function writeSpreadsheet(&$spreadsheet, $exportName='')
  * would return F
  * @param int $number Column index
  * @return string Excel representation of the column index
- * @author Benjamin BALET <benjamin.balet@gmail.com>
+ * 
  */
-function columnName($number) {
+function columnName($number)
+{
     if ($number < 27) {
         return substr("ABCDEFGHIJKLMNOPQRSTUVWXYZ", $number - 1, 1);
     } else {
-        return substr("AAABACADAEAFAGAHAIAJAKALAMANAOAPAQARASATAUAVAWAXAYAZ", (($number -27) * 2), 2);
+        return substr("AAABACADAEAFAGAHAIAJAKALAMANAOAPAQARASATAUAVAWAXAYAZ", (($number - 27) * 2), 2);
     }
 }
 
 //Function cal_days_in_month might not exist with HHVM and FreeBSD without proper config
-if (!function_exists('cal_days_in_month'))
-{
+if (!function_exists('cal_days_in_month')) {
     /**
      * Alternative implementation of cal_days_in_month function
      * @param int $calendar calendar number
@@ -189,7 +193,8 @@ if (!function_exists('cal_days_in_month'))
      * @param int $year year number
      * @return int number of days in the month or 0 if error
      */
-    function cal_days_in_month($calendar, $month, $year) {
+    function cal_days_in_month($calendar, $month, $year)
+    {
         if (checkdate($month, 31, $year))
             return 31;
         if (checkdate($month, 30, $year))

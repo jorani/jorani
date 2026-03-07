@@ -1,9 +1,9 @@
 <?php
 /**
  * Utility script that converts a PO file to PHP array i18n files
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link       https://github.com/bbalet/jorani
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @link       https://github.com/jorani/jorani
  * @since      0.3.0
  */
 
@@ -13,9 +13,9 @@ $target = "slovak";
 $copyright = "<?php
 /**
  * Translation file
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link       https://github.com/bbalet/jorani
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @link       https://github.com/jorani/jorani
  * @since      1.0.0
  * @author     Transifex users
  */\n\n";
@@ -45,9 +45,9 @@ foreach ($files as $file) {
         for ($jj = 0; $jj < $lenI18N; $jj++) {
             //for ($ii = 0; $ii < $lenPO; $ii++) {
             foreach ($entries as $entry) {
-              //Example of parsed PO content:
-              //$entries['Press this button to save']['msgstr'] = 'Pulsa este botón para guardar';
-              //$translated = $entries[$msgid]['msgstr']
+                //Example of parsed PO content:
+                //$entries['Press this button to save']['msgstr'] = 'Pulsa este botón para guardar';
+                //$translated = $entries[$msgid]['msgstr']
 
                 //Handle multi line Msg Id
                 $msgId = $entry->getMsgId();
@@ -82,7 +82,8 @@ echo "[INFO] Done." . PHP_EOL;
  *
  * @return string normalized path
  */
-function join_paths() {
+function join_paths()
+{
     $paths = array();
     foreach (func_get_args() as $arg) {
         if ($arg !== '') {

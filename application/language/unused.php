@@ -3,9 +3,9 @@
  * Utility script that finds unused strings in CI's i18n PHP arrays
  * This script helps to find mistakes (so don't delete a string before checking if it should be used)
  * Usage example: php unused.php > list_unused.txt
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.3.0
  */
 
@@ -23,7 +23,7 @@ echo "Iterate through the views of the application..." . PHP_EOL;
 $path = realpath(join_paths(dirname(getcwd()), 'views'));
 echo $path . PHP_EOL;
 
-$directory = new RecursiveDirectoryIterator ($path);
+$directory = new RecursiveDirectoryIterator($path);
 $iterator = new RecursiveIteratorIterator($directory);
 $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 foreach ($regex as $file) {
@@ -43,7 +43,7 @@ echo "Iterate through the controllers of the application..." . PHP_EOL;
 $path = realpath(join_paths(dirname(getcwd()), 'controllers'));
 echo $path . PHP_EOL;
 
-$directory = new RecursiveDirectoryIterator ($path);
+$directory = new RecursiveDirectoryIterator($path);
 $iterator = new RecursiveIteratorIterator($directory);
 $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 foreach ($regex as $file) {
@@ -67,7 +67,8 @@ foreach ($lang as $key => $message) {
 }
 
 //Internal utility function to join paths	
-function join_paths() {
+function join_paths()
+{
     $paths = array();
     foreach (func_get_args() as $arg) {
         if ($arg !== '') {

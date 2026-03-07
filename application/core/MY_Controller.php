@@ -1,9 +1,9 @@
 <?php
 /**
  * Customized controller for REST API
- * @copyright Copyright (c) 2014-2023 Benjamin BALET
- * @license   http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link      https://github.com/bbalet/jorani
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @link       https://github.com/jorani/jorani
  * @since     0.4.3
  */
 
@@ -12,12 +12,13 @@
  * Everything needed for REST (Authentication, content negotiation, etc.)
  * CORS is supported (preflight requests, verbs, etc.).
  */
-class MY_RestController extends CI_Controller {
+class MY_RestController extends CI_Controller
+{
     /**
      * @var stdClass Properties of the connected user 
      */
     protected $user;
-    
+
     /**
      * @var string Requested language (english language name)
      */
@@ -26,7 +27,7 @@ class MY_RestController extends CI_Controller {
     /**
      * Default constructor
      * Check user credentials
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function __construct()
     {
@@ -48,7 +49,7 @@ class MY_RestController extends CI_Controller {
                     if ($password != "") { //Bind to MS-AD with blank password might return OK
                         $ldap = ldap_connect($this->config->item('ldap_host'), $this->config->item('ldap_port'));
                         ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-                        set_error_handler(function() { /* ignore errors */
+                        set_error_handler(function () { /* ignore errors */
                         });
 
                         $basedn = "";
@@ -93,7 +94,7 @@ class MY_RestController extends CI_Controller {
                         log_message('debug', 'Client sent us acceptable language codes: ' . $_SERVER['HTTP_ACCEPT_LANGUAGE']);
                         $availableLanguages = explode(",", $this->config->item('languages'));
                         log_message('debug', 'Jorani currently support one of these lang codes: ' . $this->config->item('languages'));
-                        
+
                         $possibleLanguage = $this->preferedLanguages($availableLanguages, $_SERVER['HTTP_ACCEPT_LANGUAGE']);
                         $langCode = $this->polyglot->language2code($this->config->item('language'));
                         if (count($possibleLanguage) > 0) {
@@ -129,26 +130,27 @@ class MY_RestController extends CI_Controller {
      * @param array $availableLanguages list of languages supported by Jorani
      * @param string $httpAcceptLanguage HTTP Request Header (accept-language)
      * @return array associative array langCode/Score (eg. [en] => 0.8, [es] => 0.4)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    private function preferedLanguages($availableLanguages, $httpAcceptLanguage) {
+    private function preferedLanguages($availableLanguages, $httpAcceptLanguage)
+    {
         $availableLanguages = array_flip($availableLanguages);
         $langs = array();
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($httpAcceptLanguage), $matches, PREG_SET_ORDER);
-        foreach($matches as $match) {
-    
+        foreach ($matches as $match) {
+
             list($a, $b) = explode('-', $match[1]) + array('', '');
             $value = isset($match[2]) ? (float) $match[2] : 1.0;
-    
-            if(isset($availableLanguages[$match[1]])) {
+
+            if (isset($availableLanguages[$match[1]])) {
                 $langs[$match[1]] = $value;
                 continue;
             }
-    
-            if(isset($availableLanguages[$a])) {
+
+            if (isset($availableLanguages[$a])) {
                 $langs[$a] = $value - 0.1;
             }
-    
+
         }
         arsort($langs);
         return $langs;
@@ -156,16 +158,18 @@ class MY_RestController extends CI_Controller {
 
     /**
      * Pre-flight check for CORS requests
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function options() {
+    public function options()
+    {
         log_message('debug', '__options');
     }
 
     /**
      * Terminate lifecycle of the web request if the user can't be authenticated
      */
-    protected function notAuthenticated() {
+    protected function notAuthenticated()
+    {
         log_message('error', ' /!\ notAuthenticated: Send back HTTP 401 Error');
         http_response_code(401);
         header('WWW-Authenticate: Basic realm="Jorani Rest API"');
@@ -175,7 +179,8 @@ class MY_RestController extends CI_Controller {
     /**
      * Terminate lifecycle of the web request if the user doesn't have enough privileges
      */
-    protected function forbidden() {
+    protected function forbidden()
+    {
         log_message('error', ' /!\ forbidden: Send back HTTP 403 Error');
         http_response_code(403);
         die();
@@ -184,7 +189,8 @@ class MY_RestController extends CI_Controller {
     /**
      * Terminate lifecycle of the web request if the object was not found
      */
-    protected function notFound() {
+    protected function notFound()
+    {
         log_message('error', ' /!\ notFound: The object was not found');
         http_response_code(404);
         die();
@@ -193,7 +199,8 @@ class MY_RestController extends CI_Controller {
     /**
      * Terminate lifecycle of the web request if the parameters are invalid
      */
-    protected function badRequest() {
+    protected function badRequest()
+    {
         log_message('error', ' /!\ badRequest: Invalid input');
         http_response_code(400);
         die();

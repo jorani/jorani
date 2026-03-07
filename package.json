@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Jorani is a free and open source leave management system",
   "main": "index.js",
-  "repository": "https://github.com/bbalet/jorani.git",
+  "repository": "https://github.com/jorani/jorani.git",
   "author": "bbalet <benjamin.balet@gmail.com>",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
   "dependencies": {
     "@mdi/font": "^5.7.55",
     "bootstrap": "^4.5.3",

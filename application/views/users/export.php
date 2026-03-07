@@ -1,9 +1,9 @@
 <?php
 /**
  * This view builds a Spreadsheet file containing the list of users.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.2.0
  */
 
@@ -39,7 +39,7 @@ foreach ($users as $user) {
 }
 
 //Autofit
-foreach(range('A', 'E') as $colD) {
+foreach (range('A', 'E') as $colD) {
     $sheet->getColumnDimension($colD)->setAutoSize(TRUE);
 }
 

@@ -3,24 +3,28 @@
  * This controller is the entry point for the REST API used by mobile and HTML5
  * Clients. They use CORS requests. Each call to end points uses BasicAuth 
  * except the preflight exchange. So it should be used with a TLS connection
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.3.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.3.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class implements a REST API
  */
-class Rest extends MY_RestController {
+class Rest extends MY_RestController
+{
 
     /**
      * Get the properties of the connected employee
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function self() {
+    public function self()
+    {
         log_message('debug', '++self');
         $this->output
             ->set_content_type('application/json')
@@ -30,9 +34,10 @@ class Rest extends MY_RestController {
 
     /**
      * Get the the profile of the connected employee
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function profile() {
+    public function profile()
+    {
         log_message('debug', '++profile');
         $profile = new \stdClass();
         $this->load->model('positions_model');
@@ -50,9 +55,10 @@ class Rest extends MY_RestController {
 
     /**
      * Get the configuration of the Jorani server
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function config() {
+    public function config()
+    {
         log_message('debug', '++config');
         $config = new \stdClass();
         $config->IsOvertimeDisabled = $this->config->item('disable_overtime');
@@ -77,9 +83,10 @@ class Rest extends MY_RestController {
     /**
      * Get the number of submitted leave and overtime requests
      * to the connected manager (all would be equal to 0 for non managers)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function submissions() {
+    public function submissions()
+    {
         log_message('debug', '++submissions');
         $submissions = new \stdClass();
         $this->load->model('leaves_model');
@@ -96,21 +103,21 @@ class Rest extends MY_RestController {
             ->set_output(json_encode($submissions));
         log_message('debug', '--submissions');
     }
-    
+
     /**
      * Compute the checksum of the content of a table or just one table
      * Useful to detect if any change was made since a last sync but costly
      * @param string $name Name of the table into the database (optional)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function checksum($table = '') {
+    public function checksum($table = '')
+    {
         log_message('debug', '++checksum = ' . $table);
         $tables = array();
         //Compute the checksum of all tables if not specified
         if ($table == '') {
             $list = $this->db->list_tables();
-            foreach ($list as $table)
-            {
+            foreach ($list as $table) {
                 $tables[$table] = $query = $this->db->query('CHECKSUM TABLE ' . $table)->result_array()[0]['Checksum'];
             }
         } else {

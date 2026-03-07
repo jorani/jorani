@@ -1,26 +1,30 @@
 <?php
 /**
  * This controller serves all the actions performed on postions
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.1.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.1.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This controller serves all the actions performed on postions
  * A postion qualifies the job of an employee.
  * The list of postion is managed by the HR department.
  */
-class Positions extends CI_Controller {
+class Positions extends CI_Controller
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         setUserContext($this);
         $this->load->model('positions_model');
@@ -29,9 +33,10 @@ class Positions extends CI_Controller {
 
     /**
      * Display list of positions
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function index() {
+    public function index()
+    {
         $this->auth->checkIfOperationIsAllowed('list_positions');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
@@ -47,9 +52,10 @@ class Positions extends CI_Controller {
 
     /**
      * Display a popup showing the list of positions
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function select() {
+    public function select()
+    {
         $this->auth->checkIfOperationIsAllowed('list_positions');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
@@ -59,9 +65,10 @@ class Positions extends CI_Controller {
 
     /**
      * Display a form that allows adding a position
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function create() {
+    public function create()
+    {
         $this->auth->checkIfOperationIsAllowed('create_positions');
         $data = getUserContext($this);
         $this->load->helper('form');
@@ -86,9 +93,10 @@ class Positions extends CI_Controller {
     /**
      * Display a form that allows to edit a position
      * @param int $id position identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $this->auth->checkIfOperationIsAllowed('edit_positions');
         $data = getUserContext($this);
         $this->load->helper('form');
@@ -117,9 +125,10 @@ class Positions extends CI_Controller {
     /**
      * Delete a position
      * @param int $id position identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         $this->auth->checkIfOperationIsAllowed('delete_positions');
         $this->positions_model->deletePosition($id);
         $this->session->set_flashdata('msg', lang('positions_delete_flash_msg'));
@@ -128,9 +137,10 @@ class Positions extends CI_Controller {
 
     /**
      * Export the list of all positions into an Excel file
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function export() {
+    public function export()
+    {
         $this->auth->checkIfOperationIsAllowed('export_positions');
         $this->load->view('positions/export');
     }

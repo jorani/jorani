@@ -1,7 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
-//use Psr\Http\Message\UriInterface;
 
 class RestRequestsTest extends TestCase
 {
@@ -10,7 +9,7 @@ class RestRequestsTest extends TestCase
     /**
      * Create a common HTTP client for all test cases pointing to 
      * the API URL defined as environment variable (or by phpunit.xml)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function setUp()
     {
@@ -21,9 +20,10 @@ class RestRequestsTest extends TestCase
 
     /**
      * Free resources after this test case
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->httpClient = null;
     }
 
@@ -32,7 +32,7 @@ class RestRequestsTest extends TestCase
      * It should be inerited from MY_RestController::options
      * But relying of what is set into the parent's constructor
      * @covers RestRequests::options
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testPreflightCORS()
     {
@@ -48,24 +48,24 @@ class RestRequestsTest extends TestCase
     /**
      * Creates a leave request (jdoe to his manager bbalet)
      * @covers RestRequests::requests
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testCreateLeaveRequestForManager()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['jdoe', 'jdoe'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "2",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['jdoe', 'jdoe'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "2",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
         $body = (string) $response->getBody();
         $leaveId = intval(json_decode($body));

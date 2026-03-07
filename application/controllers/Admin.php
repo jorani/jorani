@@ -1,36 +1,41 @@
 <?php
 /**
  * This controller serves the administration pages
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.4.2
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.4.2
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class serves the administration pages (readonly settings page for the moment).
  * In Jorani the settings are set into a configuration file and not into DB.
  */
-class Admin extends CI_Controller {
-    
+class Admin extends CI_Controller
+{
+
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         setUserContext($this);
         $this->lang->load('global', $this->language);
         $this->lang->load('admin', $this->language);
     }
-    
+
     /**
      * Display the settings of the system (extract of config.php)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function settings() {
+    public function settings()
+    {
         $this->auth->checkIfOperationIsAllowed('list_settings');
         $data = getUserContext($this);
         $data['title'] = 'application/config/config.php';
@@ -40,12 +45,13 @@ class Admin extends CI_Controller {
         $this->load->view('admin/settings', $data);
         $this->load->view('templates/footer');
     }
-    
+
     /**
      * Display the diagnostic of the content (duplicated requests, etc.) and configuration
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function diagnostic() {
+    public function diagnostic()
+    {
         $this->auth->checkIfOperationIsAllowed('diagnostic');
         $data = getUserContext($this);
         $data['title'] = lang('admin_diagnostic_title');
@@ -63,7 +69,7 @@ class Admin extends CI_Controller {
         $data['unusedContracts'] = $this->contracts_model->notUsedContracts();
         $data['leaveBalance'] = $this->leaves_model->detectBalanceProblems();
         $data['overlappingLeaves'] = $this->leaves_model->detectOverlappingProblems();
-        
+
         //Count the number of items (will be used for badges in tab 
         $data['duplicatedLeaves_count'] = count($data['duplicatedLeaves']);
         $data['wrongDateType_count'] = count($data['wrongDateType']);
@@ -83,12 +89,13 @@ class Admin extends CI_Controller {
         $this->load->view('admin/diagnostic', $data);
         $this->load->view('templates/footer');
     }
-    
+
     /**
      * Display the list of OAuth clients
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function oauthClients() {
+    public function oauthClients()
+    {
         $this->auth->checkIfOperationIsAllowed('oauth_clients');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
@@ -105,9 +112,10 @@ class Admin extends CI_Controller {
 
     /**
      * Ajax action: create an OAuth clients
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function oauthClientsCreate() {
+    public function oauthClientsCreate()
+    {
         if ($this->auth->isAllowed('oauth_clients') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
@@ -132,9 +140,10 @@ class Admin extends CI_Controller {
 
     /**
      * Ajax action: delete an OAuth client
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function oauthClientsDelete() {
+    public function oauthClientsDelete()
+    {
         if ($this->auth->isAllowed('oauth_clients') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
@@ -151,16 +160,17 @@ class Admin extends CI_Controller {
             }
         }
     }
-    
+
     /**
      * purgeAccessTokens
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function oauthTokensPurge() {
+    public function oauthTokensPurge()
+    {
         $this->auth->checkIfOperationIsAllowed('oauth_clients');
         $this->load->model('oauthclients_model');
         $this->oauthclients_model->purgeAccessTokens();
         redirect('admin/oauthclients#sessions');
     }
-    
+
 }

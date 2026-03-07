@@ -1,34 +1,39 @@
 <?php
 /**
  * This controller loads the static and custom pages of the application
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.4.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.4.0
  */
 
-if (!defined('BASEPATH')) {exit('No direct script access allowed');}
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class serve default and cutom pages.
  * Please note that a page can be the implementation of a custom report (see Controller Report)
  */
-class Pages extends CI_Controller {
-   
+class Pages extends CI_Controller
+{
+
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         setUserContext($this);
     }
 
     /**
      * Display a simple view indicating that the business object was not found.
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function notfound() {
+    public function notfound()
+    {
         $data = getUserContext($this);
         $data['title'] = 'Error';
         $this->load->view('templates/header', $data);
@@ -36,7 +41,7 @@ class Pages extends CI_Controller {
         $this->load->view('pages/notfound', $data);
         $this->load->view('templates/footer', $data);
     }
-    
+
     /**
      * Display a page with this order of priority (based on the provided page name) :
      *  1. Does the page exist into local/pages/{lang}/ (this allows you to overwrite default pages)?
@@ -44,9 +49,10 @@ class Pages extends CI_Controller {
      * Pages are not public and we take into account the language of the connected user.
      * If the page name contains the keyword export, then we don't output the default template.
      * @param string $page Name of the view (and of the corresponding PHP file)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function view($page = 'home') {
+    public function view($page = 'home')
+    {
         $data = getUserContext($this);
         $trans = array("-" => " ", "_" => " ", "." => " ");
         $data['title'] = ucfirst(strtr($page, $trans)); // Capitalize the first letter

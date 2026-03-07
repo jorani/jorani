@@ -1,9 +1,9 @@
 <?php
 /**
  * Translation file
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.1.0
  */
 $lang['extra_index_title'] = 'Mes déclarations d\'heures supp.';

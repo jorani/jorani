@@ -1,9 +1,9 @@
 <?php
 /**
  * Utility script that converts PHP array i18n files to a POT file
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.3.0
  */
 
@@ -48,7 +48,8 @@ foreach ($lang as $message) {
 file_put_contents('jorani.pot', $messages);
 
 //Internal utility function to join paths	
-function join_paths() {
+function join_paths()
+{
     $paths = array();
     foreach (func_get_args() as $arg) {
         if ($arg !== '') {

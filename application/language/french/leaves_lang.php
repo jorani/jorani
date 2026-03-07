@@ -1,9 +1,9 @@
 <?php
 /**
  * Translation file
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.1.0
  */
 
@@ -99,7 +99,7 @@ $lang['leaves_validate_flash_msg_overlap_period'] = 'Vous ne pouvez pas créer u
 
 $lang['leaves_cancel_flash_msg_error'] = 'Vous ne pouvez pas annuler cette demande d\'absence.';
 $lang['leaves_cancel_flash_msg_success'] = 'La demande d\'absence a été annulée avec succès.';
-$lang['leaves_cancel_unauthorized_msg_error'] = 'Vous ne pouvez pas annuler une demande d\'absence commançant dans le passé. Demandez à votre manager de la rejeter.' ;
+$lang['leaves_cancel_unauthorized_msg_error'] = 'Vous ne pouvez pas annuler une demande d\'absence commançant dans le passé. Demandez à votre manager de la rejeter.';
 
 $lang['leaves_delete_flash_msg_error'] = 'Vous ne pouvez pas supprimer cette demande d\'absence.';
 $lang['leaves_delete_flash_msg_success'] = 'La demande d\'absence a été supprimée avec succès.';

@@ -1,7 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
-//use Psr\Http\Message\UriInterface;
 
 class RestTest extends TestCase
 {
@@ -10,7 +9,7 @@ class RestTest extends TestCase
     /**
      * Create a common HTTP client for all test cases pointing to 
      * the API URL defined as environment variable (or by phpunit.xml)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function setUp()
     {
@@ -21,9 +20,10 @@ class RestTest extends TestCase
 
     /**
      * Free resources after this test case
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->httpClient = null;
     }
 
@@ -32,7 +32,7 @@ class RestTest extends TestCase
      * It should be inerited from MY_RestController::options
      * But relying of what is set into the parent's constructor
      * @covers Rest::options
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testPreflightCORS()
     {
@@ -149,20 +149,20 @@ class RestTest extends TestCase
         $checksumLeavesTable = $data->leaves;
 
         //Create a leave request so as to alter the checksum
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['jdoe', 'jdoe'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "2",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['jdoe', 'jdoe'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "2",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
 
         //Get checksum of the leave requests table only

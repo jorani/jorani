@@ -1,24 +1,28 @@
 <?php
 /**
  * This controller allows to manage the list of leave types
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.1.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.1.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class allows to manage the list of leave types
  */
-class LeaveTypes extends CI_Controller {
+class LeaveTypes extends CI_Controller
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         setUserContext($this);
         $this->load->model('types_model');
@@ -27,9 +31,10 @@ class LeaveTypes extends CI_Controller {
 
     /**
      * Display the list of leave types
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function index() {
+    public function index()
+    {
         $this->auth->checkIfOperationIsAllowed('leavetypes_list');
         $data = getUserContext($this);
         $data['leavetypes'] = $this->types_model->getTypes();
@@ -44,9 +49,10 @@ class LeaveTypes extends CI_Controller {
 
     /**
      * Display a form that allows adding a leave type
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function create() {
+    public function create()
+    {
         $this->auth->checkIfOperationIsAllowed('leavetypes_create');
         $data = getUserContext($this);
         $this->load->helper('form');
@@ -68,9 +74,10 @@ class LeaveTypes extends CI_Controller {
     /**
      * Display a form that allows editing a leave type
      * @param int $id Identitier of the leave type
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $this->auth->checkIfOperationIsAllowed('leavetypes_edit');
         $data = getUserContext($this);
         $this->load->helper('form');
@@ -86,9 +93,9 @@ class LeaveTypes extends CI_Controller {
             $this->load->view('leavetypes/edit', $data);
         } else {
             $this->types_model->updateTypes($id,
-                    $this->input->post('name'),
-                    $this->input->post('deduct_days_off'),
-                    mb_substr($this->input->post('acronym'), 0, 10));
+                $this->input->post('name'),
+                $this->input->post('deduct_days_off'),
+                mb_substr($this->input->post('acronym'), 0, 10));
             $this->session->set_flashdata('msg', lang('leavetypes_popup_update_flash_msg'));
             redirect('leavetypes');
         }
@@ -97,9 +104,10 @@ class LeaveTypes extends CI_Controller {
     /**
      * Action : delete a leave type
      * @param int $id leave type identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         $this->auth->checkIfOperationIsAllowed('leavetypes_delete');
         if ($id != 0) {
             if ($this->types_model->usage($id) > 0) {
@@ -116,9 +124,10 @@ class LeaveTypes extends CI_Controller {
 
     /**
      * Action: export the list of all leave types into an Excel file
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function export() {
+    public function export()
+    {
         $this->auth->checkIfOperationIsAllowed('leavetypes_export');
         $this->load->view('leavetypes/export');
     }

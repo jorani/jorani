@@ -1,8 +1,8 @@
 /**
  * This Javascript code is used on the create/edit leave request
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.3.0
  */
 
@@ -29,7 +29,7 @@ function getLeaveLength(refreshInfos) {
                 $("#spnDayType").html("<img src='" + baseURL + "assets/images/date_error.png' />");
             }
         } else {
-             if (start.isBefore(end)) {
+            if (start.isBefore(end)) {
                 if (startType == "Morning" && endType == "Morning") {
                     $("#spnDayType").html("<img src='" + baseURL + "assets/images/leave_2d_MM.png' />");
                 }
@@ -42,7 +42,7 @@ function getLeaveLength(refreshInfos) {
                 if (startType == "Afternoon" && endType == "Morning") {
                     $("#spnDayType").html("<img src='" + baseURL + "assets/images/leave_2d_AM.png' />");
                 }
-             }
+            }
         }
         if (refreshInfos) getLeaveInfos(false);
     }
@@ -51,22 +51,23 @@ function getLeaveLength(refreshInfos) {
 //Get the leave credit, duration and detect overlapping cases (Ajax request)
 //Default behavour is to set the duration field. pass false if you want to disable this behaviour
 function getLeaveInfos(preventDefault) {
-        $('#frmModalAjaxWait').modal('show');
-        var start = moment($('#startdate').val());
-        var end = moment($('#enddate').val());
-        $.ajax({
+    $('#frmModalAjaxWait').modal('show');
+    var start = moment($('#startdate').val());
+    var end = moment($('#enddate').val());
+    $.ajax({
         type: "POST",
         url: baseURL + "leaves/validate",
-        data: {   id: userId,
-                    type: $("#type option:selected").text(),
-                    startdate: $('#startdate').val(),
-                    enddate: $('#enddate').val(),
-                    startdatetype: $('#startdatetype').val(),
-                    enddatetype: $('#enddatetype').val(),
-                    leave_id: leaveId
-                }
-        })
-        .done(function(leaveInfo) {
+        data: {
+            id: userId,
+            type: $("#type option:selected").text(),
+            startdate: $('#startdate').val(),
+            enddate: $('#enddate').val(),
+            startdatetype: $('#startdatetype').val(),
+            enddatetype: $('#enddatetype').val(),
+            leave_id: leaveId
+        }
+    })
+        .done(function (leaveInfo) {
             if (typeof leaveInfo.length !== 'undefined') {
                 var duration = parseFloat(leaveInfo.length);
                 duration = Math.round(duration * 1000) / 1000;  //Round to 3 decimals only if necessary
@@ -115,22 +116,23 @@ function getLeaveInfos(preventDefault) {
 
 //When editing/viewing a leave request, refresh the information about overlapping and days off in the period
 function refreshLeaveInfo() {
-        $('#frmModalAjaxWait').modal('show');
-        var start = moment($('#startdate').val());
-        var end = moment($('#enddate').val());
-        $.ajax({
+    $('#frmModalAjaxWait').modal('show');
+    var start = moment($('#startdate').val());
+    var end = moment($('#enddate').val());
+    $.ajax({
         type: "POST",
         url: baseURL + "leaves/validate",
-        data: {   id: userId,
-                    type: $("#type option:selected").text(),
-                    startdate: $('#startdate').val(),
-                    enddate: $('#enddate').val(),
-                    startdatetype: $('#startdatetype').val(),
-                    enddatetype: $('#enddatetype').val(),
-                    leave_id: leaveId
-                }
-        })
-        .done(function(leaveInfo) {
+        data: {
+            id: userId,
+            type: $("#type option:selected").text(),
+            startdate: $('#startdate').val(),
+            enddate: $('#enddate').val(),
+            startdatetype: $('#startdatetype').val(),
+            enddatetype: $('#enddatetype').val(),
+            leave_id: leaveId
+        }
+    })
+        .done(function (leaveInfo) {
             showOverlappingMessage(leaveInfo);
             showOverlappingDayOffMessage(leaveInfo);
             showListDayOff(leaveInfo);
@@ -142,7 +144,7 @@ function refreshLeaveInfo() {
 function showListDayOff(leaveInfo) {
     if (typeof leaveInfo.listDaysOff !== 'undefined') {
         var arrayLength = leaveInfo.listDaysOff.length;
-        if (arrayLength>0) {
+        if (arrayLength > 0) {
             var htmlTable = "<a href='#divDaysOff' data-toggle='collapse'  class='btn btn-primary input-block-level'>";
             htmlTable += listOfDaysOffTitle.replace("%s", leaveInfo.lengthDaysOff);
             htmlTable += "&nbsp;<i class='icon-chevron-down icon-white'></i></a>\n";
@@ -163,7 +165,7 @@ function showListDayOff(leaveInfo) {
             htmlTooltip += "'><i class='icon-info-sign'></i></a>";
             $("#tooltipDayOff").html(htmlTooltip);
             $(function () {
-              $('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="tooltip"]').tooltip();
             });
 
         } else {
@@ -172,50 +174,51 @@ function showListDayOff(leaveInfo) {
     }
 }
 
-function showListDayOffHTML(){
-  $('#frmModalAjaxWait').modal('show');
-  var start = moment($('#startdate').val());
-  var end = moment($('#enddate').val());
-  $.ajax({
-  type: "POST",
-  url: baseURL + "leaves/validate",
-  data: {   id: userId,
-              type: $("#type option:selected").text(),
-              startdate: $('#startdate').val(),
-              enddate: $('#enddate').val(),
-              startdatetype: $('#startdatetype').val(),
-              enddatetype: $('#enddatetype').val(),
-              leave_id: leaveId
-          }
-  })
-  .done(function(leaveInfo) {
-      $('#frmModalAjaxWait').modal('hide');
-      if (typeof leaveInfo.listDaysOff !== 'undefined') {
-          var arrayLength = leaveInfo.listDaysOff.length;
-          if (arrayLength>0) {
-              var htmlTable = "<div id='divDaysOff2'>";
-              htmlTable += "<table class='table table-bordered table-hover table-condensed'>\n";
-              htmlTable += "<thead class='thead-inverse'>";
-              htmlTable += "<tr><th>";
-              htmlTable += listOfDaysOffTitle.replace("%s", leaveInfo.lengthDaysOff);
-              htmlTable += "</th></tr></thead>";
-              htmlTable += "<tbody>";
-              for (var i = 0; i < arrayLength; i++) {
-                  htmlTable += "<tr><td>";
-                  htmlTable += moment(leaveInfo.listDaysOff[i].date, 'YYYY-MM-DD').format(dateMomentJsFormat);
-                  htmlTable += " / <b>" + leaveInfo.listDaysOff[i].title + "</b></td>";
-                  htmlTable += "<td>" + leaveInfo.listDaysOff[i].length + "</td>";
-                  htmlTable += "</tr>\n";
-              }
-              htmlTable += "</tbody></table></div>";
-              bootbox.alert(htmlTable, function() {
-                console.log("Alert Callback");
-              });
-          } else {
-              //NOP
-          }
-      }
-  });
+function showListDayOffHTML() {
+    $('#frmModalAjaxWait').modal('show');
+    var start = moment($('#startdate').val());
+    var end = moment($('#enddate').val());
+    $.ajax({
+        type: "POST",
+        url: baseURL + "leaves/validate",
+        data: {
+            id: userId,
+            type: $("#type option:selected").text(),
+            startdate: $('#startdate').val(),
+            enddate: $('#enddate').val(),
+            startdatetype: $('#startdatetype').val(),
+            enddatetype: $('#enddatetype').val(),
+            leave_id: leaveId
+        }
+    })
+        .done(function (leaveInfo) {
+            $('#frmModalAjaxWait').modal('hide');
+            if (typeof leaveInfo.listDaysOff !== 'undefined') {
+                var arrayLength = leaveInfo.listDaysOff.length;
+                if (arrayLength > 0) {
+                    var htmlTable = "<div id='divDaysOff2'>";
+                    htmlTable += "<table class='table table-bordered table-hover table-condensed'>\n";
+                    htmlTable += "<thead class='thead-inverse'>";
+                    htmlTable += "<tr><th>";
+                    htmlTable += listOfDaysOffTitle.replace("%s", leaveInfo.lengthDaysOff);
+                    htmlTable += "</th></tr></thead>";
+                    htmlTable += "<tbody>";
+                    for (var i = 0; i < arrayLength; i++) {
+                        htmlTable += "<tr><td>";
+                        htmlTable += moment(leaveInfo.listDaysOff[i].date, 'YYYY-MM-DD').format(dateMomentJsFormat);
+                        htmlTable += " / <b>" + leaveInfo.listDaysOff[i].title + "</b></td>";
+                        htmlTable += "<td>" + leaveInfo.listDaysOff[i].length + "</td>";
+                        htmlTable += "</tr>\n";
+                    }
+                    htmlTable += "</tbody></table></div>";
+                    bootbox.alert(htmlTable, function () {
+                        console.log("Alert Callback");
+                    });
+                } else {
+                    //NOP
+                }
+            }
+        });
 }
 
 //Display the list of non-working days occuring between the leave request start and end dates
@@ -251,9 +254,9 @@ $(function () {
         altFormat: "yy-mm-dd",
         altField: "#startdate",
         numberOfMonths: 1,
-              onClose: function( selectedDate ) {
-                $( "#viz_enddate" ).datepicker( "option", "minDate", selectedDate );
-              }
+        onClose: function (selectedDate) {
+            $("#viz_enddate").datepicker("option", "minDate", selectedDate);
+        }
     }, $.datepicker.regional[languageCode]);
     $("#viz_enddate").datepicker({
         changeMonth: true,
@@ -262,28 +265,28 @@ $(function () {
         altFormat: "yy-mm-dd",
         altField: "#enddate",
         numberOfMonths: 1,
-              onClose: function( selectedDate ) {
-                $( "#viz_startdate" ).datepicker( "option", "maxDate", selectedDate );
-              }
+        onClose: function (selectedDate) {
+            $("#viz_startdate").datepicker("option", "maxDate", selectedDate);
+        }
     }, $.datepicker.regional[languageCode]);
 
     //Force decimal separator whatever the locale is
-    $( "#days" ).keyup(function() {
+    $("#days").keyup(function () {
         var value = $("#days").val();
         value = value.replace(",", ".");
         $("#days").val(value);
     });
 
-    $('#viz_startdate').change(function() {getLeaveLength(true);});
-    $('#viz_enddate').change(function() {getLeaveLength();});
-    $('#startdatetype').change(function() {getLeaveLength();});
-    $('#enddatetype').change(function() {getLeaveLength();});
-    $('#type').change(function() {getLeaveInfos(false);});
+    $('#viz_startdate').change(function () { getLeaveLength(true); });
+    $('#viz_enddate').change(function () { getLeaveLength(); });
+    $('#startdatetype').change(function () { getLeaveLength(); });
+    $('#enddatetype').change(function () { getLeaveLength(); });
+    $('#type').change(function () { getLeaveInfos(false); });
 
     //Check if the user has not exceed the number of entitled days
-    $("#duration").keyup(function() {getLeaveInfos(true);});
+    $("#duration").keyup(function () { getLeaveInfos(true); });
 
-    $("#frmLeaveForm").submit(function(e) {
+    $("#frmLeaveForm").submit(function (e) {
         if (validate_form()) {
             return true;
         } else {

@@ -3,13 +3,15 @@
  * This controller is the entry point for the REST API used by mobile and HTML5
  * Clients. They use CORS requests. Each call to end points uses BasicAuth 
  * except the preflight exchange. So it should be used with a TLS connection
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.3.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.3.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\AllOfException;
@@ -17,13 +19,15 @@ use Respect\Validation\Exceptions\AllOfException;
 /**
  * This class implements a REST API for the leave requests
  */
-class RestLeaves extends MY_RestController {
+class RestLeaves extends MY_RestController
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('leaves_model');
     }
@@ -32,11 +36,12 @@ class RestLeaves extends MY_RestController {
     /**
      * Get the list of leave requests of the connected employee
      * @param int $leaveId Unique identifier of a leave request
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function leaves($leaveId = 0) {
+    public function leaves($leaveId = 0)
+    {
         log_message('debug', '++leaves id=' . $leaveId);
-        
+
         //Format and translate according to Accept-Language Header
         $langRest = new CI_Lang();
         $langRest->load('global', $this->language);
@@ -44,7 +49,7 @@ class RestLeaves extends MY_RestController {
         $requests = NULL;
         if ($leaveId == 0) {
             $leaves = $this->leaves_model->getLeavesOfEmployee($this->user->id);
-            log_message('debug', 'We have ' . (is_null($leaves)?0:count($leaves)) . ' leave(s)');
+            log_message('debug', 'We have ' . (is_null($leaves) ? 0 : count($leaves)) . ' leave(s)');
             foreach ($leaves as &$leave) {
                 $leave['startdatetype'] = $langRest->line($leave['startdatetype']);
                 $leave['enddatetype'] = $langRest->line($leave['enddatetype']);
@@ -75,9 +80,10 @@ class RestLeaves extends MY_RestController {
 
     /**
      * Create a leave request
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function create() {
+    public function create()
+    {
         log_message('debug', '++create');
         try {
             $_POST['employee'] = $this->user->id;
@@ -86,29 +92,29 @@ class RestLeaves extends MY_RestController {
             v::numeric()->assert($this->input->post('status'));
             v::numeric()->assert($this->input->post('type'));
             v::oneOf(v::equals('Morning'), v::equals('Afternoon')
-                    )->assert($this->input->post('startdatetype'));
+            )->assert($this->input->post('startdatetype'));
             v::oneOf(v::equals('Morning'), v::equals('Afternoon')
-                    )->assert($this->input->post('enddatetype'));
+            )->assert($this->input->post('enddatetype'));
             v::numeric()->assert($this->input->post('duration'));
 
             //Prevent users to auto validate their leave requests
             if (!$this->user->isHr && !$this->user->isAdmin) {
                 if ($this->input->post('status') > LMS_REQUESTED) {
-                    log_message('error', 'User #' . $this->user->id . ' tried to submit an wrong status = ' . 
+                    log_message('error', 'User #' . $this->user->id . ' tried to submit an wrong status = ' .
                         $this->input->post('status'));
                     $_POST['status'] = LMS_REQUESTED;
                 }
             }
-            
+
             //Users must use an existing leave type, otherwise
             //force leave type to default leave type
             $this->load->model('contracts_model');
             $leaveTypesDetails = $this->contracts_model->getLeaveTypesDetailsOTypesForUser($this->user->id);
             if (!array_key_exists($this->input->post('type'), $leaveTypesDetails->types)) {
-                log_message('error', 'User #' . $this->user->id . ' tried to submit an wrong LR type = ' . 
-                $this->input->post('type'));
+                log_message('error', 'User #' . $this->user->id . ' tried to submit an wrong LR type = ' .
+                    $this->input->post('type'));
                 $_POST['type'] = $leaveTypesDetails->defaultType;
-                log_message('debug', 'LR type forced to ' . $leaveTypesDetails->defaultType); 
+                log_message('debug', 'LR type forced to ' . $leaveTypesDetails->defaultType);
             }
 
             $leaveId = $this->leaves_model->setLeaves($this->user->id);
@@ -117,7 +123,7 @@ class RestLeaves extends MY_RestController {
                 $this->sendMailOnLeaveRequestCreation($leaveId);
             }
         } catch (AllOfException $exception) {
-            log_message('error', 'An exception occured while creating the leave request' . 
+            log_message('error', 'An exception occured while creating the leave request' .
                 $exception->getFullMessage());
             $this->badRequest();
         }
@@ -130,9 +136,10 @@ class RestLeaves extends MY_RestController {
     /**
      * Edit a leave request
      * @param int $leaveId Identifier of the leave request
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function edit($leaveId) {
+    public function edit($leaveId)
+    {
         log_message('debug', '++edit / LR = ' . $leaveId);
         $leave = $this->leaves_model->getLeaveWithComments($leaveId);
         //Check if exists
@@ -143,24 +150,24 @@ class RestLeaves extends MY_RestController {
         //already requested, the employee can't modify it
         if (!$this->user->isHr) {
             if (($this->user->manager != $this->user->id) &&
-                    $leave['status'] != LMS_PLANNED) {
+                $leave['status'] != LMS_PLANNED) {
                 if ($this->config->item('edit_rejected_requests') == FALSE ||
                     $leave['status'] != LMS_REJECTED) {//Configuration switch that allows editing the rejected leave requests
                     log_message('error', 'User #' . $this->user->id . ' illegally tried to edit leave #' . $leaveId);
                     $this->forbidden();
-                 }
+                }
             }
         } //Admin
 
         //Prevent thugs to auto validate their leave requests
         if (!$this->user->isHr && !$this->user->isAdmin) {
             if ($this->input->post('status') == LMS_ACCEPTED) {
-                log_message('error', 'User #' . $this->user->id . 
+                log_message('error', 'User #' . $this->user->id .
                     ' tried to submit a LR with an wrong status = ' . $this->input->post('status'));
                 $_POST['status'] = LMS_REQUESTED;
             }
             if ($this->input->post('status') == LMS_CANCELED) {
-                log_message('error', 'User #' . $this->user->id . 
+                log_message('error', 'User #' . $this->user->id .
                     ' tried to submit a LR with an wrong status = ' . $this->input->post('status'));
                 $_POST['status'] = LMS_CANCELLATION;
             }
@@ -178,10 +185,10 @@ class RestLeaves extends MY_RestController {
         $this->load->model('contracts_model');
         $leaveTypesDetails = $this->contracts_model->getLeaveTypesDetailsOTypesForUser($this->user->id);
         if (!array_key_exists($this->input->post('type'), $leaveTypesDetails->types)) {
-            log_message('error', 'User #' . $this->user->id . ' tried to submit an wrong LR type = ' . 
-            $this->input->post('type'));
+            log_message('error', 'User #' . $this->user->id . ' tried to submit an wrong LR type = ' .
+                $this->input->post('type'));
             $_POST['type'] = $leaveTypesDetails->defaultType;
-            log_message('debug', 'LR type forced to ' . $leaveTypesDetails->defaultType); 
+            log_message('debug', 'LR type forced to ' . $leaveTypesDetails->defaultType);
         }
 
         try {
@@ -191,19 +198,19 @@ class RestLeaves extends MY_RestController {
             v::numeric()->assert($this->input->post('status'));
             v::numeric()->assert($this->input->post('type'));
             v::oneOf(v::equals('Morning'), v::equals('Afternoon')
-                    )->assert($this->input->post('startdatetype'));
+            )->assert($this->input->post('startdatetype'));
             v::oneOf(v::equals('Morning'), v::equals('Afternoon')
-                    )->assert($this->input->post('enddatetype'));
+            )->assert($this->input->post('enddatetype'));
             v::numeric()->assert($this->input->post('duration'));
-            
+
             $this->leaves_model->updateLeaves($leaveId, $this->user->id);       //We don't use the return value
 
         } catch (AllOfException $exception) {
-            log_message('error', 'An exception occured while editing the leave request' . 
+            log_message('error', 'An exception occured while editing the leave request' .
                 $exception->getFullMessage());
             $this->badRequest();
         }
-        
+
         //If the status is requested or cancellation, send an email to the manager
         if ($this->input->post('status') == LMS_REQUESTED) {
             $this->sendMailOnLeaveRequestCreation($leaveId);
@@ -213,13 +220,14 @@ class RestLeaves extends MY_RestController {
         }
         log_message('debug', '--edit');
     }
-    
+
     /**
      * Delete a leave request
      * @param int $leaveId identifier of the leave request
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function delete($leaveId) {
+    public function delete($leaveId)
+    {
         log_message('debug', '++delete / Leave ID = ' . $leaveId);
         $canDelete = FALSE;
         //Test if the leave request exists
@@ -231,7 +239,7 @@ class RestLeaves extends MY_RestController {
                 $canDelete = TRUE;
             } else {
                 if (($leaves['status'] == LMS_PLANNED) &&
-                        $leaves['employee'] == $this->user->id) {
+                    $leaves['employee'] == $this->user->id) {
                     $canDelete = TRUE;
                 }
                 if ($this->config->item('delete_rejected_requests') == TRUE ||
@@ -252,9 +260,10 @@ class RestLeaves extends MY_RestController {
      * Send a leave request creation email to the manager of the connected employee
      * @param int $leaveId Leave request identifier
      * @param int $reminder In case where the employee wants to send a reminder
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    private function sendMailOnLeaveRequestCreation($leaveId, $reminder=FALSE) {
+    private function sendMailOnLeaveRequestCreation($leaveId, $reminder = FALSE)
+    {
         log_message('debug', '++sendMailOnLeaveRequestCreation');
         $this->load->model('users_model');
         $this->load->model('types_model');
@@ -300,10 +309,11 @@ class RestLeaves extends MY_RestController {
      * @param $title Email Title
      * @param $detailledSubject Email detailled Subject
      * @param $emailModel template email to use
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      *
      */
-    private function sendGenericMail($leave, $user, $manager, $lang_mail, $title, $detailledSubject, $emailModel) {
+    private function sendGenericMail($leave, $user, $manager, $lang_mail, $title, $detailledSubject, $emailModel)
+    {
         log_message('debug', '++sendGenericMail');
         $date = new DateTime($leave['startdate']);
         $startdate = $date->format($lang_mail->line('global_date_format'));
@@ -313,12 +323,12 @@ class RestLeaves extends MY_RestController {
         $comments = $leave['comments'];
         $comments = json_decode($comments);
         $comment = '';
-        if(!empty($comments)){
-          foreach ($comments->comments as $comments_item) {
-            if($comments_item->type == "comment"){
-              $comment = $comments_item->value;
+        if (!empty($comments)) {
+            foreach ($comments->comments as $comments_item) {
+                if ($comments_item->type == "comment") {
+                    $comment = $comments_item->value;
+                }
             }
-          }
         }
 
         log_message('debug', "comment : " . $comment);
@@ -333,14 +343,14 @@ class RestLeaves extends MY_RestController {
             'EndDateType' => $lang_mail->line($leave['enddatetype']),
             'Type' => $this->types_model->getName($leave['type']),
             'Duration' => $leave['duration'],
-            'Balance' => $this->leaves_model->getLeavesTypeBalanceForEmployee($leave['employee'] , $leave['type_name'], $leave['startdate']),
+            'Balance' => $this->leaves_model->getLeavesTypeBalanceForEmployee($leave['employee'], $leave['type_name'], $leave['startdate']),
             'Reason' => $leave['cause'],
             'BaseUrl' => $this->config->base_url(),
             'LeaveId' => $leave['id'],
             'UserId' => $this->user->id,
             'Comments' => $comment
         );
-        $message = $this->parser->parse('emails/' . $manager['language'] . '/'.$emailModel, $data, TRUE);
+        $message = $this->parser->parse('emails/' . $manager['language'] . '/' . $emailModel, $data, TRUE);
 
         $to = $manager['email'];
         $subject = $detailledSubject . ' ' . $user['firstname'] . ' ' . $user['lastname'];

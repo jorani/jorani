@@ -1,9 +1,9 @@
 <?php
 /**
  * This view displays sso failure message. Its layout is the same than the login form.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link       https://github.com/bbalet/jorani
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @link       https://github.com/jorani/jorani
  * @since      0.5.0
  */
 ?>
@@ -23,29 +23,31 @@
     }
 
     .vertical-center {
-        min-height: 90%;  /* Fallback for browsers that do NOT support vh unit */
+        min-height: 90%;
+        /* Fallback for browsers that do NOT support vh unit */
         min-height: 90vh;
         display: flex;
         align-items: center;
-      }
+    }
 
-      .form-box {
+    .form-box {
         padding: 20px;
         border: 1px #e4e4e4 solid;
         border-radius: 4px;
         box-shadow: 0 0 6px #ccc;
         background-color: #fff;
-      }
+    }
 </style>
 
 <div class="row vertical-center">
     <div class="span3">&nbsp;</div>
-        <div class="span6 form-box">
-            <div class="row-fluid">
-                <p><?php echo lang('session_login_no_slo');?></p>
-                <p><a href="<?php echo base_url();?>" class="btn btn-primary"><?php echo lang('session_login_button_login');?></a></p>
-            </div>
+    <div class="span6 form-box">
+        <div class="row-fluid">
+            <p><?php echo lang('session_login_no_slo'); ?></p>
+            <p><a href="<?php echo base_url(); ?>"
+                    class="btn btn-primary"><?php echo lang('session_login_button_login'); ?></a></p>
         </div>
     </div>
-    <div class="span3">&nbsp;</div>
+</div>
+<div class="span3">&nbsp;</div>
 </div>

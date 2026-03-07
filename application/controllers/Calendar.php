@@ -1,25 +1,29 @@
 <?php
 /**
  * This controller displays the calendars of the leave requests
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.1.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.1.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class displays the calendars of the leave requests.
  * In opposition to the other pages of the application, some calendars can be public (no need to be logged in).
  */
-class Calendar extends CI_Controller {
+class Calendar extends CI_Controller
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         //This controller differs from the others, because some calendars can be public
     }
@@ -28,9 +32,10 @@ class Calendar extends CI_Controller {
      * Display a yearly individual calendar
      * @param int $id identifier of the employee
      * @param int $year Year number
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function year($employee = 0, $year = 0) {
+    public function year($employee = 0, $year = 0)
+    {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         if ($employee == 0 || $employee == $this->user_id) {
@@ -41,7 +46,8 @@ class Calendar extends CI_Controller {
         $data = getUserContext($this);
         $this->load->model('users_model');
         $user = $this->users_model->getUsers($employee);
-        if ($year==0) $year = date("Y");
+        if ($year == 0)
+            $year = date("Y");
         //Either self access, Manager or HR
         if ($employee == 0) {
             $employee = $this->user_id;
@@ -56,7 +62,7 @@ class Calendar extends CI_Controller {
         }
 
         $data['employee_id'] = $employee;
-        $data['employee_name'] =  $user['firstname'] . ' ' . $user['lastname'];
+        $data['employee_name'] = $user['firstname'] . ' ' . $user['lastname'];
         //Load the leaves for all the months of the selected year
         $this->load->model('leaves_model');
         $months = array(
@@ -86,9 +92,10 @@ class Calendar extends CI_Controller {
     /**
      * Display the page of the individual calendar (of the connected user)
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function individual() {
+    public function individual()
+    {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->auth->checkIfOperationIsAllowed('individual_calendar');
@@ -108,9 +115,10 @@ class Calendar extends CI_Controller {
      * Display the page of the team calendar (users having the same manager
      * than the connected user)
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function workmates() {
+    public function workmates()
+    {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->auth->checkIfOperationIsAllowed('workmates_calendar');
@@ -126,9 +134,10 @@ class Calendar extends CI_Controller {
     /**
      * Display the calendar of the employees managed by the connected user
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function collaborators() {
+    public function collaborators()
+    {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->auth->checkIfOperationIsAllowed('collaborators_calendar');
@@ -145,9 +154,10 @@ class Calendar extends CI_Controller {
      * Display the calendar of the employees working in the same department
      * than the connected user.
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function department() {
+    public function department()
+    {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->auth->checkIfOperationIsAllowed('department_calendar');
@@ -171,16 +181,18 @@ class Calendar extends CI_Controller {
     /**
      * Display a global calendar filtered by organization/entity
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function organization() {
+    public function organization()
+    {
         $month = date('m');
         //When the user uses the calendar for the first time, select the root entity
         $this->load->model('organization_model');
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
-            $this->load->library('polyglot');;
+            $this->load->library('polyglot');
+            ;
             $data['language'] = $this->config->item('language');
-            $data['language_code'] =  $this->polyglot->language2code($data['language']);
+            $data['language_code'] = $this->polyglot->language2code($data['language']);
             $data['title'] = lang('calendar_organization_title');
             $data['help'] = '';
             $data['mode'] = 'public';
@@ -219,9 +231,10 @@ class Calendar extends CI_Controller {
      * Ajax endpoint : Send a list of fullcalendar events
      * This code is duplicated from controller/leaves for public access
      * @param int $entity_id Entity identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function publicOrganization($entity_id) {
+    public function publicOrganization($entity_id)
+    {
         $this->output->set_content_type('application/json');
         if ($this->config->item('public_calendar') === TRUE) {
             $this->load->model('leaves_model');
@@ -239,7 +252,8 @@ class Calendar extends CI_Controller {
      * This code is duplicated from controller/contract for public access
      * @param int $entity_id Entity identifier
      */
-    public function publicDayoffs() {
+    public function publicDayoffs()
+    {
         $this->output->set_content_type('application/json');
         if ($this->config->item('public_calendar') === TRUE) {
             $start = $this->input->get('start', TRUE);
@@ -260,14 +274,15 @@ class Calendar extends CI_Controller {
      * @param int $year Year number
      * @param bool $children If TRUE, includes children entity, FALSE otherwise
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function tabular($id=-1, $month=0, $year=0, $children=TRUE, $displayTypes=TRUE) {
+    public function tabular($id = -1, $month = 0, $year = 0, $children = TRUE, $displayTypes = TRUE)
+    {
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
             $data['mode'] = 'public';
             $data['language'] = $this->config->item('language');
-            $data['language_code'] =  $this->polyglot->language2code($data['language']);
+            $data['language_code'] = $this->polyglot->language2code($data['language']);
             $this->lang->load('global', $data['language']);
             $this->lang->load('calendar', $data['language']);
             $this->load->model('leaves_model');
@@ -322,14 +337,15 @@ class Calendar extends CI_Controller {
      * @param int $year Year number
      * @param bool $children If TRUE, includes children entity, FALSE otherwise
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function tabularPartial($id=-1, $month=0, $year=0, $children=TRUE, $displayTypes=TRUE) {
+    public function tabularPartial($id = -1, $month = 0, $year = 0, $children = TRUE, $displayTypes = TRUE)
+    {
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
             $data['mode'] = 'public';
             $data['language'] = $this->config->item('language');
-            $data['language_code'] =  $this->polyglot->language2code($data['language']);
+            $data['language_code'] = $this->polyglot->language2code($data['language']);
             $this->lang->load('global', $data['language']);
             $this->lang->load('calendar', $data['language']);
             $this->load->model('leaves_model');
@@ -369,9 +385,10 @@ class Calendar extends CI_Controller {
      * @param int $month Month number
      * @param int $year Year number
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function tabularPartialFromList($id, $month=0, $year=0, $displayTypes=TRUE) {
+    public function tabularPartialFromList($id, $month = 0, $year = 0, $displayTypes = TRUE)
+    {
         setUserContext($this);
         $this->lang->load('global', $this->language);
         $this->lang->load('calendar', $this->language);
@@ -396,9 +413,10 @@ class Calendar extends CI_Controller {
      * @param int $month Month number
      * @param int $year Year number
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function exportTabularFromList($id=-1, $month=0, $year=0, $displayTypes=TRUE) {
+    public function exportTabularFromList($id = -1, $month = 0, $year = 0, $displayTypes = TRUE)
+    {
         $data = array();
         setUserContext($this);
         $language = $this->language;
@@ -427,13 +445,15 @@ class Calendar extends CI_Controller {
      * @param int $year Year number
      * @param bool $children If TRUE, includes children entity, FALSE otherwise
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function exportTabular($id=-1, $month=0, $year=0, $children=TRUE, $displayTypes=TRUE) {
+    public function exportTabular($id = -1, $month = 0, $year = 0, $children = TRUE, $displayTypes = TRUE)
+    {
         $data = array();
         //Load the language file (the loaded language depends if it was called from the public view)
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
-            $this->load->library('polyglot');;
+            $this->load->library('polyglot');
+            ;
             $language = $this->config->item('language');
             $data['user_id'] = 0;
             $data['is_admin'] = FALSE;
@@ -463,9 +483,10 @@ class Calendar extends CI_Controller {
      * We'll get one line for the morning and one line for the afternoon
      * @param int $id identifier of the employee
      * @param int $year Year number
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function exportYear($employee = 0, $year = 0) {
+    public function exportYear($employee = 0, $year = 0)
+    {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         if ($employee == 0) {

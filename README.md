@@ -53,7 +53,7 @@ Use bbalet / bbalet for login / password.
 
 * Help us to translate the software in your language https://www.transifex.com/projects/p/jorani
 * Suggest ideas, declare bugs with Github's issue tracking system or Google group.
-* [Read the TODO list](TODO.md) if you want to know what are the priorities.
+* [Read the project](https://github.com/orgs/jorani/projects/2) if you want to know what are the priorities.
 * Join the developers chat on gitter [![ https://gitter.im/bbalet/jorani](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bbalet/jorani?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Credits

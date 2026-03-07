@@ -1,13 +1,15 @@
 <?php
 /**
  * This Class contains all the business logic and the persistence layer for the positions.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.1.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.1.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This Class contains all the business logic and the persistence layer for the positions.
@@ -15,13 +17,15 @@ if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
  * This information has no technical value, but can be useful for an HR Manager for
  * verification purposes or if a position grants some kind of entitilments.
  */
-class Positions_model extends CI_Model {
+class Positions_model extends CI_Model
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
 
     }
 
@@ -29,9 +33,10 @@ class Positions_model extends CI_Model {
      * Get the list of positions or one position
      * @param int $id optional id of a position
      * @return array record of positions
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function getPositions($id = 0) {
+    public function getPositions($id = 0)
+    {
         if ($id === 0) {
             $query = $this->db->get('positions');
             return $query->result_array();
@@ -44,9 +49,10 @@ class Positions_model extends CI_Model {
      * Get the name of a position
      * @param int $id Identifier of the postion
      * @return string Name of the position
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function getName($id) {
+    public function getName($id)
+    {
         $record = $this->getPositions($id);
         if (!empty($record)) {
             return $record['name'];
@@ -60,9 +66,10 @@ class Positions_model extends CI_Model {
      * @param string $name Name of the postion
      * @param string $description Description of the postion
      * @return int number of affected rows
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function setPositions($name, $description) {
+    public function setPositions($name, $description)
+    {
         $data = array(
             'name' => $name,
             'description' => $description
@@ -75,9 +82,10 @@ class Positions_model extends CI_Model {
      * Cascade update all users having this postion (filled with 0)
      * @param int $id identifier of the position record
      * @return bool TRUE if the operation was successful, FALSE otherwise
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function deletePosition($id) {
+    public function deletePosition($id)
+    {
         $delete = $this->db->delete('positions', array('id' => $id));
         $data = array(
             'position' => 0
@@ -93,9 +101,10 @@ class Positions_model extends CI_Model {
      * @param string $name Name of the postion
      * @param string $description Description of the postion
      * @return type
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function updatePositions($id, $name, $description) {
+    public function updatePositions($id, $name, $description)
+    {
         $data = array(
             'name' => $name,
             'description' => $description

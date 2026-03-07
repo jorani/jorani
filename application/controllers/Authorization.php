@@ -5,44 +5,47 @@
  * docuementation of PHP OAuth2 server:
  * http://bshaffer.github.io/oauth2-server-php-docs/cookbook/
  * 
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link       https://github.com/bbalet/jorani
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
  * @since      0.6.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class implements a OAuth2 Authorization mechanism for a 3rd application
  */
-class Authorization extends CI_Controller {
-    
+class Authorization extends CI_Controller
+{
+
     /**
      * OAuth2 server used by all methods in order to determine 
      * if the user is connected
      * @var OAuth2\Server Authentication server 
      */
     protected $server;
-    
+
     /**
      * Default constructor
      * Initializing of OAuth2 server
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         OAuth2\Autoloader::register();
         $storage = new OAuth2\Storage\Pdo($this->db->conn_id);
         $this->server = new OAuth2\Server($storage);
         $this->server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
         $this->server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
-        
+
         if ($this->session->userdata('language') === FALSE) {
             $availableLanguages = explode(",", $this->config->item('languages'));
             $this->load->library('polyglot');
             $languageCode = $this->polyglot->language2code($this->config->item('language'));
-            if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 if (in_array($_SERVER['HTTP_ACCEPT_LANGUAGE'], $availableLanguages)) {
                     $languageCode = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
                 }
@@ -56,9 +59,10 @@ class Authorization extends CI_Controller {
 
     /**
      * OAuth2 authorize endpoint 
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function authorize() {
+    public function authorize()
+    {
         $request = OAuth2\Request::createFromGlobals();
         $response = new OAuth2\Response();
 
@@ -67,7 +71,7 @@ class Authorization extends CI_Controller {
             $response->send();
             die;
         }
-        
+
         //OAuth2 payload
         $state = $this->input->get('state');
         $responseType = $this->input->get('response_type');
@@ -77,7 +81,7 @@ class Authorization extends CI_Controller {
         $data['responseType'] = $responseType;
         $data['redirectUri'] = $redirectUri;
         $data['clientId'] = $clientId;
-        
+
         //Display simple login form if the user is not logged-in
         if (!$this->session->userdata('logged_in')) {
             $data['title'] = lang('session_login_title');
@@ -88,7 +92,7 @@ class Authorization extends CI_Controller {
                 $this->load->view('session/login_simple', $data);
             }
         }
-        
+
         if ($this->session->userdata('logged_in')) {
             $userId = $this->session->userdata('id');
             $this->load->model('oauthclients_model');
@@ -123,15 +127,16 @@ class Authorization extends CI_Controller {
                 }
                 $this->server->handleAuthorizeRequest($request, $response, $is_authorized, $userId);
                 $response->send();
-            } 
+            }
         }
     }
-    
+
     /**
      * Get the details of the connected user
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function userinfo() {
+    public function userinfo()
+    {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
         } else {
@@ -143,16 +148,17 @@ class Authorization extends CI_Controller {
             echo json_encode($result);
         }
     }
-    
+
     /**
      * Handle the Simplified login form for OAuth authorization
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function login() {
+    public function login()
+    {
         //Decrypt password
         $password = $this->input->post('password');
         $this->load->model('users_model');
-        $loggedin = $this->users_model->checkCredentials($this->input->post('login'), $password);    
+        $loggedin = $this->users_model->checkCredentials($this->input->post('login'), $password);
         if ($loggedin == FALSE) {
             log_message('error', '{controllers/session/login} Invalid login id or password for user=' . $this->input->post('login'));
             if ($this->users_model->isActive($this->input->post('login'))) {
@@ -161,7 +167,7 @@ class Authorization extends CI_Controller {
                 $this->session->set_flashdata('msg', lang('session_login_flash_account_disabled'));
             }
         }
-        
+
         //Redirect to the OAtuh2 endpoint whatever the outcome
         $state = $this->input->get_post('state');
         $responseType = $this->input->get_post('response_type');

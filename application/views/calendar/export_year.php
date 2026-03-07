@@ -2,9 +2,9 @@
 /**
  * This view exports a yearly calendar of the leave taken by a user (can be displayed by HR or manager)
  * It builds an Excel 2007 file downloaded by the browser.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.4.3
  */
 
@@ -69,10 +69,10 @@ $styleBox = array(
             'borderStyle' => Border::BORDER_THIN
         )
     )
-  );
+);
 
 //Box around a day
-$dayBox =  array(
+$dayBox = array(
     'borders' => array(
         'left' => array(
             'borderStyle' => Border::BORDER_DASHDOT,
@@ -83,13 +83,13 @@ $dayBox =  array(
             'color' => array('rgb' => '808080')
         )
     )
- );
+);
 
 //To fill at the left of months having less than 31 days
- $styleMonthPad = array(
+$styleMonthPad = array(
     'fill' => array(
-      'fillType' => Fill::FILL_SOLID,
-      'startColor' => array('rgb' => '00FFFF')
+        'fillType' => Fill::FILL_SOLID,
+        'startColor' => array('rgb' => '00FFFF')
     )
 );
 
@@ -142,69 +142,112 @@ foreach ($months as $month_name => $month) {
         if (strstr($day->display, ';')) {//Two statuses in the cell
             $statuses = explode(";", $day->status);
             $types = explode(";", $day->type);
-                //0 - Working day  _
-                //1 - All day           []
-                //2 - Morning        |\
-                //3 - Afternoon      /|
-                //4 - All Day Off       []
-                //5 - Morning Day Off   |\
-                //6 - Afternoon Day Off /|
-              $sheet->getComment($col . $line)->getText()->createTextRun($types[0]);
-              $sheet->getComment($col . ($line + 1))->getText()->createTextRun($types[1]);
-              switch (intval($statuses[1]))
-              {
-                case 1: $sheet->getStyle($col . $line)->applyFromArray($styleBgPlanned); break;  // Planned
-                case 2: $sheet->getStyle($col . $line)->applyFromArray($styleBgRequested); break;  // Requested
-                case 3: $sheet->getStyle($col . $line)->applyFromArray($styleBgAccepted); break;  // Accepted
-                case 4: $sheet->getStyle($col . $line)->applyFromArray($styleBgRejected); break;  // Rejected
-                case '5': $sheet->getStyle($col . $line)->applyFromArray($styleBgDayOff); break;    //Day off
-                case '6': $sheet->getStyle($col . $line)->applyFromArray($styleBgDayOff); break;    //Day off
-              }
-              switch (intval($statuses[0]))
-              {
-                case 1: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgPlanned); break;  // Planned
-                case 2: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRequested); break;  // Requested
-                case 3: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
-                case 4: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRejected); break;  // Rejected
-                case '5': $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgDayOff); break;    //Day off
-                case '6': $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgDayOff); break;    //Day off
-              }//Two statuses in the cell
+            //0 - Working day  _
+            //1 - All day           []
+            //2 - Morning        |\
+            //3 - Afternoon      /|
+            //4 - All Day Off       []
+            //5 - Morning Day Off   |\
+            //6 - Afternoon Day Off /|
+            $sheet->getComment($col . $line)->getText()->createTextRun($types[0]);
+            $sheet->getComment($col . ($line + 1))->getText()->createTextRun($types[1]);
+            switch (intval($statuses[1])) {
+                case 1:
+                    $sheet->getStyle($col . $line)->applyFromArray($styleBgPlanned);
+                    break;  // Planned
+                case 2:
+                    $sheet->getStyle($col . $line)->applyFromArray($styleBgRequested);
+                    break;  // Requested
+                case 3:
+                    $sheet->getStyle($col . $line)->applyFromArray($styleBgAccepted);
+                    break;  // Accepted
+                case 4:
+                    $sheet->getStyle($col . $line)->applyFromArray($styleBgRejected);
+                    break;  // Rejected
+                case '5':
+                    $sheet->getStyle($col . $line)->applyFromArray($styleBgDayOff);
+                    break;    //Day off
+                case '6':
+                    $sheet->getStyle($col . $line)->applyFromArray($styleBgDayOff);
+                    break;    //Day off
+            }
+            switch (intval($statuses[0])) {
+                case 1:
+                    $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgPlanned);
+                    break;  // Planned
+                case 2:
+                    $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRequested);
+                    break;  // Requested
+                case 3:
+                    $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgAccepted);
+                    break;  // Accepted
+                case 4:
+                    $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRejected);
+                    break;  // Rejected
+                case '5':
+                    $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgDayOff);
+                    break;    //Day off
+                case '6':
+                    $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgDayOff);
+                    break;    //Day off
+            }//Two statuses in the cell
         } else {//Only one status in the cell
             switch ($day->display) {
                 case '1':   //All day
-                        $sheet->getComment($col . $line)->getText()->createTextRun($day->type);
-                        $sheet->getComment($col . ($line + 1))->getText()->createTextRun($day->type);
-                        switch ($day->status)
-                        {
-                            // 1 : 'Planned';
-                            // 2 : 'Requested';
-                            // 3 : 'Accepted';
-                            // 4 : 'Rejected';
-                            case 1: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgPlanned); break;  // Planned
-                            case 2: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgRequested); break; // Requested
-                            case 3: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
-                            case 4: $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgRejected); break;  // Rejected
-                        }
-                        break;
+                    $sheet->getComment($col . $line)->getText()->createTextRun($day->type);
+                    $sheet->getComment($col . ($line + 1))->getText()->createTextRun($day->type);
+                    switch ($day->status) {
+                        // 1 : 'Planned';
+                        // 2 : 'Requested';
+                        // 3 : 'Accepted';
+                        // 4 : 'Rejected';
+                        case 1:
+                            $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgPlanned);
+                            break;  // Planned
+                        case 2:
+                            $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgRequested);
+                            break; // Requested
+                        case 3:
+                            $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgAccepted);
+                            break;  // Accepted
+                        case 4:
+                            $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgRejected);
+                            break;  // Rejected
+                    }
+                    break;
                 case '2':   //AM
                     $sheet->getComment($col . $line)->getText()->createTextRun($day->type);
-                    switch ($day->status)
-                      {
-                          case 1: $sheet->getStyle($col . $line)->applyFromArray($styleBgPlanned); break;  // Planned
-                          case 2: $sheet->getStyle($col . $line)->applyFromArray($styleBgRequested); break;  // Requested
-                          case 3: $sheet->getStyle($col . $line)->applyFromArray($styleBgAccepted); break;  // Accepted
-                          case 4: $sheet->getStyle($col . $line)->applyFromArray($styleBgRejected); break;  // Rejected
-                      }
+                    switch ($day->status) {
+                        case 1:
+                            $sheet->getStyle($col . $line)->applyFromArray($styleBgPlanned);
+                            break;  // Planned
+                        case 2:
+                            $sheet->getStyle($col . $line)->applyFromArray($styleBgRequested);
+                            break;  // Requested
+                        case 3:
+                            $sheet->getStyle($col . $line)->applyFromArray($styleBgAccepted);
+                            break;  // Accepted
+                        case 4:
+                            $sheet->getStyle($col . $line)->applyFromArray($styleBgRejected);
+                            break;  // Rejected
+                    }
                     break;
                 case '3':   //PM
                     $sheet->getComment($col . ($line + 1))->getText()->createTextRun($day->type);
-                    switch ($day->status)
-                      {
-                          case 1: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgPlanned); break;  // Planned
-                          case 2: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRequested); break;  // Requested
-                          case 3: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgAccepted); break;  // Accepted
-                          case 4: $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRejected); break;  // Rejected
-                      }
+                    switch ($day->status) {
+                        case 1:
+                            $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgPlanned);
+                            break;  // Planned
+                        case 2:
+                            $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRequested);
+                            break;  // Requested
+                        case 3:
+                            $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgAccepted);
+                            break;  // Accepted
+                        case 4:
+                            $sheet->getStyle($col . ($line + 1))->applyFromArray($styleBgRejected);
+                            break;  // Rejected
+                    }
                     break;
                 case '4': //Full day off
                     $sheet->getStyle($col . $line . ':' . $col . ($line + 1))->applyFromArray($styleBgDayOff);
@@ -220,7 +263,7 @@ foreach ($months as $month_name => $month) {
                     $sheet->getComment($col . ($line + 1))->getText()->createTextRun($day->type);
                     break;
             }
-          }//Only one status in the cell
+        }//Only one status in the cell
     }//day
     if ($dayNum < 31) {
         $pad = (int) (35 - (31 - $dayNum));

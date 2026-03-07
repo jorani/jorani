@@ -9,7 +9,7 @@ class RestLeavesTest extends TestCase
     /**
      * Create a common HTTP client for all test cases pointing to 
      * the API URL defined as environment variable (or by phpunit.xml)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function setUp()
     {
@@ -20,9 +20,10 @@ class RestLeavesTest extends TestCase
 
     /**
      * Free resources after this test case
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->httpClient = null;
     }
 
@@ -31,7 +32,7 @@ class RestLeavesTest extends TestCase
      * It should be inerited from MY_RestController::options
      * But relying of what is set into the parent's constructor
      * @covers RestLeaves::options
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testPreflightCORS()
     {
@@ -47,24 +48,24 @@ class RestLeavesTest extends TestCase
     /**
      * Creates a leave request
      * @covers RestLeaves::create
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testCreateLeaveRequest()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['bbalet', 'bbalet'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "1",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['bbalet', 'bbalet'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "1",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
         $body = (string) $response->getBody();
         $leaveId = intval(json_decode($body));
@@ -76,12 +77,12 @@ class RestLeavesTest extends TestCase
      * We don't send the preferred language, 
      * so US English formatting should be returned
      * @depends testCreateLeaveRequest
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testViewLeaveRequest(int $leaveId)
     {
         $response = $this->httpClient->request('GET', 'leaves/' . $leaveId,
-         ['auth' => ['bbalet', 'bbalet']]
+            ['auth' => ['bbalet', 'bbalet']]
         );
         $this->assertEquals(200, $response->getStatusCode());
         $leave = json_decode($response->getBody(true), true);
@@ -103,29 +104,29 @@ class RestLeavesTest extends TestCase
     /**
      * A non admin user shouldn't be able to force the LR
      * status to something else than planned or requested
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testForceStatus()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['jdoe', 'jdoe'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "4",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['jdoe', 'jdoe'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "4",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
         $body = (string) $response->getBody();
         $leaveId = intval(json_decode($body));
         $response = $this->httpClient->request('GET', 'leaves/' . $leaveId,
-         ['auth' => ['jdoe', 'jdoe']]
+            ['auth' => ['jdoe', 'jdoe']]
         );
         $this->assertEquals(200, $response->getStatusCode());
         $leave = json_decode($response->getBody(true), true);
@@ -137,18 +138,18 @@ class RestLeavesTest extends TestCase
     /**
      * Delete a LR and then try to display it again
      * @depends testCreateLeaveRequest
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testDeleteLeaveRequests(int $leaveId)
     {
         $response = $this->httpClient->request('DELETE', 'leaves/' . $leaveId,
-         ['auth' => ['bbalet', 'bbalet']]
+            ['auth' => ['bbalet', 'bbalet']]
         );
         $this->assertEquals(200, $response->getStatusCode());
 
         //Try to get the deleted object
         $response = $this->httpClient->request('GET', 'leaves/' . $leaveId,
-            [  'http_errors' => false,
+            ['http_errors' => false,
                 'auth' => ['bbalet', 'bbalet']
             ]);
         $this->assertEquals(404, $response->getStatusCode());
@@ -156,30 +157,30 @@ class RestLeavesTest extends TestCase
 
     /**
      * Employee (non admin) must not be able to see the LR of another employee
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testIllegalAccessToLeaveRequest()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['bbalet', 'bbalet'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "2",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['bbalet', 'bbalet'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "2",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
         $body = (string) $response->getBody();
         $leaveId = intval(json_decode($body));
-        
+
         $response = $this->httpClient->request('GET', 'leaves/' . $leaveId,
-            [  'http_errors' => false,
+            ['http_errors' => false,
                 'auth' => ['jdoe', 'jdoe']
             ]);
         $this->assertEquals(403, $response->getStatusCode());
@@ -187,13 +188,13 @@ class RestLeavesTest extends TestCase
 
     /**
      * Try to display a LR that doesn't exist
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testLeaveRequestNotFound()
     {
         //Try to get the deleted object
         $response = $this->httpClient->request('GET', 'leaves/999999',
-            [   'http_errors' => false,
+            ['http_errors' => false,
                 'auth' => ['jdoe', 'jdoe']
             ]);
         $this->assertEquals(404, $response->getStatusCode());
@@ -201,46 +202,46 @@ class RestLeavesTest extends TestCase
 
     /**
      * Update a leave request with normal values
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testEditLeaveRequest()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['bbalet', 'bbalet'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "1",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['bbalet', 'bbalet'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "1",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
         $body = (string) $response->getBody();
         $leaveId = intval(json_decode($body));
 
-        $response = $this->httpClient->request('PATCH', 'leaves/' . $leaveId, 
-        [
-            'auth' => ['bbalet', 'bbalet'],
-            'json' => [
-                  "startdate" => "2018-08-27",
-                  "enddate" => "2018-08-28",
-                  "status" => "1",
-                  "cause" => "test REST API - Update",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "2.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('PATCH', 'leaves/' . $leaveId,
+            [
+                'auth' => ['bbalet', 'bbalet'],
+                'json' => [
+                    "startdate" => "2018-08-27",
+                    "enddate" => "2018-08-28",
+                    "status" => "1",
+                    "cause" => "test REST API - Update",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "2.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
 
         $response = $this->httpClient->request('GET', 'leaves/' . $leaveId,
-         ['auth' => ['bbalet', 'bbalet']]
+            ['auth' => ['bbalet', 'bbalet']]
         );
         $this->assertEquals(200, $response->getStatusCode());
         $leave = json_decode($response->getBody(true), true);
@@ -262,110 +263,110 @@ class RestLeavesTest extends TestCase
     /**
      * Tries to create a leave request with invalid data
      * @covers RestLeaves::create
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testCreateLeaveRequestWithIllegalValues()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'http_errors' => false,
-            'auth' => ['bbalet', 'bbalet'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "invalid",
-                  "status" => "2",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'http_errors' => false,
+                'auth' => ['bbalet', 'bbalet'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "invalid",
+                    "status" => "2",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(400, $response->getStatusCode());
     }
 
     /**
      * Try to update the leave request of another employee
      * while non admin and non HR
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testIllegalEditLeaveRequest()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['bbalet', 'bbalet'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "1",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['bbalet', 'bbalet'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "1",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
         $body = (string) $response->getBody();
         $leaveId = intval(json_decode($body));
 
-        $response = $this->httpClient->request('PATCH', 'leaves/' . $leaveId, 
-        [
-            'http_errors' => false,
-            'auth' => ['jdoe', 'jdoe'],
-            'json' => [
-                  "startdate" => "2018-08-27",
-                  "enddate" => "2018-08-28",
-                  "status" => "1",
-                  "cause" => "test REST API - Update",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "2.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('PATCH', 'leaves/' . $leaveId,
+            [
+                'http_errors' => false,
+                'auth' => ['jdoe', 'jdoe'],
+                'json' => [
+                    "startdate" => "2018-08-27",
+                    "enddate" => "2018-08-28",
+                    "status" => "1",
+                    "cause" => "test REST API - Update",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "2.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(403, $response->getStatusCode());
     }
 
     /**
      * Try to update the leave request with invalid data
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function testEditLeaveRequestWithIllegalValues()
     {
-        $response = $this->httpClient->request('POST', 'leaves', 
-        [
-            'auth' => ['jdoe', 'jdoe'],
-            'json' => [
-                  "startdate" => "2018-07-21",
-                  "enddate" => "2018-07-21",
-                  "status" => "1",
-                  "cause" => "test REST API",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "1.000",
-                  "type" => "1"
+        $response = $this->httpClient->request('POST', 'leaves',
+            [
+                'auth' => ['jdoe', 'jdoe'],
+                'json' => [
+                    "startdate" => "2018-07-21",
+                    "enddate" => "2018-07-21",
+                    "status" => "1",
+                    "cause" => "test REST API",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "1.000",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(200, $response->getStatusCode());
         $body = (string) $response->getBody();
         $leaveId = intval(json_decode($body));
 
-        $response = $this->httpClient->request('PATCH', 'leaves/' . $leaveId, 
-        [
-            'http_errors' => false,
-            'auth' => ['jdoe', 'jdoe'],
-            'json' => [
-                  "startdate" => "2018-08-27",
-                  "enddate" => "2018-08-28",
-                  "status" => "1",
-                  "cause" => "test REST API - Update",
-                  "startdatetype" => "Morning",
-                  "enddatetype" => "Afternoon",
-                  "duration" => "invalid",
-                  "type" => "1"
+        $response = $this->httpClient->request('PATCH', 'leaves/' . $leaveId,
+            [
+                'http_errors' => false,
+                'auth' => ['jdoe', 'jdoe'],
+                'json' => [
+                    "startdate" => "2018-08-27",
+                    "enddate" => "2018-08-28",
+                    "status" => "1",
+                    "cause" => "test REST API - Update",
+                    "startdatetype" => "Morning",
+                    "enddatetype" => "Afternoon",
+                    "duration" => "invalid",
+                    "type" => "1"
                 ]
-        ]);
+            ]);
         $this->assertEquals(400, $response->getStatusCode());
     }
 

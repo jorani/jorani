@@ -2,9 +2,9 @@
 /**
  * Utility script that converts PHP array i18n files to a PO file
  * This tool is used in order to retrieve a translation that was done from the source files.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.4.4
  */
 
@@ -86,7 +86,8 @@ foreach ($source as $key => $message) {
 file_put_contents($target_lang . '.po', $messages);
 
 //Internal utility function to join paths	
-function join_paths() {
+function join_paths()
+{
     $paths = array();
     foreach (func_get_args() as $arg) {
         if ($arg !== '') {

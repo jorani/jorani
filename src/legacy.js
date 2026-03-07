@@ -8,10 +8,4 @@ window.$ = window.jQuery = require('jquery-legacy')
 require('imports-loader?imports=default|jQuery|$!select2')
 require('imports-loader?imports=default|jQuery|$!jstree')
 
-//Can't make it to work
-//import jstree from 'jstree'
-//jstree = require('jstree');
-//window.jstree = require('jstree')(window.$);
-//require('jstree')
-
 import css from '../assets/css/legacy.scss'

@@ -1,25 +1,29 @@
 <?php
 /**
  * This Model contains all the business logic and the persistence layer for the organization tree.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.1.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.1.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class allows to manage the organization of of users. Users can be attached to a node of a tree.
  * These nodes are called 'entities' and can be 'departments' or 'sub-departments', 'groups', etc.
  * It allows to use filters on a part of your structure, whatever your organization is.
  */
-class Organization_model extends CI_Model {
+class Organization_model extends CI_Model
+{
 
     /**
      * Default constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
 
     }
 
@@ -27,9 +31,10 @@ class Organization_model extends CI_Model {
      * Get the department details of an employee (label and ID)
      * @param int $employeeId User identifier
      * @return array department details
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function getDepartment($employeeId) {
+    public function getDepartment($employeeId)
+    {
         $this->db->select('organization.*');
         $this->db->from('organization');
         $this->db->join('users', 'users.organization = organization.id');
@@ -43,12 +48,13 @@ class Organization_model extends CI_Model {
      * @param int $id Identifier of the entity
      * @return string name of the entity
      */
-    public function getName($id) {
+    public function getName($id)
+    {
         $this->db->from('organization');
         $this->db->where("id", $id);
         $query = $this->db->get();
         $record = $query->result_array();
-        if(count($record) > 0) {
+        if (count($record) > 0) {
             return $record[0]['name'];
         } else {
             return '';
@@ -58,9 +64,10 @@ class Organization_model extends CI_Model {
     /**
      * List all entities of the organisation
      * @return array all entities of the organization sorted out by id and name
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function getAllEntities() {
+    public function getAllEntities()
+    {
         $this->db->from('organization');
         $this->db->order_by("parent_id", "desc");
         $this->db->order_by("name", "asc");
@@ -71,14 +78,15 @@ class Organization_model extends CI_Model {
      * Get all children of an entity
      * @param int $id identifier of the entity
      * @return array list of entity identifiers
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function getAllChildren($id) {
+    public function getAllChildren($id)
+    {
         $query = 'SELECT GetFamilyTree(id) as id' .
-                    ' FROM organization' .
-                    ' WHERE id =' . $id;
+            ' FROM organization' .
+            ' WHERE id =' . $id;
         $query = $this->db->query($query);
-        if(!$query) {
+        if (!$query) {
             $arr = [];
         } else {
             $arr = $query->result_array();
@@ -91,9 +99,10 @@ class Organization_model extends CI_Model {
      * @param int $id identifier of the entity
      * @param int $parent_id new parent id of the entity
      * @return type result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function move($id, $parent_id) {
+    public function move($id, $parent_id)
+    {
         $data = array(
             'parent_id' => $parent_id
         );
@@ -106,9 +115,10 @@ class Organization_model extends CI_Model {
      * @param int $id identifier of the employee
      * @param int $entity identifier of the entity
      * @return type result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function attachEmployee($id, $entity) {
+    public function attachEmployee($id, $entity)
+    {
         $data = array(
             'organization' => $entity
         );
@@ -120,9 +130,10 @@ class Organization_model extends CI_Model {
      * Cascade delete children and set employees' org to NULL
      * @param int $entity identifier of the entity
      * @return type result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function delete($entity) {
+    public function delete($entity)
+    {
         $list = $this->getAllChildren($entity);
         //Detach all employees
         $data = array(
@@ -145,9 +156,10 @@ class Organization_model extends CI_Model {
      * Delete an employee from an entity of the organization
      * @param int $id identifier of the employee
      * @return type result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function detachEmployee($id) {
+    public function detachEmployee($id)
+    {
         $data = array(
             'organization' => NULL
         );
@@ -160,9 +172,10 @@ class Organization_model extends CI_Model {
      * @param int $id identifier of the entity
      * @param string $text new text of the entity
      * @return type result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function rename($id, $text) {
+    public function rename($id, $text)
+    {
         $data = array(
             'name' => $text
         );
@@ -175,9 +188,10 @@ class Organization_model extends CI_Model {
      * @param int $parent_id identifier of the parent entity
      * @param string $text name of the new entity
      * @return type
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function create($parent_id, $text) {
+    public function create($parent_id, $text)
+    {
         $data = array(
             'name' => $text,
             'parent_id' => $parent_id
@@ -190,9 +204,10 @@ class Organization_model extends CI_Model {
      * @param int $id identifier of the source entity
      * @param int $parent_id identifier of the new parent entity
      * @return type
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function copy($id, $parent_id) {
+    public function copy($id, $parent_id)
+    {
         $this->db->from('organization');
         $this->db->where('id', $id);
         $query = $this->db->get();
@@ -208,9 +223,10 @@ class Organization_model extends CI_Model {
      * Returns the list of the employees attached to an entity
      * @param int $id identifier of the entity
      * @return array Result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function employees($id) {
+    public function employees($id)
+    {
         $this->db->select('id, firstname, lastname, email, datehired');
         $this->db->from('users');
         $this->db->where('organization', $id);
@@ -224,9 +240,10 @@ class Organization_model extends CI_Model {
      * @param int $id identifier of the entity
      * @param bool $children Include sub department in the query
      * @return  array Result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function allEmployees($id, $children = FALSE) {
+    public function allEmployees($id, $children = FALSE)
+    {
         $this->db->select('users.id, users.identifier, users.firstname, users.lastname, users.datehired');
         $this->db->select('organization.name as department, positions.name as position, contracts.name as contract');
         $this->db->select('contracts.id as contract_id');
@@ -261,9 +278,10 @@ class Organization_model extends CI_Model {
      * @param int $id identifier of the employee
      * @param int $entity identifier of the entity
      * @return int result of the query
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function setSupervisor($id, $entity) {
+    public function setSupervisor($id, $entity)
+    {
         $data = array(
             'supervisor' => $id
         );
@@ -275,9 +293,10 @@ class Organization_model extends CI_Model {
      * Returns the supervisor of an entity
      * @param int $entity identifier of the entity
      * @return object identifier of supervisor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function getSupervisor($entity) {
+    public function getSupervisor($entity)
+    {
         $this->db->select('users.id, CONCAT(users.firstname, \' \', users.lastname) as username, email', FALSE);
         $this->db->from('organization');
         $this->db->join('users', 'users.id = organization.supervisor');

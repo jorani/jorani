@@ -1,24 +1,28 @@
 <?php
 /**
  * This controller contains the actions allowing a manager to list and manage overtime requests
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.1.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.1.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class loads the actions allowing a manager to list and manage overtime requests
  */
-class Overtime extends CI_Controller {
+class Overtime extends CI_Controller
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         setUserContext($this);
         $this->load->model('overtime_model');
@@ -30,9 +34,10 @@ class Overtime extends CI_Controller {
      * Display the list of all overtime requests submitted to the connected manager.
      * Status is submitted or accepted/rejected depending on the filter parameter.
      * @param string $name Filter the list of submitted overtime requests (all or requested)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function index($filter = 'requested') {
+    public function index($filter = 'requested')
+    {
         $this->auth->checkIfOperationIsAllowed('list_overtime');
         if ($filter == 'all') {
             $showAll = TRUE;
@@ -56,9 +61,10 @@ class Overtime extends CI_Controller {
     /**
      * Accept an overtime request
      * @param int $id overtime request identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function accept($id) {
+    public function accept($id)
+    {
         $this->auth->checkIfOperationIsAllowed('accept_overtime');
         $this->load->model('users_model');
         $this->load->model('delegations_model');
@@ -68,7 +74,7 @@ class Overtime extends CI_Controller {
         }
         $employee = $this->users_model->getUsers($extra['employee']);
         $is_delegate = $this->delegations_model->isDelegateOfManager($this->user_id, $employee['manager']);
-        if (($this->user_id == $employee['manager']) || ($this->is_hr)  || ($is_delegate)) {
+        if (($this->user_id == $employee['manager']) || ($this->is_hr) || ($is_delegate)) {
             $this->overtime_model->acceptExtra($id);
             $this->sendMail($id);
             $this->session->set_flashdata('msg', lang('overtime_accept_flash_msg_success'));
@@ -87,9 +93,10 @@ class Overtime extends CI_Controller {
     /**
      * Reject an overtime request
      * @param int $id overtime request identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function reject($id) {
+    public function reject($id)
+    {
         $this->auth->checkIfOperationIsAllowed('reject_overtime');
         $this->load->model('users_model');
         $this->load->model('delegations_model');
@@ -99,7 +106,7 @@ class Overtime extends CI_Controller {
         }
         $employee = $this->users_model->getUsers($extra['employee']);
         $is_delegate = $this->delegations_model->isDelegateOfManager($this->user_id, $employee['manager']);
-        if (($this->user_id == $employee['manager']) || ($this->is_hr)  || ($is_delegate)) {
+        if (($this->user_id == $employee['manager']) || ($this->is_hr) || ($is_delegate)) {
             $this->overtime_model->rejectExtra($id);
             $this->sendMail($id);
             $this->session->set_flashdata('msg', lang('overtime_reject_flash_msg_success'));
@@ -119,7 +126,7 @@ class Overtime extends CI_Controller {
      * Send a overtime request email to the employee that requested the overtime
      * The method will check if the overtime request was accepted or rejected before sending the e-mail
      * @param int $id overtime request identifier
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     private function sendMail($id)
     {
@@ -160,15 +167,16 @@ class Overtime extends CI_Controller {
             $message = $this->parser->parse('emails/' . $employee['language'] . '/overtime_rejected', $data, TRUE);
             $subject = $lang_mail->line('email_overtime_request_reject_subject');
         }
-        sendMailByWrapper($this, $subject, $message, $employee['email'], is_null($supervisor)?NULL:$supervisor->email);
+        sendMailByWrapper($this, $subject, $message, $employee['email'], is_null($supervisor) ? NULL : $supervisor->email);
     }
 
     /**
      * Export the list of all overtime requests (sent to the connected user) into an Excel file
      * @param string $name Filter the list of submitted overtime requests (all or requested)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function export($filter = 'requested') {
+    public function export($filter = 'requested')
+    {
         $data['filter'] = $filter;
         $this->load->view('overtime/export', $data);
     }

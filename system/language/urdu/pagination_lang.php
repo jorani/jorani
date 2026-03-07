@@ -5,12 +5,12 @@
  * @author CodeIgniter community
  * @author Muhammad Ali
  * @copyright Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license http://opensource.org/licenses/MIT MIT License
+ * @license https://opensource.org/licenses/MIT MIT License
  * @link http://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['pagination_first_link']	= '&lsaquo; پہلا';
-$lang['pagination_next_link']	= '&gt;';
-$lang['pagination_prev_link']	= '&lt;';
-$lang['pagination_last_link']	= 'آخری &rsaquo;';
+$lang['pagination_first_link'] = '&lsaquo; پہلا';
+$lang['pagination_next_link'] = '&gt;';
+$lang['pagination_prev_link'] = '&lt;';
+$lang['pagination_last_link'] = 'آخری &rsaquo;';

@@ -2,9 +2,9 @@
 /**
  * This view exports into a Spreadsheet file the native report listing the approved leave requests of employees attached to an entity.
  * This report is launched by the user from the view reports/leaves.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.4.3
  */
 
@@ -30,7 +30,7 @@ $requests = filter_var($this->input->get("requests"), FILTER_VALIDATE_BOOLEAN);
 if ($month == 0) {
     $start = sprintf('%d-01-01', $year);
     $end = sprintf('%d-12-31', $year);
-    $total_days = date("z", mktime(0,0,0,12,31,$year)) + 1;
+    $total_days = date("z", mktime(0, 0, 0, 12, 31, $year)) + 1;
 } else {
     $start = sprintf('%d-%02d-01', $year, $month);
     $lastDay = date("t", strtotime($start));    //last day of selected month
@@ -59,7 +59,7 @@ foreach ($users as $user) {
     //If the user has selected All months
     if ($month == 0) {
         $leave_duration = 0;
-        for ($ii = 1; $ii <13; $ii++) {
+        for ($ii = 1; $ii < 13; $ii++) {
             $linear = $this->leaves_model->linear($user->id, $ii, $year, FALSE, FALSE, TRUE, FALSE);
             $leave_duration += $this->leaves_model->monthlyLeavesDuration($linear);
             $leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);
@@ -70,20 +70,22 @@ foreach ($users as $user) {
                         $result[$user->id][$type['name']] = 0;
                     }
                     $result[$user->id][$type['name']] +=
-                            $leaves_detail[$type['name']];
+                        $leaves_detail[$type['name']];
                 } else {
                     $result[$user->id][$type['name']] = '';
                 }
             }
         }
-        if ($requests) $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
+        if ($requests)
+            $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
         $work_duration = $opened_days - $leave_duration;
     } else {
         $linear = $this->leaves_model->linear($user->id, $month, $year, FALSE, FALSE, TRUE, FALSE);
         $leave_duration = $this->leaves_model->monthlyLeavesDuration($linear);
         $work_duration = $opened_days - $leave_duration;
         $leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);
-        if ($requests) $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
+        if ($requests)
+            $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
         //Init type columns
         foreach ($types as $type) {
             if (array_key_exists($type['name'], $leaves_detail)) {
@@ -135,8 +137,8 @@ foreach ($result as $user_id => $row) {
                 $startdate = $date->format(lang('global_date_format'));
                 $date = new DateTime($request['enddate']);
                 $enddate = $date->format(lang('global_date_format'));
-                $sheet->setCellValue('A' . $line, $startdate . ' (' . lang($request['startdatetype']). ')');
-                $sheet->setCellValue('B' . $line, $enddate . ' (' . lang($request['enddatetype']). ')');
+                $sheet->setCellValue('A' . $line, $startdate . ' (' . lang($request['startdatetype']) . ')');
+                $sheet->setCellValue('B' . $line, $enddate . ' (' . lang($request['enddatetype']) . ')');
                 $sheet->setCellValue('C' . $line, $request['type']);
                 $sheet->setCellValue('D' . $line, $request['duration']);
                 $line++;
@@ -153,9 +155,9 @@ $sheet->getStyle('A1:' . $colidx)->getFont()->setBold(true);
 $sheet->getStyle('A1:' . $colidx)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
 //Autofit
-for ($ii=1; $ii <$max; $ii++) {
+for ($ii = 1; $ii < $max; $ii++) {
     $col = columnName($ii);
     $sheet->getColumnDimension($col)->setAutoSize(TRUE);
 }
 
-writeSpreadsheet($spreadsheet, 'leave_requests_'. $month . '_' . $year);
+writeSpreadsheet($spreadsheet, 'leave_requests_' . $month . '_' . $year);

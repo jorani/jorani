@@ -1,8 +1,7 @@
 -- ---------------------------------------------------
 -- Jorani Schema upgrade to 1.0.0
 --
--- @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
--- @copyright  Copyright (c) 2014-2023 Benjamin BALET
+-- @license    http://opensource.org/licenses/MIT MIT
 
 -- Clean model from tables that are now into 3rd party applications
 -- Fix default values for database

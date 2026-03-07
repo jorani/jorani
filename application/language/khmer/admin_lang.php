@@ -1,9 +1,9 @@
 <?php
 /**
  * Translation file
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.4.6
  */
 
@@ -37,7 +37,7 @@ $lang['admin_diagnostic_entitlements_thead_start_date'] = 'Start Date';
 $lang['admin_diagnostic_entitlements_thead_end_date'] = 'End Date';
 $lang['admin_diagnostic_entitlements_type_contract'] = 'Contract';
 $lang['admin_diagnostic_entitlements_type_employee'] = 'Employee';
-$lang['admin_diagnostic_entitlements_deletion_problem'] = 'Incomplete deletion into database.' ;
+$lang['admin_diagnostic_entitlements_deletion_problem'] = 'Incomplete deletion into database.';
 
 $lang['admin_diagnostic_daysoff_tab'] = 'Non-working days';
 $lang['admin_diagnostic_daysoff_description'] = 'Number of days (per contract) for which a non-working duration has been defined.';

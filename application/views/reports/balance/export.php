@@ -1,9 +1,9 @@
 <?php
 /**
  * This view builds a Spreadsheet file of the native report 'balance of leave requests'.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.2.0
  */
 
@@ -37,11 +37,11 @@ foreach ($users as $user) {
 
     $summary = $this->leaves_model->getLeaveBalanceForEmployee($user->id, TRUE, $refDate);
     if (!is_null($summary)) {
-      if (count($summary) > 0 ) {
-          foreach ($summary as $key => $value) {
-              $result[$user->id][$key] = round($value[1] - $value[0], 3, PHP_ROUND_HALF_DOWN);
-          }
-      }
+        if (count($summary) > 0) {
+            foreach ($summary as $key => $value) {
+                $result[$user->id][$key] = round($value[1] - $value[0], 3, PHP_ROUND_HALF_DOWN);
+            }
+        }
     }
 }
 
@@ -72,7 +72,7 @@ $sheet->getStyle('A1:' . $colidx)->getFont()->setBold(true);
 $sheet->getStyle('A1:' . $colidx)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
 //Autofit
-for ($ii=1; $ii <$max; $ii++) {
+for ($ii = 1; $ii < $max; $ii++) {
     $col = columnName($ii);
     $sheet->getColumnDimension($col)->setAutoSize(TRUE);
 }

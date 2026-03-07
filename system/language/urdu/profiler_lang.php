@@ -5,7 +5,7 @@
  * @author CodeIgniter community
  * @author Muhammad Ali
  * @copyright Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license http://opensource.org/licenses/MIT MIT License
+ * @license https://opensource.org/licenses/MIT MIT License
  * @link http://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -23,9 +23,9 @@ $lang['profiler_session_data'] = 'SESSION DATA';
 $lang['profiler_headers'] = 'HTTP HEADERS';
 $lang['profiler_no_db'] = '.ڈیٹا بیس ڈرائیور فلحال لوڈڈ نہیں ہے';
 $lang['profiler_no_queries'] = 'کوئی بھی قویریس نہیں چلیں';
-$lang['profiler_no_post'] 	= 'ڈیٹا موجود نہیں POST کوئی بھی';
-$lang['profiler_no_get'] 	= 'ڈیٹا موجود نہیں GET کوئی بھی';
-$lang['profiler_no_uri'] 	= 'ڈیٹا موجود نہیں URI کوئی بھی';
+$lang['profiler_no_post'] = 'ڈیٹا موجود نہیں POST کوئی بھی';
+$lang['profiler_no_get'] = 'ڈیٹا موجود نہیں GET کوئی بھی';
+$lang['profiler_no_uri'] = 'ڈیٹا موجود نہیں URI کوئی بھی';
 $lang['profiler_no_memory'] = 'میموری کا استعمال موجود نہیں';
 $lang['profiler_no_profiles'] = '.پروفائل کا ڈیٹا موجود نہیں - پروفائلر کے تمام حصّے غیر فعال کردیے گئے ہیں';
 $lang['profiler_section_hide'] = 'چھپاؤ';

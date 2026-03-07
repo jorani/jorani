@@ -1,31 +1,35 @@
 <?php
 /**
  * This view is included into all desktop full views. It contains the footer of the application.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link       https://github.com/bbalet/jorani
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @link       https://github.com/jorani/jorani
  * @since      0.1.0
  */
 ?>
 
-            </div><!-- /container -->
-        <div id="push"></div>
-    </div><!-- /wrap -->
-    <!-- FOOTER -->
-    <div class="row" id="footer">
-        <div class="span8 pull-left" id="rum_info">
-            &nbsp;
-        </div>
-        <div class="span4 pull-right">
-              <?php switch ($language_code){
-                  case 'fr' : echo '<a class="anchor" href="https://fr.jorani.org/" target="_blank">Jorani</a>'; break;
-                  default : echo '<a class="anchor" href="https://jorani.org/" target="_blank">Jorani</a>'; break;
-              } ?>
-          &nbsp;v<?php echo $GLOBALS['versionOfJorani'];?>&nbsp;&copy;2014-2019 Benjamin BALET
-        </div>
+</div><!-- /container -->
+<div id="push"></div>
+</div><!-- /wrap -->
+<!-- FOOTER -->
+<div class="row" id="footer">
+    <div class="span8 pull-left" id="rum_info">
+        &nbsp;
     </div>
+    <div class="span4 pull-right">
+        <?php switch ($language_code) {
+            case 'fr':
+                echo '<a class="anchor" href="https://fr.jorani.org/" target="_blank">Jorani</a>';
+                break;
+            default:
+                echo '<a class="anchor" href="https://jorani.org/" target="_blank">Jorani</a>';
+                break;
+        } ?>
+        &nbsp;v<?php echo $GLOBALS['versionOfJorani']; ?>&nbsp;&copy;2014-2019 Benjamin BALET
     </div>
-    <!--Minimal profiling info //-->
+</div>
+</div>
+<!--Minimal profiling info //-->
 <?php
 if ($this->config->item("enable_apm_rum")) {
     //See. http://techblog.constantcontact.com/software-development/measure-page-load-times-using-the-user-timing-api/
@@ -53,42 +57,43 @@ if ($this->config->item("enable_apm_rum")) {
         echo "\t<input id='ci_memory_usage' type='hidden' value='XXX' />" . PHP_EOL;
     }
     //Total time
-    $total_time =  floatval($this->benchmark->elapsed_time('total_execution_time_start', 'total_execution_time_end'));
+    $total_time = floatval($this->benchmark->elapsed_time('total_execution_time_start', 'total_execution_time_end'));
     $total_time = (int) round($total_time * 1000, 0);
     $total_time -= $query_time;
     echo "\t<input id='ci_elapsed_time' type='hidden' value='" . $total_time . "' />" . PHP_EOL;
 }
 ?>
 <?php if ($this->config->item("enable_apm_display")) { ?>
-<script type="text/javascript">
-// Add a load event listener that display web timing
-window.addEventListener("load", displayRUMInfo, false);
-function displayRUMInfo() {
-  var perfData = window.performance.timing;
-  var pageLoadTime = parseInt(perfData.domComplete - perfData.domLoading);
-  var networkLatency = parseInt(perfData.responseEnd - perfData.requestStart);
-  var ciElapsedTime = parseInt($("#ci_elapsed_time").val());
-  var ciDatabaseTime = parseInt($("#ci_database_time").val());
-  var total = ciDatabaseTime + ciElapsedTime + networkLatency + pageLoadTime;
-  var content = '<i class="mdi mdi-memory" aria-hidden="true" title="Memory"></i>&nbsp;';
-  content += $("#ci_memory_usage").val() + ' bytes ';
-  content += '<i class="mdi mdi-clock" aria-hidden="true" title="Total time for user"></i>&nbsp;';
-  content += total + ' ms ';
-  content += '&nbsp;&nbsp;&mdash;&nbsp;&nbsp;';
-  content += '<i class="mdi mdi-database" aria-hidden="true" title="SQL execution time (number of queries)"></i>&nbsp;';
-  content += ciDatabaseTime + ' ms (' + $("#ci_database_count").val() + ') ';
-  content += '&nbsp;';
-  content += '<i class="mdi mdi-code-string" aria-hidden="true" title="PHP Execution time"></i>&nbsp;';
-  content += ciElapsedTime + ' ms ';
-  content += '&nbsp;';
-  content += '<i class="mdi mdi-download" aria-hidden="true" title="Download time"></i>&nbsp;';
-  content += networkLatency + ' ms ';
-  content += '&nbsp;';
-  content += '<i class="mdi mdi-internet-explorer" aria-hidden="true" title="Client processing time"></i>&nbsp;';
-  content += pageLoadTime + ' ms ';
-  $("#rum_info").html(content);
-}
- </script>
+    <script type="text/javascript">
+        // Add a load event listener that display web timing
+        window.addEventListener("load", displayRUMInfo, false);
+        function displayRUMInfo() {
+            var perfData = window.performance.timing;
+            var pageLoadTime = parseInt(perfData.domComplete - perfData.domLoading);
+            var networkLatency = parseInt(perfData.responseEnd - perfData.requestStart);
+            var ciElapsedTime = parseInt($("#ci_elapsed_time").val());
+            var ciDatabaseTime = parseInt($("#ci_database_time").val());
+            var total = ciDatabaseTime + ciElapsedTime + networkLatency + pageLoadTime;
+            var content = '<i class="mdi mdi-memory" aria-hidden="true" title="Memory"></i>&nbsp;';
+            content += $("#ci_memory_usage").val() + ' bytes ';
+            content += '<i class="mdi mdi-clock" aria-hidden="true" title="Total time for user"></i>&nbsp;';
+            content += total + ' ms ';
+            content += '&nbsp;&nbsp;&mdash;&nbsp;&nbsp;';
+            content += '<i class="mdi mdi-database" aria-hidden="true" title="SQL execution time (number of queries)"></i>&nbsp;';
+            content += ciDatabaseTime + ' ms (' + $("#ci_database_count").val() + ') ';
+            content += '&nbsp;';
+            content += '<i class="mdi mdi-code-string" aria-hidden="true" title="PHP Execution time"></i>&nbsp;';
+            content += ciElapsedTime + ' ms ';
+            content += '&nbsp;';
+            content += '<i class="mdi mdi-download" aria-hidden="true" title="Download time"></i>&nbsp;';
+            content += networkLatency + ' ms ';
+            content += '&nbsp;';
+            content += '<i class="mdi mdi-internet-explorer" aria-hidden="true" title="Client processing time"></i>&nbsp;';
+            content += pageLoadTime + ' ms ';
+            $("#rum_info").html(content);
+        }
+    </script>
 <?php } ?>
 </body>
+
 </html>

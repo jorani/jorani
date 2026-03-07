@@ -3,13 +3,15 @@
  * This controller is the entry point for the REST API used by mobile and HTML5
  * Clients. They use CORS requests. Each call to end points uses BasicAuth 
  * except the preflight exchange. So it should be used with a TLS connection
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.3.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.3.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\AllOfException;
@@ -17,13 +19,15 @@ use Respect\Validation\Exceptions\AllOfException;
 /**
  * This class implements a REST API for the leave requests sent to a manager
  */
-class RestRequests extends MY_RestController {
+class RestRequests extends MY_RestController
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('leaves_model');
     }
@@ -32,16 +36,17 @@ class RestRequests extends MY_RestController {
      * Display the list of all requests submitted to you
      * Status is submitted or accepted/rejected depending on the filter parameter.
      * @param string $name Filter the list of submitted leave requests ("all" or "requested")
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function requests($filter = 'requested') {
+    public function requests($filter = 'requested')
+    {
         log_message('debug', '++requests filter=' . $filter);
         $requests = NULL;
-        ($filter == 'all')? $showAll = TRUE : $showAll = FALSE;
+        ($filter == 'all') ? $showAll = TRUE : $showAll = FALSE;
         if ($this->config->item('enable_history') == TRUE) {
-          $requests = $this->leaves_model->getLeavesRequestedToManagerWithHistory($this->user->id, $showAll);
-        }else{
-          $requests = $this->leaves_model->getLeavesRequestedToManager($this->user->id, $showAll);
+            $requests = $this->leaves_model->getLeavesRequestedToManagerWithHistory($this->user->id, $showAll);
+        } else {
+            $requests = $this->leaves_model->getLeavesRequestedToManager($this->user->id, $showAll);
         }
 
         //Format and translate according to Accept-Language Header

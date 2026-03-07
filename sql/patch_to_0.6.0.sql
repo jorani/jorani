@@ -1,8 +1,7 @@
 -- ---------------------------------------------------
 -- Jorani Schema upgrade to 0.6.0
 -- 
--- @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
--- @copyright  Copyright (c) 2014-2023 Benjamin BALET
+-- @license    http://opensource.org/licenses/MIT MIT
 
 -- New features:
 -- * Role admin

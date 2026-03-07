@@ -1,9 +1,9 @@
 <?php
 /**
  * This view displays sso failure message. Its layout is the same than the login form.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license    http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link       https://github.com/bbalet/jorani
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @link       https://github.com/jorani/jorani
  * @since      0.5.0
  */
 ?>
@@ -23,71 +23,80 @@
     }
 
     .vertical-center {
-        min-height: 90%;  /* Fallback for browsers that do NOT support vh unit */
+        min-height: 90%;
+        /* Fallback for browsers that do NOT support vh unit */
         min-height: 90vh;
         display: flex;
         align-items: center;
-      }
+    }
 
-      .form-box {
+    .form-box {
         padding: 20px;
         border: 1px #e4e4e4 solid;
         border-radius: 4px;
         box-shadow: 0 0 6px #ccc;
         background-color: #fff;
-      }
+    }
 </style>
 
-    <div class="row vertical-center">
-        <div class="span3">&nbsp;</div>
-            <div class="span6 form-box">
-                <div class="row-fluid">
-                    <div class="span6">
-<h2><?php echo lang('session_login_title');?><?php echo $help;?></h2>
+<div class="row vertical-center">
+    <div class="span3">&nbsp;</div>
+    <div class="span6 form-box">
+        <div class="row-fluid">
+            <div class="span6">
+                <h2><?php echo lang('session_login_title'); ?><?php echo $help; ?></h2>
 
-    <?php $languages = $this->polyglot->nativelanguages($this->config->item('languages'));?>
-    <input type="hidden" name="last_page" value="session/failure" />
-    <?php if (count($languages) == 1) { ?>
-    <input type="hidden" name="language" value="<?php echo $language_code; ?>" />
-    <?php } else { ?>
-    <label for="language"><?php echo lang('session_login_field_language');?></label>
-    <select class="input-medium" name="language" id="language">
-        <?php foreach ($languages as $lang_code => $lang_name) { ?>
-        <option value="<?php echo $lang_code; ?>" <?php if ($language_code == $lang_code) echo 'selected'; ?>><?php echo $lang_name; ?></option>
-        <?php }?>
-    </select>
-    <?php } ?>
-    <h4><?php echo $message;?></h4>
-    <br />
-    <a href="<?php echo base_url();?>api/sso" class="btn btn-primary"><i class="mdi mdi-login"></i>&nbsp;<?php echo lang('session_login_button_login');?></a>
-    <br /><br />
-                </div>
-                <div class="span6" style="height:100%;">
-                    <div class="row-fluid">
-                        <div class="span12">
-                            <img src="<?php echo base_url();?>assets/images/logo_simple.png">
-                        </div>
+                <?php $languages = $this->polyglot->nativelanguages($this->config->item('languages')); ?>
+                <input type="hidden" name="last_page" value="session/failure" />
+                <?php if (count($languages) == 1) { ?>
+                    <input type="hidden" name="language" value="<?php echo $language_code; ?>" />
+                <?php } else { ?>
+                    <label for="language"><?php echo lang('session_login_field_language'); ?></label>
+                    <select class="input-medium" name="language" id="language">
+                        <?php foreach ($languages as $lang_code => $lang_name) { ?>
+                            <option value="<?php echo $lang_code; ?>" <?php if ($language_code == $lang_code)
+                                   echo 'selected'; ?>>
+                                <?php echo $lang_name; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                <?php } ?>
+                <h4><?php echo $message; ?></h4>
+                <br />
+                <a href="<?php echo base_url(); ?>api/sso" class="btn btn-primary"><i
+                        class="mdi mdi-login"></i>&nbsp;<?php echo lang('session_login_button_login'); ?></a>
+                <br /><br />
+            </div>
+            <div class="span6" style="height:100%;">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <img src="<?php echo base_url(); ?>assets/images/logo_simple.png">
                     </div>
-                    <div class="row-fluid"><div class="span12">&nbsp;</div></div>
-                    <div class="row-fluid">
-                        <div class="span12">
-                            <span style="font-size: 250%; font-weight: bold; line-height: 100%;"><center><?php echo lang('Leave Management System');?></center></span>
-                        </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">&nbsp;</div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <span style="font-size: 250%; font-weight: bold; line-height: 100%;">
+                            <center><?php echo lang('Leave Management System'); ?></center>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="span3">&nbsp;</div>
     </div>
+    <div class="span3">&nbsp;</div>
+</div>
 
 <script type="text/javascript">
     $(function () {
         //Refresh page language
         $('#language').select2();
         $('#language').on('select2:select', function (e) {
-          var value = e.params.data.id;
-          Cookies.set('language', value, { expires: 90, path: '/'});
-          window.location.href = '<?php echo base_url();?>session/language?language=' + value;
+            var value = e.params.data.id;
+            Cookies.set('language', value, { expires: 90, path: '/' });
+            window.location.href = '<?php echo base_url(); ?>session/language?language=' + value;
         });
     });
 </script>

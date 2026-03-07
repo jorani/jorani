@@ -1,26 +1,30 @@
 <?php
 /**
  * This controller contains the actions allowing to manage and display the organization tree
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.2.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.2.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class allows to manage the organization of of users. Users can be attached to a node of a tree.
  * These nodes are called 'entities' and can be 'departments' or 'sub-departments', 'groups', etc.
  * It allows to use filters on a part of your structure, whatever your organization is.
  */
-class Organization extends CI_Controller {
+class Organization extends CI_Controller
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         //This controller differs from the others, because some endpoints can be public
         //when they are used by public calendars
@@ -29,9 +33,10 @@ class Organization extends CI_Controller {
     /**
      * Main view that allows to describe the entities of the organization
      * And to attach employees to entities (lot of Ajax callbacks)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function index() {
+    public function index()
+    {
         setUserContext($this);
         $this->auth->checkIfOperationIsAllowed('organization_index');
         $data = getUserContext($this);
@@ -49,9 +54,10 @@ class Organization extends CI_Controller {
     /**
      * Pop-up showing the tree of the organization and allowing a
      * user to choose an entity (filter of a report or a calendar)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function select() {
+    public function select()
+    {
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
             $data['language'] = $this->config->item('language');
@@ -74,9 +80,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Rename an entity of the organization
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function rename() {
+    public function rename()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -92,9 +99,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Create an entity in the organization
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function create() {
+    public function create()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -110,9 +118,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Move an entity into the organization
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function move() {
+    public function move()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -128,9 +137,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Copy an entity into the organization
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function copy() {
+    public function copy()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -146,14 +156,15 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Returns the list of the employees attached to an entity
      * Prints the table content in a JSON format expected by jQuery Datatable
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function employees() {
+    public function employees()
+    {
         setUserContext($this);
         $id = $this->input->get('id', TRUE);
         $this->load->model('organization_model');
         $employees = $this->organization_model->employees($id)->result();
-        
+
         //Prepare an object that will be encoded in JSON
         $msg = new \stdClass();
         $msg->draw = 1;
@@ -173,13 +184,14 @@ class Organization extends CI_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode($msg));
     }
-    
+
     /**
      * Ajax endpoint: Add an employee to an entity of the organization
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function addemployee() {
+    public function addemployee()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -195,9 +207,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Add an employee to an entity of the organization
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function delemployee() {
+    public function delemployee()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -212,9 +225,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Cascade delete children and set employees' org to NULL
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function delete() {
+    public function delete()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -229,9 +243,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Returns a JSON string describing the organization structure.
      * In a format expected by jsTree component.
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function root() {
+    public function root()
+    {
         header("Content-Type: application/json");
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
             //nop
@@ -265,9 +280,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint:Returns the supervisor of an entity of the organization
      * (string containing an id)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function getsupervisor() {
+    public function getsupervisor()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         $entity = $this->input->get('entity', TRUE);
@@ -282,9 +298,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: Select the supervisor of an entity of the organization
      * takes parameters by GET
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function setsupervisor() {
+    public function setsupervisor()
+    {
         header("Content-Type: application/json");
         setUserContext($this);
         if ($this->auth->isAllowed('edit_organization') == FALSE) {
@@ -303,9 +320,10 @@ class Organization extends CI_Controller {
 
     /**
      * Modal form allowing to create and manage custom lists of employees
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function listsIndex() {
+    public function listsIndex()
+    {
         $data = getCIUserContext();
         $this->auth->checkIfOperationIsAllowed('organization_lists_index');
         $this->load->model('lists_model');
@@ -322,9 +340,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint allowing to create a new list of employees
      * Return the last inserted ID
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function listsCreate() {
+    public function listsCreate()
+    {
         header("Content-Type: application/json");
         $data = getCIUserContext();
         if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
@@ -340,9 +359,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint allowing to rename a list of employees
      * Return the last inserted ID
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function listsRename() {
+    public function listsRename()
+    {
         header("Content-Type: application/json");
         $data = getCIUserContext();
         if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
@@ -358,9 +378,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint allowing to delete a list of employees
      * Return the last inserted ID
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function listsDelete() {
+    public function listsDelete()
+    {
         header("Content-Type: application/json");
         $data = getCIUserContext();
         if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
@@ -375,9 +396,10 @@ class Organization extends CI_Controller {
     /**
      * Ajax endpoint: load the list of employees attached to a given list id
      * Format the data as expected by JQuery Datatable 1.10
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function listsEmployees() {
+    public function listsEmployees()
+    {
         header("Content-Type: application/json");
         $data = getCIUserContext();
         if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
@@ -406,9 +428,10 @@ class Organization extends CI_Controller {
 
     /**
      * Ajax endpoint allowing to add a list of employees into a list
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function listsAddEmployees() {
+    public function listsAddEmployees()
+    {
         header("Content-Type: application/json");
         $data = getCIUserContext();
         if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
@@ -424,9 +447,10 @@ class Organization extends CI_Controller {
 
     /**
      * Ajax endpoint allowing to remove a list of employees from a list
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function listsRemoveEmployees() {
+    public function listsRemoveEmployees()
+    {
         header("Content-Type: application/json");
         $data = getCIUserContext();
         if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
@@ -441,40 +465,42 @@ class Organization extends CI_Controller {
     }
 
     /**
-    * Ajax endpoint allowing to remove a list of employees from a list
-    * @author Benjamin BALET <benjamin.balet@gmail.com>
-    */
-    public function listsReorder() {
-      header("Content-Type: application/json");
-      $data = getCIUserContext();
-      if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
-          $this->output->set_header("HTTP/1.1 403 Forbidden");
-      } else {
-          $this->load->model('lists_model');
-          $listId = $this->input->post('id');
-          $mooves = json_decode($this->input->post('moves'));
-          $this->lists_model->reorderListEmployees($listId, $mooves);
-          echo json_encode("");
-      }
+     * Ajax endpoint allowing to remove a list of employees from a list
+     * 
+     */
+    public function listsReorder()
+    {
+        header("Content-Type: application/json");
+        $data = getCIUserContext();
+        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+            $this->output->set_header("HTTP/1.1 403 Forbidden");
+        } else {
+            $this->load->model('lists_model');
+            $listId = $this->input->post('id');
+            $mooves = json_decode($this->input->post('moves'));
+            $this->lists_model->reorderListEmployees($listId, $mooves);
+            echo json_encode("");
+        }
     }
 
     /**
-    * Ajax endpoint retrieving the name of a list
-    * @author Emilien NICOLAS <milihhard1996@gmail.com>
-    */
-    public function listName(){
-      header("Content-Type: application/json");
-      $data = getCIUserContext();
-      if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
-          $this->output->set_header("HTTP/1.1 403 Forbidden");
-      } else {
-          $this->load->model('lists_model');
-          $listId = $this->input->post('id');
-          $this->lists_model->getName($listId);
-          $list = new stdClass();
-          $list->id=$listId;
-          $list->name = $this->lists_model->getName($listId);
-          echo json_encode($list);
-      }
+     * Ajax endpoint retrieving the name of a list
+     * @author Emilien NICOLAS <milihhard1996@gmail.com>
+     */
+    public function listName()
+    {
+        header("Content-Type: application/json");
+        $data = getCIUserContext();
+        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+            $this->output->set_header("HTTP/1.1 403 Forbidden");
+        } else {
+            $this->load->model('lists_model');
+            $listId = $this->input->post('id');
+            $this->lists_model->getName($listId);
+            $list = new stdClass();
+            $list->id = $listId;
+            $list->name = $this->lists_model->getName($listId);
+            echo json_encode($list);
+        }
     }
 }

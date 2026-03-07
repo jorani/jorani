@@ -1,9 +1,9 @@
 <?php
 /**
  * This view builds a Spreadsheet file containing the list of leave requests (that a manager must validate).
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.2.0
  */
 
@@ -31,7 +31,7 @@ $sheet->setCellValue('J1', lang('requests_export_thead_status'));
 $sheet->getStyle('A1:J1')->getFont()->setBold(true);
 $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-($filter == 'all')? $showAll = TRUE : $showAll = FALSE;
+($filter == 'all') ? $showAll = TRUE : $showAll = FALSE;
 $requests = $this->leaves_model->getLeavesRequestedToManager($this->user_id, $showAll);
 $line = 2;
 foreach ($requests as $request) {
@@ -53,7 +53,7 @@ foreach ($requests as $request) {
 }
 
 //Autofit
-foreach(range('A', 'J') as $colD) {
+foreach (range('A', 'J') as $colD) {
     $sheet->getColumnDimension($colD)->setAutoSize(TRUE);
 }
 

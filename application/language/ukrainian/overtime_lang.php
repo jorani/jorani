@@ -2,8 +2,8 @@
 /**
  * Translation file
  * @copyright Copyright (c) 2014-2015 Benjamin BALET
- * @license     http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link           https://github.com/bbalet/jorani
+ * @license     http://opensource.org/licenses/MIT MIT
+ * @link           https://github.com/jorani/jorani
  * @since        0.4.4
  * @author      Yevhen Kyrylchenko
  */

@@ -1,9 +1,9 @@
 <?php
 /**
  * This view exports the list of contracts into a Spreadsheet file
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.1.0
  */
 
@@ -44,7 +44,7 @@ foreach ($contracts as $contract) {
 }
 
 //Autofit
-foreach(range('A', 'D') as $colD) {
+foreach (range('A', 'D') as $colD) {
     $sheet->getColumnDimension($colD)->setAutoSize(TRUE);
 }
 

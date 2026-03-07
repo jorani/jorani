@@ -1,26 +1,30 @@
 <?php
 /**
  * This controller serves all the actions performed by human resources department
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.1.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.1.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This class serves all the actions performed by human resources department.
  * There is a distinction with Admin controller which contain technical actions on users.
  * HR controller deals with employees.
  */
-class Hr extends CI_Controller {
+class Hr extends CI_Controller
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         setUserContext($this);
         $this->load->model('leaves_model');
@@ -30,9 +34,10 @@ class Hr extends CI_Controller {
 
     /**
      * Display the list of all employees
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function employees() {
+    public function employees()
+    {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
@@ -61,17 +66,18 @@ class Hr extends CI_Controller {
      * @param string $date1 Date Hired (optional)
      * @param string $criterion2 "lesser" or "greater" (optional)
      * @param string $date2 Date Hired (optional)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function employeesOfEntity($id = 0, $children = TRUE, $filterActive = "all",
-            $criterion1 = NULL, $date1 = NULL, $criterion2 = NULL, $date2 = NULL) {
+        $criterion1 = NULL, $date1 = NULL, $criterion2 = NULL, $date2 = NULL)
+    {
         if ($this->auth->isAllowed('list_employees') == FALSE) {
             return $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $children = filter_var($children, FILTER_VALIDATE_BOOLEAN);
             $this->load->model('users_model');
             $employees = $this->users_model->employeesOfEntity($id, $children, $filterActive,
-                    $criterion1, $date1, $criterion2, $date2);
+                $criterion1, $date1, $criterion2, $date2);
 
             //Prepare an object that will be encoded in JSON
             $msg = new \stdClass();
@@ -81,7 +87,7 @@ class Hr extends CI_Controller {
             $msg->data = array();
 
             foreach ($employees as $employee) {
-                $date = new DateTime(is_null($employee->datehired)?"":$employee->datehired);
+                $date = new DateTime(is_null($employee->datehired) ? "" : $employee->datehired);
                 $tmpDate = $date->getTimestamp();
                 $displayDate = $date->format(lang('global_date_format'));
 
@@ -109,9 +115,10 @@ class Hr extends CI_Controller {
 
     /**
      * Ajax endpoint: edit the manager for a list of employees
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function editManager() {
+    public function editManager()
+    {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -127,9 +134,10 @@ class Hr extends CI_Controller {
 
     /**
      * Ajax endpoint: edit the entity for a list of employees
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function editEntity() {
+    public function editEntity()
+    {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -145,9 +153,10 @@ class Hr extends CI_Controller {
 
     /**
      * Ajax endpoint: edit the contract for a list of employees
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function editContract() {
+    public function editContract()
+    {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -163,9 +172,10 @@ class Hr extends CI_Controller {
 
     /**
      * Ajax endpoint: create a leave request for a list of employees
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function createLeaveRequest() {
+    public function createLeaveRequest()
+    {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -182,17 +192,18 @@ class Hr extends CI_Controller {
             $objectEmployees = json_decode($employees);
             $this->load->model('leaves_model');
             $result = $this->leaves_model->createRequestForUserList($type, $duration,
-                    $startdate, $enddate, $startdatetype, $enddatetype, $cause, $status,
-                    $objectEmployees);
+                $startdate, $enddate, $startdatetype, $enddatetype, $cause, $status,
+                $objectEmployees);
             echo $result;
         }
     }
 
     /**
      * Ajax endpoint : insert into the list of entitled days for a list of employees
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function editEntitlements() {
+    public function editEntitlements()
+    {
         if ($this->auth->isAllowed('entitleddays_user') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
@@ -218,9 +229,10 @@ class Hr extends CI_Controller {
     /**
      * Display the list of leaves for a given employee
      * @param int $id employee id
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function leaves($id) {
+    public function leaves($id)
+    {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
         $this->lang->load('leaves', $this->language);
@@ -251,9 +263,10 @@ class Hr extends CI_Controller {
     /**
      * Display the list of overtime requests for a given employee
      * @param int $id employee id
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function overtime($id) {
+    public function overtime($id)
+    {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
         $this->load->model('users_model');
@@ -279,14 +292,23 @@ class Hr extends CI_Controller {
      * @param string $source page calling the report (employees, collaborators)
      * @param int $id Identifier of the employee
      * @param string $refTmp Timestamp (reference date)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function counters($source, $id, $refTmp = NULL) {
-        if ($source == 'collaborators') { $this->auth->checkIfOperationIsAllowed('list_collaborators'); }
-        if ($source == 'employees') { $this->auth->checkIfOperationIsAllowed('list_employees'); }
+    public function counters($source, $id, $refTmp = NULL)
+    {
+        if ($source == 'collaborators') {
+            $this->auth->checkIfOperationIsAllowed('list_collaborators');
+        }
+        if ($source == 'employees') {
+            $this->auth->checkIfOperationIsAllowed('list_employees');
+        }
         $data = getUserContext($this);
-        if ($source == 'collaborators') { $data['source'] = 'collaborators'; }
-        if ($source == 'employees') { $data['source'] = 'employees'; }
+        if ($source == 'collaborators') {
+            $data['source'] = 'collaborators';
+        }
+        if ($source == 'employees') {
+            $data['source'] = 'employees';
+        }
         $this->lang->load('entitleddays', $this->language);
         $this->lang->load('datatable', $this->language);
         $refDate = date("Y-m-d");
@@ -328,9 +350,10 @@ class Hr extends CI_Controller {
     /**
      * Create a leave request in behalf of an employee
      * @param int $id Identifier of the employee
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function createleave($id) {
+    public function createleave($id)
+    {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
         $this->load->helper('form');
@@ -376,14 +399,23 @@ class Hr extends CI_Controller {
      * @param int $id employee id
      * @param int $month Month number or 0 for last month (default)
      * @param int $year Year number or 0 for current year (default)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function presence($source, $id, $month=0, $year=0) {
-        if ($source == 'collaborators') { $this->auth->checkIfOperationIsAllowed('list_collaborators'); }
-        if ($source == 'employees') { $this->auth->checkIfOperationIsAllowed('list_employees'); }
+    public function presence($source, $id, $month = 0, $year = 0)
+    {
+        if ($source == 'collaborators') {
+            $this->auth->checkIfOperationIsAllowed('list_collaborators');
+        }
+        if ($source == 'employees') {
+            $this->auth->checkIfOperationIsAllowed('list_employees');
+        }
         $data = getUserContext($this);
-        if ($source == 'collaborators') { $data['source'] = 'collaborators'; }
-        if ($source == 'employees') { $data['source'] = 'employees'; }
+        if ($source == 'collaborators') {
+            $data['source'] = 'collaborators';
+        }
+        if ($source == 'employees') {
+            $data['source'] = 'employees';
+        }
         $this->lang->load('datatable', $this->language);
         $this->lang->load('calendar', $this->language);
         $data['title'] = lang('hr_presence_title');
@@ -402,7 +434,7 @@ class Hr extends CI_Controller {
             $this->session->set_flashdata('msg', sprintf(lang('global_msg_error_forbidden'), 'hr/presence'));
             redirect('leaves');
         }
-        $data['employee_name'] =  $employee['firstname'] . ' ' . $employee['lastname'];
+        $data['employee_name'] = $employee['firstname'] . ' ' . $employee['lastname'];
         $contract = $this->contracts_model->getContracts($employee['contract']);
         if (!empty($contract)) {
             $data['contract_id'] = $contract['id'];
@@ -413,8 +445,10 @@ class Hr extends CI_Controller {
         }
 
         //Compute facts about dates and the selected month
-        if ($month == 0) $month = date('m', strtotime('last month'));
-        if ($year == 0) $year = date('Y', strtotime('last month'));
+        if ($month == 0)
+            $month = date('m', strtotime('last month'));
+        if ($year == 0)
+            $year = date('Y', strtotime('last month'));
         $total_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $start = sprintf('%d-%02d-01', $year, $month);
         $lastDay = date("t", strtotime($start));    //last day of selected month
@@ -454,9 +488,10 @@ class Hr extends CI_Controller {
     /**
      * Export the list of all leave requests of an employee into an Excel file
      * @param int $id employee id
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function exportLeaves($id) {
+    public function exportLeaves($id)
+    {
         $this->load->model('leaves_model');
         $this->load->model('users_model');
         $data['id'] = $id;
@@ -466,9 +501,10 @@ class Hr extends CI_Controller {
     /**
      * Export the list of all overtime requests of an employee into an Excel file
      * @param int $id employee id
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function exportOvertime($id) {
+    public function exportOvertime($id)
+    {
         $this->load->model('overtime_model');
         $this->load->model('users_model');
         $data['id'] = $id;
@@ -484,10 +520,11 @@ class Hr extends CI_Controller {
      * @param string $date1 Date Hired (optional)
      * @param string $criterion2 "lesser" or "greater" (optional)
      * @param string $date2 Date Hired (optional)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
     public function exportEmployees($id = 0, $children = TRUE, $filterActive = "all",
-                            $criterion1 = NULL, $date1 = NULL, $criterion2 = NULL, $date2 = NULL) {
+        $criterion1 = NULL, $date1 = NULL, $criterion2 = NULL, $date2 = NULL)
+    {
         $this->load->model('users_model');
         $data['id'] = $id;
         $data['children'] = filter_var($children, FILTER_VALIDATE_BOOLEAN);
@@ -505,11 +542,16 @@ class Hr extends CI_Controller {
      * @param int $id employee id
      * @param int $month Month number or 0 for last month (default)
      * @param int $year Year number or 0 for current year (default)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function exportPresence($source,$id, $month=0, $year=0) {
-        if ($source == 'collaborators') { $this->auth->checkIfOperationIsAllowed('list_collaborators'); }
-        if ($source == 'employees') { $this->auth->checkIfOperationIsAllowed('list_employees'); }
+    public function exportPresence($source, $id, $month = 0, $year = 0)
+    {
+        if ($source == 'collaborators') {
+            $this->auth->checkIfOperationIsAllowed('list_collaborators');
+        }
+        if ($source == 'employees') {
+            $this->auth->checkIfOperationIsAllowed('list_employees');
+        }
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->load->model('leaves_model');

@@ -1,9 +1,9 @@
 <?php
 /**
  * This view builds an Excel5 file containing the list of leave requests declared by the connected employee.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link https://github.com/jorani/jorani
  * @since         0.2.0
  */
 
@@ -50,7 +50,7 @@ foreach ($leaves as $leave) {
 }
 
 //Autofit
-foreach(range('A', 'I') as $colD) {
+foreach (range('A', 'I') as $colD) {
     $sheet->getColumnDimension($colD)->setAutoSize(TRUE);
 }
 

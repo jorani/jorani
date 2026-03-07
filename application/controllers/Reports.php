@@ -1,13 +1,15 @@
 <?php
 /**
  * This controller serves the list of custom reports and the system reports.
- * @copyright  Copyright (c) 2014-2023 Benjamin BALET
- * @license      http://opensource.org/licenses/AGPL-3.0 AGPL-3.0
- * @link            https://github.com/bbalet/jorani
- * @since         0.2.0
+ * 
+ * @license https://opensource.org/licenses/MIT MIT
+ * @link    https://github.com/jorani/jorani
+ * @since   0.2.0
  */
 
-if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This classe loads:
@@ -15,13 +17,15 @@ if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
  *  - the system reports implemented into Jorani.
  * The custom reports need to be implemented into local/pages/{lang}/ (see Controller Page)
  */
-class Reports extends CI_Controller {
+class Reports extends CI_Controller
+{
 
     /**
      * Default constructor
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         setUserContext($this);
         $this->lang->load('reports', $this->language);
@@ -30,9 +34,10 @@ class Reports extends CI_Controller {
 
     /**
      * List the available custom reports (provided they are described into local/reports/*.ini)
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function index() {
+    public function index()
+    {
         $this->auth->checkIfOperationIsAllowed('report_list');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
@@ -40,7 +45,7 @@ class Reports extends CI_Controller {
         $reports = array();
         //List all the available reports
         $files = glob(FCPATH . '/local/reports/*.ini');
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $ini_array = parse_ini_file($file, TRUE);
             //Test if the report is available for the language being used
             if (array_key_exists($this->language_code, $ini_array)) {
@@ -64,9 +69,10 @@ class Reports extends CI_Controller {
     /**
      * Landing page of the shipped-in balance report
      * @param string $refTmp Optional Unix timestamp (set a date of reference for the report).
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function balance($refTmp = NULL) {
+    public function balance($refTmp = NULL)
+    {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $data = getUserContext($this);
         $refDate = date("Y-m-d");
@@ -84,9 +90,10 @@ class Reports extends CI_Controller {
 
     /**
      * Ajax end-point : execute the balance report
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function executeBalanceReport() {
+    public function executeBalanceReport()
+    {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $this->load->model('leaves_model');
         $this->load->model('types_model');
@@ -117,11 +124,11 @@ class Reports extends CI_Controller {
 
             $summary = $this->leaves_model->getLeaveBalanceForEmployee($user->id, TRUE, $refDate);
             if (!is_null($summary)) {
-              if (count($summary) > 0 ) {
-                  foreach ($summary as $key => $value) {
-                      $result[$user->id][$key] = round($value[1] - $value[0], 3, PHP_ROUND_HALF_DOWN);
-                  }
-              }
+                if (count($summary) > 0) {
+                    foreach ($summary as $key => $value) {
+                        $result[$user->id][$key] = round($value[1] - $value[0], 3, PHP_ROUND_HALF_DOWN);
+                    }
+                }
             }
         }
 
@@ -152,30 +159,31 @@ class Reports extends CI_Controller {
         $alerts = $this->leaves_model->detectBalanceProblems();
         if (count($alerts)) {
             $table = "<div class='alert'>" .
-                     "<button type='button' class='close' data-dismiss='alert'>&times;</button>" .
-                     "<a href='" . base_url() . "admin/diagnostic#balance'>" .
-                     "<i class='mdi mdi-alert'></i>" .
-                     "&nbsp;Error</a>" .
-                     "</div>";
+                "<button type='button' class='close' data-dismiss='alert'>&times;</button>" .
+                "<a href='" . base_url() . "admin/diagnostic#balance'>" .
+                "<i class='mdi mdi-alert'></i>" .
+                "&nbsp;Error</a>" .
+                "</div>";
         }
         $table .= '<table class="table table-bordered table-hover">' .
-                    '<thead>' .
-                        '<tr>' .
-                            $thead .
-                        '</tr>' .
-                    '</thead>' .
-                    '<tbody>' .
-                        $tbody .
-                    '</tbody>' .
-                '</table>';
+            '<thead>' .
+            '<tr>' .
+            $thead .
+            '</tr>' .
+            '</thead>' .
+            '<tbody>' .
+            $tbody .
+            '</tbody>' .
+            '</table>';
         $this->output->set_output($table);
     }
 
     /**
      * Export the balance report into Excel
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      */
-    public function exportBalanceReport() {
+    public function exportBalanceReport()
+    {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $this->load->model('leaves_model');
         $this->load->model('types_model');
@@ -190,10 +198,11 @@ class Reports extends CI_Controller {
 
     /**
      * Landing page of the shipped-in leaves report
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      * @since 0.4.3
      */
-    public function leaves() {
+    public function leaves()
+    {
         $this->auth->checkIfOperationIsAllowed('native_report_leaves');
         $data = getUserContext($this);
         $data['title'] = lang('reports_leaves_title');
@@ -207,10 +216,11 @@ class Reports extends CI_Controller {
     /**
      * Report leaves request for a month and an entity
      * This report is inspired by the monthly presence report, but applicable to a set of employee.
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      * @since 0.4.3
      */
-    public function executeLeavesReport() {
+    public function executeLeavesReport()
+    {
         $this->auth->checkIfOperationIsAllowed('native_report_leaves');
         $this->lang->load('leaves', $this->language);
 
@@ -224,7 +234,7 @@ class Reports extends CI_Controller {
         if ($month == 0) {
             $start = sprintf('%d-01-01', $year);
             $end = sprintf('%d-12-31', $year);
-            $total_days = date("z", mktime(0,0,0,12,31,$year)) + 1;
+            $total_days = date("z", mktime(0, 0, 0, 12, 31, $year)) + 1;
         } else {
             $start = sprintf('%d-%02d-01', $year, $month);
             $lastDay = date("t", strtotime($start));    //last day of selected month
@@ -258,7 +268,7 @@ class Reports extends CI_Controller {
             //If the user has selected All months
             if ($month == 0) {
                 $leave_duration = 0;
-                for ($ii = 1; $ii <13; $ii++) {
+                for ($ii = 1; $ii < 13; $ii++) {
                     $linear = $this->leaves_model->linear($user->id, $ii, $year, FALSE, FALSE, TRUE, FALSE);
                     $leave_duration += $this->leaves_model->monthlyLeavesDuration($linear);
                     $leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);
@@ -269,20 +279,22 @@ class Reports extends CI_Controller {
                                 $result[$user->id][$type['name']] = 0;
                             }
                             $result[$user->id][$type['name']] +=
-                                    $leaves_detail[$type['name']];
+                                $leaves_detail[$type['name']];
                         } else {
                             $result[$user->id][$type['name']] = '';
                         }
                     }
                 }
-                if ($requests) $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
+                if ($requests)
+                    $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
                 $work_duration = $opened_days - $leave_duration;
             } else {
                 $linear = $this->leaves_model->linear($user->id, $month, $year, FALSE, FALSE, TRUE, FALSE);
                 $leave_duration = $this->leaves_model->monthlyLeavesDuration($linear);
                 $work_duration = $opened_days - $leave_duration;
                 $leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);
-                if ($requests) $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
+                if ($requests)
+                    $leave_requests[$user->id] = $this->leaves_model->getAcceptedLeavesBetweenDates($user->id, $start, $end);
                 //Init type columns
                 foreach ($types as $type) {
                     if (array_key_exists($type['name'], $leaves_detail)) {
@@ -324,11 +336,11 @@ class Reports extends CI_Controller {
                     $tbody .= '<tr><td colspan="' . count($row) . '">';
                     $tbody .= '<table class="table table-bordered table-hover" style="width: auto !important;">';
                     $tbody .= '<thead><tr>';
-                    $tbody .= '<th>' . lang('leaves_index_thead_id'). '</th>';
-                    $tbody .= '<th>' . lang('leaves_index_thead_start_date'). '</th>';
-                    $tbody .= '<th>' . lang('leaves_index_thead_end_date'). '</th>';
-                    $tbody .= '<th>' . lang('leaves_index_thead_type'). '</th>';
-                    $tbody .= '<th>' . lang('leaves_index_thead_duration'). '</th>';
+                    $tbody .= '<th>' . lang('leaves_index_thead_id') . '</th>';
+                    $tbody .= '<th>' . lang('leaves_index_thead_start_date') . '</th>';
+                    $tbody .= '<th>' . lang('leaves_index_thead_end_date') . '</th>';
+                    $tbody .= '<th>' . lang('leaves_index_thead_type') . '</th>';
+                    $tbody .= '<th>' . lang('leaves_index_thead_duration') . '</th>';
                     $tbody .= '</tr></thead>';
                     $tbody .= '<tbody>';
                     //Iterate on leave requests
@@ -338,11 +350,11 @@ class Reports extends CI_Controller {
                         $date = new DateTime($request['enddate']);
                         $enddate = $date->format(lang('global_date_format'));
                         $tbody .= '<tr>';
-                        $tbody .= '<td><a href="' . base_url() . 'leaves/view/'. $request['id']. '" target="_blank">'. $request['id']. '</a></td>';
-                        $tbody .= '<td>'. $startdate . ' (' . lang($request['startdatetype']). ')</td>';
-                        $tbody .= '<td>'. $enddate . ' (' . lang($request['enddatetype']). ')</td>';
-                        $tbody .= '<td>'. $request['type'] . '</td>';
-                        $tbody .= '<td>'. $request['duration'] . '</td>';
+                        $tbody .= '<td><a href="' . base_url() . 'leaves/view/' . $request['id'] . '" target="_blank">' . $request['id'] . '</a></td>';
+                        $tbody .= '<td>' . $startdate . ' (' . lang($request['startdatetype']) . ')</td>';
+                        $tbody .= '<td>' . $enddate . ' (' . lang($request['enddatetype']) . ')</td>';
+                        $tbody .= '<td>' . $request['type'] . '</td>';
+                        $tbody .= '<td>' . $request['duration'] . '</td>';
                         $tbody .= '</tr>';
                     }
                     $tbody .= '</tbody>';
@@ -355,24 +367,25 @@ class Reports extends CI_Controller {
             $line++;
         }
         $table = '<table class="table table-bordered table-hover">' .
-                    '<thead>' .
-                        '<tr>' .
-                            $thead .
-                        '</tr>' .
-                    '</thead>' .
-                    '<tbody>' .
-                        $tbody .
-                    '</tbody>' .
-                '</table>';
+            '<thead>' .
+            '<tr>' .
+            $thead .
+            '</tr>' .
+            '</thead>' .
+            '<tbody>' .
+            $tbody .
+            '</tbody>' .
+            '</table>';
         $this->output->set_output($table);
     }
 
     /**
      * Export the leaves report into Excel
-     * @author Benjamin BALET <benjamin.balet@gmail.com>
+     * 
      * @since 0.4.3
      */
-    public function exportLeavesReport() {
+    public function exportLeavesReport()
+    {
         $this->auth->checkIfOperationIsAllowed('native_report_leaves');
         $this->lang->load('leaves', $this->language);
         $this->load->model('organization_model');
