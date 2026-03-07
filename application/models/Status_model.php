@@ -1,9 +1,8 @@
 <?php
 /**
- * This Class contains all the business logic and the persistence layer for the status of leave request.
+ * This file contains all the business logic and the persistence layer for the status of leave request.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.7.0
  */
 
@@ -19,7 +18,6 @@ class Status_model extends CI_Model
 
     /**
      * Default constructor
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function __construct()
     {
@@ -30,15 +28,14 @@ class Status_model extends CI_Model
      * Get the list of status or one status
      * @param int $id optional id of a status
      * @return array record of types
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getStatus($id = 0)
+    public function getStatus(int $id = 0): array
     {
         if ($id === 0) {
             $query = $this->db->get('status');
             return $query->result_array();
         }
-        $query = $this->db->get_where('status', array('id' => $id));
+        $query = $this->db->get_where('status', ['id' => $id]);
         return $query->row_array();
     }
 
@@ -46,22 +43,20 @@ class Status_model extends CI_Model
      * Get the list of status or one status
      * @param string $name status name
      * @return array record of a leave status
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getStatusByName($name)
+    public function getStatusByName(string $name): array
     {
-        $query = $this->db->get_where('status', array('name' => $name));
+        $query = $this->db->get_where('status', ['name' => $name]);
         return $query->row_array();
     }
 
     /**
      * Get the list of status as an ordered associative array
      * @return array Associative array of types (id, name)
-     * 
      */
-    public function getStatusAsArray($id = 0)
+    public function getStatusAsArray(int $id = 0): array
     {
-        $listOfTypes = array();
+        $listOfTypes = [];
         $this->db->from('status');
         $this->db->order_by('name');
         $rows = $this->db->get()->result_array();
@@ -75,9 +70,8 @@ class Status_model extends CI_Model
      * Get the name of a given status id
      * @param int $id ID of the status
      * @return string label of the status
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getName($id)
+    public function getName(int $id): string
     {
         $type = $this->getStatus($id);
         return $type['name'];
