@@ -1,9 +1,8 @@
 <?php
 /**
- * This Class contains all the business logic and the persistence layer for the types of leave request.
+ * This file contains all the business logic and the persistence layer for the types of leave request.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.4.0
  */
 
@@ -30,15 +29,14 @@ class Types_model extends CI_Model
      * Get the list of types or one type
      * @param int $id optional id of a type
      * @return array record of types
-     * 
      */
-    public function getTypes($id = 0)
+    public function getTypes(int $id = 0): array
     {
         if ($id === 0) {
             $query = $this->db->get('types');
             return $query->result_array();
         }
-        $query = $this->db->get_where('types', array('id' => $id));
+        $query = $this->db->get_where('types', ['id' => $id]);
         return $query->row_array();
     }
 
@@ -46,22 +44,20 @@ class Types_model extends CI_Model
      * Get the list of types or one type
      * @param string $name type name
      * @return array record of a leave type
-     * 
      */
-    public function getTypeByName($name)
+    public function getTypeByName(string $name): array
     {
-        $query = $this->db->get_where('types', array('name' => $name));
+        $query = $this->db->get_where('types', ['name' => $name]);
         return $query->row_array();
     }
 
     /**
      * Get the list of types as an ordered associative array
      * @return array Associative array of types (id, name)
-     * 
      */
-    public function getTypesAsArray($id = 0)
+    public function getTypesAsArray(int $id = 0): array
     {
-        $listOfTypes = array();
+        $listOfTypes = [];
         $this->db->from('types');
         $this->db->order_by('name');
         $rows = $this->db->get()->result_array();
@@ -75,9 +71,8 @@ class Types_model extends CI_Model
      * Get the name of a given type id
      * @param int $id ID of the type
      * @return string label of the type
-     * 
      */
-    public function getName($id)
+    public function getName(int $id): string
     {
         $type = $this->getTypes($id);
         return $type['name'];
@@ -85,28 +80,27 @@ class Types_model extends CI_Model
 
     /**
      * Insert a new leave type. Data are taken from HTML form.
-     * @return int number of affected rows
-     * 
+     * @param string $name name of the type
+     * @param bool $deduct Deduct days off
+     * @param string $acronym Acronym of leave type
      */
-    public function setTypes()
+    public function setTypes(string $name, bool $deduct, string $acronym): void
     {
-        $deduct = ($this->input->post('deduct_days_off') == 'on') ? TRUE : FALSE;
-        $data = array(
-            'acronym' => $this->input->post('acronym'),
-            'name' => $this->input->post('name'),
+        $data = [
+            'acronym' => $acronym,
+            'name' => $name,
             'deduct_days_off' => $deduct
-        );
-        return $this->db->insert('types', $data);
+        ];
+        $this->db->insert('types', $data);
     }
 
     /**
      * Delete a leave type from the database
      * @param int $id identifier of the leave type
-     * 
      */
-    public function deleteType($id)
+    public function deleteType(int $id)
     {
-        $this->db->delete('types', array('id' => $id));
+        $this->db->delete('types', ['id' => $id]);
     }
 
     /**
@@ -116,16 +110,14 @@ class Types_model extends CI_Model
      * @param bool $deduct Deduct days off
      * @param string $acronym Acronym of leave type
      * @return int number of affected rows
-     * 
      */
-    public function updateTypes($id, $name, $deduct, $acronym)
+    public function updateTypes(int $id, string $name, bool $deduct, string $acronym): int
     {
-        $deduct = ($deduct == 'on') ? TRUE : FALSE;
-        $data = array(
+        $data = [
             'acronym' => $acronym,
             'name' => $name,
             'deduct_days_off' => $deduct
-        );
+        ];
         $this->db->where('id', $id);
         return $this->db->update('types', $data);
     }
@@ -133,9 +125,9 @@ class Types_model extends CI_Model
     /**
      * Count the number of time a leave type is used into the database
      * @param int $id identifier of the leave type record
-     * 
+     * @return int number of times the leave type is used
      */
-    public function usage($id)
+    public function usage(int $id): int
     {
         $this->db->select('COUNT(*)');
         $this->db->from('leaves');
