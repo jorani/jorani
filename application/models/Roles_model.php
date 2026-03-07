@@ -3,7 +3,6 @@
  * This Class contains all the business logic and the persistence layer for the roles.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -40,15 +39,14 @@ class Roles_model extends CI_Model
      * Get the list of roles or one role
      * @param int $id optional id of one role
      * @return array record of roles
-     * 
      */
-    public function getRoles($id = 0)
+    public function getRoles(int $id = 0): array
     {
         if ($id === 0) {
             $query = $this->db->get('roles');
             return $query->result_array();
         }
-        $query = $this->db->get_where('roles', array('id' => $id));
+        $query = $this->db->get_where('roles', ['id' => $id]);
         return $query->row_array();
     }
 }
