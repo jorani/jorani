@@ -1,6 +1,6 @@
 <?php
 /**
- * This Class contains all the business logic and the persistence layer for the positions.
+ * This file contains all the business logic and the persistence layer for the positions.
  * 
  * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/jorani/jorani
@@ -33,15 +33,14 @@ class Positions_model extends CI_Model
      * Get the list of positions or one position
      * @param int $id optional id of a position
      * @return array record of positions
-     * 
      */
-    public function getPositions($id = 0)
+    public function getPositions(int $id = 0): array
     {
         if ($id === 0) {
             $query = $this->db->get('positions');
             return $query->result_array();
         }
-        $query = $this->db->get_where('positions', array('id' => $id));
+        $query = $this->db->get_where('positions', ['id' => $id]);
         return $query->row_array();
     }
 
@@ -49,9 +48,8 @@ class Positions_model extends CI_Model
      * Get the name of a position
      * @param int $id Identifier of the postion
      * @return string Name of the position
-     * 
      */
-    public function getName($id)
+    public function getName(int $id): string
     {
         $record = $this->getPositions($id);
         if (!empty($record)) {
@@ -66,49 +64,43 @@ class Positions_model extends CI_Model
      * @param string $name Name of the postion
      * @param string $description Description of the postion
      * @return int number of affected rows
-     * 
      */
-    public function setPositions($name, $description)
+    public function setPositions(string $name, string $description): int
     {
-        $data = array(
+        $data = [
             'name' => $name,
             'description' => $description
-        );
+        ];
         return $this->db->insert('positions', $data);
     }
 
     /**
      * Delete a position from the database
-     * Cascade update all users having this postion (filled with 0)
+     * Cascade update all users having this position (filled with 0)
      * @param int $id identifier of the position record
      * @return bool TRUE if the operation was successful, FALSE otherwise
-     * 
      */
-    public function deletePosition($id)
+    public function deletePosition(int $id): bool
     {
-        $delete = $this->db->delete('positions', array('id' => $id));
-        $data = array(
-            'position' => 0
-        );
+        $delete = $this->db->delete('positions', ['id' => $id]);
         $this->db->where('position', $id);
-        $update = $this->db->update('users', $data);
+        $update = $this->db->update('users', ['position' => 0]);
         return $delete && $update;
     }
 
     /**
      * Update a given position in the database.
-     * @param int $id Identifier of the database
-     * @param string $name Name of the postion
-     * @param string $description Description of the postion
-     * @return type
-     * 
+     * @param int $id Identifier of the position into the database
+     * @param string $name Name of the position
+     * @param string $description Description of the position
+     * @return int number of affected rows
      */
-    public function updatePositions($id, $name, $description)
+    public function updatePositions(int $id, string $name, string $description): int
     {
-        $data = array(
+        $data = [
             'name' => $name,
             'description' => $description
-        );
+        ];
         $this->db->where('id', $id);
         return $this->db->update('positions', $data);
     }

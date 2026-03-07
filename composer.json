@@ -2,7 +2,7 @@
     "name": "jorani/jorani",
     "description": "A free and Open Source Leave Management System",
     "type": "project",
-    "license": "AGPLv3",
+    "license": "MIT",
     "authors": [
         {
             "name": "Benjamin Balet",
