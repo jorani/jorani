@@ -3,7 +3,6 @@
  * This Model contains all the business logic and the persistence layer for the organization tree.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -31,9 +30,8 @@ class Organization_model extends CI_Model
      * Get the department details of an employee (label and ID)
      * @param int $employeeId User identifier
      * @return array department details
-     * 
      */
-    public function getDepartment($employeeId)
+    public function getDepartment(int $employeeId): array
     {
         $this->db->select('organization.*');
         $this->db->from('organization');
@@ -45,13 +43,13 @@ class Organization_model extends CI_Model
 
     /**
      * Get the label of a given entity id
-     * @param int $id Identifier of the entity
+     * @param int $entityId Identifier of the entity
      * @return string name of the entity
      */
-    public function getName($id)
+    public function getName(int $entityId): string
     {
         $this->db->from('organization');
-        $this->db->where("id", $id);
+        $this->db->where("id", $entityId);
         $query = $this->db->get();
         $record = $query->result_array();
         if (count($record) > 0) {
@@ -64,9 +62,8 @@ class Organization_model extends CI_Model
     /**
      * List all entities of the organisation
      * @return array all entities of the organization sorted out by id and name
-     * 
      */
-    public function getAllEntities()
+    public function getAllEntities(): array
     {
         $this->db->from('organization');
         $this->db->order_by("parent_id", "desc");
@@ -76,15 +73,14 @@ class Organization_model extends CI_Model
 
     /**
      * Get all children of an entity
-     * @param int $id identifier of the entity
+     * @param int $entityId identifier of the entity
      * @return array list of entity identifiers
-     * 
      */
-    public function getAllChildren($id)
+    public function getAllChildren(int $entityId): array
     {
         $query = 'SELECT GetFamilyTree(id) as id' .
             ' FROM organization' .
-            ' WHERE id =' . $id;
+            ' WHERE id =' . $entityId;
         $query = $this->db->query($query);
         if (!$query) {
             $arr = [];
@@ -96,56 +92,44 @@ class Organization_model extends CI_Model
 
     /**
      * Move an entity into the organization
-     * @param int $id identifier of the entity
-     * @param int $parent_id new parent id of the entity
-     * @return type result of the query
-     * 
+     * @param int $entityId identifier of the entity
+     * @param int $parentEntityId new parent id of the entity
+     * @return bool result of the update query
      */
-    public function move($id, $parent_id)
+    public function move(int $entityId, int $parentEntityId): bool
     {
-        $data = array(
-            'parent_id' => $parent_id
-        );
-        $this->db->where('id', $id);
-        return $this->db->update('organization', $data);
+        $this->db->where('id', $entityId);
+        return $this->db->update('organization', ['parent_id' => $parentEntityId]);
     }
 
     /**
      * Add an employee into an entity of the organization
-     * @param int $id identifier of the employee
-     * @param int $entity identifier of the entity
-     * @return type result of the query
-     * 
+     * @param int $employeeId identifier of the employee
+     * @param int $entityId identifier of the entity
+     * @return bool result of the update query
      */
-    public function attachEmployee($id, $entity)
+    public function attachEmployee(int $employeeId, int $entityId): bool
     {
-        $data = array(
-            'organization' => $entity
-        );
-        $this->db->where('id', $id);
-        return $this->db->update('users', $data);
+        $this->db->where('id', $employeeId);
+        return $this->db->update('users', ['organization' => $entityId]);
     }
 
     /**
      * Cascade delete children and set employees' org to NULL
-     * @param int $entity identifier of the entity
-     * @return type result of the query
-     * 
+     * @param int $entityId identifier of the entity
+     * @return bool result of the update and delete queries
      */
-    public function delete($entity)
+    public function delete(int $entityId): bool
     {
-        $list = $this->getAllChildren($entity);
+        $list = $this->getAllChildren($entityId);
         //Detach all employees
-        $data = array(
-            'organization' => NULL
-        );
-        $ids = array();
+        $ids = [];
         if (strlen($list[0]['id']) > 0) {
             $ids = explode(",", $list[0]['id']);
         }
-        array_push($ids, $entity);
+        array_push($ids, $entityId);
         $this->db->where_in('organization', $ids);
-        $res1 = $this->db->update('users', $data);
+        $res1 = $this->db->update('users', ['organization' => NULL]);
         //Delete node and its children
         $this->db->where_in('id', $ids);
         $res2 = $this->db->delete('organization');
@@ -154,82 +138,71 @@ class Organization_model extends CI_Model
 
     /**
      * Delete an employee from an entity of the organization
-     * @param int $id identifier of the employee
-     * @return type result of the query
-     * 
+     * @param int $employeeId identifier of the employee
+     * @return bool result of the query
      */
-    public function detachEmployee($id)
+    public function detachEmployee(int $employeeId): bool
     {
-        $data = array(
-            'organization' => NULL
-        );
-        $this->db->where('id', $id);
-        return $this->db->update('users', $data);
+        $this->db->where('id', $employeeId);
+        return $this->db->update('users', ['organization' => NULL]);
     }
 
     /**
      * Rename an entity of the organization
-     * @param int $id identifier of the entity
-     * @param string $text new text of the entity
-     * @return type result of the query
-     * 
+     * @param int $entityId identifier of the entity
+     * @param string $newName new name of the entity
+     * @return bool result of the query
      */
-    public function rename($id, $text)
+    public function rename(int $entityId, string $newName): bool
     {
-        $data = array(
-            'name' => $text
-        );
-        $this->db->where('id', $id);
-        return $this->db->update('organization', $data);
+        $this->db->where('id', $entityId);
+        return $this->db->update('organization', ['name' => $newName]);
     }
 
     /**
      * Create an entity in the organization
-     * @param int $parent_id identifier of the parent entity
+     * @param int $parentEntityId identifier of the parent entity
      * @param string $text name of the new entity
-     * @return type
-     * 
+     * @return bool TRUE if the insertion was successful, FALSE otherwise
      */
-    public function create($parent_id, $text)
+    public function create(int $parentEntityId, string $text): bool
     {
-        $data = array(
+        $data = [
             'name' => $text,
-            'parent_id' => $parent_id
-        );
+            'parent_id' => $parentEntityId
+        ];
         return $this->db->insert('organization', $data);
     }
 
     /**
      * Copy an entity in the organization
-     * @param int $id identifier of the source entity
-     * @param int $parent_id identifier of the new parent entity
-     * @return type
-     * 
+     * @param int $sourceEntityId identifier of the source entity
+     * @param int $parentEntityId identifier of the new parent entity
+     * @return bool TRUE if the copy was successful, FALSE otherwise
      */
-    public function copy($id, $parent_id)
+    public function copy(int $sourceEntityId, int $parentEntityId): bool
     {
         $this->db->from('organization');
-        $this->db->where('id', $id);
+        $this->db->where('id', $sourceEntityId);
         $query = $this->db->get();
         $row = $query->row();
-        $data = array(
+        $data = [
             'name' => $row->name,
-            'parent_id' => $parent_id
-        );
+            'parent_id' => $parentEntityId
+        ];
         return $this->db->insert('organization', $data);
     }
 
     /**
      * Returns the list of the employees attached to an entity
-     * @param int $id identifier of the entity
+     * @param int $entityId identifier of the entity
      * @return array Result of the query
-     * 
      */
-    public function employees($id)
+    public function employees(int $entityId): array
     {
         $this->db->select('id, firstname, lastname, email, datehired');
         $this->db->from('users');
-        $this->db->where('organization', $id);
+        $this->db->where('organization', $entityId);
         $this->db->order_by('lastname', 'asc');
         $this->db->order_by('firstname', 'asc');
         return $this->db->get();
@@ -237,12 +210,11 @@ class Organization_model extends CI_Model
 
     /**
      * Returns the list of the employees attached to an entity
-     * @param int $id identifier of the entity
+     * @param int $entityId identifier of the entity
      * @param bool $children Include sub department in the query
-     * @return  array Result of the query
-     * 
+     * @return array Result of the query
      */
-    public function allEmployees($id, $children = FALSE)
+    public function allEmployees(int $entityId, bool $children = FALSE): array
     {
         $this->db->select('users.id, users.identifier, users.firstname, users.lastname, users.datehired');
         $this->db->select('organization.name as department, positions.name as position, contracts.name as contract');
@@ -253,19 +225,19 @@ class Organization_model extends CI_Model
         $this->db->join('contracts', 'contracts.id  = users.contract', 'left');
         if ($children === TRUE) {
             $this->load->model('organization_model');
-            $list = $this->organization_model->getAllChildren($id);
-            $ids = array();
+            $list = $this->organization_model->getAllChildren($entityId);
+            $ids = [];
             if (count($list) > 0) {
                 if ($list[0]['id'] != '') {
                     $ids = explode(",", $list[0]['id']);
-                    array_push($ids, $id);
+                    array_push($ids, $entityId);
                     $this->db->where_in('organization.id', $ids);
                 } else {
-                    $this->db->where('organization.id', $id);
+                    $this->db->where('organization.id', $entityId);
                 }
             }
         } else {
-            $this->db->where('organization.id', $id);
+            $this->db->where('organization.id', $entityId);
         }
         $this->db->order_by('lastname', 'asc');
         $this->db->order_by('firstname', 'asc');
@@ -275,32 +247,27 @@ class Organization_model extends CI_Model
 
     /**
      * Add an employee into an entity of the organization
-     * @param int $id identifier of the employee
-     * @param int $entity identifier of the entity
-     * @return int result of the query
-     * 
+     * @param int $employeeId identifier of the employee
+     * @param int $entityId identifier of the entity
+     * @return bool result of the query
      */
-    public function setSupervisor($id, $entity)
+    public function setSupervisor(int $employeeId, int $entityId): bool
     {
-        $data = array(
-            'supervisor' => $id
-        );
-        $this->db->where('id', $entity);
-        return $this->db->update('organization', $data);
+        $this->db->where('id', $entityId);
+        return $this->db->update('organization', ['supervisor' => $employeeId]);
     }
 
     /**
      * Returns the supervisor of an entity
-     * @param int $entity identifier of the entity
-     * @return object identifier of supervisor
-     * 
+     * @param int $entityId identifier of the entity
+     * @return ?object DB record containing user data of supervisor
      */
-    public function getSupervisor($entity)
+    public function getSupervisor(int $entityId): ?object
     {
         $this->db->select('users.id, CONCAT(users.firstname, \' \', users.lastname) as username, email', FALSE);
         $this->db->from('organization');
         $this->db->join('users', 'users.id = organization.supervisor');
-        $this->db->where('organization.id', $entity);
+        $this->db->where('organization.id', $entityId);
         $result = $this->db->get()->result();
         if (count($result) > 0) {
             return $result[0];

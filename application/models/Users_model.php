@@ -1,9 +1,8 @@
 <?php
 /**
- * This model contains the business logic and manages the persistence of users (employees)
+ * This file contains the business logic and manages the persistence of users (employees)
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -14,6 +13,7 @@ if (!defined('BASEPATH')) {
 /**
  * This model contains the business logic and manages the persistence of users (employees)
  * It is also used by the session controller for the authentication.
+ * As of today ther is no distinction between an employee and a user.
  */
 class Users_model extends CI_Model
 {
@@ -30,25 +30,22 @@ class Users_model extends CI_Model
      * Get the list of users or one user
      * @param int $id optional id of one user
      * @return array record of users
-     * 
      */
-    public function getUsers($id = 0)
+    public function getUsers(int $id = 0): array
     {
-        $this->db->select('users.*');
         if ($id === 0) {
             $query = $this->db->get('users');
             return $query->result_array();
         }
-        $query = $this->db->get_where('users', array('users.id' => $id));
+        $query = $this->db->get_where('users', ['users.id' => $id]);
         return $query->row_array();
     }
 
     /**
      * Get the list of users and their roles
      * @return array record of users
-     * 
      */
-    public function getUsersAndRoles()
+    public function getUsersAndRoles(): array
     {
         $this->db->select('users.id, active, firstname, lastname, login, email');
         $this->db->select("GROUP_CONCAT(roles.name SEPARATOR ',') as roles_list", FALSE);
@@ -61,9 +58,8 @@ class Users_model extends CI_Model
     /**
      * Get the list of employees
      * @return array record of users
-     * 
      */
-    public function getAllEmployees()
+    public function getAllEmployees(): array
     {
         $this->db->select('id, firstname, lastname, email');
         $query = $this->db->get('users');
@@ -73,9 +69,8 @@ class Users_model extends CI_Model
     /**
      * Get the list of employees and the name of their entities
      * @return array record of users
-     * 
      */
-    public function getAllEmployeesAndTheirEntities()
+    public function getAllEmployeesAndTheirEntities(): array
     {
         $this->db->select('users.id, firstname, lastname');
         $this->db->select('organization.name as department_name');
@@ -91,23 +86,22 @@ class Users_model extends CI_Model
      * Get the name of a given user
      * @param int $id Identifier of employee
      * @return string firstname and lastname of the employee
-     * 
      */
-    public function getName($id)
+    public function getName(int $id): string
     {
         $record = $this->getUsers($id);
         if (!empty($record)) {
             return $record['firstname'] . ' ' . $record['lastname'];
         }
+        return '';
     }
 
     /**
      * Get the list of employees that are the collaborators of the given user
      * @param int $id identifier of the manager
      * @return array record of users
-     * 
      */
-    public function getCollaboratorsOfManager($id = 0)
+    public function getCollaboratorsOfManager(int $id = 0): array
     {
         $this->db->select('users.*');
         $this->db->select('organization.name as department_name, positions.name as position_name, contracts.name as contract_name');
@@ -124,16 +118,15 @@ class Users_model extends CI_Model
 
     /**
      * Check if an employee is the collaborator of the given user
-     * @param int $employee identifier of the collaborator
-     * @param int $manager identifier of the manager
+     * @param int $employeeId identifier of the collaborator
+     * @param int $managerId identifier of the manager
      * @return bool TRUE if the employee is a collaborator, FALSE otherwise
-     * 
      */
-    public function isCollaboratorOfManager($employee, $manager)
+    public function isCollaboratorOfManager(int $employeeId, int $managerId): bool
     {
         $this->db->from('users');
-        $this->db->where('id', $employee);
-        $this->db->where('manager', $manager);
+        $this->db->where('id', $employeeId);
+        $this->db->where('manager', $managerId);
         $result = $this->db->get()->result_array();
         return (count($result) > 0);
     }
@@ -142,9 +135,8 @@ class Users_model extends CI_Model
      * Check if a login can be used before creating the user
      * @param string $login login identifier
      * @return bool TRUE if available, FALSE otherwise
-     * 
      */
-    public function isLoginAvailable($login)
+    public function isLoginAvailable(string $login): bool
     {
         $this->db->from('users');
         $this->db->where('login', $login);
@@ -160,9 +152,8 @@ class Users_model extends CI_Model
     /**
      * Delete a user from the database
      * @param int $id identifier of the user
-     * 
      */
-    public function deleteUser($id)
+    public function deleteUser(int $id): void
     {
         $this->db->delete('users', array('id' => $id));
         $this->load->model('entitleddays_model');
@@ -172,19 +163,15 @@ class Users_model extends CI_Model
         $this->leaves_model->deleteLeavesCascadeUser($id);
         $this->overtime_model->deleteExtrasCascadeUser($id);
         //Cascade delete line manager role
-        $data = array(
-            'manager' => NULL
-        );
         $this->db->where('manager', $id);
-        $this->db->update('users', $data);
+        $this->db->update('users', ['manager' => NULL]);
     }
 
     /**
      * Insert a new user into the database. Inserted data are coming from an HTML form
      * @return string deciphered password (so as to send it by e-mail in clear)
-     * 
      */
-    public function setUsers()
+    public function setUsers(): string
     {
         //Decipher the password value (RSA encoded -> base64 -> decode -> decrypt)
         $password = '';
@@ -276,7 +263,13 @@ class Users_model extends CI_Model
      * @return int Inserted User Identifier
      * 
      */
-    public function insertUserByApi($firstname, $lastname, $login, $email, $password, $role,
+    public function insertUserByApi(
+        $firstname,
+        $lastname,
+        $login,
+        $email,
+        $password,
+        $role,
         $manager = NULL,
         $organization = NULL,
         $contract = NULL,
@@ -290,8 +283,8 @@ class Users_model extends CI_Model
         $country = NULL,
         $calendar = NULL,
         $userProperties = NULL,
-        $picture = NULL)
-    {
+        $picture = NULL
+    ) {
 
         //Hash the clear password using bcrypt (8 iterations)
         $salt = '$2a$08$' . substr(strtr(base64_encode($this->getRandomBytes(16)), '+', '.'), 0, 22) . '$';
@@ -710,9 +703,15 @@ class Users_model extends CI_Model
      * @return array record of users
      * 
      */
-    public function employeesOfEntity($id = 0, $children = TRUE, $filterActive = "all",
-        $criterion1 = NULL, $date1 = NULL, $criterion2 = NULL, $date2 = NULL)
-    {
+    public function employeesOfEntity(
+        $id = 0,
+        $children = TRUE,
+        $filterActive = "all",
+        $criterion1 = NULL,
+        $date1 = NULL,
+        $criterion2 = NULL,
+        $date2 = NULL
+    ) {
         $this->db->select('users.id as id,'
             . ' users.firstname as firstname,'
             . ' users.lastname as lastname,'

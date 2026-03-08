@@ -122,7 +122,7 @@ class Reports extends CI_Controller
                 $result[$user->id][$type['name']] = '';
             }
 
-            $summary = $this->leaves_model->getLeaveBalanceForEmployee($user->id, TRUE, $refDate);
+            $summary = $this->leaves_model->getLeaveBalanceForEmployee($user->id, $refDate);
             if (!is_null($summary)) {
                 if (count($summary) > 0) {
                     foreach ($summary as $key => $value) {

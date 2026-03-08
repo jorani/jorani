@@ -357,7 +357,7 @@ class RestLeaves extends MY_RestController
         //Copy to the delegates, if any
         $cc = NULL;
         $delegates = $this->delegations_model->listMailsOfDelegates($manager['id']);
-        if ($delegates != '') {
+        if (!empty($delegates)) {
             $cc = $delegates;
         }
 

@@ -93,7 +93,7 @@ class Leaves extends CI_Controller
             $data['isDefault'] = 1;
         }
         $data['refDate'] = $refDate;
-        $data['summary'] = $this->leaves_model->getLeaveBalanceForEmployee($this->user_id, FALSE, $refDate);
+        $data['summary'] = $this->leaves_model->getLeaveBalanceForEmployee($this->user_id, $refDate);
 
         if (!is_null($data['summary'])) {
             $data['title'] = lang('leaves_summary_title');
@@ -298,10 +298,14 @@ class Leaves extends CI_Controller
         //If the user is not its own manager and if the leave is
         //already requested, the employee can't modify it
         if (!$this->is_hr) {
-            if (($this->session->userdata('manager') != $this->user_id) &&
-                $data['leave']['status'] != LMS_PLANNED) {
-                if ($this->config->item('edit_rejected_requests') == FALSE ||
-                    $data['leave']['status'] != LMS_REJECTED) {//Configuration switch that allows editing the rejected leave requests
+            if (
+                ($this->session->userdata('manager') != $this->user_id) &&
+                $data['leave']['status'] != LMS_PLANNED
+            ) {
+                if (
+                    $this->config->item('edit_rejected_requests') == FALSE ||
+                    $data['leave']['status'] != LMS_REJECTED
+                ) {//Configuration switch that allows editing the rejected leave requests
                     log_message('error', 'User #' . $this->user_id . ' illegally tried to edit leave #' . $id);
                     $this->session->set_flashdata('msg', lang('leaves_edit_flash_msg_error'));
                     redirect('leaves');
@@ -477,17 +481,27 @@ class Leaves extends CI_Controller
             $lang_mail->load('global', $usr_lang);
 
             if ($reminder) {
-                $this->sendGenericMail($leave, $user, $manager, $lang_mail,
+                $this->sendGenericMail(
+                    $leave,
+                    $user,
+                    $manager,
+                    $lang_mail,
                     $lang_mail->line('email_leave_request_reminder') . ' ' .
                     $lang_mail->line('email_leave_request_creation_title'),
                     $lang_mail->line('email_leave_request_reminder') . ' ' .
                     $lang_mail->line('email_leave_request_creation_subject'),
-                    'request');
+                    'request'
+                );
             } else {
-                $this->sendGenericMail($leave, $user, $manager, $lang_mail,
+                $this->sendGenericMail(
+                    $leave,
+                    $user,
+                    $manager,
+                    $lang_mail,
                     $lang_mail->line('email_leave_request_creation_title'),
                     $lang_mail->line('email_leave_request_creation_subject'),
-                    'request');
+                    'request'
+                );
             }
         }
     }
@@ -521,10 +535,15 @@ class Leaves extends CI_Controller
             $lang_mail->load('email', $usr_lang);
             $lang_mail->load('global', $usr_lang);
 
-            $this->sendGenericMail($leave, $user, $manager, $lang_mail,
+            $this->sendGenericMail(
+                $leave,
+                $user,
+                $manager,
+                $lang_mail,
                 $lang_mail->line('email_leave_request_cancellation_title'),
                 $lang_mail->line('email_leave_request_cancellation_subject'),
-                'cancelled');
+                'cancelled'
+            );
         }
     }
 
@@ -557,17 +576,27 @@ class Leaves extends CI_Controller
             $lang_mail->load('global', $usr_lang);
 
             if ($reminder) {
-                $this->sendGenericMail($leave, $user, $manager, $lang_mail,
+                $this->sendGenericMail(
+                    $leave,
+                    $user,
+                    $manager,
+                    $lang_mail,
                     $lang_mail->line('email_leave_request_reminder') . ' ' .
                     $lang_mail->line('email_leave_request_cancellation_title'),
                     $lang_mail->line('email_leave_request_reminder') . ' ' .
                     $lang_mail->line('email_leave_request_cancellation_subject'),
-                    'request');
+                    'request'
+                );
             } else {
-                $this->sendGenericMail($leave, $user, $manager, $lang_mail,
+                $this->sendGenericMail(
+                    $leave,
+                    $user,
+                    $manager,
+                    $lang_mail,
                     $lang_mail->line('email_leave_request_cancellation_title'),
                     $lang_mail->line('email_leave_request_cancellation_subject'),
-                    'cancel');
+                    'cancel'
+                );
             }
         }
     }
@@ -628,7 +657,7 @@ class Leaves extends CI_Controller
         //Copy to the delegates, if any
         $cc = NULL;
         $delegates = $this->delegations_model->listMailsOfDelegates($manager['id']);
-        if ($delegates != '') {
+        if (!empty($delegates)) {
             $cc = $delegates;
         }
 
@@ -651,12 +680,16 @@ class Leaves extends CI_Controller
             if ($this->is_hr) {
                 $can_delete = TRUE;
             } else {
-                if (($leaves['status'] == LMS_PLANNED) &&
-                    $leaves['employee'] == $this->user_id) {
+                if (
+                    ($leaves['status'] == LMS_PLANNED) &&
+                    $leaves['employee'] == $this->user_id
+                ) {
                     $can_delete = TRUE;
                 }
-                if ($this->config->item('delete_rejected_requests') == TRUE ||
-                    $leaves['status'] == LMS_REJECTED) {
+                if (
+                    $this->config->item('delete_rejected_requests') == TRUE ||
+                    $leaves['status'] == LMS_REJECTED
+                ) {
                     $can_delete = TRUE;
                 }
             }

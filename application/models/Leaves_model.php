@@ -26,33 +26,44 @@ class Leaves_model extends CI_Model
     }
 
     /**
+     * Validate a date in Y-m-d format.
+     * @param string $date
+     * @return bool TRUE if the date is valid, FALSE otherwise
+     */
+    private function isValidYmdDate(string $date): bool
+    {
+        $dateTime = \DateTime::createFromFormat('Y-m-d', $date);
+        return $dateTime !== false && $dateTime->format('Y-m-d') === $date;
+    }
+
+    /**
      * Get the list of all leave requests or one leave
-     * @param int $id Id of the leave request
+     * @param int $leaveRequestId Id of the leave request
      * @return array list of records
      * 
      */
-    public function getLeaves($id = 0)
+    public function getLeaves(int $leaveRequestId = 0): array
     {
         $this->db->select('leaves.*');
         $this->db->select('status.name as status_name, types.name as type_name');
         $this->db->from('leaves');
         $this->db->join('status', 'leaves.status = status.id');
         $this->db->join('types', 'leaves.type = types.id');
-        if ($id === 0) {
+        if ($leaveRequestId === 0) {
             return $this->db->get()->result_array();
         }
-        $this->db->where('leaves.id', $id);
+        $this->db->where('leaves.id', $leaveRequestId);
         return $this->db->get()->row_array();
     }
 
     /**
      * Get the the list of leaves requested for a given employee
      * Id are replaced by label
-     * @param int $employee ID of the employee
+     * @param int $employeeId ID of the employee
      * @return array list of records
      * 
      */
-    public function getLeavesOfEmployee($employee)
+    public function getLeavesOfEmployee(int $employeeId): array
     {
         $this->db->select('leaves.*');
         $this->db->select('status.id as status, status.name as status_name');
@@ -60,20 +71,19 @@ class Leaves_model extends CI_Model
         $this->db->from('leaves');
         $this->db->join('status', 'leaves.status = status.id');
         $this->db->join('types', 'leaves.type = types.id');
-        $this->db->where('leaves.employee', $employee);
+        $this->db->where('leaves.employee', $employeeId);
         $this->db->order_by('leaves.id', 'desc');
         return $this->db->get()->result_array();
     }
 
     /**
-     * Get the list of history of an employee
-     * @param int $employee Id of the employee
+     * Get the list of leaves of an employee with their history
+     * @param int $employeeId Id of the employee
      * @return array list of records
      * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getLeavesOfEmployeeWithHistory($employee)
+    public function getLeavesOfEmployeeWithHistory(int $employeeId): array
     {
-        $employee = intval($employee);
         return $this->db->query("SELECT leaves.*, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
         FROM `leaves`
         inner join status ON leaves.status = status.id
@@ -89,24 +99,32 @@ class Leaves_model extends CI_Model
           WHERE leaves_history.status = 2
           GROUP BY id
         ) requested ON leaves.id = requested.id
-        WHERE leaves.employee = $employee")->result_array();
+        WHERE leaves.employee = $employeeId")->result_array();
     }
 
     /**
      * Return a list of Accepted leaves between two dates and for a given employee
-     * @param int $employee ID of the employee
-     * @param string $start Start date
-     * @param string $end End date
-     * 
+     * @param int $employeeId ID of the employee
+     * @param string $startDate Start date
+     * @param string $endDate End date
+     * @return array list of records
+     * @throws InvalidArgumentException if the dates are not valid or if the start date is after the end date
      */
-    public function getAcceptedLeavesBetweenDates($employee, $start, $end)
+    public function getAcceptedLeavesBetweenDates(int $employeeId, string $startDate, string $endDate): array
     {
+        //check if $startDate and $endDate are valid dates
+        if (!$this->isValidYmdDate($startDate) || !$this->isValidYmdDate($endDate)) {
+            throw new InvalidArgumentException('Dates must be valid and use format Y-m-d.');
+        }
+        if ($startDate > $endDate) {
+            throw new InvalidArgumentException('Start date must be earlier than or equal to end date.');
+        }
         $this->db->select('leaves.*, types.name as type');
         $this->db->from('leaves');
         $this->db->join('status', 'leaves.status = status.id');
         $this->db->join('types', 'leaves.type = types.id');
-        $this->db->where('employee', $employee);
-        $this->db->where("(startdate <= STR_TO_DATE('" . $end . "', '%Y-%m-%d') AND enddate >= STR_TO_DATE('" . $start . "', '%Y-%m-%d'))");
+        $this->db->where('employee', $employeeId);
+        $this->db->where("(startdate <= STR_TO_DATE('" . $endDate . "', '%Y-%m-%d') AND enddate >= STR_TO_DATE('" . $startDate . "', '%Y-%m-%d'))");
         $this->db->where('leaves.status', LMS_ACCEPTED);
         $this->db->order_by('startdate', 'asc');
         return $this->db->get()->result_array();
@@ -114,26 +132,33 @@ class Leaves_model extends CI_Model
 
     /**
      * Try to calculate the length of a leave using the start and and date of the leave
-     * and the non working days defined on a contract
-     * @param int $employee Identifier of the employee
-     * @param date $start start date of the leave request
-     * @param date $end end date of the leave request
+     * and the non working days defined on the contract of the employee
+     * @param int $employeeId Identifier of the employee
+     * @param string $startDate start date of the leave request
+     * @param string $endDate end date of the leave request
      * @param string $startdatetype start date type of leave request being created (Morning or Afternoon)
      * @param string $enddatetype end date type of leave request being created (Morning or Afternoon)
-     * @return float length of leave
-     * 
+     * @return float length of the leave
+     * @throws InvalidArgumentException if the dates are not valid or if the start date is after the end date
      */
-    public function length($employee, $start, $end, $startdatetype, $enddatetype)
+    public function length(int $employeeId, string $startDate, string $endDate, string $startdatetype, string $enddatetype): float
     {
+        //check if $startDate and $endDate are valid dates
+        if (!$this->isValidYmdDate($startDate) || !$this->isValidYmdDate($endDate)) {
+            throw new InvalidArgumentException('Dates must be valid and use format Y-m-d.');
+        }
+        if ($startDate > $endDate) {
+            throw new InvalidArgumentException('Start date must be earlier than or equal to end date.');
+        }
         $this->db->select('sum(CASE `type` WHEN 1 THEN 1 WHEN 2 THEN 0.5 WHEN 3 THEN 0.5 END) as days');
         $this->db->from('users');
         $this->db->join('dayoffs', 'users.contract = dayoffs.contract');
-        $this->db->where('users.id', $employee);
-        $this->db->where('date >=', $start);
-        $this->db->where('date <=', $end);
+        $this->db->where('users.id', $employeeId);
+        $this->db->where('date >=', $startDate);
+        $this->db->where('date <=', $endDate);
         $result = $this->db->get()->result_array();
-        $startTimeStamp = strtotime($start . " UTC");
-        $endTimeStamp = strtotime($end . " UTC");
+        $startTimeStamp = strtotime($startDate . " UTC");
+        $endTimeStamp = strtotime($endDate . " UTC");
         $timeDiff = abs($endTimeStamp - $startTimeStamp);
         $numberDays = $timeDiff / 86400;  // 86400 seconds in one day
         if (count($result) != 0) { //Test if some non working days are defined on a contract
@@ -152,19 +177,30 @@ class Leaves_model extends CI_Model
     /**
      * Calculate the actual length of a leave request by taking into account the non-working days
      * Detect overlapping with non-working days. It returns a K/V arrays of 3 items.
-     * @param int $employee Identifier of the employee
-     * @param date $startdate start date of the leave request
-     * @param date $enddate end date of the leave request
+     * @param string $startdate start date of the leave request
+     * @param string $enddate end date of the leave request
      * @param string $startdatetype start date type of leave request being created (Morning or Afternoon)
      * @param string $enddatetype end date type of leave request being created (Morning or Afternoon)
      * @param array $daysoff List of non-working days
      * @param bool $deductDayOff Deduct days off when evaluating the actual length
      * @return array (length=>length of leave, overlapping=>excat match with a non-working day, daysoff=>sum of days off)
-     * 
+     * @throws InvalidArgumentException if the dates are not valid or if the start date is after the end date
      */
-    public function actualLengthAndDaysOff($employee, $startdate, $enddate,
-        $startdatetype, $enddatetype, $daysoff, $deductDayOff = FALSE)
-    {
+    public function actualLengthAndDaysOff(
+        string $startdate,
+        string $enddate,
+        string $startdatetype,
+        string $enddatetype,
+        array $daysoff,
+        bool $deductDayOff = FALSE
+    ): array {
+        //check if $startdate and $enddate are valid dates
+        if (!$this->isValidYmdDate($startdate) || !$this->isValidYmdDate($enddate)) {
+            throw new InvalidArgumentException('Dates must be valid and use format Y-m-d.');
+        }
+        if ($startdate > $enddate) {
+            throw new InvalidArgumentException('Start date must be earlier than or equal to end date.');
+        }
         $startDateObject = DateTime::createFromFormat('Y-m-d H:i:s', $startdate . ' 00:00:00');
         $endDateObject = DateTime::createFromFormat('Y-m-d H:i:s', $enddate . ' 00:00:00');
         $iDate = clone $startDateObject;
@@ -275,20 +311,23 @@ class Leaves_model extends CI_Model
         if ($hasDayOff && ($length == 0)) {
             $overlapDayOff = TRUE;
         }
-        return array('length' => $length, 'daysoff' => $lengthDaysOff, 'overlapping' => $overlapDayOff);
+        return ['length' => $length, 'daysoff' => $lengthDaysOff, 'overlapping' => $overlapDayOff];
     }
 
     /**
      * Get all entitled days applicable to the reference date (to contract and employee)
      * Compute Min and max date by type
-     * @param int $employee Employee identifier
-     * @param int $contract contract identifier
+     * @param int $employeeId Employee identifier
+     * @param int $contractId contract identifier
      * @param string $refDate Date of execution
      * @return array Array of entitled days associated to the key type id
-     * 
+     * @throws InvalidArgumentException if the date is not valid or not in Y-m-d format
      */
-    public function getSumEntitledDays($employee, $contract, $refDate)
+    public function getSumEntitledDays(int $employeeId, int $contractId, string $refDate): array
     {
+        if (!$this->isValidYmdDate($refDate)) {
+            throw new InvalidArgumentException('Date must be valid and use format Y-m-d.');
+        }
         $this->db->select('types.id as type_id, types.name as type_name');
         $this->db->select('SUM(entitleddays.days) as entitled');
         $this->db->select('MIN(startdate) as min_date');
@@ -298,8 +337,8 @@ class Leaves_model extends CI_Model
         $this->db->group_by('types.id');
         $this->db->where('entitleddays.startdate <= ', $refDate);
         $this->db->where('entitleddays.enddate >= ', $refDate);
-        $where = ' (entitleddays.contract=' . $contract .
-            ' OR entitleddays.employee=' . $employee . ')';
+        $where = ' (entitleddays.contract=' . $contractId .
+            ' OR entitleddays.employee=' . $employeeId . ')';
         $this->db->where($where, NULL, FALSE);   //Not very safe, but can't do otherwise
         $results = $this->db->get()->result_array();
         //Create an associated array have the leave type as key
@@ -312,27 +351,33 @@ class Leaves_model extends CI_Model
 
     /**
      * Compute the leave balance of an employee (used by report and counters)
-     * @param int $id ID of the employee
-     * @param bool $sum_extra TRUE: sum compensate summary
-     * @param string $refDate tmp of the Date of reference (or current date if NULL)
-     * @return array computed aggregated taken/entitled leaves
-     * 
+     * @param int $employeeId ID of the employee
+     * @param bool $sumExtra TRUE: sum compensate summary
+     * @param ?string $refDate tmp of the Date of reference (or current date if NULL)
+     * @return ?array computed aggregated taken/entitled leaves or NULL if no contract
+     * @throws InvalidArgumentException if the date is not valid or not in Y-m-d format
      */
-    public function getLeaveBalanceForEmployee($id, $sum_extra = FALSE, $refDate = NULL)
+    public function getLeaveBalanceForEmployee(int $employeeId, ?string $refDate = NULL): ?array
     {
         //Determine if we use current date or another date
         if ($refDate == NULL) {
             $refDate = date("Y-m-d");
+        } else {
+            if (!$this->isValidYmdDate($refDate)) {
+                throw new InvalidArgumentException('Date must be valid and use format Y-m-d.');
+            }
         }
 
         //Compute the current leave period and check if the user has a contract
         $this->load->model('contracts_model');
-        $hasContract = $this->contracts_model->getBoundaries($id, $startentdate, $endentdate, $refDate);
+        $startentdate = NULL;
+        $endentdate = NULL;
+        $hasContract = $this->contracts_model->getBoundaries($employeeId, $startentdate, $endentdate, $refDate);
         if ($hasContract) {
             $this->load->model('types_model');
             $this->load->model('users_model');
             //Fill a list of all existing leave types
-            $summary = array();
+            $summary = [];
             $types = $this->types_model->getTypes();
             foreach ($types as $type) {
                 $summary[$type['name']][0] = 0; //Taken
@@ -341,16 +386,16 @@ class Leaves_model extends CI_Model
             }
 
             //Get the sum of entitled days
-            $user = $this->users_model->getUsers($id);
-            $entitlements = $this->getSumEntitledDays($id, $user['contract'], $refDate);
+            $user = $this->users_model->getUsers($employeeId);
+            $entitlements = $this->getSumEntitledDays($employeeId, $user['contract'], $refDate);
 
             foreach ($entitlements as $entitlement) {
                 //Get the total of taken leaves grouped by type
                 $this->db->select('SUM(leaves.duration) as taken, types.name as type');
                 $this->db->from('leaves');
                 $this->db->join('types', 'types.id = leaves.type');
-                $this->db->where('leaves.employee', $id);
-                $this->db->where_in('leaves.status', array(LMS_ACCEPTED, LMS_CANCELLATION));
+                $this->db->where('leaves.employee', $employeeId);
+                $this->db->where_in('leaves.status', [LMS_ACCEPTED, LMS_CANCELLATION]);
                 $this->db->where('leaves.startdate >= ', $entitlement['min_date']);
                 $this->db->where('leaves.enddate <=', $entitlement['max_date']);
                 $this->db->where('leaves.type', $entitlement['type_id']);
@@ -372,7 +417,7 @@ class Leaves_model extends CI_Model
                 $this->db->select('SUM(leaves.duration) as planned, types.name as type');
                 $this->db->from('leaves');
                 $this->db->join('types', 'types.id = leaves.type');
-                $this->db->where('leaves.employee', $id);
+                $this->db->where('leaves.employee', $employeeId);
                 $this->db->where('leaves.status', LMS_PLANNED);
                 $this->db->where('leaves.startdate >= ', $entitlement['min_date']);
                 $this->db->where('leaves.enddate <=', $entitlement['max_date']);
@@ -396,7 +441,7 @@ class Leaves_model extends CI_Model
                 $this->db->select('SUM(leaves.duration) as requested, types.name as type');
                 $this->db->from('leaves');
                 $this->db->join('types', 'types.id = leaves.type');
-                $this->db->where('leaves.employee', $id);
+                $this->db->where('leaves.employee', $employeeId);
                 $this->db->where('leaves.status', LMS_REQUESTED);
                 $this->db->where('leaves.startdate >= ', $entitlement['min_date']);
                 $this->db->where('leaves.enddate <=', $entitlement['max_date']);
@@ -427,15 +472,15 @@ class Leaves_model extends CI_Model
 
     /**
      * Get the number of days a user can take for a given leave type
-     * @param int $id employee identifier
+     * @param int $employeeId employee identifier
      * @param string $type leave type name
-     * @param date $startdate Start date of leave request or null
+     * @param ?string $startdate Start date of leave request or null
      * @return int number of available days or NULL if the user has no contract
      * 
      */
-    public function getLeavesTypeBalanceForEmployee($id, $type, $startdate = NULL)
+    public function getLeavesTypeBalanceForEmployee(int $employeeId, string $type, ?string $startdate = NULL): ?int
     {
-        $summary = $this->getLeaveBalanceForEmployee($id, TRUE, $startdate);
+        $summary = $this->getLeaveBalanceForEmployee($employeeId, $startdate);
         //return entitled days - taken (for a given leave type)
         if (is_null($summary)) {
             return NULL;
@@ -450,19 +495,27 @@ class Leaves_model extends CI_Model
 
     /**
      * Detect if the leave request overlaps with another request of the employee
-     * @param int $id employee id
-     * @param date $startdate start date of leave request being created
-     * @param date $enddate end date of leave request being created
+     * @param int $employeeId employee id
+     * @param string $startdate start date of leave request being created
+     * @param string $enddate end date of leave request being created
      * @param string $startdatetype start date type of leave request being created (Morning or Afternoon)
      * @param string $enddatetype end date type of leave request being created (Morning or Afternoon)
      * @param int $leave_id When this function is used for editing a leave request, we must not collide with this leave request
      * @return boolean TRUE if another leave request has been emmitted, FALSE otherwise
-     * 
+     * @throws InvalidArgumentException if the date is not valid or not in Y-m-d format
      */
-    public function detectOverlappingLeaves($id, $startdate, $enddate, $startdatetype, $enddatetype, $leave_id = NULL)
+    public function detectOverlappingLeaves(int $employeeId, string $startdate, string $enddate, string $startdatetype, string $enddatetype, ?int $leave_id = NULL): bool
     {
+        //check if $startdate and $enddate are valid dates
+        if (!$this->isValidYmdDate($startdate) || !$this->isValidYmdDate($enddate)) {
+            throw new InvalidArgumentException('Dates must be valid and use format Y-m-d.');
+        }
+        if ($startdate > $enddate) {
+            throw new InvalidArgumentException('Start date must be earlier than or equal to end date.');
+        }
+
         $overlapping = FALSE;
-        $this->db->where('employee', $id);
+        $this->db->where('employee', $employeeId);
         $this->db->where('status != 4');
         $this->db->where('(startdate <= DATE(\'' . $enddate . '\') AND enddate >= DATE(\'' . $startdate . '\'))');
         if (!is_null($leave_id)) {
@@ -503,10 +556,10 @@ class Leaves_model extends CI_Model
      * Create a leave request
      * @param int $employeeId Identifier of the employee
      * @return int id of the newly created leave request into the db
-     * 
      */
-    public function setLeaves($employeeId)
+    public function setLeaves(int $employeeId): int
     {
+        //TODO: decouple input ($this->input->post()) from model
         $data = array(
             'startdate' => $this->input->post('startdate'),
             'startdatetype' => $this->input->post('startdatetype'),
@@ -541,15 +594,18 @@ class Leaves_model extends CI_Model
      * @param string $cause Identifier of the leave
      * @param int $status status of the leave
      * @param array $employees List of DB Ids of the affected employees
-     * @return int Result
-     * 
+     * @return int Number of affected rows
      */
-    public function createRequestForUserList($type, $duration, $startdate, $enddate, $startdatetype, $enddatetype, $cause, $status, $employees)
+    public function createRequestForUserList($type, $duration, $startdate, $enddate, $startdatetype, $enddatetype, $cause, $status, array $employees): int
     {
+        //TODO: decouple input ($this->input->post()) from model
+        //TODO: sanitize entries
+
         $affectedRows = 0;
         if ($this->config->item('enable_history') === TRUE) {
             foreach ($employees as $id) {
-                $this->createLeaveByApi($this->input->post('startdate'),
+                $this->createLeaveByApi(
+                    $this->input->post('startdate'),
                     $this->input->post('enddate'),
                     $this->input->post('status'),
                     $id,
@@ -557,7 +613,8 @@ class Leaves_model extends CI_Model
                     $this->input->post('startdatetype'),
                     $this->input->post('enddatetype'),
                     abs($this->input->post('duration')),
-                    $this->input->post('type'));
+                    $this->input->post('type')
+                );
                 $affectedRows++;
             }
         } else {
@@ -572,7 +629,8 @@ class Leaves_model extends CI_Model
                     'type' => $this->input->post('type'),
                     'cause' => $this->input->post('cause'),
                     'status' => $this->input->post('status'),
-                    'employee' => $id);
+                    'employee' => $id
+                );
             }
             $affectedRows = $this->db->insert_batch('leaves', $data);
         }
@@ -584,34 +642,50 @@ class Leaves_model extends CI_Model
      * @param string $startdate Start date (MySQL format YYYY-MM-DD)
      * @param string $enddate End date (MySQL format YYYY-MM-DD)
      * @param int $status Status of leave (see table status or doc)
-     * @param int $employee Identifier of the employee
+     * @param int $employeeId Identifier of the employee
      * @param string $cause Optional reason of the leave
      * @param string $startdatetype Start date type (Morning/Afternoon)
      * @param string $enddatetype End date type (Morning/Afternoon)
      * @param float $duration duration of the leave request
      * @param int $type Type of leave (except compensate, fully customizable by user)
-     * @param string $comments (optional) JSON encoded comment
-     * @param string $document Base64 encoded document
+     * @param ?string $comments (optional) JSON encoded comment
+     * @param ?string $document Base64 encoded document
      * @return int id of the newly acreated leave request into the db
-     * 
+     * @throws InvalidArgumentException if the date is not valid or not in Y-m-d format
      */
-    public function createLeaveByApi($startdate, $enddate, $status, $employee, $cause,
-        $startdatetype, $enddatetype, $duration, $type,
-        $comments = NULL,
-        $document = NULL)
-    {
+    public function createLeaveByApi(
+        string $startdate,
+        string $enddate,
+        int $status,
+        int $employeeId,
+        string $cause,
+        string $startdatetype,
+        string $enddatetype,
+        float $duration,
+        int $type,
+        ?string $comments = NULL,
+        ?string $document = NULL
+    ): int {
 
-        $data = array(
+        //check if $startdate and $enddate are valid dates
+        if (!$this->isValidYmdDate($startdate) || !$this->isValidYmdDate($enddate)) {
+            throw new InvalidArgumentException('Dates must be valid and use format Y-m-d.');
+        }
+        if ($startdate > $enddate) {
+            throw new InvalidArgumentException('Start date must be earlier than or equal to end date.');
+        }
+
+        $data = [
             'startdate' => $startdate,
             'enddate' => $enddate,
             'status' => $status,
-            'employee' => $employee,
+            'employee' => $employeeId,
             'cause' => $cause,
             'startdatetype' => $startdatetype,
             'enddatetype' => $enddatetype,
             'duration' => abs($duration),
             'type' => $type
-        );
+        ];
         if (!empty($comments))
             $data['comments'] = $comments;
         if (!empty($document))
@@ -633,11 +707,14 @@ class Leaves_model extends CI_Model
      * @param int $userId Identifier of the user (optional)
      * 
      */
-    public function updateLeaves($leaveId, $userId = 0)
+    public function updateLeaves(int $leaveId, int $userId = 0)
     {
+        //TODO: decouple the logic (not by controler->form)
         if ($userId == 0) {
             $userId = $this->session->userdata('id');
         }
+
+        //TODO: prepareCommentOnStatusChanged smells bad
         $json = $this->prepareCommentOnStatusChanged($leaveId, $this->input->post('status'));
         if ($this->input->post('comment') != NULL) {
             $jsonDecode = json_decode($json);
@@ -681,8 +758,9 @@ class Leaves_model extends CI_Model
      * @return int number of affected rows
      * 
      */
-    public function deleteLeave($leaveId, $userId = 0)
+    public function deleteLeave(int $leaveId, int $userId = 0)
     {
+        //TODO: decouple the way we get the configuration item here
         //Trace the modification if the feature is enabled
         if ($this->config->item('enable_history') === TRUE) {
             if ($userId == 0) {
@@ -697,24 +775,26 @@ class Leaves_model extends CI_Model
     /**
      * Switch the status of a leave request. You may use one of the constants
      * listed into config/constants.php
-     * @param int $id leave request identifier
+     * @param int $leaveId leave request identifier
      * @param int $status Next Status
      * 
      */
-    public function switchStatus($id, $status)
+    public function switchStatus(int $leaveId, int $status)
     {
-        $json = $this->prepareCommentOnStatusChanged($id, $status);
+        //TODO: prepareCommentOnStatusChanged smells bad
+        //TODO: decouple the session stuff
+        $json = $this->prepareCommentOnStatusChanged($leaveId, $status);
         $data = array(
             'status' => $status,
             'comments' => $json
         );
-        $this->db->where('id', $id);
+        $this->db->where('id', $leaveId);
         $this->db->update('leaves', $data);
 
         //Trace the modification if the feature is enabled
         if ($this->config->item('enable_history') === TRUE) {
             $this->load->model('history_model');
-            $this->history_model->setHistory(2, 'leaves', $id, $this->session->userdata('id'));
+            $this->history_model->setHistory(2, 'leaves', $leaveId, $this->session->userdata('id'));
         }
     }
 
@@ -1102,9 +1182,11 @@ class Leaves_model extends CI_Model
             //If the connected user can access to the leave request
             //(self, HR admin and manager), add a link and the acronym
             $url = '';
-            if (($entry->employee == $this->session->userdata('id')) ||
+            if (
+                ($entry->employee == $this->session->userdata('id')) ||
                 ($entry->manager == $this->session->userdata('id')) ||
-                ($this->session->userdata('is_hr') === TRUE)) {
+                ($this->session->userdata('is_hr') === TRUE)
+            ) {
                 $url = base_url() . 'leaves/leaves/' . $entry->id;
                 if (!empty($entry->acronym)) {
                     $title .= ' - ' . $entry->acronym;
@@ -1217,9 +1299,11 @@ class Leaves_model extends CI_Model
             //If the connected user can access to the leave request
             //(self, HR admin and manager), add a link and the acronym
             $url = '';
-            if (($entry->employee == $this->session->userdata('id')) ||
+            if (
+                ($entry->employee == $this->session->userdata('id')) ||
                 ($entry->manager == $this->session->userdata('id')) ||
-                ($this->session->userdata('is_hr') === TRUE)) {
+                ($this->session->userdata('is_hr') === TRUE)
+            ) {
                 $url = base_url() . 'leaves/leaves/' . $entry->id;
                 if (!empty($entry->acronym)) {
                     $title .= ' - ' . $entry->acronym;
@@ -1358,24 +1442,23 @@ class Leaves_model extends CI_Model
     }
 
     /**
-     * Count leave requests submitted to the connected user (or if delegate of a manager)
-     * @param int $manager connected user
-     * @return int number of requests
-     * 
+     * Count the number of leave requests submitted to the connected user (or delegates of a manager)
+     * @param int $managerId Identifier of a manager
+     * @return int number of leave requests
      */
-    public function countLeavesRequestedToManager($manager)
+    public function countLeavesRequestedToManager(int $managerId): int
     {
         $this->load->model('delegations_model');
-        $ids = $this->delegations_model->listManagersGivingDelegation($manager);
+        $ids = $this->delegations_model->listManagersGivingDelegation($managerId);
         $this->db->select('count(*) as number', FALSE);
         $this->db->join('users', 'users.id = leaves.employee');
-        $this->db->where_in('leaves.status', array(LMS_REQUESTED, LMS_CANCELLATION));
+        $this->db->where_in('leaves.status', [LMS_REQUESTED, LMS_CANCELLATION]);
 
         if (count($ids) > 0) {
-            array_push($ids, $manager);
+            array_push($ids, $managerId);
             $this->db->where_in('users.manager', $ids);
         } else {
-            $this->db->where('users.manager', $manager);
+            $this->db->where('users.manager', $managerId);
         }
         $result = $this->db->get('leaves');
         return $result->row()->number;
@@ -1383,13 +1466,17 @@ class Leaves_model extends CI_Model
 
     /**
      * Purge the table by deleting the records prior $toDate
-     * @param date $toDate
+     * @param string $toDate
      * @return int number of affected rows
-     * 
+     * @throws InvalidArgumentException if dates are invalid or start date is after end date
      */
-    public function purgeLeaves($toDate)
+    public function purgeLeaves(string $toDate): int
     {
-        //TODO : if one day we use this function, should what should we do with the history feature?
+        //TODO : if one day we use this function, what should we do with the history feature?
+        //check if $toDate is valid dates
+        if (!$this->isValidYmdDate($toDate)) {
+            throw new InvalidArgumentException('Date must be valid and use format Y-m-d.');
+        }
         $this->db->where(' <= ', $toDate);
         return $this->db->delete('leaves');
     }
@@ -1397,9 +1484,8 @@ class Leaves_model extends CI_Model
     /**
      * Count the number of rows into the table
      * @return int number of rows
-     * 
      */
-    public function count()
+    public function count(): int
     {
         $this->db->select('count(*) as number', FALSE);
         $this->db->from('leaves');
@@ -1408,13 +1494,21 @@ class Leaves_model extends CI_Model
     }
 
     /**
-     * All leaves between two timestamps, no filters
+     * Get all leaves between two timestamps, no filters
      * @param string $startDate Start date displayed on calendar
      * @param string $endDate End date displayed on calendar
-     * 
+     * @return array Array of results containing leave details
+     * @throws InvalidArgumentException if dates are invalid or start date is after end date
      */
-    public function all($startDate, $endDate)
+    public function all(string $startDate, string $endDate): array
     {
+        //check if $startDate and $endDate are valid dates
+        if (!$this->isValidYmdDate($startDate) || !$this->isValidYmdDate($endDate)) {
+            throw new InvalidArgumentException('Dates must be valid and use format Y-m-d.');
+        }
+        if ($startDate > $endDate) {
+            throw new InvalidArgumentException('Start date must be earlier than or equal to end date.');
+        }
         $this->db->select("users.id as user_id, users.firstname, users.lastname, leaves.*", FALSE);
         $this->db->join('users', 'users.id = leaves.employee');
         $this->db->where('( (leaves.startdate >= ' . $this->db->escape($startDate) . ' AND leaves.enddate <= ' . $this->db->escape($endDate) . ')' .
@@ -1432,10 +1526,11 @@ class Leaves_model extends CI_Model
      * @param string $statusFilter optional filter on status
      * @param boolean $calendar Is this function called to display a calendar
      * @return array Array of objects containing leave details
-     * 
      */
-    public function tabular(&$entity = -1, &$month = 0, &$year = 0, &$children = TRUE, $statusFilter = NULL, $calendar = FALSE)
+    public function tabular(int &$entity = -1, int &$month = 0, int &$year = 0, int &$children = TRUE, ?int $statusFilter = NULL, bool $calendar = FALSE): array
     {
+        //TODO: not urgent but find a way to get rid of this pass by ref 
+        //TODO: The £calendar param is after an optional param : it smells bad
         //Find default values for parameters (passed by ref)
         if ($month == 0)
             $month = date("m");
@@ -1460,7 +1555,8 @@ class Leaves_model extends CI_Model
         foreach ($employees as $employee) {
             if ($statusFilter != NULL) {
                 $statuses = explode('|', $statusFilter);
-                $tabular[$employee->id] = $this->linear($employee->id,
+                $tabular[$employee->id] = $this->linear(
+                    $employee->id,
                     $month,
                     $year,
                     in_array("1", $statuses),
@@ -1469,10 +1565,21 @@ class Leaves_model extends CI_Model
                     in_array("4", $statuses),
                     in_array("5", $statuses),
                     in_array("6", $statuses),
-                    $calendar);
+                    $calendar
+                );
             } else {
-                $tabular[$employee->id] = $this->linear($employee->id, $month, $year,
-                    TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, $calendar);
+                $tabular[$employee->id] = $this->linear(
+                    $employee->id,
+                    $month,
+                    $year,
+                    TRUE,
+                    TRUE,
+                    TRUE,
+                    FALSE,
+                    TRUE,
+                    FALSE,
+                    $calendar
+                );
             }
         }
         return $tabular;
@@ -1483,12 +1590,12 @@ class Leaves_model extends CI_Model
      * @param int $list List identifier
      * @param int $month Month number
      * @param int $year Year number
-     * @param string $statusFilter optional filter on status
+     * @param ?string $statusFilter optional filter on status
      * @return array Array of objects containing leave details
-     * 
      */
-    public function tabularList($list, &$month = 0, &$year = 0, $statusFilter = NULL)
+    public function tabularList(int $list, int &$month = 0, int &$year = 0, ?string $statusFilter = NULL): array
     {
+        //TODO: not urgent but find a way to get rid of this pass by ref 
         //Find default values for parameters (passed by ref)
         if ($month == 0)
             $month = date("m");
@@ -1502,7 +1609,8 @@ class Leaves_model extends CI_Model
         foreach ($employees as $employee) {
             if ($statusFilter != NULL) {
                 $statuses = explode('|', $statusFilter);
-                $tabular[$employee['id']] = $this->linear($employee['id'],
+                $tabular[$employee['id']] = $this->linear(
+                    $employee['id'],
                     $month,
                     $year,
                     in_array("1", $statuses),
@@ -1510,7 +1618,8 @@ class Leaves_model extends CI_Model
                     in_array("3", $statuses),
                     in_array("4", $statuses),
                     in_array("5", $statuses),
-                    in_array("6", $statuses));
+                    in_array("6", $statuses)
+                );
             } else {
                 $tabular[$employee['id']] = $this->linear($employee['id'], $month, $year, TRUE, TRUE, TRUE, FALSE, TRUE);
             }
@@ -1522,9 +1631,8 @@ class Leaves_model extends CI_Model
      * Count the total duration of leaves for the month. Only accepted leaves are taken into account
      * @param array $linear linear calendar for one employee
      * @return int total of leaves duration
-     * 
      */
-    public function monthlyLeavesDuration($linear)
+    public function monthlyLeavesDuration(array $linear): int
     {
         $total = 0;
         foreach ($linear->days as $day) {
@@ -1555,11 +1663,10 @@ class Leaves_model extends CI_Model
      * Only accepted leaves are taken into account.
      * @param array $linear linear calendar for one employee
      * @return array key/value array (k:leave type label, v:sum for the month)
-     * 
      */
-    public function monthlyLeavesByType($linear)
+    public function monthlyLeavesByType(array $linear): array
     {
-        $by_types = array();
+        $by_types = [];
         foreach ($linear->days as $day) {
             if (strstr($day->display, ';')) {
                 $display = explode(";", $day->display);
@@ -1585,25 +1692,31 @@ class Leaves_model extends CI_Model
     }
 
     /**
-     * Leave requests of users of a department(s)
-     * @param int $employee Employee identifier
+     * Leave requests of users attached to a department(s)
+     * @param int $employeeId Employee identifier
      * @param int $month Month number
      * @param int $year Year number
-     * @param boolean $planned Include leave requests with status planned
-     * @param boolean $requested Include leave requests with status requested
-     * @param boolean $accepted Include leave requests with status accepted
-     * @param boolean $rejected Include leave requests with status rejected
-     * @param boolean $cancellation Include leave requests with status cancellation
-     * @param boolean $canceled Include leave requests with status canceled
-     * @param boolean $calendar Is this function called to display a calendar
-     * @return array Array of objects containing leave details
-     * 
+     * @param bool $planned Include leave requests with status planned
+     * @param bool $requested Include leave requests with status requested
+     * @param bool $accepted Include leave requests with status accepted
+     * @param bool $rejected Include leave requests with status rejected
+     * @param bool $cancellation Include leave requests with status cancellation
+     * @param bool $canceled Include leave requests with status canceled
+     * @param bool $calendar Is this function called to display a calendar
+     * @return object Array of objects containing leave details
      */
-    public function linear($employee_id, $month, $year,
-        $planned = FALSE, $requested = FALSE, $accepted = FALSE,
-        $rejected = FALSE, $cancellation = FALSE, $canceled = FALSE,
-        $calendar = FALSE)
-    {
+    public function linear(
+        int $employeeId,
+        int $month,
+        int $year,
+        bool $planned = FALSE,
+        bool $requested = FALSE,
+        bool $accepted = FALSE,
+        bool $rejected = FALSE,
+        bool $cancellation = FALSE,
+        bool $canceled = FALSE,
+        bool $calendar = FALSE
+    ): object {
         $start = $year . '-' . $month . '-' . '1';    //first date of selected month
         $lastDay = date("t", strtotime($start));    //last day of selected month
         $end = $year . '-' . $month . '-' . $lastDay;    //last date of selected month
@@ -1611,7 +1724,7 @@ class Leaves_model extends CI_Model
         //We must show all users of the departement
         $this->load->model('dayoffs_model');
         $this->load->model('users_model');
-        $employee = $this->users_model->getUsers($employee_id);
+        $employee = $this->users_model->getUsers($employeeId);
         $user = new stdClass;
         $user->name = $employee['firstname'] . ' ' . $employee['lastname'];
         $user->manager = (int) $employee['manager'];  //To enable hiding confidential info in view
@@ -1630,7 +1743,7 @@ class Leaves_model extends CI_Model
         }
 
         //Force all day offs (mind the case of employees having no leave)
-        $dayoffs = $this->dayoffs_model->lengthDaysOffBetweenDatesForEmployee($employee_id, $start, $end);
+        $dayoffs = $this->dayoffs_model->lengthDaysOffBetweenDatesForEmployee($employeeId, $start, $end);
         foreach ($dayoffs as $dayoff) {
             $iDate = new DateTime($dayoff->date);
             $dayNum = intval($iDate->format('d'));
@@ -1660,7 +1773,7 @@ class Leaves_model extends CI_Model
         if (!$canceled)
             $this->db->where('leaves.status != ', LMS_CANCELED);
 
-        $this->db->where('leaves.employee = ', $employee_id);
+        $this->db->where('leaves.employee = ', $employeeId);
         $this->db->order_by('startdate', 'asc');
         $this->db->order_by('startdatetype', 'desc');
         $events = $this->db->get()->result();
@@ -1672,9 +1785,11 @@ class Leaves_model extends CI_Model
             //Hide forbidden entries in calendars
             if ($calendar) {
                 //Don't display rejected and cancel* leave requests for other employees
-                if (($entry->employee != $this->session->userdata('id')) &&
+                if (
+                    ($entry->employee != $this->session->userdata('id')) &&
                     ($entry->manager != $this->session->userdata('id')) &&
-                    ($this->session->userdata('is_hr') === FALSE)) {
+                    ($this->session->userdata('is_hr') === FALSE)
+                ) {
                     if ($entry->status > LMS_ACCEPTED) {
                         continue;
                     }
@@ -1768,8 +1883,10 @@ class Leaves_model extends CI_Model
                 //Check if another leave was defined on this day
                 if ($user->days[$dayNum]->display != '4') { //Except full day off
                     if ($user->days[$dayNum]->display != 0) { //Overlapping with a day off or another request
-                        if (($user->days[$dayNum]->display == 2) ||
-                            ($user->days[$dayNum]->display == 5)) { //Respect Morning/Afternoon order
+                        if (
+                            ($user->days[$dayNum]->display == 2) ||
+                            ($user->days[$dayNum]->display == 5)
+                        ) { //Respect Morning/Afternoon order
                             $user->days[$dayNum]->id .= ';' . $entry->id;
                             $user->days[$dayNum]->type .= ';' . $entry->type;
                             $user->days[$dayNum]->display .= ';' . $display;
@@ -1800,9 +1917,8 @@ class Leaves_model extends CI_Model
      * List all duplicated leave requests (exact same dates, status, etc.)
      * Note: this doesn't detect overlapping requests.
      * @return array List of duplicated leave requests
-     * 
      */
-    public function detectDuplicatedRequests()
+    public function detectDuplicatedRequests(): array
     {
         $this->db->select('leaves.id, CONCAT(users.firstname, \' \', users.lastname) as user_label', FALSE);
         $this->db->select('leaves.startdate, types.name as type_label');
@@ -1825,9 +1941,8 @@ class Leaves_model extends CI_Model
     /**
      * List all leave requests with a wrong date type (starting afternoon and ending morning of the same day)
      * @return array List of wrong leave requests
-     * 
      */
-    public function detectWrongDateTypes()
+    public function detectWrongDateTypes(): array
     {
         $this->db->select('leaves.*, CONCAT(users.firstname, \' \', users.lastname) as user_label', FALSE);
         $this->db->select('status.name as status_label');
@@ -1846,9 +1961,8 @@ class Leaves_model extends CI_Model
      * List of leave requests for which they are not entitled days on contracts or employee
      * Note: this might be an expected behaviour (avoid to track them into the balance report).
      * @return array List of duplicated leave requests
-     * 
      */
-    public function detectBalanceProblems()
+    public function detectBalanceProblems(): array
     {
         $query = $this->db->query('SELECT CONCAT(users.firstname, \' \', users.lastname) AS user_label,
         contracts.id, contracts.name AS contract_label,
@@ -1872,9 +1986,8 @@ class Leaves_model extends CI_Model
     /**
      * List of leave requests overlapping on two yearly periods.
      * @return array List of overlapping leave requests
-     * 
      */
-    public function detectOverlappingProblems()
+    public function detectOverlappingProblems(): array
     {
         $query = $this->db->query('SELECT CONCAT(users.firstname, \' \', users.lastname) AS user_label,
             contracts.id AS contract_id, contracts.name AS contract_label,
@@ -1895,7 +2008,7 @@ class Leaves_model extends CI_Model
      * @return array list of records
      * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getLeaveWithComments($leaveId = 0)
+    public function getLeaveWithComments(int $leaveId = 0): array
     {
         $this->db->select('leaves.*');
         $this->db->select('status.name as status_name, types.name as type_name');
@@ -1914,28 +2027,27 @@ class Leaves_model extends CI_Model
 
     /**
      * Get the JSON representation of comments posted on a leave request
-     * @param int $id Id of the leave request
+     * @param int $leaveId Id of the leave request
      * @return array list of records
      * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getCommentsLeaveJson($id)
+    public function getCommentsLeaveJson(int $leaveId): array
     {
-
         $this->db->select('leaves.comments');
         $this->db->from('leaves');
-        $this->db->where('leaves.id', "$id");
+        $this->db->where('leaves.id', $leaveId);
         return $this->db->get()->row_array();
     }
 
     /**
-     * Get one leave with his comment
-     * @param int $id Id of the leave request
-     * @return array list of records
+     * Get one leave request with his comment
+     * @param int $leaveId Id of the leave request
+     * @return ?array list of records
      * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getCommentsLeave($id)
+    public function getCommentsLeave(int $leaveId): ?array
     {
-        $request = $this->getCommentsLeaveJson($id);
+        $request = $this->getCommentsLeaveJson($leaveId);
         $json = $request["comments"];
         if (!empty($json)) {
             return json_decode($json);
@@ -1944,11 +2056,17 @@ class Leaves_model extends CI_Model
         }
     }
 
-    private function getCommentLeaveAndStatus($id)
+    /**
+     * Get one leave request with his comment and status
+     * @param int $leaveId Id of the leave request
+     * @return array list of records
+     */
+    private function getCommentLeaveAndStatus(int $leaveId): array
     {
+        //TODO: this function has a low added-value compared to $this->getCommentsLeave
         $this->db->select('leaves.comments, leaves.status');
         $this->db->from('leaves');
-        $this->db->where('leaves.id', "$id");
+        $this->db->where('leaves.id', $leaveId);
         $request = $this->db->get()->row_array();
         $json = $request["comments"];
         if (!empty($json)) {
@@ -1961,35 +2079,36 @@ class Leaves_model extends CI_Model
 
     /**
      * Update the comment of a Leave
-     * @param int $id Id of the leave
+     * @param int $leaveId Id of the leave
      * @param string $json new json for the comments of the leave
      * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function addComments($id, $json)
+    public function addComments(int $leaveId, string $json): void
     {
-        $data = array(
+        //TODO: decouple $this->session->userdata('id')
+        $data = [
             'comments' => $json
-        );
-        $this->db->where('id', $id);
+        ];
+        $this->db->where('id', $leaveId);
         $this->db->update('leaves', $data);
 
         //Trace the modification if the feature is enabled
         if ($this->config->item('enable_history') === TRUE) {
             $this->load->model('history_model');
-            $this->history_model->setHistory(2, 'leaves', $id, $this->session->userdata('id'));
+            $this->history_model->setHistory(2, 'leaves', $leaveId, $this->session->userdata('id'));
         }
     }
 
     /**
      * Prepare the Json when the status is updated
-     * @param int $id Id of the leave
+     * @param int $leaveId Id of the leave
      * @param int $status status which is updated
      * @return string json modified with the new status
      * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    private function prepareCommentOnStatusChanged($id, $status)
+    private function prepareCommentOnStatusChanged(int $leaveId, int $status): string
     {
-        $request = $this->getCommentLeaveAndStatus($id);
+        $request = $this->getCommentLeaveAndStatus($leaveId);
         if ($request['status'] === $status) {
             return json_encode($request['comments']);
         } else {

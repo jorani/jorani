@@ -1,11 +1,10 @@
 <?php
 /**
- * This Class contains all the business logic and the persistence layer for the
+ * This file contains all the business logic and the persistence layer for the
  * managing lists of employees. Each user can create and manage its own lists of
  * employees.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.6.0
  */
 

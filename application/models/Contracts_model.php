@@ -1,9 +1,8 @@
 <?php
 /**
- * This class contains the business logic and manages the persistence of contracts
+ * This file contains the business logic and manages the persistence of contracts
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -28,30 +27,28 @@ class Contracts_model extends CI_Model
 
     /**
      * Get the list of contracts or one contract
-     * @param int $id optional id of a contract
+     * @param int $contractId optional id of a contract
      * @return array records of contracts
-     * 
      */
-    public function getContracts($id = 0)
+    public function getContracts(int $contractId = 0): array
     {
-        if ($id === 0) {
+        if ($contractId === 0) {
             $this->db->order_by("name", "asc");
             $query = $this->db->get('contracts');
             return $query->result_array();
         }
-        $query = $this->db->get_where('contracts', array('id' => $id));
+        $query = $this->db->get_where('contracts', array('id' => $contractId));
         return $query->row_array();
     }
 
     /**
      * Get the name of a given contract
-     * @param int $id Unique identifier of a contract
+     * @param int $contractId Unique identifier of a contract
      * @return string name of the contract
-     * 
      */
-    public function getName($id)
+    public function getName(int $contractId): string
     {
-        $record = $this->getContracts($id);
+        $record = $this->getContracts($contractId);
         if (!empty($record)) {
             return $record['name'];
         } else {
@@ -62,10 +59,10 @@ class Contracts_model extends CI_Model
     /**
      * Insert a new contract into the database. Inserted data are coming from an HTML form
      * @return int number of affected rows
-     * 
      */
-    public function setContracts()
+    public function setContracts(): int
     {
+        //TODO: this part is ugly ==> decouple controller from model (in application\controllers\Contracts.php)
         $startentdate = str_pad($this->input->post('startentdatemonth'), 2, "0", STR_PAD_LEFT) .
             "/" . str_pad($this->input->post('startentdateday'), 2, "0", STR_PAD_LEFT);
         $endentdate = str_pad($this->input->post('endentdatemonth'), 2, "0", STR_PAD_LEFT) .
@@ -81,27 +78,26 @@ class Contracts_model extends CI_Model
 
     /**
      * Delete a contract from the database
-     * @param int $id identifier of the contract
-     * 
+     * @param int $contractId identifier of the contract
      */
-    public function deleteContract($id)
+    public function deleteContract(int $contractId): void
     {
-        $this->db->delete('contracts', array('id' => $id));
+        $this->db->delete('contracts', array('id' => $contractId));
         $this->load->model('users_model');
         $this->load->model('entitleddays_model');
         $this->load->model('dayoffs_model');
-        $this->entitleddays_model->deleteEntitledDaysCascadeContract($id);
-        $this->dayoffs_model->deleteDaysOffCascadeContract($id);
-        $this->users_model->updateUsersCascadeContract($id);
+        $this->entitleddays_model->deleteEntitledDaysCascadeContract($contractId);
+        $this->dayoffs_model->deleteDaysOffCascadeContract($contractId);
+        $this->users_model->updateUsersCascadeContract($contractId);
     }
 
     /**
      * Update a given contract in the database. Update data are coming from an HTML form
      * @return int number of affected rows
-     * 
      */
-    public function updateContract()
+    public function updateContract(): int
     {
+        //TODO: this part is ugly ==> decouple controller from model (in application\controllers\Contracts.php)
         $startentdate = str_pad($this->input->post('startentdatemonth'), 2, "0", STR_PAD_LEFT) .
             "/" . str_pad($this->input->post('startentdateday'), 2, "0", STR_PAD_LEFT);
         $endentdate = str_pad($this->input->post('endentdatemonth'), 2, "0", STR_PAD_LEFT) .
@@ -124,10 +120,10 @@ class Contracts_model extends CI_Model
      * @param &date end date of the current leave period
      * @param string $refDate tmp of the Date of reference (or current date if NULL)
      * @return bool TRUE means that the user has a contract, FALSE otherwise
-     * 
      */
-    public function getBoundaries($userId, &$startentdate, &$endentdate, $refDate = NULL)
+    public function getBoundaries(int $userId, &$startentdate, &$endentdate, ?string $refDate = NULL): bool
     {
+        //TODO: start and en dates are references, we should return a Plain Old PHP Object as it is a business object
         $this->db->select('startentdate, endentdate');
         $this->db->from('contracts');
         $this->db->join('users', 'users.contract = contracts.id');
@@ -165,12 +161,9 @@ class Contracts_model extends CI_Model
     /**
      * Detect not used contracts (maybe duplicated)
      * @return array list of unused contracts
-     * 
      */
-    public function notUsedContracts()
+    public function notUsedContracts(): array
     {
-        //SELECT contracts.* FROM `contracts` LEFT OUTER JOIN users ON contracts.id = users.contract
-        // WHERE users.contract IS NULL
         $this->db->select('contracts.*');
         $this->db->join('users', 'contracts.id = users.contract', 'left outer');
         $this->db->where('users.contract IS NULL');
@@ -179,17 +172,16 @@ class Contracts_model extends CI_Model
 
     /**
      * Get the list of included leave types in a contract
-     * @param int $id identifier of the contract
+     * @param int $contractId identifier of the contract
      * @return array Associative array of types (id, name)
-     * 
      */
-    public function getListOfIncludedTypes($id)
+    public function getListOfIncludedTypes(int $contractId): array
     {
         $listOfTypes = array();
         $this->db->select('types.id as id, types.name as name');
         $this->db->from('types');
         $this->db->join('excluded_types',
-            'excluded_types.type_id = types.id AND excluded_types.contract_id = ' . $this->db->escape($id),
+            'excluded_types.type_id = types.id AND excluded_types.contract_id = ' . $this->db->escape($contractId),
             'left');
         $this->db->where('excluded_types.type_id IS NULL');
         $this->db->order_by("types.name", "asc");
@@ -202,18 +194,17 @@ class Contracts_model extends CI_Model
 
     /**
      * Get the list of excluded leave types in a contract
-     * @param int $id identifier of the contract
+     * @param int $contractId identifier of the contract
      * @return array Associative array of types (id, name)
-     * 
      */
-    public function getListOfExcludedTypes($id)
+    public function getListOfExcludedTypes(int $contractId): array
     {
         $listOfTypes = array();
         $this->db->select('types.id as id, types.name as name');
         $this->db->from('excluded_types');
         $this->db->join('types', 'excluded_types.type_id = types.id');
         $this->db->order_by("types.name", "asc");
-        $this->db->where('excluded_types.contract_id', $id);
+        $this->db->where('excluded_types.contract_id', $contractId);
         $rows = $this->db->get()->result_array();
         foreach ($rows as $row) {
             $listOfTypes[$row['id']] = $row['name'];
@@ -223,10 +214,10 @@ class Contracts_model extends CI_Model
 
     /**
      * Get the usage of leave types for a given contract
-     * @param int $id identifier of the contract
-     * 
+     * @param int $contractId identifier of the contract
+     * @ret urn array Associative array of types (id, name)
      */
-    public function getTypeUsageForContract($id)
+    public function getTypeUsageForContract(int $contractId): array
     {
         //Intit the list usage with zero values
         $usageArray = array();
@@ -242,7 +233,7 @@ class Contracts_model extends CI_Model
         $this->db->join('leaves', 'types.id = leaves.type');
         $this->db->join('users', 'leaves.employee = users.id');
         $this->db->join('contracts', 'users.contract = contracts.id');
-        $this->db->where('contracts.id', $id);
+        $this->db->where('contracts.id', $contractId);
         $this->db->group_by('types.id');
 
         //Complete the associative array type:usage
@@ -264,8 +255,9 @@ class Contracts_model extends CI_Model
      * @param int $leaveType identifier of the selected leave type or NULL
      * 
      */
-    public function getLeaveTypesDetailsOTypesForUser($userId, $leaveType = NULL)
+    public function getLeaveTypesDetailsOTypesForUser(int $userId, ?int $leaveType = NULL): object
     {
+        //TODO: return a Plain Old PHP Object as it is a business object
         $this->load->model('users_model');
         $this->load->model('types_model');
         $this->load->model('leaves_model');
@@ -311,15 +303,15 @@ class Contracts_model extends CI_Model
      * @param int $contractId identifier of the contract
      * @param int $typeId identifier of the leave type
      * @return string OK: possible or OK impossible to perform the operation
-     * 
      */
-    public function excludeLeaveTypeForContract($contractId, $typeId)
+    public function excludeLeaveTypeForContract(int $contractId, int $typeId): string
     {
-        //TODO we should check what is the default type and if it is used by any leave request
-        $data = array(
+        //TODO: we should check what is the default type and if it is used by any leave request
+        //TODO: this function always returns OK, Only used by a unique Ajax endpoint
+        $data = [
             'contract_id' => $contractId,
             'type_id' => $typeId
-        );
+        ];
         $this->db->insert('excluded_types', $data);
         return "OK";
     }
@@ -332,6 +324,6 @@ class Contracts_model extends CI_Model
      */
     public function includeLeaveTypeInContract($contractId, $typeId)
     {
-        $this->db->delete('excluded_types', array('contract_id' => $contractId, 'type_id' => $typeId));
+        $this->db->delete('excluded_types', ['contract_id' => $contractId, 'type_id' => $typeId]);
     }
 }

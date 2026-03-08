@@ -1,10 +1,9 @@
 <?php
 /**
- * This Class contains all the business logic and the persistence layer 
+ * This file contains all the business logic and the persistence layer 
  * for the service accounts (OAuth clients and sessions).
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.6.0
  */
 
@@ -133,11 +132,13 @@ class OAuthClients_model extends CI_Model
      */
     public function isOAuthAppAllowed($clientId, $userId)
     {
-        $query = $this->db->get_where('oauth_applications',
+        $query = $this->db->get_where(
+            'oauth_applications',
             array(
                 'client_id' => $clientId,
                 'user' => $userId
-            ));
+            )
+        );
         $result = $query->row_array();
         return !empty($result);
     }
@@ -153,8 +154,10 @@ class OAuthClients_model extends CI_Model
         $this->db->select('oauth_applications.client_id, redirect_uri');
         $this->db->join('oauth_clients', 'oauth_clients.client_id = oauth_applications.client_id');
         $this->db->order_by("oauth_applications.client_id", "asc");
-        $query = $this->db->get_where('oauth_applications',
-            array('user' => $userId));
+        $query = $this->db->get_where(
+            'oauth_applications',
+            array('user' => $userId)
+        );
         //Try to resolve the icon path of the 3rd application, 
         // use a default icon otherwise
         $apps = $query->result_array();
@@ -177,11 +180,13 @@ class OAuthClients_model extends CI_Model
      */
     public function revokeOAuthApp($clientId, $userId)
     {
-        $this->db->delete('oauth_applications',
+        $this->db->delete(
+            'oauth_applications',
             array(
                 'client_id' => $clientId,
                 'user' => $userId
-            ));
+            )
+        );
     }
 
     /**

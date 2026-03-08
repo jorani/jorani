@@ -68,16 +68,29 @@ class Hr extends CI_Controller
      * @param string $date2 Date Hired (optional)
      * 
      */
-    public function employeesOfEntity($id = 0, $children = TRUE, $filterActive = "all",
-        $criterion1 = NULL, $date1 = NULL, $criterion2 = NULL, $date2 = NULL)
-    {
+    public function employeesOfEntity(
+        $id = 0,
+        $children = TRUE,
+        $filterActive = "all",
+        $criterion1 = NULL,
+        $date1 = NULL,
+        $criterion2 = NULL,
+        $date2 = NULL
+    ) {
         if ($this->auth->isAllowed('list_employees') == FALSE) {
             return $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $children = filter_var($children, FILTER_VALIDATE_BOOLEAN);
             $this->load->model('users_model');
-            $employees = $this->users_model->employeesOfEntity($id, $children, $filterActive,
-                $criterion1, $date1, $criterion2, $date2);
+            $employees = $this->users_model->employeesOfEntity(
+                $id,
+                $children,
+                $filterActive,
+                $criterion1,
+                $date1,
+                $criterion2,
+                $date2
+            );
 
             //Prepare an object that will be encoded in JSON
             $msg = new \stdClass();
@@ -191,9 +204,17 @@ class Hr extends CI_Controller
             $employees = $this->input->post('employees', TRUE);
             $objectEmployees = json_decode($employees);
             $this->load->model('leaves_model');
-            $result = $this->leaves_model->createRequestForUserList($type, $duration,
-                $startdate, $enddate, $startdatetype, $enddatetype, $cause, $status,
-                $objectEmployees);
+            $result = $this->leaves_model->createRequestForUserList(
+                $type,
+                $duration,
+                $startdate,
+                $enddate,
+                $startdatetype,
+                $enddatetype,
+                $cause,
+                $status,
+                $objectEmployees
+            );
             echo $result;
         }
     }
@@ -320,7 +341,7 @@ class Hr extends CI_Controller
         }
 
         $data['refDate'] = $refDate;
-        $data['summary'] = $this->leaves_model->getLeaveBalanceForEmployee($id, FALSE, $refDate);
+        $data['summary'] = $this->leaves_model->getLeaveBalanceForEmployee($id, $refDate);
         if (!is_null($data['summary'])) {
             $this->load->model('entitleddays_model');
             $this->load->model('users_model');
@@ -477,7 +498,7 @@ class Hr extends CI_Controller
         $data['employee_id'] = $id;
         $refDate = new DateTime($end);
         $data['refDate'] = $refDate->format(lang('global_date_format'));
-        $data['summary'] = $this->leaves_model->getLeaveBalanceForEmployee($id, FALSE, $end);
+        $data['summary'] = $this->leaves_model->getLeaveBalanceForEmployee($id, $end);
 
         $this->load->view('templates/header', $data);
         $this->load->view('menu/index', $data);
@@ -522,9 +543,15 @@ class Hr extends CI_Controller
      * @param string $date2 Date Hired (optional)
      * 
      */
-    public function exportEmployees($id = 0, $children = TRUE, $filterActive = "all",
-        $criterion1 = NULL, $date1 = NULL, $criterion2 = NULL, $date2 = NULL)
-    {
+    public function exportEmployees(
+        $id = 0,
+        $children = TRUE,
+        $filterActive = "all",
+        $criterion1 = NULL,
+        $date1 = NULL,
+        $criterion2 = NULL,
+        $date2 = NULL
+    ) {
         $this->load->model('users_model');
         $data['id'] = $id;
         $data['children'] = filter_var($children, FILTER_VALIDATE_BOOLEAN);

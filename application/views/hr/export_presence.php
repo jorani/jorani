@@ -47,7 +47,7 @@ $leave_duration = $this->leaves_model->monthlyLeavesDuration($linear);
 $work_duration = $opened_days - $leave_duration;
 $leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);
 //Leave balance of the employee
-$summary = $this->leaves_model->getLeaveBalanceForEmployee($id, FALSE, $end);
+$summary = $this->leaves_model->getLeaveBalanceForEmployee($id, $end);
 
 //Print the header with the facts of the presence report
 $sheet->setTitle(mb_strimwidth(lang('hr_presence_title'), 0, 28, "..."));  //Maximum 31 characters allowed in sheet title.

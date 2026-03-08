@@ -492,7 +492,7 @@ class Api extends CI_Controller
                 return;
             }
 
-            $result = $this->leaves_model->getLeaveBalanceForEmployee($employeeId, FALSE, $refDate);
+            $result = $this->leaves_model->getLeaveBalanceForEmployee($employeeId, $refDate);
             if (empty($result)) {
                 $this->output->set_header("HTTP/1.1 422 Unprocessable entity");
             } else {
@@ -1416,9 +1416,26 @@ class Api extends CI_Controller
                 log_message('error', 'HTTP API/Create user: Mandatory fields are missing.');
             } else {
                 if ($this->users_model->isLoginAvailable($login)) {
-                    $result = $this->users_model->insertUserByApi($firstname, $lastname, $login, $email, $password, $role,
-                        $manager, $organization, $contract, $position, $datehired, $identifier, $language, $timezone,
-                        $ldap_path, TRUE, $country, $calendar);
+                    $result = $this->users_model->insertUserByApi(
+                        $firstname,
+                        $lastname,
+                        $login,
+                        $email,
+                        $password,
+                        $role,
+                        $manager,
+                        $organization,
+                        $contract,
+                        $position,
+                        $datehired,
+                        $identifier,
+                        $language,
+                        $timezone,
+                        $ldap_path,
+                        TRUE,
+                        $country,
+                        $calendar
+                    );
 
                     if ($sendEmail == TRUE) {
                         //Send an e-mail to the user so as to inform that its account has been created
@@ -1520,8 +1537,10 @@ class Api extends CI_Controller
             $document = $this->input->post('document');
 
             //Check mandatory fields
-            if (empty($startdate) || empty($enddate) || empty($status) || empty($employee)
-                || empty($startdatetype) || empty($enddatetype) || empty($duration) || empty($type)) {
+            if (
+                empty($startdate) || empty($enddate) || empty($status) || empty($employee)
+                || empty($startdatetype) || empty($enddatetype) || empty($duration) || empty($type)
+            ) {
                 $this->output->set_header("HTTP/1.1 422 Unprocessable entity");
                 log_message('error', 'Mandatory fields are missing.');
             } else {
@@ -1559,8 +1578,19 @@ class Api extends CI_Controller
                 }
 
                 $this->load->model('leaves_model');
-                $result = $this->leaves_model->createLeaveByApi($startdate, $enddate, $status, $employee, $cause,
-                    $startdatetype, $enddatetype, $duration, $type, $comments, $document);
+                $result = $this->leaves_model->createLeaveByApi(
+                    $startdate,
+                    $enddate,
+                    $status,
+                    $employee,
+                    $cause,
+                    $startdatetype,
+                    $enddatetype,
+                    $duration,
+                    $type,
+                    $comments,
+                    $document
+                );
                 echo json_encode($result);
             }
         }

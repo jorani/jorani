@@ -3,7 +3,6 @@
  * This file contains all the business logic and the persistence layer for the positions.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 

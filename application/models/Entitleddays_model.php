@@ -1,9 +1,8 @@
 <?php
 /**
- * This class contains the business logic and manages the persistence of entitled days.
+ * This file contains the business logic and manages the persistence of entitled days.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -28,82 +27,78 @@ class Entitleddays_model extends CI_Model
 
     /**
      * Get the list of entitled days or one entitled day record associated to a contract
-     * @param int $id optional id of a contract
+     * @param int $contractId id of a contract
      * @return array record of entitled days
-     * 
      */
-    public function getEntitledDaysForContract($contract)
+    public function getEntitledDaysForContract(int $contractId): array
     {
         $this->db->select('entitleddays.*, types.name as type_name');
         $this->db->from('entitleddays');
         $this->db->join('types', 'types.id = entitleddays.type');
         $this->db->order_by("startdate", "desc");
-        $this->db->where('contract =', $contract);
+        $this->db->where('contract =', $contractId);
         return $this->db->get()->result_array();
     }
 
     /**
      * Get the list of entitled days or one entitled day record associated to an employee
-     * @param int $id optional id of an employee
+     * @param int $employeeId id of an employee
      * @return array record of entitled days
-     * 
      */
-    public function getEntitledDaysForEmployee($employee)
+    public function getEntitledDaysForEmployee(int $employeeId): array
     {
         $this->db->select('entitleddays.*, types.name as type_name');
         $this->db->from('entitleddays');
         $this->db->join('types', 'types.id = entitleddays.type');
         $this->db->order_by("startdate", "desc");
-        $this->db->where('employee =', $employee);
+        $this->db->where('employee =', $employeeId);
         return $this->db->get()->result_array();
     }
 
     /**
      * Insert a new entitled days record (for a contract) into the database and return the id
-     * @param int $contract_id contract identifier
-     * @param date $startdate Start Date
-     * @param date $enddate End Date
+     * @param int $contractId contract identifier
+     * @param string $startDate Start Date
+     * @param string $endDate End Date
      * @param int $days number of days to be added
-     * @param int $type Leave type (of the entitled days line)
-     * @param int $description Description of the entitled days line
-     * @return int last inserted id
-     * 
+     * @param int $leaveType Leave type (of the entitled days line)
+     * @param string $description Description of the entitled days line
+     * @return int inserted entitled days record id
      */
-    public function addEntitledDaysToContract($contract_id, $startdate, $enddate, $days, $type, $description)
+    public function addEntitledDaysToContract(int $contractId, string $startDate, string $endDate, int $days, int $leaveType, string $description): int
     {
-        $data = array(
-            'contract' => $contract_id,
-            'startdate' => $startdate,
-            'enddate' => $enddate,
+        $data = [
+            'contract' => $contractId,
+            'startdate' => $startDate,
+            'enddate' => $endDate,
             'days' => $days,
-            'type' => $type,
+            'type' => $leaveType,
             'description' => $description
-        );
+        ];
         $this->db->insert('entitleddays', $data);
         return $this->db->insert_id();
     }
 
     /**
      * Insert a new entitled days record (for an employee) into the database and return the id
-     * @param int $user_id employee identifier
-     * @param date $startdate Start Date
-     * @param date $enddate End Date
+     * @param int $userId employee identifier
+     * @param string $startDate Start Date
+     * @param string $endDate End Date
      * @param int $days number of days to be added
      * @param int $type Leave type (of the entitled days line)
-     * @param int $description Description of the entitled days line
-     * @return int last inserted id
-     * 
+     * @param string $description Description of the entitled days line
+     * @return int inserted entitled days record id
      */
-    public function addEntitledDaysToEmployee($user_id, $startdate, $enddate, $days, $type, $description)
+    public function addEntitledDaysToEmployee(int $userId, string $startDate, string $endDate, int $days, int $type, string $description): int
     {
-        $data = array(
-            'employee' => $user_id,
-            'startdate' => $startdate,
-            'enddate' => $enddate,
+        $data = [
+            'employee' => $userId,
+            'startdate' => $startDate,
+            'enddate' => $endDate,
             'days' => $days,
             'type' => $type,
             'description' => $description
-        );
+        ];
         $this->db->insert('entitleddays', $data);
         return $this->db->insert_id();
     }
@@ -112,53 +107,49 @@ class Entitleddays_model extends CI_Model
      * Delete an entitled days record from the database (for an employee or a contract)
      * @param int $id identifier of the entitleddays record
      * @return int number of rows affected
-     * 
      */
-    public function deleteEntitledDays($id)
+    public function deleteEntitledDays(int $id): int
     {
-        return $this->db->delete('entitleddays', array('id' => $id));
+        return $this->db->delete('entitleddays', ['id' => $id]);
     }
 
     /**
      * Delete entitled days attached to a user
      * @param int $id identifier of an employee
-     * 
      */
-    public function deleteEntitledDaysCascadeUser($id)
+    public function deleteEntitledDaysCascadeUser($id): void
     {
-        $this->db->delete('entitleddays', array('employee' => $id));
+        $this->db->delete('entitleddays', ['employee' => $id]);
     }
 
     /**
      * Delete a entitled days attached to a contract
-     * @param int $id identifier of a contract
-     * 
+     * @param int $contractId identifier of a contract
      */
-    public function deleteEntitledDaysCascadeContract($id)
+    public function deleteEntitledDaysCascadeContract(int $contractId): void
     {
-        $this->db->delete('entitleddays', array('contract' => $id));
+        $this->db->delete('entitleddays', ['contract' => $contractId]);
     }
 
     /**
      * Update a record of entitled days (for an employee or a contract)
      * @param int $id line of entitled days identifier (row id)
-     * @param date $startdate Start Date
-     * @param date $enddate End Date
+     * @param string $startDate Start Date
+     * @param string $endDate End Date
      * @param int $days number of days to be added
      * @param int $type Leave type (of the entitled days line)
-     * @param int $description Description of the entitled days line
+     * @param string $description Description of the entitled days line
      * @return number of affected rows
-     * 
      */
-    public function updateEntitledDays($id, $startdate, $enddate, $days, $type, $description)
+    public function updateEntitledDays(int $id, string $startDate, string $endDate, int $days, int $type, string $description): int
     {
-        $data = array(
-            'startdate' => $startdate,
-            'enddate' => $enddate,
+        $data = [
+            'startdate' => $startDate,
+            'enddate' => $endDate,
             'days' => $days,
             'type' => $type,
             'description' => $description
-        );
+        ];
 
         $this->db->where('id', $id);
         return $this->db->update('entitleddays', $data);
@@ -169,9 +160,8 @@ class Entitleddays_model extends CI_Model
      * @param int $id row identifier
      * @param float $step increment step
      * @return int number of affected rows
-     * 
      */
-    public function increase($id, $step)
+    public function increase(int $id, float $step): int
     {
         if (!is_numeric($step))
             $step = 1;
@@ -185,9 +175,8 @@ class Entitleddays_model extends CI_Model
      * @param int $id row identifier
      * @param float $step increment step
      * @return int number of affected rows
-     * 
      */
-    public function decrease($id, $step)
+    public function decrease(int $id, float $step): int
     {
         if (!is_numeric($step))
             $step = 1;
@@ -201,9 +190,8 @@ class Entitleddays_model extends CI_Model
      * @param int $id row identifier
      * @param float $days credit in days
      * @return int number of affected rows
-     * 
      */
-    public function updateNbOfDaysOfEntitledDaysRecord($id, $days)
+    public function updateNbOfDaysOfEntitledDaysRecord(int $id, float $days): int
     {
         if (!is_numeric($days))
             $days = 1;
@@ -214,12 +202,12 @@ class Entitleddays_model extends CI_Model
 
     /**
      * Purge the table by deleting the records prior $toDate
-     * @param date $toDate 
+     * @param string $toDate 
      * @return int number of affected rows
-     * 
      */
-    public function purgeEntitleddays($toDate)
+    public function purgeEntitleddays(string $toDate): int
     {
+        //TODO: check if $toDate is an actual date
         $this->db->where('enddate <= ', $toDate);
         return $this->db->delete('entitleddays');
     }
@@ -227,9 +215,8 @@ class Entitleddays_model extends CI_Model
     /**
      * Count the number of rows into the table
      * @return int number of rows
-     * 
      */
-    public function count()
+    public function count(): int
     {
         $this->db->select('count(*) as number', FALSE);
         $this->db->from('entitleddays');
@@ -240,9 +227,8 @@ class Entitleddays_model extends CI_Model
     /**
      * List all entitlements overflowing (more than one year).
      * @return array List of possible duplicated leave requests
-     * 
      */
-    public function detectOverflow()
+    public function detectOverflow(): array
     {
         //Note: the query below detects deletion problems:
         //SELECT * FROM entitleddays 

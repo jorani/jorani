@@ -1,9 +1,8 @@
 <?php
 /**
- * This class contains the business logic and manages the persistence of non working days
- * 
+ * This file contains the business logic and manages the persistence of non working days
+ *
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -12,13 +11,13 @@ if (!defined('BASEPATH')) {
 }
 
 /*
- * History tables are named {table}_history and they are used to store the modifications brought on some tables. They have
- * the same structure than the table they keep history for, but with the following additional columns :
+ * History tables are named {table}_history and they are used to store the modifications performed on some tables.
+ * They have the same structure than the table they keep history for, but with the following additional columns :
  * modification_id
  * moditifed_type
  * modified_by      (if 0, system or init)
  * change_date
- * 
+ *
  * Of course, the PK is no more the identifier of the object but modification_id.
  * Modification types are :
  *     0 - not used
@@ -28,6 +27,7 @@ if (!defined('BASEPATH')) {
  */
 class History_model extends CI_Model
 {
+    private $allowedTables = ['leaves', 'overtime'];
 
     /**
      * Default constructor
@@ -40,10 +40,9 @@ class History_model extends CI_Model
     /**
      * Get the list of changes into the 'leaves' table
      * @param int $leaveId Identifier of the leave request
-     * @return result rows as array of arrays
-     * 
+     * @return array esult rows as array of arrays
      */
-    public function getLeaveRequestsHistory($leaveId)
+    public function getLeaveRequestsHistory(int $leaveId): array
     {
         $this->db->select("CONCAT(users.firstname, ' ', users.lastname) as user_name", FALSE);
         $this->db->select('types.name as type_name, status.name as status_name');
@@ -58,14 +57,12 @@ class History_model extends CI_Model
         return $results;
     }
 
-
     /**
      * Get the list of deleted leave requests
      * @param int $userId Identifier of the user
-     * @return result rows as array of arrays
-     * 
+     * @return array rows as array of arrays
      */
-    public function getDeletedLeaveRequests($userId)
+    public function getDeletedLeaveRequests(int $userId): array
     {
         $this->db->select('DISTINCT leaves_history.id', FALSE);
         $this->db->select("CONCAT(users.firstname, ' ', users.lastname) as user_name", FALSE);
@@ -84,12 +81,15 @@ class History_model extends CI_Model
     /**
      * Get the details of a modification
      * @param string $table Table modified
-     * @param type $id Unique Identifier of the modification
-     * @return result row as an array
-     * 
+     * @param int $id Unique Identifier of the modification
+     * @return array row as an array
+     * @throws InvalidArgumentException if the table is not allowed
      */
-    public function getHistoryDetail($table, $id)
+    public function getHistoryDetail(string $table, int $id): array
     {
+        if (!in_array($table, $this->allowedTables, true)) {
+            throw new InvalidArgumentException("The provided table is not allowed for history details.");
+        }
         $query = $this->db->get_where($table . '_history', array('modification_id' => $id));
         return $query->row_array();
     }
@@ -99,15 +99,18 @@ class History_model extends CI_Model
      * @param int $type Type of modification (1 - create, 2 - update, 3 - delete)
      * @param string $table Table modified
      * @param int $id Identifier of the object (can be returned by the last inserted id function)
-     * @param int $user_id Identifier of the connected user
-     * 
+     * @param int $userId Identifier of the connected user
+     * @throws InvalidArgumentException if the table is not allowed
      */
-    public function setHistory($type, $table, $id, $user_id)
+    public function setHistory(int $type, string $table, int $id, int $userId): void
     {
+        if (!in_array($table, $this->allowedTables, true)) {
+            throw new InvalidArgumentException("The provided table is not allowed for history details.");
+        }
         $sql = 'INSERT INTO ' . $table . '_history';
         $sql .= ' SELECT *, NULL,';
         $sql .= ' ' . $type;
-        $sql .= ', ' . $user_id;
+        $sql .= ', ' . $userId;
         $sql .= ', NOW() FROM ' . $table . ' WHERE id = ' . $id;
         $this->db->query($sql);
     }
@@ -115,12 +118,12 @@ class History_model extends CI_Model
     /**
      * Purge the table by deleting the records prior $toDate
      * @param string $table Source Table
-     * @param date $toDate 
+     * @param string $toDate
      * @return int number of affected rows
-     * 
      */
-    public function purgeHistory($table, $toDate)
+    public function purgeHistory(string $table, string $toDate): int
     {
+        //TODO: check if $toDate is a valid date
         $this->db->where('change_date <= ', $toDate);
         return $this->db->delete($table);
     }
@@ -129,10 +132,13 @@ class History_model extends CI_Model
      * Count the number of rows into the table
      * @param string $table Source Table
      * @return int number of rows
-     * 
+     * @throws InvalidArgumentException if the table is not allowed
      */
-    public function count($table)
+    public function count(string $table): int
     {
+        if (!in_array($table, $this->allowedTables, true)) {
+            throw new InvalidArgumentException("The provided table is not allowed for history details.");
+        }
         $this->db->select('count(*) as number', false);
         $this->db->from($table);
         $result = $this->db->get();

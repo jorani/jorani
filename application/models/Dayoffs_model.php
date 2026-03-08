@@ -1,9 +1,8 @@
 <?php
 /**
- * This class contains the business logic and manages the persistence of non working days
+ * This file contains the business logic and manages the persistence of non working days
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -16,7 +15,7 @@ use Sabre\VObject;
 
 /**
  * This class contains the business logic and manages the persistence of non working days.
- * non working days are defined on a contract..
+ * non working days are defined on a contract. This operation must be done every year.
  */
 class Dayoffs_model extends CI_Model
 {
@@ -31,18 +30,17 @@ class Dayoffs_model extends CI_Model
 
     /**
      * Get the list of dayofs for a contract and a civil year (not to be confused with the yearly period)
-     * @param int $contract identifier of the contract
+     * @param int $contractId identifier of the contract
      * @param string $year year to be displayed on the calendar
      * @return array record of contracts
-     * 
      */
-    public function getDaysOffForCivilYear($contract, $year)
+    public function getDaysOffForCivilYear(int $contractId, string $year): array
     {
         $this->db->select('DAY(date) as d, MONTH(date) as m, YEAR(date) as y, type, title');
-        $this->db->where('contract', $contract);
+        $this->db->where('contract', $contractId);
         $this->db->where('YEAR(date)', $year);
         $query = $this->db->get('dayoffs');
-        $dayoffs = array();
+        $dayoffs = [];
         foreach ($query->result() as $row) {
             //We decompose the date before creating the unix timestamp because there are diffrences of
             //few hours depending the configuration of the system hosting the db (due to time part ?).
@@ -55,81 +53,76 @@ class Dayoffs_model extends CI_Model
 
     /**
      * Get the list of dayofs for a contract (suitable fo ICS feed)
-     * @param int $contract identifier of the contract
+     * @param int $contractId identifier of the contract
      * @return array record of contracts
-     * 
      */
-    public function getDaysOffForContract($contract)
+    public function getDaysOffForContract(int $contractId): array
     {
-        $this->db->where('contract', $contract);
         $query = $this->db->get('dayoffs');
-        $this->db->where("date >= DATE_SUB(NOW(),INTERVAL 2 YEAR"); //Security/performance limit
+        $query->where('contract', $contractId);
+        $query->where("date >= DATE_SUB(NOW(),INTERVAL 2 YEAR"); //Security/performance limit
         return $query->result();
     }
 
 
     /**
      * Delete a day off into the day offs table
-     * @param int $contract Identifier of the contract
+     * @param int $contractId Identifier of the contract
      * @param string $timestamp Date of the day off
      * @return int number of affected rows
-     * 
      */
-    public function deleteDayOff($contract, $timestamp)
+    public function deleteDayOff(int $contractId, string $timestamp): int
     {
-        $this->db->where('contract', $contract);
+        $this->db->where('contract', $contractId);
         $this->db->where('date', date('Y/m/d', $timestamp));
         return $this->db->delete('dayoffs');
     }
 
     /**
      * Delete a day off into the day offs table
-     * @param int $contract Identifier of the contract
+     * @param int $contractId Identifier of the contract
      * @return int number of affected rows
-     * 
      */
-    public function deleteDaysOffCascadeContract($contract)
+    public function deleteDaysOffCascadeContract(int $contractId): int
     {
-        $this->db->where('contract', $contract);
+        $this->db->where('contract', $contractId);
         return $this->db->delete('dayoffs');
     }
 
     /**
      * Delete a list of day offs into the day offs table
-     * @param int $contract Identifier of the contract
+     * @param int $contractId Identifier of the contract
      * @param string $dateList comma-separated list of dates
      * @return bool outcome of the query
-     * 
      */
-    public function deleteListOfDaysOff($contract, $dateList)
+    public function deleteListOfDaysOff(int $contractId, string $dateList): bool
     {
         $dates = explode(",", $dateList);
-        $this->db->where('contract', $contract);
+        $this->db->where('contract', $contractId);
         $this->db->where_in('DATE_FORMAT(date, \'%Y-%m-%d\')', $dates);
         return $this->db->delete('dayoffs');
     }
 
     /**
      * Insert a list of day offs into the day offs table
-     * @param int $contract Identifier of the contract
+     * @param int $contractId Identifier of the contract
      * @param int $type 1:day, 2:morning, 3:afternoon
      * @param string $title Short description of the day off
      * @param string $dateList comma-separated list of dates
      * @return bool outcome of the query
-     * 
      */
-    public function addListOfDaysOff($contract, $type, $title, $dateList)
+    public function addListOfDaysOff(int $contractId, int $type, string $title, string $dateList): bool
     {
         //Prepare a command in order to insert multiple rows with one query MySQL
         $dates = explode(",", $dateList);
-        $data = array();
+        $data = [];
         foreach ($dates as $date) {
-            $row = array(
-                'contract' => $contract,
+            $row = [
+                'contract' => $contractId,
                 'date' => date('Y-m-d', strtotime($date)),
                 'type' => $type,
                 'title' => $title
-            );
+            ];
             array_push($data, $row);
         }
         return $this->db->insert_batch('dayoffs', $data);
@@ -141,9 +134,8 @@ class Dayoffs_model extends CI_Model
      * @param int $destination identifier of the destination contract
      * @param string $year civil year (and not yearly period)
      * @return int number of affected rows
-     * 
      */
-    public function copyListOfDaysOff($source, $destination, $year)
+    public function copyListOfDaysOff(int $source, int $destination, string $year): int
     {
         //Delete all previous days off defined on the destination contract (avoid duplicated data)
         $this->db->where('contract', $destination);
@@ -162,17 +154,18 @@ class Dayoffs_model extends CI_Model
 
     /**
      * Get the length of days off between two dates for a given contract
-     * @param int $contract contract identifier
-     * @param date $start start date
-     * @param date $end end date
-     * @return int number of days off
+     * @param int $contractId contract identifier
+     * @param string $startDate start date
+     * @param string $endDate end date
+     * @return int number of days off in the range
      */
-    public function lengthDaysOffBetweenDates($contract, $start, $end)
+    public function lengthDaysOffBetweenDates(int $contractId, string $startDate, string $endDate): int
     {
+        //TODO: check if $startDate and $endDate are valid dates
         $this->db->select('sum(CASE `type` WHEN 1 THEN 1 WHEN 2 THEN 0.5 WHEN 3 THEN 0.5 END) as days');
-        $this->db->where('contract', $contract);
-        $this->db->where('date >=', $start);
-        $this->db->where('date <=', $end);
+        $this->db->where('contract', $contractId);
+        $this->db->where('date >=', $startDate);
+        $this->db->where('date <=', $endDate);
         $this->db->from('dayoffs');
         $result = $this->db->get()->result_array();
         return is_null($result[0]['days']) ? 0 : $result[0]['days'];
@@ -180,22 +173,23 @@ class Dayoffs_model extends CI_Model
 
     /**
      * Get the list of days off between two dates for a given contract (contract of the employee)
-     * @param int $employee employee identifier
-     * @param date $start start date
-     * @param date $end end date
+     * @param int $employeeId employee identifier
+     * @param string $startDate start date
+     * @param string $endDate end date
      * @return array list of days off
      */
-    public function listOfDaysOffBetweenDates($employee, $start, $end)
+    public function listOfDaysOffBetweenDates(int $employeeId, string $startDate, string $endDate): array
     {
+        //TODO: check if $startDate and $endDate are valid dates
         $this->lang->load('calendar', $this->session->userdata('language'));
         $this->db->select('dayoffs.*');
         $this->db->join('dayoffs', 'users.contract = dayoffs.contract');
-        $this->db->where('users.id', $employee);
-        $this->db->where('date >=', $start);
-        $this->db->where('date <=', $end);
+        $this->db->where('users.id', $employeeId);
+        $this->db->where('date >=', $startDate);
+        $this->db->where('date <=', $endDate);
         $this->db->order_by('date');
         $events = $this->db->get('users')->result();
-        $listOfDaysOff = array();
+        $listOfDaysOff = [];
         foreach ($events as $entry) {
             switch ($entry->type) {
                 case 1://1 : All day
@@ -211,46 +205,45 @@ class Dayoffs_model extends CI_Model
                     $length = 0.5;
                     break;
             }
-            $listOfDaysOff[] = array(
-                'title' => $title,                                  //Title of Day off
-                'date' => $entry->date,                      //Date of day off
-                'type' => $entry->type,                      //1:All day, 2:Morning, 3:Afternoon
-                'length' => $length                            //1 or 0.5 depending on the type (for sum)
-            );
+            $listOfDaysOff[] = [
+                'title' => $title,            //Title of Day off
+                'date' => $entry->date,       //Date of day off
+                'type' => $entry->type,       //1:All day, 2:Morning, 3:Afternoon
+                'length' => $length           //1 or 0.5 depending on the type (for sum)
+            ];
         }
         return $listOfDaysOff;
     }
 
     /**
      * Insert a day off into the day offs table
-     * @param int $contract Identifier of the contract
-     * @param string $timestamp Date of the day off
+     * @param int $contractId Identifier of the contract
+     * @param string $timestampOfDayOff Date of the day off
      * @param int $type 1:day, 2:morning, 3:afternoon
      * @param string $title Short description of the day off
      * @return bool outcome of the query
-     * 
      */
-    public function addDayOff($contract, $timestamp, $type, $title)
+    public function addDayOff(int $contractId, string $timestampOfDayOff, int $type, string $title): bool
     {
         $this->db->select('id');
-        $this->db->where('contract', $contract);
-        $this->db->where('date', date('Y/m/d', $timestamp));
+        $this->db->where('contract', $contractId);
+        $this->db->where('date', date('Y/m/d', $timestampOfDayOff));
         $query = $this->db->get('dayoffs');
         if ($query->num_rows() > 0) {
-            $data = array(
-                'date' => date('Y/m/d', $timestamp),
+            $data = [
+                'date' => date('Y/m/d', $timestampOfDayOff),
                 'type' => $type,
                 'title' => $title
-            );
+            ];
             $this->db->where('id', $query->row('id'));
             return $this->db->update('dayoffs', $data);
         } else {
-            $data = array(
-                'contract' => $contract,
-                'date' => date('Y/m/d', $timestamp),
+            $data = [
+                'contract' => $contractId,
+                'date' => date('Y/m/d', $timestampOfDayOff),
                 'type' => $type,
                 'title' => $title
-            );
+            ];
             return $this->db->insert('dayoffs', $data);
         }
     }
@@ -259,25 +252,23 @@ class Dayoffs_model extends CI_Model
      * Import an ICS feed containing days off (all events are considered as non-working days).
      * This first version is very basic, it supports only full days off.
      * Most of the errors are coming from the web server being not authorized to connect to the external feed.
-     * @param int $contract Identifier of the contract
-     * @param string $url URL of the source ICS feed (obviously, we must be able to open a connection)
-     * @return string error message or empty string
-     * 
+     * @param int $contractId Identifier of the contract
+     * @param string $icsFeedUrl URL of the source ICS feed (obviously, we must be able to open a connection)
      */
-    public function importDaysOffFromICS($contract, $url)
+    public function importDaysOffFromICS(int $contractId, string $icsFeedUrl): void
     {
-        $ical = VObject\Reader::read(fopen($url, 'r'), VObject\Reader::OPTION_FORGIVING);
+        $ical = VObject\Reader::read(fopen($icsFeedUrl, 'r'), VObject\Reader::OPTION_FORGIVING);
         foreach ($ical->VEVENT as $event) {
             $start = new DateTime($event->DTSTART);
             $end = new DateTime($event->DTEND);
             $interval = $start->diff($end);
-            //TODO : Make a more complicated version that supports half days
+            //TODO: Make a more complicated version that supports half days
             $length = $interval->d;
             $day = $start;
             for ($ii = 0; $ii < $length; $ii++) {
                 $tmp = $day->format('U');
-                $this->deletedayoff($contract, $tmp);
-                $this->adddayoff($contract, $tmp, 1, strval($event->SUMMARY));
+                $this->deletedayoff($contractId, $tmp);
+                $this->adddayoff($contractId, $tmp, 1, strval($event->SUMMARY));
                 $day->add(new DateInterval('P1D'));
             }
         }
@@ -285,75 +276,75 @@ class Dayoffs_model extends CI_Model
 
     /**
      * All day offs of a given user
-     * @param int $user_id connected user
-     * @param string $start Start date displayed on calendar
-     * @param string $end End date displayed on calendar
+     * @param int $userId connected user
+     * @param string $startDate Start date displayed on calendar
+     * @param string $endDate End date displayed on calendar
      * @return string JSON encoded list of full calendar events
-     * 
      */
-    public function userDayoffs($user_id, $start = "", $end = "")
+    public function userDayoffs(int $userId, string $startDate = "", string $endDate = ""): string
     {
+        //TODO: check if $start and $end are valid dates only if they are not empty
         $this->lang->load('calendar', $this->session->userdata('language'));
         $this->db->select('dayoffs.*');
         $this->db->join('dayoffs', 'users.contract = dayoffs.contract');
-        $this->db->where('users.id', $user_id);
-        $this->db->where('date >=', $start);
-        $this->db->where('date <=', $end);
+        $this->db->where('users.id', $userId);
+        $this->db->where('date >=', $startDate);
+        $this->db->where('date <=', $endDate);
         $events = $this->db->get('users')->result();
 
-        $jsonevents = array();
+        $jsonevents = [];
         foreach ($events as $entry) {
             switch ($entry->type) {
                 case 1:
                     $title = $entry->title;
-                    $startdate = $entry->date . 'T07:00:00';
-                    $enddate = $entry->date . 'T18:00:00';
+                    $startDateEntry = $entry->date . 'T07:00:00';
+                    $endDateEntry = $entry->date . 'T18:00:00';
                     $allDay = TRUE;
                     $startdatetype = 'Morning';
                     $enddatetype = 'Afternoon';
                     break;
                 case 2:
                     $title = lang('Morning') . ': ' . $entry->title;
-                    $startdate = $entry->date . 'T07:00:00';
-                    $enddate = $entry->date . 'T12:00:00';
+                    $startDateEntry = $entry->date . 'T07:00:00';
+                    $endDateEntry = $entry->date . 'T12:00:00';
                     $allDay = FALSE;
                     $startdatetype = 'Morning';
                     $enddatetype = 'Morning';
                     break;
                 case 3:
                     $title = lang('Afternoon') . ': ' . $entry->title;
-                    $startdate = $entry->date . 'T12:00:00';
-                    $enddate = $entry->date . 'T18:00:00';
+                    $startDateEntry = $entry->date . 'T12:00:00';
+                    $endDateEntry = $entry->date . 'T18:00:00';
                     $allDay = FALSE;
                     $startdatetype = 'Afternoon';
                     $enddatetype = 'Afternoon';
                     break;
             }
-            $jsonevents[] = array(
+            $jsonevents[] = [
                 'id' => $entry->id,
                 'title' => $title,
-                'start' => $startdate,
+                'start' => $startDateEntry,
                 'color' => '#000000',
                 'allDay' => $allDay,
-                'end' => $enddate,
+                'end' => $endDateEntry,
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype
-            );
+            ];
         }
         return json_encode($jsonevents);
     }
 
     /**
      * All day offs for the organization
-     * @param string $start Start date displayed on calendar
-     * @param string $end End date displayed on calendar
-     * @param integer $entity_id identifier of the entity
+     * @param string $startDate Start date displayed on calendar
+     * @param string $endDate End date displayed on calendar
+     * @param integer $entityId identifier of the entity
      * @param boolean $children include all sub entities or not
      * @return string JSON encoded list of full calendar events
-     * 
      */
-    public function allDayoffs($start, $end, $entity_id, $children)
+    public function allDayoffs(string $startDate, string $endDate, int $entityId, bool $children): string
     {
+        //TODO: check if $startDate and $endDate are valid dates
         $this->lang->load('calendar', $this->session->userdata('language'));
 
         $this->db->select('dayoffs.*, contracts.name');
@@ -361,25 +352,25 @@ class Dayoffs_model extends CI_Model
         $this->db->join('contracts', 'dayoffs.contract = contracts.id');
         $this->db->join('users', 'users.contract = contracts.id');
         $this->db->join('organization', 'users.organization = organization.id');
-        $this->db->where('date >=', $start);
-        $this->db->where('date <=', $end);
+        $this->db->where('date >=', $startDate);
+        $this->db->where('date <=', $endDate);
 
         if ($children === TRUE) {
             $this->load->model('organization_model');
-            $list = $this->organization_model->getAllChildren($entity_id);
-            $ids = array();
+            $list = $this->organization_model->getAllChildren($entityId);
+            $ids = [];
             if (count($list) > 0) {
                 $ids = explode(",", $list[0]['id']);
             }
-            array_push($ids, $entity_id);
+            array_push($ids, $entityId);
             $this->db->where_in('organization.id', $ids);
         } else {
-            $this->db->where('organization.id', $entity_id);
+            $this->db->where('organization.id', $entityId);
         }
 
         $events = $this->db->get('dayoffs')->result();
 
-        $jsonevents = array();
+        $jsonevents = [];
         foreach ($events as $entry) {
             switch ($entry->type) {
                 case 1:
@@ -407,7 +398,7 @@ class Dayoffs_model extends CI_Model
                     $enddatetype = 'Afternoon';
                     break;
             }
-            $jsonevents[] = array(
+            $jsonevents[] = [
                 'id' => $entry->id,
                 'title' => $entry->name . ': ' . $title,
                 'start' => $startdate,
@@ -416,37 +407,43 @@ class Dayoffs_model extends CI_Model
                 'end' => $enddate,
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype
-            );
+            ];
         }
         return json_encode($jsonevents);
     }
 
     /**
-     * All day offs for a list
-     * @param string $start Start date displayed on calendar
-     * @param string $end End date displayed on calendar
-     * @param integer $list_id identifier of the entity
+     * All day offs for a list of entities
+     * @param string $startDate Start date displayed on calendar
+     * @param string $endDate End date displayed on calendar
+     * @param integer $listId identifiers of the entities
      * @return string JSON encoded list of full calendar events
      * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function allDayoffsForList($start, $end, $list_id)
+    public function allDayoffsForList(string $startDate, string $endDate, int $listId): string
     {
+        //TODO: check if $startDate and $endDate are valid dates
         $this->lang->load('calendar', $this->session->userdata('language'));
         $this->db->select('dayoffs.*, contracts.name');
         $this->db->distinct();
         $this->db->join('contracts', 'dayoffs.contract = contracts.id');
         $this->db->join('users', 'users.contract = contracts.id');
         $this->db->join('organization', 'users.organization = organization.id');
-        $this->db->where('date >=', $start);
-        $this->db->where('date <=', $end);
-        $this->db->where('organization.id', $list_id);
+        $this->db->where('date >=', $startDate);
+        $this->db->where('date <=', $endDate);
+        $this->db->where('organization.id', $listId);
         $events = $this->db->get('dayoffs')->result();
         return $this->transformToEvent($events);
     }
 
-    private function transformToEvent($events)
+    /**
+     * Transform events to full calendar events
+     * @param array $events Array of events
+     * @return string JSON encoded list of full calendar events
+     */
+    private function transformToEvent($events): string
     {
-        $jsonevents = array();
+        $jsonevents = [];
         foreach ($events as $entry) {
             switch ($entry->type) {
                 case 1:
@@ -474,7 +471,7 @@ class Dayoffs_model extends CI_Model
                     $enddatetype = 'Afternoon';
                     break;
             }
-            $jsonevents[] = array(
+            $jsonevents[] = [
                 'id' => $entry->id,
                 'title' => $entry->name . ': ' . $title,
                 'start' => $startdate,
@@ -483,19 +480,19 @@ class Dayoffs_model extends CI_Model
                 'end' => $enddate,
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype
-            );
+            ];
         }
         return json_encode($jsonevents);
     }
 
     /**
      * Purge the table by deleting the records prior $toDate
-     * @param date $toDate
+     * @param string $toDate
      * @return int number of affected rows
-     * 
      */
-    public function purgeDaysoff($toDate)
+    public function purgeDaysoff($toDate): int
     {
+        //TODO: check if $toDate is a valid date
         $this->db->where('date <= ', $toDate);
         return $this->db->delete('entitleddays');
     }
@@ -503,9 +500,8 @@ class Dayoffs_model extends CI_Model
     /**
      * Count the number of rows into the table
      * @return int number of rows
-     * 
      */
-    public function count()
+    public function count(): int
     {
         $this->db->select('count(*) as number', FALSE);
         $this->db->from('dayoffs');
@@ -515,16 +511,15 @@ class Dayoffs_model extends CI_Model
 
     /**
      * Count the days off defined for a contract and a year
-     * @param int $contract Contract to check
+     * @param int $contractId Id of contract to check
      * @param int $year Year to check
      * @return int number of rows
-     * 
      */
-    public function countDaysOff($contract, $year)
+    public function countDaysOff(int $contractId, int $year): int
     {
         $this->db->select('count(*) as number', FALSE);
         $this->db->from('dayoffs');
-        $this->db->where('contract', $contract);
+        $this->db->where('contract', $contractId);
         $this->db->where('YEAR(date)', $year);
         $result = $this->db->get();
         return $result->row()->number;
@@ -532,19 +527,19 @@ class Dayoffs_model extends CI_Model
 
     /**
      * All day offs of a given employee and between two dates
-     * @param int $user_id connected user
-     * @param string $start Start date displayed on calendar
-     * @param string $end End date displayed on calendar
+     * @param int $userId Id of user
+     * @param string $startDate Start date displayed on calendar
+     * @param string $endDate End date displayed on calendar
      * @return array list of day offs
-     * 
      */
-    public function lengthDaysOffBetweenDatesForEmployee($id, $start, $end)
+    public function lengthDaysOffBetweenDatesForEmployee(int $userId, string $startDate, string $endDate): array
     {
+        //TODO: check if $start and $end are valid dates
         $this->db->select('dayoffs.*');
         $this->db->join('dayoffs', 'users.contract = dayoffs.contract');
-        $this->db->where('users.id', $id);
-        $this->db->where('date >= DATE(' . $this->db->escape($start) . ')');
-        $this->db->where('date <= DATE(' . $this->db->escape($end) . ')');
+        $this->db->where('users.id', $userId);
+        $this->db->where('date >= DATE(' . $this->db->escape($startDate) . ')');
+        $this->db->where('date <= DATE(' . $this->db->escape($endDate) . ')');
         $dayoffs = $this->db->get('users')->result();
         return $dayoffs;
     }
@@ -553,24 +548,23 @@ class Dayoffs_model extends CI_Model
      * Check if days off have been defined for year - 1, year and year + 1
      * @param int $year Year to check
      * @return array (id, name, y-1, y, y+1)
-     * 
      */
-    public function checkIfDefined($year)
+    public function checkIfDefined(int $year): array
     {
         $ym1 = intval($year) - 1;
         $y = intval($year);
         $yp1 = intval($year) + 1;
         $this->load->model('contracts_model');
         $contracts = $this->contracts_model->getContracts();
-        $result = array();
+        $result = [];
         foreach ($contracts as $contract) {
-            $result[] = array(
+            $result[] = [
                 'contract' => $contract['id'],
                 'name' => $contract['name'],
                 'ym1' => $this->countDaysOff($contract['id'], $ym1),
                 'y' => $this->countDaysOff($contract['id'], $y),
                 'yp1' => $this->countDaysOff($contract['id'], $yp1)
-            );
+            ];
         }
         return $result;
     }
