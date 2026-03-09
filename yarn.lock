@@ -1640,9 +1640,9 @@ ignore@^4.0.6:
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
 immutable@^3.8.1, immutable@^3.x.x:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha512-15gZoQ38eYjEjxkorfbcgBKBL6R7T459OuK+CpcWt7O3KF4uPCx2tD0uFETlUDIyo+1789crbMhTvQBSR5yBMg==
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.3.tgz#0a8d2494a94d4b2d4f0e99986e74dd25d1e9a859"
+  integrity sha512-AUY/VyX0E5XlibOmWt10uabJzam1zlYjwiEgQSDc5+UIkFNaF9WM0JxXKaNMGf+F/ffUF+7kRKXM9A7C0xXqMg==
 
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"
