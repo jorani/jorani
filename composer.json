@@ -27,6 +27,7 @@
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.4.3",
-        "sepia/po-parser": "^5.1.7"
+        "sepia/po-parser": "^5.1.7",
+        "phpstan/phpstan": "^2.1"
     }
 }
