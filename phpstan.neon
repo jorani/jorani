@@ -1,0 +1,24 @@
+parameters:
+    level: 5
+    paths:
+        - application/controllers
+        - application/models
+    excludePaths:
+        - application/views/*
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    scanDirectories:
+        - system/database
+        - system/database/drivers
+        - system/core
+        - system/libraries
+        - system/helpers
+        - application/helpers
+        - application/core
+    scanFiles:
+        - phpstan-stubs.php
+    ignoreErrors:
+        # Ignore CodeIgniter's magic properties ($this->db, $this->load, etc.)
+        - '#Access to an undefined property [a-zA-Z0-9\\]+::\$[a-zA-Z0-9_]+#'
+        - '#Constant [A-Z_]+ not found.#'
+        - '#Call to an undefined method CI_DB_query_builder::insert_id\(\)#'

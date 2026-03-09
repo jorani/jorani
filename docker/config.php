@@ -196,7 +196,7 @@ $config['log_threshold'] = 2;
 | application/logs/ folder. Use a full server path with trailing slash.
 |
 */
-$config['log_path'] = '';
+$config['log_path'] = 'php://stdout';
 
 /*
 |--------------------------------------------------------------------------
@@ -229,7 +229,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'YJ9FljXV4axG7QTzEzbRaUBFwi0FzIls';
+$config['encryption_key'] = getEnv('ENC_KEY') ?: 'YJ9FljXV4axG7QTzEzbRaUBFwi0FzIls';
 
 /*
 |--------------------------------------------------------------------------
