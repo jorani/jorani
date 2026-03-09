@@ -39,7 +39,8 @@ class Positions_model extends CI_Model
             $query = $this->db->get('positions');
             return $query->result_array();
         }
-        $query = $this->db->get_where('positions', ['id' => $id]);
+        $this->db->where('id', $id);
+        $query = $this->db->get('positions');
         return $query->row_array();
     }
 
@@ -62,9 +63,9 @@ class Positions_model extends CI_Model
      * Insert a new position
      * @param string $name Name of the postion
      * @param string $description Description of the postion
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function setPositions(string $name, string $description): int
+    public function setPositions(string $name, string $description): bool
     {
         $data = [
             'name' => $name,
@@ -92,9 +93,9 @@ class Positions_model extends CI_Model
      * @param int $id Identifier of the position into the database
      * @param string $name Name of the position
      * @param string $description Description of the position
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updatePositions(int $id, string $name, string $description): int
+    public function updatePositions(int $id, string $name, string $description): bool
     {
         $data = [
             'name' => $name,

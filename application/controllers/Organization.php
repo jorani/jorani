@@ -163,7 +163,7 @@ class Organization extends CI_Controller
         setUserContext($this);
         $id = $this->input->get('id', TRUE);
         $this->load->model('organization_model');
-        $employees = $this->organization_model->employees($id)->result();
+        $employees = $this->organization_model->employees($id);
 
         //Prepare an object that will be encoded in JSON
         $msg = new \stdClass();
@@ -262,7 +262,7 @@ class Organization extends CI_Controller
         $this->load->model('organization_model');
         $entities = $this->organization_model->getAllEntities();
         $msg = '[';
-        foreach ($entities->result() as $entity) {
+        foreach ($entities as $entity) {
             $msg .= '{"id":"' . $entity->id . '",';
             if ($entity->parent_id == -1) {
                 $msg .= '"parent":"#",';

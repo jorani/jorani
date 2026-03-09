@@ -35,7 +35,8 @@ class Status_model extends CI_Model
             $query = $this->db->get('status');
             return $query->result_array();
         }
-        $query = $this->db->get_where('status', ['id' => $id]);
+        $this->db->where('id', $id);
+        $query = $this->db->get('status');
         return $query->row_array();
     }
 
@@ -46,7 +47,8 @@ class Status_model extends CI_Model
      */
     public function getStatusByName(string $name): array
     {
-        $query = $this->db->get_where('status', ['name' => $name]);
+        $this->db->where('name', $name);
+        $query = $this->db->get('status');
         return $query->row_array();
     }
 

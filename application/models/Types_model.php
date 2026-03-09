@@ -36,7 +36,8 @@ class Types_model extends CI_Model
             $query = $this->db->get('types');
             return $query->result_array();
         }
-        $query = $this->db->get_where('types', ['id' => $id]);
+        $this->db->where('id', $id);
+        $query = $this->db->get('types');
         return $query->row_array();
     }
 
@@ -47,7 +48,8 @@ class Types_model extends CI_Model
      */
     public function getTypeByName(string $name): array
     {
-        $query = $this->db->get_where('types', ['name' => $name]);
+        $this->db->where('name', $name);
+        $query = $this->db->get('types');
         return $query->row_array();
     }
 
@@ -109,9 +111,9 @@ class Types_model extends CI_Model
      * @param string $name name of the type
      * @param bool $deduct Deduct days off
      * @param string $acronym Acronym of leave type
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateTypes(int $id, string $name, bool $deduct, string $acronym): int
+    public function updateTypes(int $id, string $name, bool $deduct, string $acronym): bool
     {
         $data = [
             'acronym' => $acronym,

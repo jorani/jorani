@@ -46,7 +46,8 @@ class Roles_model extends CI_Model
             $query = $this->db->get('roles');
             return $query->result_array();
         }
-        $query = $this->db->get_where('roles', ['id' => $id]);
+        $this->db->where('id', $id);
+        $query = $this->db->get('roles');
         return $query->row_array();
     }
 }

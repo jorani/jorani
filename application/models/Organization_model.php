@@ -68,7 +68,7 @@ class Organization_model extends CI_Model
         $this->db->from('organization');
         $this->db->order_by("parent_id", "desc");
         $this->db->order_by("name", "asc");
-        return $this->db->get();
+        return $this->db->get()->result();
     }
 
     /**
@@ -205,7 +205,7 @@ class Organization_model extends CI_Model
         $this->db->where('organization', $entityId);
         $this->db->order_by('lastname', 'asc');
         $this->db->order_by('firstname', 'asc');
-        return $this->db->get();
+        return $this->db->get()->result();
     }
 
     /**
@@ -224,8 +224,7 @@ class Organization_model extends CI_Model
         $this->db->join('positions', 'positions.id  = users.position', 'left');
         $this->db->join('contracts', 'contracts.id  = users.contract', 'left');
         if ($children === TRUE) {
-            $this->load->model('organization_model');
-            $list = $this->organization_model->getAllChildren($entityId);
+            $list = $this->getAllChildren($entityId);
             $ids = [];
             if (count($list) > 0) {
                 if ($list[0]['id'] != '') {
