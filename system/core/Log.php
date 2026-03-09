@@ -129,11 +129,14 @@ class CI_Log {
 		$this->_file_ext = (isset($config['log_file_extension']) && $config['log_file_extension'] !== '')
 			? ltrim($config['log_file_extension'], '.') : 'php';
 
-		file_exists($this->_log_path) OR mkdir($this->_log_path, 0755, TRUE);
+        if ($this->_log_path !== 'php://stdout')
+        {
+            file_exists($this->_log_path) OR mkdir($this->_log_path, 0755, TRUE);
 
-		if ( ! is_dir($this->_log_path) OR ! is_really_writable($this->_log_path))
-		{
-			$this->_enabled = FALSE;
+            if ( ! is_dir($this->_log_path) OR ! is_really_writable($this->_log_path))
+            {
+                $this->_enabled = FALSE;
+            }
 		}
 
 		if (is_numeric($config['log_threshold']))
@@ -183,10 +186,10 @@ class CI_Log {
 			return FALSE;
 		}
 
-		$filepath = $this->_log_path.'log-'.date('Y-m-d').'.'.$this->_file_ext;
+		$filepath = $this->_log_path === 'php://stdout' ? $this->_log_path : $this->_log_path.'log-'.date('Y-m-d').'.'.$this->_file_ext;
 		$message = '';
 
-		if ( ! file_exists($filepath))
+		if ($this->_log_path !== 'php://stdout' AND ! file_exists($filepath))
 		{
 			$newfile = TRUE;
 			// Only add protection to php files
