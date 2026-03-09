@@ -35,7 +35,8 @@ class Delegations_model extends CI_Model
     {
         $this->db->select('delegations.*, CONCAT(firstname, \' \', lastname) as delegate_name', FALSE);
         $this->db->join('users', 'delegations.delegate_id = users.id');
-        $query = $this->db->get_where('delegations', array('manager_id' => $managerId));
+        $this->db->where('manager_id', $managerId);
+        $query = $this->db->get('delegations');
         return $query->result_array();
     }
 

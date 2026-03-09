@@ -30,13 +30,13 @@ class Lists_model extends CI_Model
 
   /**
    * Get the list of custom lists for an employee (often the connected user)
-   * @param int $user identifier of a user owing the lists
+   * @param int $userId identifier of a user owing the lists
    * @return array record of lists
-   * 
    */
-  public function getLists($user)
+  public function getLists(int $userId): array
   {
-    $query = $this->db->get_where('org_lists', array('user' => $user));
+    $this->db->where('user', $userId);
+    $query = $this->db->get('org_lists');
     return $query->result_array();
   }
 
@@ -44,9 +44,8 @@ class Lists_model extends CI_Model
    * Get the name of a org_lists
    * @param int $id identifier of a list
    * @return string name of the found list, empty string otherwise
-   * 
    */
-  public function getName($id)
+  public function getName(int $id): string
   {
     $this->db->from('org_lists');
     $this->db->where('id', $id);
@@ -61,17 +60,16 @@ class Lists_model extends CI_Model
 
   /**
    * Insert a new list into the database
-   * @param int $user User owning the list
+   * @param int $userId User owning the list
    * @param string $name Name of the list
-   * @return int last inserted id
-   * 
+   * @return int DB indentifier of the inserted list
    */
-  public function setLists($user, $name)
+  public function setLists(int $userId, string $name): int
   {
-    $data = array(
-      'user' => $user,
+    $data = [
+      'user' => $userId,
       'name' => $name
-    );
+    ];
     $this->db->insert('org_lists', $data);
     return $this->db->insert_id();
   }
@@ -80,85 +78,81 @@ class Lists_model extends CI_Model
    * Update a given list in the database.
    * @param int $id identifier of the list
    * @param string $name name of the list
-   * @return int number of affected rows
-   * 
+   * @return bool TRUE if the SQL query is successful, FALSE otherwise
    */
-  public function updateLists($id, $name)
+  public function updateLists(int $id, string $name): bool
   {
-    $data = array(
-      'name' => $name
-    );
     $this->db->where('id', $id);
-    return $this->db->update('org_lists', $data);
+    return $this->db->update('org_lists', ['name' => $name]);
   }
 
   /**
    * Delete a list from the database
    * @param int $id identifier of the list
-   * 
+   * @return bool TRUE if the SQL query is successful, FALSE otherwise
    */
-  public function deleteList($id)
+  public function deleteList(int $id): bool
   {
-    $this->db->delete('org_lists', array('id' => $id));
+    return $this->db->delete('org_lists', ['id' => $id]);
   }
 
   /**
    * Add employees into a list
    * @param int $id identifier of the list
    * @param array $employees List of employees
-   * 
+   * @return int|bool number of inserted employees, FALSE if error
    */
-  public function addEmployees($id, $employees)
+  public function addEmployees(int $id, array $employees): int|bool
   {
-    $data = array();
+    $data = [];
     $order = $this->getLastOrderList($id);
 
     foreach ($employees as $employee) {
       if (!$this->hasEmployeeOnList($id, $employee)) {
-        $data[] = array(
+        $data[] = [
           'list' => $id,
           'user' => $employee,
           'orderlist' => $order
-        );
+        ];
         $order++;
       }
     }
     if (!empty($data)) {
-      $this->db->insert_batch('org_lists_employees', $data);
+      return $this->db->insert_batch('org_lists_employees', $data);
     }
+    return false;
   }
 
   /**
    * check if a user is already on the list
-   * @param int $id Id of the list
-   * @param int $employee Id of the user
-   * @author Emilien NICOALS <milihhard1996@gmail.com>
+   * @param int $listId Id of the list
+   * @param int $employeeId Id of the user
+   * @return bool TRUE if the user is on the list, FALSE otherwise
    */
-  private function hasEmployeeOnList($id, $employee)
+  private function hasEmployeeOnList(int $listId, int $employeeId): bool
   {
     $this->db->select('org_lists_employees.user');
     $this->db->from('org_lists_employees');
-    $this->db->where('user', $employee);
-    $this->db->where('list', $id);
+    $this->db->where('user', $employeeId);
+    $this->db->where('list', $listId);
     $record = $this->db->get()->result_array();
     if (count($record) == 0) {
       return false;
     } else {
       return true;
     }
-
   }
 
   /**
-   * get the last orderlist
-   * @param int $idList Id of the list
-   * @author Emilien NICOALS <milihhard1996@gmail.com>
+   * get the last orderlist of a list
+   * @param int $listId Id of the list
+   * @return int last orderlist
    */
-  public function getLastOrderList($idList)
+  public function getLastOrderList(int $listId): int
   {
     $this->db->select('org_lists_employees.orderlist');
     $this->db->from('org_lists_employees');
-    $this->db->where('list', $idList);
+    $this->db->where('list', $listId);
     $this->db->order_by('orderlist', 'DESC');
     $query = $this->db->get();
     $record = $query->result_array();
@@ -171,27 +165,23 @@ class Lists_model extends CI_Model
 
   /**
    * Remove a list of employees from a list
-   * @param int $id identifier of the list
+   * @param int $listId identifier of the list
    * @param array $employees List of employees
-   * 
    */
-  public function removeEmployees($id, $employees)
+  public function removeEmployees(int $listId, array $employees): void
   {
-    $this->db->where('list', $id);
+    $this->db->where('list', $listId);
     $this->db->where_in('orderlist', $employees);
     $this->db->delete('org_lists_employees');
-
-    $this->reorderList($id);
-
+    $this->reorderList($listId);
   }
 
   /**
    * Get the list of employees for the given list identifier
-   * @param int $id Identifier of the list of employees
+   * @param int $listId identifier of the list
    * @return array record of employees
-   * 
    */
-  public function getListOfEmployees($id)
+  public function getListOfEmployees(int $listId): array
   {
     $this->db->select('org_lists_employees.user as id');
     $this->db->select('firstname, lastname');
@@ -200,50 +190,43 @@ class Lists_model extends CI_Model
     $this->db->join('org_lists_employees', 'org_lists_employees.list = org_lists.id');
     $this->db->join('users', 'users.id = org_lists_employees.user');
     $this->db->join('organization', 'organization.id = users.organization');
-    $this->db->where('org_lists.id', $id);
+    $this->db->where('org_lists.id', $listId);
     $this->db->order_by('org_lists_employees.orderlist');
     $query = $this->db->get();
     return $query->result_array();
   }
+
   /**
    * reorder the list when a employe is removed
-   * @param int $id Id of the list
-   * @author Emilien NICOALS <milihhard1996@gmail.com>
+   * @param int $listId Id of the list
    */
-  private function reorderList($id)
+  private function reorderList(int $listId): void
   {
     $this->db->select('org_lists_employees.orderlist');
     $this->db->from('org_lists_employees');
-    $this->db->where('org_lists_employees.list', $id);
+    $this->db->where('org_lists_employees.list', $listId);
     $this->db->order_by('org_lists_employees.orderlist');
     $employees = $this->db->get()->result_array();
     $count = 1;
     foreach ($employees as $employee) {
-      $data = array(
-        'orderlist' => $count
-      );
       $this->db->where('orderlist', $employee['orderlist']);
-      $this->db->update('org_lists_employees', $data);
+      $this->db->update('org_lists_employees', ['orderlist' => $count]);
       $count++;
     }
   }
 
   /**
    * reorder the list
-   * @param int $id Id of the list
+   * @param int $listId Id of the list
    * @param array $moves move of the employees
-   * @author Emilien NICOALS <milihhard1996@gmail.com>
    */
-  public function reorderListEmployees($id, $moves)
+  public function reorderListEmployees(int $listId, array $moves): void
   {
     foreach ($moves as $move) {
       $this->db->where('user', $move->user);
-      $this->db->where('list', $id);
-      $data = array(
-        'orderlist' => $move->newPos
-      );
-      $this->db->update('org_lists_employees', $data);
+      $this->db->where('list', $listId);
+      $this->db->update('org_lists_employees', ['orderlist' => $move->newPos]);
     }
-
   }
+
 }

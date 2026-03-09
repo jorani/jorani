@@ -20,7 +20,6 @@ class Pages extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -30,7 +29,6 @@ class Pages extends CI_Controller
 
     /**
      * Display a simple view indicating that the business object was not found.
-     * 
      */
     public function notfound()
     {
@@ -49,7 +47,6 @@ class Pages extends CI_Controller
      * Pages are not public and we take into account the language of the connected user.
      * If the page name contains the keyword export, then we don't output the default template.
      * @param string $page Name of the view (and of the corresponding PHP file)
-     * 
      */
     public function view($page = 'home')
     {

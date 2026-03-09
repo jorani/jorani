@@ -21,7 +21,6 @@ class Rest extends MY_RestController
 
     /**
      * Get the properties of the connected employee
-     * 
      */
     public function self()
     {
@@ -34,7 +33,6 @@ class Rest extends MY_RestController
 
     /**
      * Get the the profile of the connected employee
-     * 
      */
     public function profile()
     {
@@ -107,10 +105,9 @@ class Rest extends MY_RestController
     /**
      * Compute the checksum of the content of a table or just one table
      * Useful to detect if any change was made since a last sync but costly
-     * @param string $name Name of the table into the database (optional)
-     * 
+     * @param string $table Name of the table into the database (optional)
      */
-    public function checksum($table = '')
+    public function checksum(string $table = '')
     {
         log_message('debug', '++checksum = ' . $table);
         $tables = array();

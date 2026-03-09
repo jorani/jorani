@@ -68,16 +68,15 @@ class Reports extends CI_Controller
 
     /**
      * Landing page of the shipped-in balance report
-     * @param string $refTmp Optional Unix timestamp (set a date of reference for the report).
-     * 
+     * @param ?string $refTmp Optional Unix timestamp (set a date of reference for the report).
      */
-    public function balance($refTmp = NULL)
+    public function balance(?string $refTmp = null)
     {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $data = getUserContext($this);
         $refDate = date("Y-m-d");
-        if ($refTmp != NULL) {
-            $refDate = date("Y-m-d", $refTmp);
+        if ($refTmp != null) {
+            $refDate = date("Y-m-d", intval($refTmp));
         }
         $data['refDate'] = $refDate;
         $data['title'] = lang('reports_balance_title');
@@ -90,7 +89,6 @@ class Reports extends CI_Controller
 
     /**
      * Ajax end-point : execute the balance report
-     * 
      */
     public function executeBalanceReport()
     {
@@ -180,7 +178,6 @@ class Reports extends CI_Controller
 
     /**
      * Export the balance report into Excel
-     * 
      */
     public function exportBalanceReport()
     {
@@ -198,7 +195,6 @@ class Reports extends CI_Controller
 
     /**
      * Landing page of the shipped-in leaves report
-     * 
      * @since 0.4.3
      */
     public function leaves()
@@ -216,7 +212,6 @@ class Reports extends CI_Controller
     /**
      * Report leaves request for a month and an entity
      * This report is inspired by the monthly presence report, but applicable to a set of employee.
-     * 
      * @since 0.4.3
      */
     public function executeLeavesReport()
@@ -381,7 +376,6 @@ class Reports extends CI_Controller
 
     /**
      * Export the leaves report into Excel
-     * 
      * @since 0.4.3
      */
     public function exportLeavesReport()

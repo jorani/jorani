@@ -173,6 +173,9 @@ class Users_model extends CI_Model
      */
     public function setUsers(): string
     {
+        //TODO: remove the stuff about RSA encryption
+        //Decouple from CI controller, maybe 'by API is enough'
+
         //Decipher the password value (RSA encoded -> base64 -> decode -> decrypt)
         $password = '';
         if (function_exists('openssl_pkey_get_private')) {
@@ -246,45 +249,45 @@ class Users_model extends CI_Model
      * @param string $email User e-mail
      * @param string $password User password
      * @param int $role role mask (2 for user or 8 for manager)
-     * @param int $manager Id of the manager or NULL
-     * @param int $organization Id of the organization or NULL
-     * @param int $contract Id of the contract or NULL
-     * @param int $position Id of the position or NULL
-     * @param date $datehired Date of hiring or NULL
-     * @param string $identifier Internal identifier or NULL
-     * @param string $language language code or NULL
-     * @param string $timezone timezone or NULL
-     * @param string $ldap_path ldap path or NULL
-     * @param bool $active Is user active or NULL
-     * @param string $country country of the employee or NULL
-     * @param string $calendar calendar path or NULL
-     * @param string $userProperties JSON encoded user properties or NULL
-     * @param string $picture Base64 encoded avatar picture or NULL
+     * @param ?int $manager Id of the manager or NULL
+     * @param ?int $organization Id of the organization or NULL
+     * @param ?int $contract Id of the contract or NULL
+     * @param ?int $position Id of the position or NULL
+     * @param ?string $datehired Date of hiring or NULL
+     * @param ?string $identifier Internal identifier or NULL
+     * @param ?string $language language code or NULL
+     * @param ?string $timezone timezone or NULL
+     * @param ?string $ldap_path ldap path or NULL
+     * @param ?bool $active Is user active or NULL
+     * @param ?string $country country of the employee or NULL
+     * @param ?string $calendar calendar path or NULL
+     * @param ?string $userProperties JSON encoded user properties or NULL
+     * @param ?string $picture Base64 encoded avatar picture or NULL
      * @return int Inserted User Identifier
      * 
      */
     public function insertUserByApi(
-        $firstname,
-        $lastname,
-        $login,
-        $email,
-        $password,
-        $role,
-        $manager = NULL,
-        $organization = NULL,
-        $contract = NULL,
-        $position = NULL,
-        $datehired = NULL,
-        $identifier = NULL,
-        $language = NULL,
-        $timezone = NULL,
-        $ldap_path = NULL,
-        $active = NULL,
-        $country = NULL,
-        $calendar = NULL,
-        $userProperties = NULL,
-        $picture = NULL
-    ) {
+        string $firstname,
+        string $lastname,
+        string $login,
+        string $email,
+        string $password,
+        int $role,
+        ?int $manager = NULL,
+        ?int $organization = NULL,
+        ?int $contract = NULL,
+        ?int $position = NULL,
+        ?string $datehired = NULL,
+        ?string $identifier = NULL,
+        ?string $language = NULL,
+        ?string $timezone = NULL,
+        ?string $ldap_path = NULL,
+        ?bool $active = NULL,
+        ?string $country = NULL,
+        ?string $calendar = NULL,
+        ?string $userProperties = NULL,
+        ?string $picture = NULL
+    ): int {
 
         //Hash the clear password using bcrypt (8 iterations)
         $salt = '$2a$08$' . substr(strtr(base64_encode($this->getRandomBytes(16)), '+', '.'), 0, 22) . '$';
@@ -338,6 +341,7 @@ class Users_model extends CI_Model
      */
     public function updateUserByApi($id, $data)
     {
+        //TODO: looks not completed
         if (isset($password)) {
             //Hash the clear password using bcrypt (8 iterations)
             $salt = '$2a$08$' . substr(strtr(base64_encode($this->getRandomBytes(16)), '+', '.'), 0, 22) . '$';
@@ -351,10 +355,10 @@ class Users_model extends CI_Model
     /**
      * Update a given user in the database. Update data are coming from an HTML form
      * @return int number of affected rows
-     * 
      */
     public function updateUsers()
     {
+        //TODO: Decouple from CI controller, maybe 'by API is enough'
 
         //Role field is a binary mask
         $role = 0;
@@ -401,11 +405,15 @@ class Users_model extends CI_Model
 
     /**
      * Update a given user in the database. Update data are coming from an HTML form
-     * @return int number of affected rows
-     * 
+     * @param int $userId Id of the user
+     * @param string $CipheredNewPassword Ciphered new password
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function resetPassword($id, $CipheredNewPassword)
+    public function resetPassword(int $userId, string $CipheredNewPassword): bool
     {
+        //TODO: remove the stuff about RSA encryption
+        //TODO: Decouple from CI controller, maybe 'by API is enough'
+
         //Decipher the password value (RSA encoded -> base64 -> decode -> decrypt)
         $password = '';
         if (function_exists('openssl_pkey_get_private')) {
@@ -424,7 +432,7 @@ class Users_model extends CI_Model
         $data = array(
             'password' => $hash
         );
-        $this->db->where('id', $id);
+        $this->db->where('id', $userId);
         return $this->db->update('users', $data);
     }
 
@@ -454,9 +462,8 @@ class Users_model extends CI_Model
      * Generate a random password
      * @param int $length length of the generated password
      * @return string generated password
-     * 
      */
-    public function randomPassword($length)
+    public function randomPassword(int $length): string
     {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $password = substr(str_shuffle($chars), 0, $length);
@@ -467,9 +474,9 @@ class Users_model extends CI_Model
      * Load the profile of a user from the database to the session variables
      * @param array $row database record of a user
      */
-    private function loadProfile($row)
+    private function loadProfile(array $row): void
     {
-        if (((int) $row->role & 1)) {
+        if (((int) $row['role'] & 1)) {
             $is_admin = TRUE;
         } else {
             $is_admin = FALSE;
@@ -481,7 +488,7 @@ class Users_model extends CI_Model
           00001000 16 HR Manager
           = 00001101 25 Can access to HR functions
          */
-        if (((int) $row->role & 25)) {
+        if (((int) $row['role'] & 25)) {
             $is_hr = TRUE;
         } else {
             $is_hr = FALSE;
@@ -489,24 +496,24 @@ class Users_model extends CI_Model
 
         //Determine if the connected user is a manager or if he has any delegation
         $isManager = FALSE;
-        if (count($this->getCollaboratorsOfManager($row->id)) > 0) {
+        if (count($this->getCollaboratorsOfManager($row['id'])) > 0) {
             $isManager = TRUE;
         } else {
             $this->load->model('delegations_model');
-            if ($this->delegations_model->hasDelegation($row->id))
+            if ($this->delegations_model->hasDelegation($row['id']))
                 $isManager = TRUE;
         }
 
         $newdata = array(
-            'login' => $row->login,
-            'id' => $row->id,
-            'firstname' => $row->firstname,
-            'lastname' => $row->lastname,
+            'login' => $row['login'],
+            'id' => $row['id'],
+            'firstname' => $row['firstname'],
+            'lastname' => $row['lastname'],
             'is_manager' => $isManager,
             'is_admin' => $is_admin,
             'is_hr' => $is_hr,
-            'manager' => $row->manager,
-            'random_hash' => $row->random_hash,
+            'manager' => $row['manager'],
+            'random_hash' => $row['random_hash'],
             'logged_in' => TRUE
         );
         $this->session->set_userdata($newdata);

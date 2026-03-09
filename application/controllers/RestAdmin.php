@@ -34,11 +34,10 @@ class RestAdmin extends MY_RestController
     /**
      * Get the current log messages or the log file for a given date
      * @param string $dateLogFile Date of the log file (optional)
-     * 
      */
     public function logs($dateLogFile = '')
     {
-        log_message('debug', '++logs = ' . $table);
+        log_message('debug', '++logs = ' . $dateLogFile);
         $tables = 'Not implemented';
         $this->output
             ->set_content_type('application/json')

@@ -32,7 +32,6 @@ class Overtime_model extends CI_Model
      * Get the list of all overtime requests or one overtime request
      * @param int $id Id of the overtime request
      * @return array list of records
-     * 
      */
     public function getExtras($id = 0)
     {
@@ -51,7 +50,6 @@ class Overtime_model extends CI_Model
      * Get the the list of overtime requested by a given employee
      * @param int $employee ID of the employee
      * @return array list of records
-     * 
      */
     public function getExtrasOfEmployee($employee)
     {
@@ -67,17 +65,16 @@ class Overtime_model extends CI_Model
     /**
      * Create an overtime request. Data are coming from an HTTP POSTed form
      * @return int id of the overtime request into the db
-     * 
      */
-    public function setExtra()
+    public function setExtra(): int
     {
-        $data = array(
+        $data = [
             'date' => $this->input->post('date'),
             'employee' => $this->session->userdata('id'),
             'duration' => $this->input->post('duration'),
             'cause' => $this->input->post('cause'),
             'status' => $this->input->post('status')
-        );
+        ];
         $this->db->insert('overtime', $data);
         return $this->db->insert_id();
     }
@@ -89,28 +86,24 @@ class Overtime_model extends CI_Model
      */
     public function updateExtra($id)
     {
-        $data = array(
+        $data = [
             'date' => $this->input->post('date'),
             'duration' => $this->input->post('duration'),
             'cause' => $this->input->post('cause'),
             'status' => $this->input->post('status')
-        );
+        ];
         $this->db->where('id', $id);
-        $this->db->update('overtime', $data);
+        return $this->db->update('overtime', $data);
     }
 
     /**
      * Accept an overtime request
      * @param int $id overtime request identifier
-     * 
      */
-    public function acceptExtra($id)
+    public function acceptExtra($id): void
     {
-        $data = array(
-            'status' => 3
-        );
         $this->db->where('id', $id);
-        $this->db->update('overtime', $data);
+        $this->db->update('overtime', ['status' => 3]);
 
         //Add entitlement
         $extra = $this->getExtras($id);
@@ -126,7 +119,7 @@ class Overtime_model extends CI_Model
             $startentdate = date("Y-m-d", strtotime('first day of january this year'));
             $endentdate = date("Y-m-d", strtotime('last day of december this year'));
         }
-        $data = array(
+        $data = [
             'employee' => $extra['employee'],
             'startdate' => $startentdate,
             'enddate' => $endentdate,
@@ -134,49 +127,42 @@ class Overtime_model extends CI_Model
             'type' => 0,
             'overtime' => $id,
             'description' => 'Catch up ' . $extra['date']
-        );
+        ];
         $this->db->insert('entitleddays', $data);
-        return 1;
     }
 
     /**
      * Reject an overtime request
      * @param int $id overtime request identifier
-     * @return bool result of update in database
-     * 
+     * @return bool TRUE if update query was successful, FALSE otherwise
      */
     public function rejectExtra($id)
     {
         //delete linked entitlement
-        $this->db->delete('entitleddays', array('overtime' => $id));
-        $data = array(
-            'status' => 4
-        );
+        $this->db->delete('entitleddays', ['overtime' => $id]);
         $this->db->where('id', $id);
-        return $this->db->update('overtime', $data);
+        return $this->db->update('overtime', ['status' => 4]);
     }
 
     /**
      * Delete an overtime request from the database
      * @param int $id overtime request identifier
-     * @return bool result of update in database
-     * 
+     * @return bool TRUE if delete query was successful, FALSE otherwise
      */
-    public function deleteExtra($id)
+    public function deleteExtra($id): bool
     {
         //delete linked entitlement
-        $this->db->delete('entitleddays', array('overtime' => $id));
-        return $this->db->delete('overtime', array('id' => $id));
+        $this->db->delete('entitleddays', ['overtime' => $id]);
+        return $this->db->delete('overtime', ['id' => $id]);
     }
 
     /**
      * Delete overtime rquests attached to a user (when it is deleted)
      * @param int $id identifier of an employee
-     * 
      */
-    public function deleteExtrasCascadeUser($id)
+    public function deleteExtrasCascadeUser($id): void
     {
-        $this->db->delete('overtime', array('employee' => $id));
+        $this->db->delete('overtime', ['employee' => $id]);
     }
 
     /**
@@ -186,7 +172,7 @@ class Overtime_model extends CI_Model
      * @param bool $all TRUE all requests, FALSE otherwise
      * @return array Recordset (can be empty if no requests or not a manager)
      */
-    public function requests($user_id, $all = FALSE)
+    public function requests($user_id, $all = FALSE): array
     {
         $this->load->model('delegations_model');
         $ids = $this->delegations_model->listManagersGivingDelegation($user_id);
@@ -212,9 +198,8 @@ class Overtime_model extends CI_Model
      * Count extra requests submitted to the connected user (or if delegate of a manager)
      * @param int $manager connected user
      * @return int number of requests
-     * 
      */
-    public function countExtraRequestedToManager($manager)
+    public function countExtraRequestedToManager($manager): int
     {
         $this->load->model('delegations_model');
         $ids = $this->delegations_model->listManagersGivingDelegation($manager);
@@ -234,11 +219,10 @@ class Overtime_model extends CI_Model
 
     /**
      * Purge the table by deleting the records prior $toDate
-     * @param date $toDate 
+     * @param string $toDate date in format Y-m-d
      * @return int number of affected rows
-     * 
      */
-    public function purgeOvertime($toDate)
+    public function purgeOvertime($toDate): int
     {
         $this->db->where(' <= ', $toDate);
         return $this->db->delete('overtime');
@@ -247,9 +231,8 @@ class Overtime_model extends CI_Model
     /**
      * Count the number of rows into the table
      * @return int number of rows
-     * 
      */
-    public function count()
+    public function count(): int
     {
         $this->db->select('count(*) as number', FALSE);
         $this->db->from('overtime');
@@ -260,9 +243,8 @@ class Overtime_model extends CI_Model
     /**
      * Detect overtime with a negative duration. This is a warning as it substract entitled days to user.
      * @return array list of invalid requests
-     * 
      */
-    public function detectNegativeOvertime()
+    public function detectNegativeOvertime(): array
     {
         $this->db->select('overtime.*, CONCAT(users.firstname, \' \', users.lastname) as user_label', FALSE);
         $this->db->select('status.name as status_label');

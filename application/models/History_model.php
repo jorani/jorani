@@ -90,7 +90,8 @@ class History_model extends CI_Model
         if (!in_array($table, $this->allowedTables, true)) {
             throw new InvalidArgumentException("The provided table is not allowed for history details.");
         }
-        $query = $this->db->get_where($table . '_history', array('modification_id' => $id));
+        $this->db->where('modification_id', $id);
+        $query = $this->db->get($table . '_history');
         return $query->row_array();
     }
 

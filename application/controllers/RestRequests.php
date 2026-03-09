@@ -24,7 +24,6 @@ class RestRequests extends MY_RestController
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -35,8 +34,7 @@ class RestRequests extends MY_RestController
     /**
      * Display the list of all requests submitted to you
      * Status is submitted or accepted/rejected depending on the filter parameter.
-     * @param string $name Filter the list of submitted leave requests ("all" or "requested")
-     * 
+     * @param string $filter Filter the list of submitted leave requests ("all" or "requested")
      */
     public function requests($filter = 'requested')
     {
