@@ -40,7 +40,6 @@ class Leaves_model extends CI_Model
      * Get the list of all leave requests or one leave
      * @param int $leaveRequestId Id of the leave request
      * @return array list of records
-     * 
      */
     public function getLeaves(int $leaveRequestId = 0): array
     {
@@ -61,7 +60,6 @@ class Leaves_model extends CI_Model
      * Id are replaced by label
      * @param int $employeeId ID of the employee
      * @return array list of records
-     * 
      */
     public function getLeavesOfEmployee(int $employeeId): array
     {
@@ -80,7 +78,6 @@ class Leaves_model extends CI_Model
      * Get the list of leaves of an employee with their history
      * @param int $employeeId Id of the employee
      * @return array list of records
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function getLeavesOfEmployeeWithHistory(int $employeeId): array
     {
@@ -352,7 +349,6 @@ class Leaves_model extends CI_Model
     /**
      * Compute the leave balance of an employee (used by report and counters)
      * @param int $employeeId ID of the employee
-     * @param bool $sumExtra TRUE: sum compensate summary
      * @param ?string $refDate tmp of the Date of reference (or current date if NULL)
      * @return ?array computed aggregated taken/entitled leaves or NULL if no contract
      * @throws InvalidArgumentException if the date is not valid or not in Y-m-d format
@@ -475,10 +471,9 @@ class Leaves_model extends CI_Model
      * @param int $employeeId employee identifier
      * @param string $type leave type name
      * @param ?string $startdate Start date of leave request or null
-     * @return int number of available days or NULL if the user has no contract
-     * 
+     * @return float number of available days or NULL if the user has no contract
      */
-    public function getLeavesTypeBalanceForEmployee(int $employeeId, string $type, ?string $startdate = NULL): ?int
+    public function getLeavesTypeBalanceForEmployee(int $employeeId, string $type, ?string $startdate = NULL): ?float
     {
         $summary = $this->getLeaveBalanceForEmployee($employeeId, $startdate);
         //return entitled days - taken (for a given leave type)
@@ -488,7 +483,7 @@ class Leaves_model extends CI_Model
             if (array_key_exists($type, $summary)) {
                 return ($summary[$type][1] - $summary[$type][0]);
             } else {
-                return 0;
+                return 0.0;
             }
         }
     }
@@ -560,6 +555,7 @@ class Leaves_model extends CI_Model
     public function setLeaves(int $employeeId): int
     {
         //TODO: decouple input ($this->input->post()) from model
+        //TODO: decouple config
         $data = array(
             'startdate' => $this->input->post('startdate'),
             'startdatetype' => $this->input->post('startdatetype'),
@@ -575,7 +571,7 @@ class Leaves_model extends CI_Model
         $newId = $this->db->insert_id();
 
         //Trace the modification if the feature is enabled
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             $this->load->model('history_model');
             $this->history_model->setHistory(1, 'leaves', $newId, $employeeId);
         }
@@ -602,7 +598,7 @@ class Leaves_model extends CI_Model
         //TODO: sanitize entries
 
         $affectedRows = 0;
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             foreach ($employees as $id) {
                 $this->createLeaveByApi(
                     $this->input->post('startdate'),
@@ -618,9 +614,9 @@ class Leaves_model extends CI_Model
                 $affectedRows++;
             }
         } else {
-            $data = array();
+            $data = [];
             foreach ($employees as $id) {
-                $data[] = array(
+                $data[] = [
                     'startdate' => $this->input->post('startdate'),
                     'startdatetype' => $this->input->post('startdatetype'),
                     'enddate' => $this->input->post('enddate'),
@@ -630,7 +626,7 @@ class Leaves_model extends CI_Model
                     'cause' => $this->input->post('cause'),
                     'status' => $this->input->post('status'),
                     'employee' => $id
-                );
+                ];
             }
             $affectedRows = $this->db->insert_batch('leaves', $data);
         }
@@ -694,7 +690,7 @@ class Leaves_model extends CI_Model
         $newId = $this->db->insert_id();
 
         //Trace the modification if the feature is enabled
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             $this->load->model('history_model');
             $this->history_model->setHistory(1, 'leaves', $newId, $this->session->userdata('id'));
         }
@@ -705,9 +701,8 @@ class Leaves_model extends CI_Model
      * Update a leave request in the database with the values posted by an HTTP POST
      * @param int $leaveId of the leave request
      * @param int $userId Identifier of the user (optional)
-     * 
      */
-    public function updateLeaves(int $leaveId, int $userId = 0)
+    public function updateLeaves(int $leaveId, int $userId = 0): void
     {
         //TODO: decouple the logic (not by controler->form)
         if ($userId == 0) {
@@ -723,14 +718,15 @@ class Leaves_model extends CI_Model
             $commentObject->author = $userId;
             $commentObject->value = $this->input->post('comment');
             $commentObject->date = date("Y-n-j");
-            if (isset($jsonDecode)) {
+            if (isset($jsonDecode) && $jsonDecode != null) {
                 array_push($jsonDecode->comments, $commentObject);
             } else {
-                $jsonDecode->comments = array($commentObject);
+                $jsonDecode = new stdClass;
+                $jsonDecode->comments = [$commentObject];
             }
             $json = json_encode($jsonDecode);
         }
-        $data = array(
+        $data = [
             'startdate' => $this->input->post('startdate'),
             'startdatetype' => $this->input->post('startdatetype'),
             'enddate' => $this->input->post('enddate'),
@@ -740,12 +736,12 @@ class Leaves_model extends CI_Model
             'cause' => $this->input->post('cause'),
             'status' => $this->input->post('status'),
             'comments' => $json
-        );
+        ];
         $this->db->where('id', $leaveId);
         $this->db->update('leaves', $data);
 
         //Trace the modification if the feature is enabled
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             $this->load->model('history_model');
             $this->history_model->setHistory(2, 'leaves', $leaveId, $userId);
         }
@@ -756,13 +752,12 @@ class Leaves_model extends CI_Model
      * @param int $leaveId leave request identifier
      * @param int $userId Identifier of the user (optional)
      * @return int number of affected rows
-     * 
      */
-    public function deleteLeave(int $leaveId, int $userId = 0)
+    public function deleteLeave(int $leaveId, int $userId = 0): int
     {
         //TODO: decouple the way we get the configuration item here
         //Trace the modification if the feature is enabled
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             if ($userId == 0) {
                 $userId = $this->session->userdata('id');
             }
@@ -777,9 +772,8 @@ class Leaves_model extends CI_Model
      * listed into config/constants.php
      * @param int $leaveId leave request identifier
      * @param int $status Next Status
-     * 
      */
-    public function switchStatus(int $leaveId, int $status)
+    public function switchStatus(int $leaveId, int $status): void
     {
         //TODO: prepareCommentOnStatusChanged smells bad
         //TODO: decouple the session stuff
@@ -792,7 +786,7 @@ class Leaves_model extends CI_Model
         $this->db->update('leaves', $data);
 
         //Trace the modification if the feature is enabled
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             $this->load->model('history_model');
             $this->history_model->setHistory(2, 'leaves', $leaveId, $this->session->userdata('id'));
         }
@@ -803,10 +797,9 @@ class Leaves_model extends CI_Model
      * listed into config/constants.php
      * @param int $id leave request identifier
      * @param int $status Next Status
-     * @param int $comment New comment
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
+     * @param string $comment New comment
      */
-    public function switchStatusAndComment($id, $status, $comment)
+    public function switchStatusAndComment(int $id, int $status, string $comment): void
     {
         $json_parsed = $this->getCommentsLeave($id);
         $commentObject = new stdClass;
@@ -818,16 +811,16 @@ class Leaves_model extends CI_Model
             array_push($json_parsed->comments, $commentObject);
         } else {
             $json_parsed = new stdClass;
-            $json_parsed->comments = array($commentObject);
+            $json_parsed->comments = [$commentObject];
         }
         $comment_change = new stdClass;
         $comment_change->type = "change";
         $comment_change->status_number = $status;
         $comment_change->date = date("Y-n-j");
-        if (isset($json_parsed)) {
+        if (isset($json_parsed->comments)) {
             array_push($json_parsed->comments, $comment_change);
         } else {
-            $json_parsed->comments = array($comment_change);
+            $json_parsed->comments = [$comment_change];
         }
         $json = json_encode($json_parsed);
         $data = array(
@@ -838,7 +831,7 @@ class Leaves_model extends CI_Model
         $this->db->update('leaves', $data);
 
         //Trace the modification if the feature is enabled
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             $this->load->model('history_model');
             $this->history_model->setHistory(2, 'leaves', $id, $this->session->userdata('id'));
         }
@@ -847,12 +840,12 @@ class Leaves_model extends CI_Model
     /**
      * Delete leaves attached to a user
      * @param int $employee identifier of an employee
-     * 
+     * @return int number of affected rows
      */
-    public function deleteLeavesCascadeUser($employee)
+    public function deleteLeavesCascadeUser(int $employee): int
     {
         //Select the leaves of a users (if history feature is enabled)
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             $this->load->model('history_model');
             $leaves = $this->getLeavesOfEmployee($employee);
             //TODO in fact, should we cascade delete ?
@@ -860,7 +853,7 @@ class Leaves_model extends CI_Model
                 $this->history_model->setHistory(3, 'leaves', $leave['id'], $this->session->userdata('id'));
             }
         }
-        return $this->db->delete('leaves', array('employee' => $employee));
+        return $this->db->delete('leaves', ['employee' => $employee]);
     }
 
     /**
@@ -869,9 +862,8 @@ class Leaves_model extends CI_Model
      * @param string $start Unix timestamp / Start date displayed on calendar
      * @param string $end Unix timestamp / End date displayed on calendar
      * @return string JSON encoded list of full calendar events
-     * 
      */
-    public function individual($user_id, $start = "", $end = "")
+    public function individual(int $user_id, string $start = "", string $end = ""): string
     {
         $this->db->select('leaves.*, types.name as type');
         $this->db->join('types', 'leaves.type = types.id');
@@ -881,7 +873,7 @@ class Leaves_model extends CI_Model
         $this->db->limit(1024);  //Security limit
         $events = $this->db->get('leaves')->result();
 
-        $jsonevents = array();
+        $jsonevents = [];
         foreach ($events as $entry) {
 
             if ($entry->startdatetype == "Morning") {
@@ -946,9 +938,8 @@ class Leaves_model extends CI_Model
      * @param string $start Unix timestamp / Start date displayed on calendar
      * @param string $end Unix timestamp / End date displayed on calendar
      * @return string JSON encoded list of full calendar events
-     * 
      */
-    public function workmates($user_id, $start = "", $end = "")
+    public function workmates(int $user_id, string $start = "", string $end = ""): string
     {
         $this->db->join('users', 'users.id = leaves.employee');
         $this->db->where('users.manager', $user_id);
@@ -958,7 +949,7 @@ class Leaves_model extends CI_Model
         $this->db->limit(1024);  //Security limit
         $events = $this->db->get('leaves')->result();
 
-        $jsonevents = array();
+        $jsonevents = [];
         foreach ($events as $entry) {
             if ($entry->startdatetype == "Morning") {
                 $startdate = $entry->startdate . 'T07:00:00';
@@ -1001,7 +992,7 @@ class Leaves_model extends CI_Model
                     break;  // Rejected
             }
 
-            $jsonevents[] = array(
+            $jsonevents[] = [
                 'id' => $entry->id,
                 'title' => $entry->firstname . ' ' . $entry->lastname,
                 'imageurl' => $imageUrl,
@@ -1011,7 +1002,7 @@ class Leaves_model extends CI_Model
                 'end' => $enddate,
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype
-            );
+            ];
         }
         return json_encode($jsonevents);
     }
@@ -1022,9 +1013,8 @@ class Leaves_model extends CI_Model
      * @param string $start Unix timestamp / Start date displayed on calendar
      * @param string $end Unix timestamp / End date displayed on calendar
      * @return string JSON encoded list of full calendar events
-     * 
      */
-    public function collaborators($user_id, $start = "", $end = "")
+    public function collaborators(int $user_id, string $start = "", string $end = ""): string
     {
         $this->db->join('users', 'users.id = leaves.employee');
         $this->db->where('users.manager', $user_id);
@@ -1033,7 +1023,7 @@ class Leaves_model extends CI_Model
         $this->db->limit(1024);  //Security limit
         $events = $this->db->get('leaves')->result();
 
-        $jsonevents = array();
+        $jsonevents = [];
         foreach ($events as $entry) {
             if ($entry->startdatetype == "Morning") {
                 $startdate = $entry->startdate . 'T07:00:00';
@@ -1076,7 +1066,7 @@ class Leaves_model extends CI_Model
                     break;  // Rejected
             }
 
-            $jsonevents[] = array(
+            $jsonevents[] = [
                 'id' => $entry->id,
                 'title' => $entry->firstname . ' ' . $entry->lastname,
                 'imageurl' => $imageUrl,
@@ -1086,7 +1076,7 @@ class Leaves_model extends CI_Model
                 'end' => $enddate,
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype
-            );
+            ];
         }
         return json_encode($jsonevents);
     }
@@ -1099,9 +1089,8 @@ class Leaves_model extends CI_Model
      * @param bool $children Include sub department in the query
      * @param string $statusFilter optional filter on status
      * @return string JSON encoded list of full calendar events
-     * 
      */
-    public function department($entity_id, $start = "", $end = "", $children = FALSE, $statusFilter = NULL)
+    public function department(int $entity_id, string $start = "", string $end = "", bool $children = FALSE, ?string $statusFilter = NULL): string
     {
         $this->db->select('users.firstname, users.lastname, users.manager');
         $this->db->select('leaves.*');
@@ -1199,7 +1188,7 @@ class Leaves_model extends CI_Model
             }
 
             //Create the JSON representation of the event
-            $jsonevents[] = array(
+            $jsonevents[] = [
                 'id' => $entry->id,
                 'title' => $title,
                 'imageurl' => $imageUrl,
@@ -1210,7 +1199,7 @@ class Leaves_model extends CI_Model
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype,
                 'url' => $url
-            );
+            ];
         }
         return json_encode($jsonevents);
     }
@@ -1220,12 +1209,10 @@ class Leaves_model extends CI_Model
      * @param int $list_id List identifier
      * @param string $start Unix timestamp / Start date displayed on calendar
      * @param string $end Unix timestamp / End date displayed on calendar
-     * @param bool $children Include sub department in the query
      * @param string $statusFilter optional filter on status
      * @return string JSON encoded list of full calendar events
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getListRequest($list_id, $start = "", $end = "", $statusFilter = NULL)
+    public function getListRequest(int $list_id, string $start = "", string $end = "", ?string $statusFilter = NULL): string
     {
         $this->db->select('users.firstname, users.lastname, users.manager');
         $this->db->select('leaves.*');
@@ -1248,9 +1235,14 @@ class Leaves_model extends CI_Model
         return $this->transformToEvent($events);
     }
 
-    private function transformToEvent($events)
+    /**
+     * Transform a list of leaves to a list of full calendar events
+     * @param array $events List of leaves
+     * @return string JSON encoded list of full calendar events
+     */
+    private function transformToEvent(array $events): string
     {
-        $jsonevents = array();
+        $jsonevents = [];
         foreach ($events as $entry) {
             //Date of event
             if ($entry->startdatetype == "Morning") {
@@ -1337,9 +1329,8 @@ class Leaves_model extends CI_Model
      * @param int $entity_id Entity identifier (the department)
      * @param bool $children Include sub department in the query
      * @return array List of leave requests (DB records)
-     * 
      */
-    public function entity($entity_id, $children = FALSE)
+    public function entity(int $entity_id, bool $children = FALSE): array
     {
         $this->db->select('users.firstname, users.lastname,  leaves.*, types.name as type');
         $this->db->from('organization');
@@ -1349,7 +1340,7 @@ class Leaves_model extends CI_Model
         if ($children === TRUE) {
             $this->load->model('organization_model');
             $list = $this->organization_model->getAllChildren($entity_id);
-            $ids = array();
+            $ids = [];
             if (count($list) > 0) {
                 $ids = explode(",", $list[0]['id']);
             }
@@ -1370,9 +1361,8 @@ class Leaves_model extends CI_Model
      * @param int $manager connected user
      * @param bool $all TRUE all requests, FALSE otherwise
      * @return array Recordset (can be empty if no requests or not a manager)
-     * 
      */
-    public function getLeavesRequestedToManager($manager, $all = FALSE)
+    public function getLeavesRequestedToManager(int $manager, bool $all = FALSE): array
     {
         $this->load->model('delegations_model');
         $ids = $this->delegations_model->listManagersGivingDelegation($manager);
@@ -1402,9 +1392,8 @@ class Leaves_model extends CI_Model
      * @param int $manager Id of the employee
      * @param bool $all TRUE all requests, FALSE otherwise
      * @return array list of records
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getLeavesRequestedToManagerWithHistory($manager, $all = FALSE)
+    public function getLeavesRequestedToManagerWithHistory(int $manager, bool $all = FALSE): array
     {
         $this->load->model('delegations_model');
         $manager = intval($manager);
@@ -1466,7 +1455,7 @@ class Leaves_model extends CI_Model
 
     /**
      * Purge the table by deleting the records prior $toDate
-     * @param string $toDate
+     * @param string $toDate Date in Y-m-d format
      * @return int number of affected rows
      * @throws InvalidArgumentException if dates are invalid or start date is after end date
      */
@@ -1523,19 +1512,25 @@ class Leaves_model extends CI_Model
      * @param int $month Month number
      * @param int $year Year number
      * @param bool $children Include sub department in the query
-     * @param string $statusFilter optional filter on status
+     * @param string $statusFilter optional filter on statuses (pipe separated)
      * @param boolean $calendar Is this function called to display a calendar
      * @return array Array of objects containing leave details
      */
-    public function tabular(int &$entity = -1, int &$month = 0, int &$year = 0, int &$children = TRUE, ?int $statusFilter = NULL, bool $calendar = FALSE): array
-    {
-        //TODO: not urgent but find a way to get rid of this pass by ref 
-        //TODO: The £calendar param is after an optional param : it smells bad
+    public function tabular(
+        int &$entity = -1,
+        int &$month = 0,
+        int &$year = 0,
+        bool &$children = TRUE,
+        ?string $statusFilter = NULL,
+        bool $calendar = FALSE
+    ): array {
+        //TODO: not urgent, but find a way to get rid of this pass by ref 
+        //TODO: The calendar param is after an optional param : it smells bad
         //Find default values for parameters (passed by ref)
         if ($month == 0)
-            $month = date("m");
+            $month = intval(date("m"));
         if ($year == 0)
-            $year = date("Y");
+            $year = intval(date("Y"));
         $children = filter_var($children, FILTER_VALIDATE_BOOLEAN);
         //If no entity was selected, select the entity of the connected user or the root of the organization
         if ($entity == -1) {
@@ -1547,7 +1542,7 @@ class Leaves_model extends CI_Model
                 $entity = is_null($user['organization']) ? 0 : $user['organization'];
             }
         }
-        $tabular = array();
+        $tabular = [];
 
         //We must show all users of the departement
         $this->load->model('organization_model');
@@ -1598,9 +1593,9 @@ class Leaves_model extends CI_Model
         //TODO: not urgent but find a way to get rid of this pass by ref 
         //Find default values for parameters (passed by ref)
         if ($month == 0)
-            $month = date("m");
+            $month = intval(date("m"));
         if ($year == 0)
-            $year = date("Y");
+            $year = intval(date("Y"));
         $tabular = array();
 
         //We must show all users of the departement
@@ -1629,10 +1624,10 @@ class Leaves_model extends CI_Model
 
     /**
      * Count the total duration of leaves for the month. Only accepted leaves are taken into account
-     * @param array $linear linear calendar for one employee
+     * @param object $linear linear calendar for one employee
      * @return int total of leaves duration
      */
-    public function monthlyLeavesDuration(array $linear): int
+    public function monthlyLeavesDuration(object $linear): int
     {
         $total = 0;
         foreach ($linear->days as $day) {
@@ -1661,10 +1656,10 @@ class Leaves_model extends CI_Model
     /**
      * Count the total duration of leaves for the month, grouped by leave type.
      * Only accepted leaves are taken into account.
-     * @param array $linear linear calendar for one employee
+     * @param object $linear linear calendar for one employee
      * @return array key/value array (k:leave type label, v:sum for the month)
      */
-    public function monthlyLeavesByType(array $linear): array
+    public function monthlyLeavesByType(object $linear): array
     {
         $by_types = [];
         foreach ($linear->days as $day) {
@@ -1979,7 +1974,7 @@ class Leaves_model extends CI_Model
                 (users.id = entitleddays.employee OR contracts.id = entitleddays.contract)
                         and entitleddays.startdate <= leaves.enddate AND entitleddays.enddate >= leaves.startdate)
         WHERE entitleddays.type IS NULL
-        ORDER BY users.id ASC, leaves.startdate DESC', FALSE);
+        ORDER BY users.id ASC, leaves.startdate DESC');
         return $query->result_array();
     }
 
@@ -1998,7 +1993,7 @@ class Leaves_model extends CI_Model
             inner join contracts on users.contract = contracts.id
             inner join status on status.id = leaves.status
             WHERE leaves.startdate < CAST(CONCAT(YEAR(leaves.enddate), \'-\', REPLACE(contracts.startentdate, \'/\', \'-\')) AS DATE)
-            ORDER BY users.id ASC, leaves.startdate DESC', FALSE);
+            ORDER BY users.id ASC, leaves.startdate DESC');
         return $query->result_array();
     }
 
@@ -2006,7 +2001,6 @@ class Leaves_model extends CI_Model
      * Get one leave with his comment
      * @param int $leaveId Id of the leave request
      * @return array list of records
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function getLeaveWithComments(int $leaveId = 0): array
     {
@@ -2029,7 +2023,6 @@ class Leaves_model extends CI_Model
      * Get the JSON representation of comments posted on a leave request
      * @param int $leaveId Id of the leave request
      * @return array list of records
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function getCommentsLeaveJson(int $leaveId): array
     {
@@ -2042,15 +2035,14 @@ class Leaves_model extends CI_Model
     /**
      * Get one leave request with his comment
      * @param int $leaveId Id of the leave request
-     * @return ?array list of records
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
+     * @return ?object list of records
      */
-    public function getCommentsLeave(int $leaveId): ?array
+    public function getCommentsLeave(int $leaveId): ?object
     {
         $request = $this->getCommentsLeaveJson($leaveId);
         $json = $request["comments"];
         if (!empty($json)) {
-            return json_decode($json);
+            return json_decode($json, false);
         } else {
             return null;
         }
@@ -2081,7 +2073,6 @@ class Leaves_model extends CI_Model
      * Update the comment of a Leave
      * @param int $leaveId Id of the leave
      * @param string $json new json for the comments of the leave
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function addComments(int $leaveId, string $json): void
     {
@@ -2093,7 +2084,7 @@ class Leaves_model extends CI_Model
         $this->db->update('leaves', $data);
 
         //Trace the modification if the feature is enabled
-        if ($this->config->item('enable_history') === TRUE) {
+        if ($this->config->item('enable_history')) {
             $this->load->model('history_model');
             $this->history_model->setHistory(2, 'leaves', $leaveId, $this->session->userdata('id'));
         }
@@ -2104,7 +2095,6 @@ class Leaves_model extends CI_Model
      * @param int $leaveId Id of the leave
      * @param int $status status which is updated
      * @return string json modified with the new status
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     private function prepareCommentOnStatusChanged(int $leaveId, int $status): string
     {
@@ -2121,7 +2111,7 @@ class Leaves_model extends CI_Model
                 array_push($json_parsed->comments, $comment_change);
             } else {
                 $json_parsed = new stdClass;
-                $json_parsed->comments = array($comment_change);
+                $json_parsed->comments = [$comment_change];
             }
             return json_encode($json_parsed);
         }

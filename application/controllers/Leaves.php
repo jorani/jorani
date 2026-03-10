@@ -198,7 +198,7 @@ class Leaves extends CI_Controller
             array_push($oldComment->comments, $newComment);
         } else {
             $oldComment = new stdClass;
-            $oldComment->comments = array($newComment);
+            $oldComment->comments = [$newComment];
         }
         $json = json_encode($oldComment);
         $this->leaves_model->addComments($id, $json);
@@ -883,7 +883,7 @@ class Leaves extends CI_Controller
     {
         header("Content-Type: application/json");
         $id = $this->input->post('id', TRUE);
-        $type = $this->input->post('type', TRUE);
+        $type = trim($this->input->post('type', TRUE));
         $date = $this->input->post('startdate', TRUE);
         $d = DateTime::createFromFormat('Y-m-d', $date);
         $startdate = ($d && $d->format('Y-m-d') === $date) ? $date : '1970-01-01';
@@ -928,7 +928,7 @@ class Leaves extends CI_Controller
             $this->load->model('dayoffs_model');
             $leaveValidator->listDaysOff = $this->dayoffs_model->listOfDaysOffBetweenDates($id, $startdate, $enddate);
             //Sum non-working days and overlapping with day off detection
-            $result = $this->leaves_model->actualLengthAndDaysOff($id, $startdate, $enddate, $startdatetype, $enddatetype, $leaveValidator->listDaysOff, $deductDayOff);
+            $result = $this->leaves_model->actualLengthAndDaysOff($startdate, $enddate, $startdatetype, $enddatetype, $leaveValidator->listDaysOff, $deductDayOff);
             $leaveValidator->overlapDayOff = $result['overlapping'];
             $leaveValidator->lengthDaysOff = $result['daysoff'];
             $leaveValidator->length = $result['length'];
@@ -941,6 +941,8 @@ class Leaves extends CI_Controller
         //Repeat start and end dates of the leave request
         $leaveValidator->RequestStartDate = $startdate;
         $leaveValidator->RequestEndDate = $enddate;
+
+        //log_message('error', '{controllers/leaves/validate} type=' . $type . ' id=' . $id . ' startdate=' . $startdate . ' enddate=' . $enddate . ' startdatetype=' . $startdatetype . ' enddatetype=' . $enddatetype . ' leave_id=' . $leave_id . ' deductDayOff=' . $deductDayOff . ' hasContract=' . $hasContract . ' PeriodStartDate=' . $startentdate . ' PeriodEndDate=' . $endentdate . ' overlap=' . $leaveValidator->overlap . ' overlapDayOff=' . $leaveValidator->overlapDayOff . ' lengthDaysOff=' . $leaveValidator->lengthDaysOff . ' length=' . $leaveValidator->length . ' RequestStartDate=' . $leaveValidator->RequestStartDate . ' RequestEndDate=' . $leaveValidator->RequestEndDate);
 
         echo json_encode($leaveValidator);
     }

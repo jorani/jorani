@@ -28,9 +28,9 @@ class Types_model extends CI_Model
     /**
      * Get the list of types or one type
      * @param int $id optional id of a type
-     * @return array record of types
+     * @return array|null record of types or list of types
      */
-    public function getTypes(int $id = 0): array
+    public function getTypes(int $id = 0): ?array
     {
         if ($id === 0) {
             $query = $this->db->get('types');
@@ -44,9 +44,9 @@ class Types_model extends CI_Model
     /**
      * Get the list of types or one type
      * @param string $name type name
-     * @return array record of a leave type
+     * @return array|null record of a leave type
      */
-    public function getTypeByName(string $name): array
+    public function getTypeByName(string $name): ?array
     {
         $this->db->where('name', $name);
         $query = $this->db->get('types');
@@ -77,7 +77,7 @@ class Types_model extends CI_Model
     public function getName(int $id): string
     {
         $type = $this->getTypes($id);
-        return $type['name'];
+        return $type && array_key_exists('name', $type) ? $type['name'] : '';
     }
 
     /**

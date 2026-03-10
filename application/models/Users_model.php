@@ -264,7 +264,6 @@ class Users_model extends CI_Model
      * @param ?string $userProperties JSON encoded user properties or NULL
      * @param ?string $picture Base64 encoded avatar picture or NULL
      * @return int Inserted User Identifier
-     * 
      */
     public function insertUserByApi(
         string $firstname,
@@ -336,10 +335,9 @@ class Users_model extends CI_Model
      * on values posted by en HTML form. Can be used by a mass importer for example.
      * @param int $id Id of the user
      * @param array $data Associative array of fields to be updated
-     * @return int Number of affected rows
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateUserByApi($id, $data)
+    public function updateUserByApi(int $id, array $data): bool
     {
         //TODO: looks not completed
         if (isset($password)) {
@@ -349,7 +347,7 @@ class Users_model extends CI_Model
             $this->db->set('password', $hash);
         }
         $this->db->where('id', $id);
-        $this->db->update('users', $data);
+        return $this->db->update('users', $data);
     }
 
     /**
@@ -440,9 +438,8 @@ class Users_model extends CI_Model
      * Reset a password. Generate a new password and store its hash into db.
      * @param int $id User identifier
      * @return string clear password
-     * 
      */
-    public function resetClearPassword($id)
+    public function resetClearPassword(int $id): string
     {
         //generate a random password of length 10
         $password = $this->randomPassword(10);
@@ -524,9 +521,8 @@ class Users_model extends CI_Model
      * @param string $login user login
      * @param string $password password
      * @return bool TRUE if the user is succesfully authenticated, FALSE otherwise
-     * 
      */
-    public function checkCredentials($login, $password)
+    public function checkCredentials(string $login, string $password): bool
     {
         $this->db->from('users');
         $this->db->where('login', $login);
@@ -555,9 +551,8 @@ class Users_model extends CI_Model
      * It is the LDAP binding operation that checks if Password is correct.
      * @param string $login user login
      * @return bool TRUE if user was found into the database, FALSE otherwise
-     * 
      */
-    public function checkCredentialsLDAP($login)
+    public function checkCredentialsLDAP(string $login): bool
     {
         $this->db->from('users');
         $this->db->where('login', $login);
@@ -578,9 +573,8 @@ class Users_model extends CI_Model
      * @param string $email E-mail address of the user
      * @param string $password Optional password
      * @return bool TRUE if user was found into the database, FALSE otherwise
-     * 
      */
-    public function checkCredentialsEmail($email, $password = NULL)
+    public function checkCredentialsEmail(string $email, ?string $password = NULL): bool
     {
         $this->db->from('users');
         $this->db->where('email', $email);
@@ -607,10 +601,9 @@ class Users_model extends CI_Model
      * @param string $login user login (or email for SSO)
      * @param string $type login type could be "internal", "ldap", or "sso"
      * @param string $password password
-     * @return stdClass user properties if the user is succesfully authenticated, NULL otherwise
-     * 
+     * @return ?object user properties if the user is succesfully authenticated, NULL otherwise
      */
-    public function checkCredentialsForREST($login, $type = "internal", $password = NULL)
+    public function checkCredentialsForREST(string $login, string $type = "internal", ?string $password = NULL): ?object
     {
         log_message('debug', '++checkCredentialsForREST / login=' . $login . ' / type=' . $type);
         $this->db->from('users');
@@ -682,9 +675,8 @@ class Users_model extends CI_Model
      * Get the LDAP Authentication path of a user
      * @param string $login user login
      * @return string LDAP Authentication path, empty string otherwise
-     * 
      */
-    public function getBaseDN($login)
+    public function getBaseDN(string $login): string
     {
         $this->db->select('ldap_path');
         $this->db->from('users');
@@ -703,22 +695,21 @@ class Users_model extends CI_Model
      * @param int $id optional id of the entity, all entities if 0
      * @param bool $children TRUE : include sub entities, FALSE otherwise
      * @param string $filterActive "all"; "active" (only), or "inactive" (only)
-     * @param string $criterion1 "lesser" or "greater" (optional)
-     * @param string $date1 Date Hired (optional)
-     * @param string $criterion2 "lesser" or "greater" (optional)
-     * @param string $date2 Date Hired (optional)
+     * @param ?string $criterion1 "lesser" or "greater" (optional)
+     * @param ?string $date1 Date Hired (optional)
+     * @param ?string $criterion2 "lesser" or "greater" (optional)
+     * @param ?string $date2 Date Hired (optional)
      * @return array record of users
-     * 
      */
     public function employeesOfEntity(
-        $id = 0,
-        $children = TRUE,
-        $filterActive = "all",
-        $criterion1 = NULL,
-        $date1 = NULL,
-        $criterion2 = NULL,
-        $date2 = NULL
-    ) {
+        int $id = 0,
+        bool $children = TRUE,
+        string $filterActive = "all",
+        ?string $criterion1 = NULL,
+        ?string $date1 = NULL,
+        ?string $criterion2 = NULL,
+        ?string $date2 = NULL
+    ): array {
         $this->db->select('users.id as id,'
             . ' users.firstname as firstname,'
             . ' users.lastname as lastname,'
@@ -773,25 +764,22 @@ class Users_model extends CI_Model
     /**
      * Update all employees when a contract is deleted (set the field to NULL)
      * @param int $id Contract ID
-     * @return int number of affected rows
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateUsersCascadeContract($id)
+    public function updateUsersCascadeContract(int $id): int
     {
         $this->db->set('contract', NULL);
         $this->db->where('contract', $id);
-        $result = $this->db->update('users');
-        return $result;
+        return $this->db->update('users');
     }
 
     /**
      * Set a user as active (TRUE) or inactive (FALSE)
      * @param int $id User identifier
      * @param bool $active active (TRUE) or inactive (FALSE)
-     * @return int number of affected rows
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function setActive($id, $active)
+    public function setActive(int $id, bool $active): bool
     {
         $this->db->set('active', $active);
         $this->db->where('id', $id);
@@ -802,9 +790,8 @@ class Users_model extends CI_Model
      * Check if a user is active (TRUE) or inactive (FALSE)
      * @param string $login login of a user
      * @return bool active (TRUE) or inactive (FALSE)
-     * 
      */
-    public function isActive($login)
+    public function isActive(string $login): bool
     {
         $this->db->from('users');
         $this->db->where('login', $login);
@@ -821,9 +808,8 @@ class Users_model extends CI_Model
      * Check if a user is active (TRUE) or inactive (FALSE)
      * @param string $email e-mail of a user
      * @return bool active (TRUE) or inactive (FALSE)
-     * 
      */
-    public function isActiveByEmail($login)
+    public function isActiveByEmail(string $email): bool
     {
         $this->db->from('users');
         $this->db->where('email', $email);
@@ -839,16 +825,14 @@ class Users_model extends CI_Model
     /**
      * Try to return the user information from the login field
      * @param string $login Login
-     * @return User data row or null if no user was found
-     * 
+     * @return ?object data row or null if no user was found
      */
-    public function getUserByLogin($login)
+    public function getUserByLogin(string $login): ?object
     {
         $this->db->from('users');
         $this->db->where('login', $login);
         $query = $this->db->get();
         if ($query->num_rows() == 0) {
-            //No match found
             return null;
         } else {
             return $query->row();
@@ -859,9 +843,8 @@ class Users_model extends CI_Model
      * Check if a given hash is associated to an existing user
      * @param string $randomHash Random Hash associated to user
      * @return bool TRUE if the user was found, FALSE otherwise
-     * 
      */
-    public function checkUserByHash($randomHash)
+    public function checkUserByHash(string $randomHash): bool
     {
         $this->db->from('users');
         $this->db->where('random_hash', $randomHash);
@@ -875,11 +858,10 @@ class Users_model extends CI_Model
 
     /**
      * Generate some random bytes by using openssl, dev/urandom or random
-     * @param int $count length of the random string
+     * @param int $length length of the random string
      * @return string a string of pseudo-random bytes (must be encoded)
-     * 
      */
-    protected function getRandomBytes($length)
+    protected function getRandomBytes(int $length): string
     {
         if (function_exists('openssl_random_pseudo_bytes')) {
             $rnd = openssl_random_pseudo_bytes($length, $strong);
@@ -910,50 +892,35 @@ class Users_model extends CI_Model
      * Update the manager of a list of employees
      * @param int $managerId DB Identifier of the manager
      * @param array $usersList List of DB ID of the affected employees
-     * @return int number of affected rows
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateManagerForUserList($managerId, $usersList)
+    public function updateManagerForUserList(int $managerId, array $usersList): bool
     {
-        $data = array(
-            'manager' => $managerId
-        );
         $this->db->where_in('id', $usersList);
-        $result = $this->db->update('users', $data);
-        return $result;
+        return $this->db->update('users', ['manager' => $managerId]);
     }
 
     /**
      * Update the entity of a list of employees
      * @param int $entityId DB Identifier of the entity
      * @param array $usersList List of DB ID of the affected employees
-     * @return int number of affected rows
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateEntityForUserList($entityId, $usersList)
+    public function updateEntityForUserList(int $entityId, array $usersList): bool
     {
-        $data = array(
-            'organization' => $entityId
-        );
         $this->db->where_in('id', $usersList);
-        $result = $this->db->update('users', $data);
-        return $result;
+        return $this->db->update('users', ['organization' => $entityId]);
     }
 
     /**
      * Update the contract of a list of employees
      * @param int $contractId DB Identifier of the contract
      * @param array $usersList List of DB ID of the affected employees
-     * @return int number of affected rows
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateContractForUserList($contractId, $usersList)
+    public function updateContractForUserList(int $contractId, array $usersList): bool
     {
-        $data = array(
-            'contract' => $contractId
-        );
         $this->db->where_in('id', $usersList);
-        $result = $this->db->update('users', $data);
-        return $result;
+        return $this->db->update('users', ['contract' => $contractId]);
     }
 }

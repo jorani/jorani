@@ -29,9 +29,9 @@ class Organization_model extends CI_Model
     /**
      * Get the department details of an employee (label and ID)
      * @param int $employeeId User identifier
-     * @return array department details
+     * @return object department details
      */
-    public function getDepartment(int $employeeId): array
+    public function getDepartment(int $employeeId): object
     {
         $this->db->select('organization.*');
         $this->db->from('organization');
