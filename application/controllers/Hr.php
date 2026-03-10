@@ -3,7 +3,6 @@
  * This controller serves all the actions performed by human resources department
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -21,7 +20,6 @@ class Hr extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -34,7 +32,6 @@ class Hr extends CI_Controller
 
     /**
      * Display the list of all employees
-     * 
      */
     public function employees()
     {
@@ -66,7 +63,6 @@ class Hr extends CI_Controller
      * @param string $date1 Date Hired (optional)
      * @param string $criterion2 "lesser" or "greater" (optional)
      * @param string $date2 Date Hired (optional)
-     * 
      */
     public function employeesOfEntity(
         $id = 0,
@@ -128,7 +124,6 @@ class Hr extends CI_Controller
 
     /**
      * Ajax endpoint: edit the manager for a list of employees
-     * 
      */
     public function editManager()
     {
@@ -147,7 +142,6 @@ class Hr extends CI_Controller
 
     /**
      * Ajax endpoint: edit the entity for a list of employees
-     * 
      */
     public function editEntity()
     {
@@ -166,7 +160,6 @@ class Hr extends CI_Controller
 
     /**
      * Ajax endpoint: edit the contract for a list of employees
-     * 
      */
     public function editContract()
     {
@@ -185,7 +178,6 @@ class Hr extends CI_Controller
 
     /**
      * Ajax endpoint: create a leave request for a list of employees
-     * 
      */
     public function createLeaveRequest()
     {
@@ -221,7 +213,6 @@ class Hr extends CI_Controller
 
     /**
      * Ajax endpoint : insert into the list of entitled days for a list of employees
-     * 
      */
     public function editEntitlements()
     {
@@ -250,9 +241,8 @@ class Hr extends CI_Controller
     /**
      * Display the list of leaves for a given employee
      * @param int $id employee id
-     * 
      */
-    public function leaves($id)
+    public function leaves(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
@@ -284,9 +274,8 @@ class Hr extends CI_Controller
     /**
      * Display the list of overtime requests for a given employee
      * @param int $id employee id
-     * 
      */
-    public function overtime($id)
+    public function overtime(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
@@ -312,10 +301,9 @@ class Hr extends CI_Controller
      * Display the details of leaves taken/entitled for a given employee
      * @param string $source page calling the report (employees, collaborators)
      * @param int $id Identifier of the employee
-     * @param string $refTmp Timestamp (reference date)
-     * 
+     * @param ?int $refTmp Timestamp (reference date)
      */
-    public function counters($source, $id, $refTmp = NULL)
+    public function counters(string $source, int $id, ?int $refTmp = NULL)
     {
         if ($source == 'collaborators') {
             $this->auth->checkIfOperationIsAllowed('list_collaborators');
@@ -371,9 +359,8 @@ class Hr extends CI_Controller
     /**
      * Create a leave request in behalf of an employee
      * @param int $id Identifier of the employee
-     * 
      */
-    public function createleave($id)
+    public function createleave(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
@@ -420,9 +407,8 @@ class Hr extends CI_Controller
      * @param int $id employee id
      * @param int $month Month number or 0 for last month (default)
      * @param int $year Year number or 0 for current year (default)
-     * 
      */
-    public function presence($source, $id, $month = 0, $year = 0)
+    public function presence(string $source, int $id, int $month = 0, int $year = 0)
     {
         if ($source == 'collaborators') {
             $this->auth->checkIfOperationIsAllowed('list_collaborators');
@@ -509,9 +495,8 @@ class Hr extends CI_Controller
     /**
      * Export the list of all leave requests of an employee into an Excel file
      * @param int $id employee id
-     * 
      */
-    public function exportLeaves($id)
+    public function exportLeaves(int $id)
     {
         $this->load->model('leaves_model');
         $this->load->model('users_model');
@@ -522,9 +507,8 @@ class Hr extends CI_Controller
     /**
      * Export the list of all overtime requests of an employee into an Excel file
      * @param int $id employee id
-     * 
      */
-    public function exportOvertime($id)
+    public function exportOvertime(int $id)
     {
         $this->load->model('overtime_model');
         $this->load->model('users_model');
@@ -537,20 +521,19 @@ class Hr extends CI_Controller
      * @param int $id optional id of the entity, all entities if 0
      * @param bool $children TRUE : include sub entities, FALSE otherwise
      * @param string $filterActive "all"; "active" (only), or "inactive" (only)
-     * @param string $criterion1 "lesser" or "greater" (optional)
-     * @param string $date1 Date Hired (optional)
-     * @param string $criterion2 "lesser" or "greater" (optional)
-     * @param string $date2 Date Hired (optional)
-     * 
+     * @param ?string $criterion1 "lesser" or "greater" (optional)
+     * @param ?string $date1 Date Hired (optional)
+     * @param ?string $criterion2 "lesser" or "greater" (optional)
+     * @param ?string $date2 Date Hired (optional)
      */
     public function exportEmployees(
-        $id = 0,
-        $children = TRUE,
-        $filterActive = "all",
-        $criterion1 = NULL,
-        $date1 = NULL,
-        $criterion2 = NULL,
-        $date2 = NULL
+        int $id = 0,
+        bool $children = TRUE,
+        string $filterActive = "all",
+        ?string $criterion1 = NULL,
+        ?string $date1 = NULL,
+        ?string $criterion2 = NULL,
+        ?string $date2 = NULL
     ) {
         $this->load->model('users_model');
         $data['id'] = $id;
@@ -569,9 +552,8 @@ class Hr extends CI_Controller
      * @param int $id employee id
      * @param int $month Month number or 0 for last month (default)
      * @param int $year Year number or 0 for current year (default)
-     * 
      */
-    public function exportPresence($source, $id, $month = 0, $year = 0)
+    public function exportPresence(string $source, int $id, int $month = 0, int $year = 0)
     {
         if ($source == 'collaborators') {
             $this->auth->checkIfOperationIsAllowed('list_collaborators');

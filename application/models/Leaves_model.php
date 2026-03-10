@@ -1625,9 +1625,9 @@ class Leaves_model extends CI_Model
     /**
      * Count the total duration of leaves for the month. Only accepted leaves are taken into account
      * @param object $linear linear calendar for one employee
-     * @return int total of leaves duration
+     * @return float total of leaves duration
      */
-    public function monthlyLeavesDuration(object $linear): int
+    public function monthlyLeavesDuration(object $linear): float
     {
         $total = 0;
         foreach ($linear->days as $day) {
