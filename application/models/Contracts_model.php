@@ -37,7 +37,8 @@ class Contracts_model extends CI_Model
             $query = $this->db->get('contracts');
             return $query->result_array();
         }
-        $query = $this->db->get_where('contracts', array('id' => $contractId));
+        $this->db->where('id', $contractId);
+        $query = $this->db->get('contracts');
         return $query->row_array();
     }
 
@@ -58,9 +59,9 @@ class Contracts_model extends CI_Model
 
     /**
      * Insert a new contract into the database. Inserted data are coming from an HTML form
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function setContracts(): int
+    public function setContracts(): bool
     {
         //TODO: this part is ugly ==> decouple controller from model (in application\controllers\Contracts.php)
         $startentdate = str_pad($this->input->post('startentdatemonth'), 2, "0", STR_PAD_LEFT) .
@@ -93,9 +94,9 @@ class Contracts_model extends CI_Model
 
     /**
      * Update a given contract in the database. Update data are coming from an HTML form
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateContract(): int
+    public function updateContract(): bool
     {
         //TODO: this part is ugly ==> decouple controller from model (in application\controllers\Contracts.php)
         $startentdate = str_pad($this->input->post('startentdatemonth'), 2, "0", STR_PAD_LEFT) .
@@ -115,13 +116,13 @@ class Contracts_model extends CI_Model
     /**
      * Computes the boundaries (current leave period) of the contract of a user
      * Modifies the start and end dates passed as parameter
-     * @param int Unique identifier of a user
-     * @param &date start date of the current leave period
-     * @param &date end date of the current leave period
-     * @param string $refDate tmp of the Date of reference (or current date if NULL)
+     * @param int $userId Unique identifier of a user
+     * @param string $startentdate start date of the current leave period
+     * @param string $endentdate end date of the current leave period
+     * @param ?string $refDate tmp of the Date of reference (or current date if NULL)
      * @return bool TRUE means that the user has a contract, FALSE otherwise
      */
-    public function getBoundaries(int $userId, &$startentdate, &$endentdate, ?string $refDate = NULL): bool
+    public function getBoundaries(int $userId, string &$startentdate, string &$endentdate, ?string $refDate = NULL): bool
     {
         //TODO: start and en dates are references, we should return a Plain Old PHP Object as it is a business object
         $this->db->select('startentdate, endentdate');
@@ -180,9 +181,11 @@ class Contracts_model extends CI_Model
         $listOfTypes = array();
         $this->db->select('types.id as id, types.name as name');
         $this->db->from('types');
-        $this->db->join('excluded_types',
+        $this->db->join(
+            'excluded_types',
             'excluded_types.type_id = types.id AND excluded_types.contract_id = ' . $this->db->escape($contractId),
-            'left');
+            'left'
+        );
         $this->db->where('excluded_types.type_id IS NULL');
         $this->db->order_by("types.name", "asc");
         $rows = $this->db->get()->result_array();
@@ -268,8 +271,8 @@ class Contracts_model extends CI_Model
         $contract = $this->getContracts($user['contract']);
         //If a default leave type is set on the contract, it overwrites what is set in config file
         $defaultType = $this->config->item('default_leave_type');
-        $defaultType = (($defaultType == FALSE) || (is_null($defaultType))) ? 0 : $defaultType;
-        if (!is_null($contract)) {
+        $defaultType = (($defaultType == FALSE) || (is_null($this->config->item('default_leave_type')))) ? 0 : $defaultType;
+        if (!empty($contract)) {
             if (array_key_exists('default_leave_type', $contract)) {
                 if (!is_null($contract['default_leave_type'])) {
                     $defaultType = $contract['default_leave_type'];
@@ -302,7 +305,7 @@ class Contracts_model extends CI_Model
      * Exclude a leave type for a contract
      * @param int $contractId identifier of the contract
      * @param int $typeId identifier of the leave type
-     * @return string OK: possible or OK impossible to perform the operation
+     * @return string OK: if it was possible to perform the operation
      */
     public function excludeLeaveTypeForContract(int $contractId, int $typeId): string
     {

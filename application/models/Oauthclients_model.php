@@ -15,11 +15,11 @@ if (!defined('BASEPATH')) {
  * This Class contains all the business logic and the persistence layer for 
  * for the service accounts (OAuth clients).
  * Scopes:
- * users
- * entitlements
- * contracts
- * leaves
- * selfservice
+ *  - users
+ *  - entitlements
+ *  - contracts
+ *  - leaves
+ *  - selfservice
  */
 class OAuthClients_model extends CI_Model
 {
@@ -37,24 +37,23 @@ class OAuthClients_model extends CI_Model
      * Get the list of OAuth clients or one client
      * @param string $clientId optional id of a OAuth client
      * @return array record of clients
-     * 
      */
-    public function getOAuthClients($clientId = '')
+    public function getOAuthClients(string $clientId = ''): array
     {
         if ($clientId === '') {
             $query = $this->db->get('oauth_clients');
             return $query->result_array();
         }
-        $query = $this->db->get_where('oauth_clients', array('client_id' => $clientId));
+        $this->db->where('client_id', $clientId);
+        $query = $this->db->get('oauth_clients');
         return $query->row_array();
     }
 
     /**
      * Insert a new OAuth client. Data are taken from HTML form.
-     * @return int number of affected rows
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function setOAuthClients()
+    public function setOAuthClients(): bool
     {
         $grantTypes = ($this->input->post('grant_types') === FALSE) ? NULL : $this->input->post('grant_types');
         $scope = ($this->input->post('scope') === FALSE) ? NULL : $this->input->post('scope');
@@ -74,39 +73,19 @@ class OAuthClients_model extends CI_Model
     }
 
     /**
-     * Delete a leave type from the database
-     * @param string $id identifier of the leave type
-     * 
+     * Delete an OAuth client from the database
+     * @param string $clientId identifier of the OAuth client
      */
-    public function deleteOAuthClients($clientId)
+    public function deleteOAuthClients(string $clientId): void
     {
         $this->db->delete('oauth_clients', array('client_id' => $clientId));
     }
 
     /**
-     * Update a given leave type in the database.
-     * @param int $id identifier of the leave type
-     * @param string $name name of the type
-     * @param bool $deduct Deduct days off
-     * @return int number of affected rows
-     * 
-     */
-    public function updateOAuthUsers($id, $name, $deduct)
-    {
-        $data = array(
-            'name' => $name,
-            'deduct_days_off' => $deduct
-        );
-        $this->db->where('id', $id);
-        return $this->db->update('oauth_clients', $data);
-    }
-
-    /**
      * Get the list of OAuth access tokens
      * @return array record of tokens
-     * 
      */
-    public function getAccessTokens()
+    public function getAccessTokens(): array
     {
         $this->db->limit(5000);
         $this->db->order_by("expires", "desc");
@@ -115,10 +94,9 @@ class OAuthClients_model extends CI_Model
     }
 
     /**
-     * Purge the table of OAtuh2 tokens
-     * 
+     * Purge the table of OAuth tokens
      */
-    public function purgeAccessTokens()
+    public function purgeAccessTokens(): void
     {
         $this->db->truncate('oauth_access_tokens');
     }
@@ -127,18 +105,13 @@ class OAuthClients_model extends CI_Model
      * Check if the application was already authorized by the user
      * @param string $clientId id of a OAuth client
      * @param string $userId id of a Jorani user
-     * @return bool TRUE if the application is allowed
-     * 
+     * @return bool TRUE if the application is allowed, FALSE otherwise
      */
-    public function isOAuthAppAllowed($clientId, $userId)
+    public function isOAuthAppAllowed(string $clientId, string $userId): bool
     {
-        $query = $this->db->get_where(
-            'oauth_applications',
-            array(
-                'client_id' => $clientId,
-                'user' => $userId
-            )
-        );
+        $this->db->where('client_id', $clientId);
+        $this->db->where('user', $userId);
+        $query = $this->db->get('oauth_applications');
         $result = $query->row_array();
         return !empty($result);
     }
@@ -147,17 +120,14 @@ class OAuthClients_model extends CI_Model
      * List applications authorized by a user
      * @param string $userId id of a Jorani user
      * @return array List of client names (name, url)
-     * 
      */
-    public function listOAuthApps($userId)
+    public function listOAuthApps(string $userId): array
     {
         $this->db->select('oauth_applications.client_id, redirect_uri');
         $this->db->join('oauth_clients', 'oauth_clients.client_id = oauth_applications.client_id');
         $this->db->order_by("oauth_applications.client_id", "asc");
-        $query = $this->db->get_where(
-            'oauth_applications',
-            array('user' => $userId)
-        );
+        $this->db->where('user', $userId);
+        $query = $this->db->get('oauth_applications');
         //Try to resolve the icon path of the 3rd application, 
         // use a default icon otherwise
         $apps = $query->result_array();
@@ -176,16 +146,15 @@ class OAuthClients_model extends CI_Model
      * Revoke an OAuth2 application
      * @param string $clientId id of a OAuth client
      * @param string $userId id of a Jorani user
-     * 
      */
-    public function revokeOAuthApp($clientId, $userId)
+    public function revokeOAuthApp(string $clientId, string $userId): void
     {
         $this->db->delete(
             'oauth_applications',
-            array(
+            [
                 'client_id' => $clientId,
                 'user' => $userId
-            )
+            ]
         );
     }
 
@@ -193,14 +162,14 @@ class OAuthClients_model extends CI_Model
      * Allow an OAuth2 application
      * @param string $clientId id of a OAuth client
      * @param string $userId id of a Jorani user
-     * 
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function allowOAuthApp($clientId, $userId)
+    public function allowOAuthApp(string $clientId, string $userId): bool
     {
-        $data = array(
+        $data = [
             'client_id' => $clientId,
             'user' => $userId
-        );
+        ];
         return $this->db->insert('oauth_applications', $data);
     }
 }

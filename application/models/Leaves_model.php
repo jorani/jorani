@@ -366,8 +366,8 @@ class Leaves_model extends CI_Model
 
         //Compute the current leave period and check if the user has a contract
         $this->load->model('contracts_model');
-        $startentdate = NULL;
-        $endentdate = NULL;
+        $startentdate = '';
+        $endentdate = '';
         $hasContract = $this->contracts_model->getBoundaries($employeeId, $startentdate, $endentdate, $refDate);
         if ($hasContract) {
             $this->load->model('types_model');
@@ -1805,6 +1805,7 @@ class Leaves_model extends CI_Model
 
             //Iteration between 2 dates
             while ($iDate <= $endDate) {
+                $display = '';
                 if ($iDate > $limitDate)
                     break;     //The calendar displays the leaves on one month
                 if ($iDate < $startDate)

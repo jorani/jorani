@@ -58,20 +58,19 @@ class Dayoffs_model extends CI_Model
      */
     public function getDaysOffForContract(int $contractId): array
     {
+        $this->db->where('contract', $contractId);
+        $this->db->where("date >= DATE_SUB(NOW(),INTERVAL 2 YEAR)"); //Security/performance limit
         $query = $this->db->get('dayoffs');
-        $query->where('contract', $contractId);
-        $query->where("date >= DATE_SUB(NOW(),INTERVAL 2 YEAR"); //Security/performance limit
         return $query->result();
     }
-
 
     /**
      * Delete a day off into the day offs table
      * @param int $contractId Identifier of the contract
-     * @param string $timestamp Date of the day off
+     * @param int $timestamp Date of the day off
      * @return int number of affected rows
      */
-    public function deleteDayOff(int $contractId, string $timestamp): int
+    public function deleteDayOff(int $contractId, int $timestamp): int
     {
         $this->db->where('contract', $contractId);
         $this->db->where('date', date('Y/m/d', $timestamp));
@@ -81,9 +80,9 @@ class Dayoffs_model extends CI_Model
     /**
      * Delete a day off into the day offs table
      * @param int $contractId Identifier of the contract
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function deleteDaysOffCascadeContract(int $contractId): int
+    public function deleteDaysOffCascadeContract(int $contractId): bool
     {
         $this->db->where('contract', $contractId);
         return $this->db->delete('dayoffs');
@@ -93,7 +92,7 @@ class Dayoffs_model extends CI_Model
      * Delete a list of day offs into the day offs table
      * @param int $contractId Identifier of the contract
      * @param string $dateList comma-separated list of dates
-     * @return bool outcome of the query
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
     public function deleteListOfDaysOff(int $contractId, string $dateList): bool
     {
@@ -109,9 +108,9 @@ class Dayoffs_model extends CI_Model
      * @param int $type 1:day, 2:morning, 3:afternoon
      * @param string $title Short description of the day off
      * @param string $dateList comma-separated list of dates
-     * @return bool outcome of the query
+     * @return int number of in serted rows
      */
-    public function addListOfDaysOff(int $contractId, int $type, string $title, string $dateList): bool
+    public function addListOfDaysOff(int $contractId, int $type, string $title, string $dateList): int
     {
         //Prepare a command in order to insert multiple rows with one query MySQL
         $dates = explode(",", $dateList);
@@ -133,9 +132,9 @@ class Dayoffs_model extends CI_Model
      * @param int $source identifier of the source contract
      * @param int $destination identifier of the destination contract
      * @param string $year civil year (and not yearly period)
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function copyListOfDaysOff(int $source, int $destination, string $year): int
+    public function copyListOfDaysOff(int $source, int $destination, string $year): bool
     {
         //Delete all previous days off defined on the destination contract (avoid duplicated data)
         $this->db->where('contract', $destination);
@@ -148,8 +147,7 @@ class Dayoffs_model extends CI_Model
             ' FROM dayoffs ' .
             ' WHERE contract = ' . $this->db->escape($source) .
             ' AND YEAR(date) = ' . $this->db->escape($year);
-        $query = $this->db->query($sql);
-        return $query;
+        return $this->db->query($sql);
     }
 
     /**
@@ -190,6 +188,8 @@ class Dayoffs_model extends CI_Model
         $this->db->order_by('date');
         $events = $this->db->get('users')->result();
         $listOfDaysOff = [];
+        $title = '';
+        $length = 0;
         foreach ($events as $entry) {
             switch ($entry->type) {
                 case 1://1 : All day
@@ -218,12 +218,12 @@ class Dayoffs_model extends CI_Model
     /**
      * Insert a day off into the day offs table
      * @param int $contractId Identifier of the contract
-     * @param string $timestampOfDayOff Date of the day off
+     * @param int $timestampOfDayOff Date of the day off
      * @param int $type 1:day, 2:morning, 3:afternoon
      * @param string $title Short description of the day off
      * @return bool outcome of the query
      */
-    public function addDayOff(int $contractId, string $timestampOfDayOff, int $type, string $title): bool
+    public function addDayOff(int $contractId, int $timestampOfDayOff, int $type, string $title): bool
     {
         $this->db->select('id');
         $this->db->where('contract', $contractId);
@@ -266,7 +266,7 @@ class Dayoffs_model extends CI_Model
             $length = $interval->d;
             $day = $start;
             for ($ii = 0; $ii < $length; $ii++) {
-                $tmp = $day->format('U');
+                $tmp = (int) $day->format('U');
                 $this->deletedayoff($contractId, $tmp);
                 $this->adddayoff($contractId, $tmp, 1, strval($event->SUMMARY));
                 $day->add(new DateInterval('P1D'));
@@ -294,6 +294,12 @@ class Dayoffs_model extends CI_Model
 
         $jsonevents = [];
         foreach ($events as $entry) {
+            $title = '';
+            $startDateEntry = '';
+            $endDateEntry = '';
+            $allDay = FALSE;
+            $startdatetype = '';
+            $enddatetype = '';
             switch ($entry->type) {
                 case 1:
                     $title = $entry->title;
@@ -372,6 +378,12 @@ class Dayoffs_model extends CI_Model
 
         $jsonevents = [];
         foreach ($events as $entry) {
+            $title = '';
+            $startdate = '';
+            $enddate = '';
+            $allDay = FALSE;
+            $startdatetype = '';
+            $enddatetype = '';
             switch ($entry->type) {
                 case 1:
                     $title = $entry->title;
@@ -445,6 +457,12 @@ class Dayoffs_model extends CI_Model
     {
         $jsonevents = [];
         foreach ($events as $entry) {
+            $title = '';
+            $startdate = '';
+            $enddate = '';
+            $allDay = FALSE;
+            $startdatetype = '';
+            $enddatetype = '';
             switch ($entry->type) {
                 case 1:
                     $title = $entry->title;

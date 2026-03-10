@@ -112,8 +112,8 @@ class Overtime_model extends CI_Model
         // - has contract: we take the start and end dates from the contract.
         // - no contract: boundaries are current year.
         $this->load->model('contracts_model');
-        $startentdate = NULL;
-        $endentdate = NULL;
+        $startentdate = '';
+        $endentdate = '';
         $hasContract = $this->contracts_model->getBoundaries($id, $startentdate, $endentdate, date("Y-m-d H:i:s"));
         if (!$hasContract) {
             $startentdate = date("Y-m-d", strtotime('first day of january this year'));

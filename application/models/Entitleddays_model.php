@@ -139,9 +139,9 @@ class Entitleddays_model extends CI_Model
      * @param int $days number of days to be added
      * @param int $type Leave type (of the entitled days line)
      * @param string $description Description of the entitled days line
-     * @return number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateEntitledDays(int $id, string $startDate, string $endDate, int $days, int $type, string $description): int
+    public function updateEntitledDays(int $id, string $startDate, string $endDate, int $days, int $type, string $description): bool
     {
         $data = [
             'startdate' => $startDate,
@@ -159,12 +159,10 @@ class Entitleddays_model extends CI_Model
      * Increase an entitled days row
      * @param int $id row identifier
      * @param float $step increment step
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function increase(int $id, float $step): int
+    public function increase(int $id, float $step): bool
     {
-        if (!is_numeric($step))
-            $step = 1;
         $this->db->set('days', 'days + ' . $step, FALSE);
         $this->db->where('id', $id);
         return $this->db->update('entitleddays');
@@ -174,12 +172,10 @@ class Entitleddays_model extends CI_Model
      * Decrease an entitled days row
      * @param int $id row identifier
      * @param float $step increment step
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function decrease(int $id, float $step): int
+    public function decrease(int $id, float $step): bool
     {
-        if (!is_numeric($step))
-            $step = 1;
         $this->db->set('days', 'days - ' . $step, FALSE);
         $this->db->where('id', $id);
         return $this->db->update('entitleddays');
@@ -189,12 +185,10 @@ class Entitleddays_model extends CI_Model
      * Modify the the amount of days for a given entitled days row
      * @param int $id row identifier
      * @param float $days credit in days
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateNbOfDaysOfEntitledDaysRecord(int $id, float $days): int
+    public function updateNbOfDaysOfEntitledDaysRecord(int $id, float $days): bool
     {
-        if (!is_numeric($days))
-            $days = 1;
         $this->db->set('days', $days);
         $this->db->where('id', $id);
         return $this->db->update('entitleddays');
