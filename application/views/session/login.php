@@ -3,7 +3,6 @@
  * This view displays the login form. Its layout differs from other pages of the application.
  * 
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
  * @since      0.1.0
  */
 ?>
@@ -72,7 +71,6 @@
                 <label for="login"><?php echo lang('session_login_field_login'); ?></label>
                 <input type="text" class="input-medium" name="login" id="login"
                     value="<?php echo (ENVIRONMENT == 'demo') ? 'bbalet' : set_value('login'); ?>" required />
-                <input type="hidden" name="CipheredValue" id="CipheredValue" />
                 <label for="password"><?php echo lang('session_login_field_password'); ?></label>
                 <input type="password" class="input-medium" name="password" id="password" autocomplete="on"
                     value="<?php echo (ENVIRONMENT == 'demo') ? 'bbalet' : ''; ?>" /><br />
@@ -128,11 +126,11 @@
                 }
             });
         <?php } ?>
-        //Memorize the last selected language with a cookie
+        //Save the last selected language
         if (Cookies.get('language') !== undefined) {
             var IsLangAvailable = 0 != $('#language option[value=' + Cookies.get('language') + ']').length;
             if (Cookies.get('language') != "<?php echo $language_code; ?>") {
-                //Test if the former selected language is into the list of available languages
+                //Test if the previous selected language is into the list of available languages
                 if (IsLangAvailable) {
                     $('#language option[value="' + Cookies.get('language') + '"]').attr('selected', 'selected');
                     $('#loginFrom').prop('action', '<?php echo base_url(); ?>session/language');

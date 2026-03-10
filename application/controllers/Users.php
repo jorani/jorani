@@ -225,12 +225,11 @@ class Users extends CI_Controller
             $data['target_user_id'] = $id;
             $this->load->helper('form');
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('CipheredValue', 'Password', 'required');
+            $this->form_validation->set_rules('password', 'Password', 'required');
             if ($this->form_validation->run() === FALSE) {
-                $data['public_key'] = file_get_contents('./assets/keys/public.pem', TRUE);
                 $this->load->view('users/reset', $data);
             } else {
-                $this->users_model->resetPassword($id, $this->input->post('CipheredValue'));
+                $this->users_model->resetPassword($id, $this->input->post('password'));
 
                 //Send an e-mail to the user so as to inform that its password has been changed
                 $user = $this->users_model->getUsers($id);
@@ -299,8 +298,9 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('lastname', lang('users_create_field_lastname'), 'required|strip_tags');
         $this->form_validation->set_rules('login', lang('users_create_field_login'), 'required|callback_checkLogin|strip_tags');
         $this->form_validation->set_rules('email', lang('users_create_field_email'), 'required|strip_tags');
-        if (!$this->config->item('ldap_enabled'))
-            $this->form_validation->set_rules('CipheredValue', lang('users_create_field_password'), 'required');
+        if (!$this->config->item('ldap_enabled')) {
+            $this->form_validation->set_rules('password', lang('users_create_field_password'), 'required');
+        }
         $this->form_validation->set_rules('role[]', lang('users_create_field_role'), 'required');
         $this->form_validation->set_rules('manager', lang('users_create_field_manager'), 'required|strip_tags');
         $this->form_validation->set_rules('contract', lang('users_create_field_contract'), 'strip_tags');
@@ -310,9 +310,9 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('identifier', lang('users_create_field_identifier'), 'strip_tags');
         $this->form_validation->set_rules('language', lang('users_create_field_language'), 'strip_tags');
         $this->form_validation->set_rules('timezone', lang('users_create_field_timezone'), 'strip_tags');
-        if ($this->config->item('ldap_basedn_db'))
+        if ($this->config->item('ldap_basedn_db')) {
             $this->form_validation->set_rules('ldap_path', lang('users_create_field_ldap_path'), 'strip_tags');
-
+        }
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('templates/header', $data);
             $this->load->view('menu/index', $data);

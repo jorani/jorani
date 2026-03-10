@@ -37,7 +37,8 @@ class Users_model extends CI_Model
             $query = $this->db->get('users');
             return $query->result_array();
         }
-        $query = $this->db->get_where('users', ['users.id' => $id]);
+        $this->db->where('id', $id);
+        $query = $this->db->get('users');
         return $query->row_array();
     }
 
@@ -174,20 +175,8 @@ class Users_model extends CI_Model
     public function setUsers(): string
     {
         //TODO: remove the stuff about RSA encryption
-        //Decouple from CI controller, maybe 'by API is enough'
-
-        //Decipher the password value (RSA encoded -> base64 -> decode -> decrypt)
-        $password = '';
-        if (function_exists('openssl_pkey_get_private')) {
-            $privateKey = openssl_pkey_get_private(file_get_contents('./assets/keys/private.pem', TRUE));
-            openssl_private_decrypt(base64_decode($this->input->post('CipheredValue')), $password, $privateKey, OPENSSL_PKCS1_OAEP_PADDING);
-        } else {
-            $rsa = new phpseclib\Crypt\RSA();
-            $private_key = file_get_contents('./assets/keys/private.pem', TRUE);
-            $rsa->setEncryptionMode(phpseclib\Crypt\RSA::ENCRYPTION_OAEP);
-            $rsa->loadKey($private_key, phpseclib\Crypt\RSA::PRIVATE_FORMAT_PKCS1);
-            $password = $rsa->decrypt(base64_decode($this->input->post('CipheredValue')));
-        }
+        //TODO: decouple from CI controller, maybe '..byAPI' method is enough
+        $password = $this->input->post('password');
         //Hash the clear password using bcrypt (8 iterations)
         $salt = '$2a$08$' . substr(strtr(base64_encode($this->getRandomBytes(16)), '+', '.'), 0, 22) . '$';
         $hash = crypt($password, $salt);
@@ -198,7 +187,7 @@ class Users_model extends CI_Model
             $role = $role | $role_bit;
         }
 
-        $data = array(
+        $data = [
             'firstname' => $this->input->post('firstname'),
             'lastname' => $this->input->post('lastname'),
             'login' => $this->input->post('login'),
@@ -210,8 +199,9 @@ class Users_model extends CI_Model
             'identifier' => $this->input->post('identifier'),
             'language' => $this->input->post('language'),
             'timezone' => $this->input->post('timezone'),
+            // for protecting the ICS endpoints
             'random_hash' => rtrim(strtr(base64_encode($this->getRandomBytes(24)), '+/', '-_'), '='),
-        );
+        ];
 
         if ($this->input->post('entity') != NULL && $this->input->post('entity') != '') {
             $data['organization'] = $this->input->post('entity');
@@ -222,8 +212,7 @@ class Users_model extends CI_Model
         if ($this->input->post('datehired') != NULL && $this->input->post('datehired') != '') {
             $data['datehired'] = $this->input->post('datehired');
         }
-
-        if ($this->config->item('ldap_basedn_db') !== FALSE) {
+        if ($this->config->item('ldap_basedn_db') != FALSE) {
             $data['ldap_path'] = $this->input->post('ldap_path');
         }
         $this->db->insert('users', $data);
@@ -231,11 +220,8 @@ class Users_model extends CI_Model
         //Deal with user having no line manager
         if ($this->input->post('manager') == -1) {
             $id = $this->db->insert_id();
-            $data = array(
-                'manager' => $id
-            );
             $this->db->where('id', $id);
-            $this->db->update('users', $data);
+            $this->db->update('users', ['manager' => $id]);
         }
         return $password;
     }
@@ -339,7 +325,8 @@ class Users_model extends CI_Model
      */
     public function updateUserByApi(int $id, array $data): bool
     {
-        //TODO: looks not completed
+        //TODO: this method is not completed
+        $password = $data['password'];
         if (isset($password)) {
             //Hash the clear password using bcrypt (8 iterations)
             $salt = '$2a$08$' . substr(strtr(base64_encode($this->getRandomBytes(16)), '+', '.'), 0, 22) . '$';
@@ -352,9 +339,9 @@ class Users_model extends CI_Model
 
     /**
      * Update a given user in the database. Update data are coming from an HTML form
-     * @return int number of affected rows
+     * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateUsers()
+    public function updateUsers(): bool
     {
         //TODO: Decouple from CI controller, maybe 'by API is enough'
 
@@ -392,46 +379,27 @@ class Users_model extends CI_Model
         if ($this->input->post('datehired') != NULL && $this->input->post('datehired') != '') {
             $data['datehired'] = $this->input->post('datehired');
         }
-        if ($this->config->item('ldap_basedn_db') !== FALSE) {
+        if ($this->config->item('ldap_basedn_db') != FALSE) {
             $data['ldap_path'] = $this->input->post('ldap_path');
         }
 
         $this->db->where('id', $this->input->post('id'));
-        $result = $this->db->update('users', $data);
-        return $result;
+        return $this->db->update('users', $data);
     }
 
     /**
      * Update a given user in the database. Update data are coming from an HTML form
      * @param int $userId Id of the user
-     * @param string $CipheredNewPassword Ciphered new password
+     * @param string $password Clear password
      * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function resetPassword(int $userId, string $CipheredNewPassword): bool
+    public function resetPassword(int $userId, string $password): bool
     {
-        //TODO: remove the stuff about RSA encryption
-        //TODO: Decouple from CI controller, maybe 'by API is enough'
-
-        //Decipher the password value (RSA encoded -> base64 -> decode -> decrypt)
-        $password = '';
-        if (function_exists('openssl_pkey_get_private')) {
-            $privateKey = openssl_pkey_get_private(file_get_contents('./assets/keys/private.pem', TRUE));
-            openssl_private_decrypt(base64_decode($this->input->post('CipheredValue')), $password, $privateKey, OPENSSL_PKCS1_OAEP_PADDING);
-        } else {
-            $rsa = new phpseclib\Crypt\RSA();
-            $private_key = file_get_contents('./assets/keys/private.pem', TRUE);
-            $rsa->setEncryptionMode(phpseclib\Crypt\RSA::ENCRYPTION_OAEP);
-            $rsa->loadKey($private_key, phpseclib\Crypt\RSA::PRIVATE_FORMAT_PKCS1);
-            $password = $rsa->decrypt(base64_decode($CipheredNewPassword));
-        }
         //Hash the clear password using bcrypt (8 iterations)
         $salt = '$2a$08$' . substr(strtr(base64_encode($this->getRandomBytes(16)), '+', '.'), 0, 22) . '$';
         $hash = crypt($password, $salt);
-        $data = array(
-            'password' => $hash
-        );
         $this->db->where('id', $userId);
-        return $this->db->update('users', $data);
+        return $this->db->update('users', ['password' => $hash]);
     }
 
     /**
@@ -469,11 +437,11 @@ class Users_model extends CI_Model
 
     /**
      * Load the profile of a user from the database to the session variables
-     * @param array $row database record of a user
+     * @param object $row database record of a user
      */
-    private function loadProfile(array $row): void
+    private function loadProfile(object $row): void
     {
-        if (((int) $row['role'] & 1)) {
+        if (((int) $row->role & 1)) {
             $is_admin = TRUE;
         } else {
             $is_admin = FALSE;
@@ -485,7 +453,7 @@ class Users_model extends CI_Model
           00001000 16 HR Manager
           = 00001101 25 Can access to HR functions
          */
-        if (((int) $row['role'] & 25)) {
+        if (((int) $row->role & 25)) {
             $is_hr = TRUE;
         } else {
             $is_hr = FALSE;
@@ -493,24 +461,24 @@ class Users_model extends CI_Model
 
         //Determine if the connected user is a manager or if he has any delegation
         $isManager = FALSE;
-        if (count($this->getCollaboratorsOfManager($row['id'])) > 0) {
+        if (count($this->getCollaboratorsOfManager($row->id)) > 0) {
             $isManager = TRUE;
         } else {
             $this->load->model('delegations_model');
-            if ($this->delegations_model->hasDelegation($row['id']))
+            if ($this->delegations_model->hasDelegation($row->id))
                 $isManager = TRUE;
         }
 
         $newdata = array(
-            'login' => $row['login'],
-            'id' => $row['id'],
-            'firstname' => $row['firstname'],
-            'lastname' => $row['lastname'],
+            'login' => $row->login,
+            'id' => $row->id,
+            'firstname' => $row->firstname,
+            'lastname' => $row->lastname,
             'is_manager' => $isManager,
             'is_admin' => $is_admin,
             'is_hr' => $is_hr,
-            'manager' => $row['manager'],
-            'random_hash' => $row['random_hash'],
+            'manager' => $row->manager,
+            'random_hash' => $row->random_hash,
             'logged_in' => TRUE
         );
         $this->session->set_userdata($newdata);
@@ -766,7 +734,7 @@ class Users_model extends CI_Model
      * @param int $id Contract ID
      * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
-    public function updateUsersCascadeContract(int $id): int
+    public function updateUsersCascadeContract(int $id): bool
     {
         $this->db->set('contract', NULL);
         $this->db->where('contract', $id);

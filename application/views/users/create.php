@@ -3,8 +3,7 @@
  * This view allows to create a new employee
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.1.0
+ * @since   0.1.0
  */
 ?>
 
@@ -17,7 +16,7 @@
 </div>
 
 <?php
-$attributes = array('id' => 'target', 'class' => 'form-horizontal');
+$attributes = ['id' => 'target', 'class' => 'form-horizontal'];
 echo form_open('users/create', $attributes); ?>
 
 <div class="row">
@@ -396,7 +395,6 @@ echo form_open('users/create', $attributes); ?>
      * Generate a password of the specified length
      * @param int len Length of password to be generated
      * @returns string generated password
-     * 
      */
     function password_generator(len) {
         var length = (len) ? (len) : (10);
@@ -426,7 +424,6 @@ echo form_open('users/create', $attributes); ?>
      * @param string pattern of the combination
      * @param int max Maximum length of the generated login (default 32)
      * @returns string Combination of firstname and lastname
-     * 
      */
     function generateLogin(firstname, lastname, pattern, max) {
         max = typeof max !== 'undefined' ? max : 32;
@@ -450,7 +447,9 @@ echo form_open('users/create', $attributes); ?>
         return login.substring(0, max);
     }
 
-    //Check if the login is valid or not
+    /**
+     * Check if the login is valid or not
+     */
     function checkLogin() {
         if ($("#login").val() != '') {
             $.ajax({
@@ -509,14 +508,14 @@ echo form_open('users/create', $attributes); ?>
             $("#login").val(login);
         });
 
-        //
+        //Generate a username with the first character of firstname and the 31 first characters of lastname
         $('#cmdRefreshLogin').click(function () {
             var login = generateLogin($("#firstname").val(), $("#lastname").val(), '<?php echo $this->config->item('login_pattern') !== FALSE ? $this->config->item('login_pattern') : 'jdoe'; ?>', 32);
             $("#login").val(login);
             checkLogin();
         });
 
-        //Check if the user has not exceed the number of entitled days
+        //Check if the user's login is available
         $("#login").change(function () {
             checkLogin();
         });
@@ -529,22 +528,13 @@ echo form_open('users/create', $attributes); ?>
                     type: "POST",
                     url: "<?php echo base_url(); ?>users/check/login",
                     data: { login: $("#login").val() }
-                })
-                    .done(function (msg) {
-                        if (msg == "true") {
-                            if ($('#contract').val() == "") {
-                                bootbox.confirm("<?php echo lang('users_create_no_contract_confirm'); ?>", function (result) {
-                                    if (result == true) {
-                                        submit_form();
-                                    }
-                                });
-                            } else {
-                                submit_form()
-                            }
-                        } else {
-                            bootbox.alert("<?php echo lang('users_create_login_check'); ?>");
-                        }
-                    });
+                }).done(function (msg) {
+                    if (msg == "true") {
+                        $('#target').submit();
+                    } else {
+                        bootbox.alert("<?php echo lang('users_create_login_check'); ?>");
+                    }
+                });
             }
         });
 
@@ -582,5 +572,4 @@ echo form_open('users/create', $attributes); ?>
         //Init all tooltips
         $('[data-toggle="tooltip"]').tooltip({ placement: 'top' });
     });
-
 </script>

@@ -3,7 +3,6 @@
  * This view displays sso failure message. Its layout is the same than the login form.
  * 
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
  * @since      0.5.0
  */
 ?>

@@ -46,11 +46,14 @@ class Positions_model extends CI_Model
 
     /**
      * Get the name of a position
-     * @param int $id Identifier of the postion
+     * @param ?int $id Identifier of the postion
      * @return string Name of the position
      */
-    public function getName(int $id): string
+    public function getName(?int $id): string
     {
+        if ($id === null) {
+            return '';
+        }
         $record = $this->getPositions($id);
         if (!empty($record)) {
             return $record['name'];
