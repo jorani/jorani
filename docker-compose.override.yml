@@ -6,3 +6,12 @@ services:
       - ./docker/config.php:/var/www/html/application/config/config.php
       - ./docker/database.php:/var/www/html/application/config/database.php
       - ./docker/email.php:/var/www/html/application/config/email.php
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+      - "25:25"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    command: [ "--smtp", "[::]:25" ]
