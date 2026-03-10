@@ -1,0 +1,8 @@
+services:
+  jorani:
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+      - ./docker/config.php:/var/www/html/application/config/config.php
+      - ./docker/database.php:/var/www/html/application/config/database.php
+      - ./docker/email.php:/var/www/html/application/config/email.php
