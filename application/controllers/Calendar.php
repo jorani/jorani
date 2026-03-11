@@ -3,7 +3,6 @@
  * This controller displays the calendars of the leave requests
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -20,7 +19,6 @@ class Calendar extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -30,11 +28,10 @@ class Calendar extends CI_Controller
 
     /**
      * Display a yearly individual calendar
-     * @param int $id identifier of the employee
+     * @param int $employee identifier of the employee
      * @param int $year Year number
-     * 
      */
-    public function year($employee = 0, $year = 0)
+    public function year(int $employee = 0, int $year = 0): void
     {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
@@ -92,9 +89,8 @@ class Calendar extends CI_Controller
     /**
      * Display the page of the individual calendar (of the connected user)
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * 
      */
-    public function individual()
+    public function individual(): void
     {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
@@ -115,9 +111,8 @@ class Calendar extends CI_Controller
      * Display the page of the team calendar (users having the same manager
      * than the connected user)
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * 
      */
-    public function workmates()
+    public function workmates(): void
     {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
@@ -134,9 +129,8 @@ class Calendar extends CI_Controller
     /**
      * Display the calendar of the employees managed by the connected user
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * 
      */
-    public function collaborators()
+    public function collaborators(): void
     {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
@@ -154,9 +148,8 @@ class Calendar extends CI_Controller
      * Display the calendar of the employees working in the same department
      * than the connected user.
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * 
      */
-    public function department()
+    public function department(): void
     {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
@@ -181,9 +174,8 @@ class Calendar extends CI_Controller
     /**
      * Display a global calendar filtered by organization/entity
      * Data (calendar events) is retrieved by AJAX from leaves' controller
-     * 
      */
-    public function organization()
+    public function organization(): void
     {
         $month = date('m');
         //When the user uses the calendar for the first time, select the root entity
@@ -230,10 +222,9 @@ class Calendar extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      * This code is duplicated from controller/leaves for public access
-     * @param int $entity_id Entity identifier
-     * 
+     * @param int $entityId Entity identifier
      */
-    public function publicOrganization($entity_id)
+    public function publicOrganization(int $entityId): void
     {
         $this->output->set_content_type('application/json');
         if ($this->config->item('public_calendar') === TRUE) {
@@ -241,7 +232,7 @@ class Calendar extends CI_Controller
             $start = $this->input->get('start', TRUE);
             $end = $this->input->get('end', TRUE);
             $children = filter_var($this->input->get('children', TRUE), FILTER_VALIDATE_BOOLEAN);
-            $this->output->set_output($this->leaves_model->department($entity_id, $start, $end, $children));
+            $this->output->set_output($this->leaves_model->department($entityId, $start, $end, $children));
         } else {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         }
@@ -250,9 +241,8 @@ class Calendar extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events: List of all possible day offs
      * This code is duplicated from controller/contract for public access
-     * @param int $entity_id Entity identifier
      */
-    public function publicDayoffs()
+    public function publicDayoffs(): void
     {
         $this->output->set_content_type('application/json');
         if ($this->config->item('public_calendar') === TRUE) {
@@ -274,9 +264,8 @@ class Calendar extends CI_Controller
      * @param int $year Year number
      * @param bool $children If TRUE, includes children entity, FALSE otherwise
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * 
      */
-    public function tabular($id = -1, $month = 0, $year = 0, $children = TRUE, $displayTypes = TRUE)
+    public function tabular(int $id = -1, int $month = 0, int $year = 0, bool $children = TRUE, bool $displayTypes = TRUE): void
     {
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
@@ -291,7 +280,7 @@ class Calendar extends CI_Controller
             $data['entity'] = $id;
             $data['month'] = $month;
             $data['year'] = $year;
-            $dateObj = DateTime::createFromFormat('!m', $month);
+            $dateObj = DateTime::createFromFormat('!m', (string) $month);
             $data['monthName'] = lang($dateObj->format('F'));
             $data['children'] = $children;
             $data['displayTypes'] = $displayTypes;
@@ -315,7 +304,7 @@ class Calendar extends CI_Controller
             $data['entity'] = $id;
             $data['month'] = $month;
             $data['year'] = $year;
-            $dateObj = DateTime::createFromFormat('!m', $month);
+            $dateObj = DateTime::createFromFormat('!m', (string) $month);
             $data['monthName'] = lang($dateObj->format('F'));
             $data['children'] = $children;
             $data['displayTypes'] = $displayTypes;
@@ -337,9 +326,8 @@ class Calendar extends CI_Controller
      * @param int $year Year number
      * @param bool $children If TRUE, includes children entity, FALSE otherwise
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * 
      */
-    public function tabularPartial($id = -1, $month = 0, $year = 0, $children = TRUE, $displayTypes = TRUE)
+    public function tabularPartial(int $id = -1, int $month = 0, int $year = 0, bool $children = TRUE, bool $displayTypes = TRUE): void
     {
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
@@ -385,9 +373,8 @@ class Calendar extends CI_Controller
      * @param int $month Month number
      * @param int $year Year number
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * 
      */
-    public function tabularPartialFromList($id, $month = 0, $year = 0, $displayTypes = TRUE)
+    public function tabularPartialFromList(int $id, int $month = 0, int $year = 0, bool $displayTypes = TRUE): void
     {
         setUserContext($this);
         $this->lang->load('global', $this->language);
@@ -413,9 +400,8 @@ class Calendar extends CI_Controller
      * @param int $month Month number
      * @param int $year Year number
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * 
      */
-    public function exportTabularFromList($id = -1, $month = 0, $year = 0, $displayTypes = TRUE)
+    public function exportTabularFromList(int $id = -1, int $month = 0, int $year = 0, bool $displayTypes = TRUE): void
     {
         $data = array();
         setUserContext($this);
@@ -428,7 +414,7 @@ class Calendar extends CI_Controller
         $data['id'] = $id;
         $data['entityName'] = $this->lists_model->getName($id);
         $data['month'] = $month;
-        $dateObj = DateTime::createFromFormat('!m', $month);
+        $dateObj = DateTime::createFromFormat('!m', (string) $month);
         $data['monthName'] = lang($dateObj->format('F'));
         $data['year'] = $year;
         $data['children'] = FALSE; //For compatibility
@@ -445,9 +431,8 @@ class Calendar extends CI_Controller
      * @param int $year Year number
      * @param bool $children If TRUE, includes children entity, FALSE otherwise
      * @param bool $displayTypes If TRUE, display leave types, FALSE otherwise
-     * 
      */
-    public function exportTabular($id = -1, $month = 0, $year = 0, $children = TRUE, $displayTypes = TRUE)
+    public function exportTabular(int $id = -1, int $month = 0, int $year = 0, bool $children = TRUE, bool $displayTypes = TRUE): void
     {
         $data = array();
         //Load the language file (the loaded language depends if it was called from the public view)
@@ -469,7 +454,7 @@ class Calendar extends CI_Controller
         $data['id'] = $id;
         $data['entityName'] = $this->organization_model->getName($id);
         $data['month'] = $month;
-        $dateObj = DateTime::createFromFormat('!m', $month);
+        $dateObj = DateTime::createFromFormat('!m', (string) $month);
         $data['monthName'] = lang($dateObj->format('F'));
         $data['year'] = $year;
         $data['children'] = $children;
@@ -481,30 +466,29 @@ class Calendar extends CI_Controller
     /**
      * Export the yearly calendar into Excel. The presentation differs a bit according to the limitation of Excel
      * We'll get one line for the morning and one line for the afternoon
-     * @param int $id identifier of the employee
+     * @param int $employeeId identifier of the employee
      * @param int $year Year number
-     * 
      */
-    public function exportYear($employee = 0, $year = 0)
+    public function exportYear(int $employeeId = 0, int $year = 0): void
     {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
-        if ($employee == 0) {
+        if ($employeeId == 0) {
             $this->auth->checkIfOperationIsAllowed('individual_calendar');
         } else {
             $this->auth->checkIfOperationIsAllowed('organization_calendar');
         }
         $this->load->model('users_model');
-        $user = $this->users_model->getUsers($employee);
+        $user = $this->users_model->getUsers($employeeId);
         //Either self access, Manager or HR
-        if ($employee == 0) {
-            $employee = $this->user_id;
-            $user = $this->users_model->getUsers($employee);
+        if ($employeeId == 0) {
+            $employeeId = $this->user_id;
+            $user = $this->users_model->getUsers($employeeId);
         } else {
             if (!$this->is_hr) {
                 if ($this->user_id != $user['manager']) {
-                    $employee = $this->user_id;
-                    $user = $this->users_model->getUsers($employee);
+                    $employeeId = $this->user_id;
+                    $user = $this->users_model->getUsers($employeeId);
                 }
             }
         }
@@ -512,7 +496,7 @@ class Calendar extends CI_Controller
             $year = date("Y");
         }
         $this->load->model('leaves_model');
-        $data['employee'] = $employee;
+        $data['employee'] = $employeeId;
         $data['year'] = $year;
         $this->load->view('calendar/export_year', $data);
     }

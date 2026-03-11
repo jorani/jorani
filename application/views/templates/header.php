@@ -14,9 +14,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta charset="utf-8">
     <title><?php echo $title ?> - Jorani</title>
-    <meta
-        description="Jorani a free and open source leave management system. Workflow of approval; e-mail notifications; calendars; reports; export to Excel and more.">
-    <meta name="version" content="0.6.0">
+    <?php echo debugbar_head(); ?>
     <link href="<?php echo base_url(); ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo base_url(); ?>assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/dist/legacy.css">

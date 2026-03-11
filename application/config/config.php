@@ -1,4 +1,5 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= '';
+$config['base_url'] = '';
 
 if (($config['base_url'] == '')) {
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -51,7 +52,7 @@ $config['index_page'] = '';
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']	= 'AUTO';
+$config['uri_protocol'] = 'AUTO';
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +77,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language'] = 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -98,7 +99,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 
 /*
@@ -181,11 +182,11 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 | use segment based URLs.
 |
 */
-$config['allow_get_array']	= TRUE;
+$config['allow_get_array'] = TRUE;
 $config['enable_query_strings'] = FALSE;
-$config['controller_trigger']	= 'c';
-$config['function_trigger']	= 'm';
-$config['directory_trigger']	= 'd'; // experimental not currently in use
+$config['controller_trigger'] = 'c';
+$config['function_trigger'] = 'm';
+$config['directory_trigger'] = 'd'; // experimental not currently in use
 
 /*
   |--------------------------------------------------------------------------
@@ -318,15 +319,15 @@ $config['encryption_key'] = 'YJ9FljXV4axG7QTzEzbRaUBFwi0FzIls';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_cookie_name']	= 'jorani_session';
+$config['sess_cookie_name'] = 'jorani_session';
 $config['sess_driver'] = 'database';
 $config['sess_save_path'] = 'ci_sessions';
 $config['sess_regenerate_destroy'] = FALSE;
-$config['sess_expiration']	= 7200;
-$config['sess_use_database']	= FALSE;
-$config['sess_table_name']	= 'ci_sessions';
-$config['sess_match_ip']	= FALSE;
-$config['sess_time_to_update']	= 300;
+$config['sess_expiration'] = 7200;
+$config['sess_use_database'] = FALSE;
+$config['sess_table_name'] = 'ci_sessions';
+$config['sess_match_ip'] = FALSE;
+$config['sess_time_to_update'] = 300;
 
 /*
 |--------------------------------------------------------------------------
@@ -339,10 +340,10 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "";
-$config['cookie_domain']	= "";
-$config['cookie_path']		= "/";
-$config['cookie_secure']	= FALSE;
+$config['cookie_prefix'] = "";
+$config['cookie_domain'] = "";
+$config['cookie_path'] = "/";
+$config['cookie_secure'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -367,19 +368,13 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_cookie_name' = The cookie name
 | 'csrf_expire' = The number in seconds the token should expire.
 */
-if (isset($_SERVER["REQUEST_URI"]))
-{
-    if(stripos($_SERVER["REQUEST_URI"],'/api/') === FALSE)
-    {
+if (isset($_SERVER["REQUEST_URI"])) {
+    if (stripos($_SERVER["REQUEST_URI"], '/api/') === FALSE) {
         $config['csrf_protection'] = TRUE;
-    }
-    else
-    {
+    } else {
         $config['csrf_protection'] = FALSE;
     }
-}
-else
-{
+} else {
     $config['csrf_protection'] = TRUE;
 }
 $config['csrf_token_name'] = 'csrf_test_jorani';
@@ -502,12 +497,12 @@ $config['languages'] = 'en,en-GB,fr,es,nl,de,it,ru,cs,uk,km,fa,vi,tr,zh,el,pt,ar
 //If you want to use another font for a specific language, put the font into assets/fonts folder and map as in this example
 //Extra fonts are coming from Google noto font project: https://www.google.com/get/noto/
 $config['fonts'] =
-    Array (
-        'km' => Array (
+    array(
+        'km' => array(
             'name' => 'Noto Sans Khmer',
             'asset' => 'NotoSansKhmer-Regular.ttf',
         ),
-        'fa' => Array (
+        'fa' => array(
             'name' => 'Noto Naskh Arabic',
             'asset' => 'NotoNaskhArabic-Regular.ttf',
         ),
@@ -580,7 +575,6 @@ $config['spreadsheet_format'] = 'xlsx';   //Supported formats: xlsx, ods
 $config['enable_history'] = TRUE;
 
 //____________________________________________________________________________
-//Set this value to TRUE if you want to enable Application Performance Management features
-$config['enable_apm_rum'] = FALSE;
-//Display navigation timing to user. You need a browser supporting WebTiming API
-$config['enable_apm_display'] = FALSE;
+//Set this value to TRUE if you want to enable the debug bar
+$config['debugbar_enabled'] = ENVIRONMENT === 'development';
+$config['debugbar_render_in_footer'] = TRUE;

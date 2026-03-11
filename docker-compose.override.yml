@@ -1,11 +1,22 @@
 services:
   jorani:
+    environment:
+      CI_ENV: development
     volumes:
       - .:/var/www/html
-      - /var/www/html/vendor
       - ./docker/config.php:/var/www/html/application/config/config.php
       - ./docker/database.php:/var/www/html/application/config/database.php
       - ./docker/email.php:/var/www/html/application/config/email.php
+    depends_on:
+      composer:
+        condition: service_completed_successfully
+
+  composer:
+    image: composer:latest
+    volumes:
+      - .:/app
+    command: install --ignore-platform-reqs
+
   mailpit:
     image: axllent/mailpit:latest
     ports:
