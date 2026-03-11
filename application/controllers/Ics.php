@@ -3,7 +3,6 @@
  * This controller serves all the ICS (webcal, ical) feeds exposed by Jorani.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.4.0
  */
 
@@ -30,7 +29,6 @@ class Ics extends CI_Controller
     /**
      * Default constructor
      * Initializing of Sabre VObjets library
-     * 
      */
     public function __construct()
     {
@@ -51,10 +49,9 @@ class Ics extends CI_Controller
      * If legacy feeds are disabled, we must check if the feed is queried
      * for/by an existing user in the database. It is a pseudo authentication
      * That prevents illegal access from outside
-     *
      * @return bool TRUE if the user is authenticated, FALSE otherwise
      */
-    private function checkIfAccessIsGranted()
+    private function checkIfAccessIsGranted(): bool
     {
         if ($this->config->item('ics_enabled') === FALSE) {
             return FALSE;
@@ -74,11 +71,9 @@ class Ics extends CI_Controller
 
     /**
      * Get timezone and language of the user
-     *
      * @param int $userId Identifier of an employee
-     * @return void
      */
-    private function getTimezoneAndLanguageOfUser($userId)
+    private function getTimezoneAndLanguageOfUser(int $userId): void
     {
         $employee = $this->users_model->getUsers($userId);
         if (!is_null($employee['timezone'])) {
@@ -95,9 +90,8 @@ class Ics extends CI_Controller
      * Get the list of dayoffs for a given contract identifier
      * @param int $userId identifier of the user wanting to view the list (mind timezone)
      * @param int $contract identifier of a contract
-     * 
      */
-    public function dayoffs($userId, $contract)
+    public function dayoffs(int $userId, int $contract): void
     {
         //Get timezone and language of the user
         $this->getTimezoneAndLanguageOfUser($userId);
@@ -143,9 +137,8 @@ class Ics extends CI_Controller
     /**
      * Get the list of leaves for a given employee identifier
      * @param int $userId identifier of an employee
-     * 
      */
-    public function individual($userId)
+    public function individual(int $userId): void
     {
         $this->load->model('leaves_model');
         $result = $this->leaves_model->getLeavesOfEmployee($userId);
@@ -193,9 +186,8 @@ class Ics extends CI_Controller
      * @param int $userId identifier of the user wanting to view the list (mind timezone)
      * @param int $entity identifier of an entity
      * @param bool $children TRUE include sub-entity, FALSE otherwise (default)
-     * 
      */
-    public function entity($userId, $entity, $children)
+    public function entity(int $userId, int $entity, bool $children): void
     {
         $this->load->model('leaves_model');
         $children = filter_var($children, FILTER_VALIDATE_BOOLEAN);
@@ -240,9 +232,8 @@ class Ics extends CI_Controller
     /**
      * Get the list of leaves of the collaborators of the connected user (manager)
      * @param int $userId identifier of the user wanting to view the list (mind timezone)
-     * 
      */
-    public function collaborators($userId)
+    public function collaborators(int $userId): void
     {
         $this->load->model('leaves_model');
         $result = $this->leaves_model->getLeavesRequestedToManager($userId, TRUE);
@@ -285,15 +276,14 @@ class Ics extends CI_Controller
 
     /**
      * Action : download an iCal event corresponding to a leave request
-     * @param int leave request id
-     * 
+     * @param int $leaveRequestId leave request id
      */
-    public function ical($id)
+    public function ical(int $leaveRequestId): void
     {
         header('Content-type: text/calendar; charset=utf-8');
         header('Content-Disposition: attachment; filename=leave.ics');
         $this->load->model('leaves_model');
-        $leave = $this->leaves_model->getLeaves($id);
+        $leave = $this->leaves_model->getLeaves($leaveRequestId);
         //Get timezone and language of the user
         $this->getTimezoneAndLanguageOfUser($leave['employee']);
 
@@ -310,7 +300,7 @@ class Ics extends CI_Controller
             'DESCRIPTION' => $leave['cause'],
             'DTSTART' => $startdate,
             'DTEND' => $enddate,
-            'URL' => base_url() . "leaves/" . $id,
+            'URL' => base_url() . "leaves/" . $leaveRequestId,
         ));
         echo $vcalendar->serialize();
     }
