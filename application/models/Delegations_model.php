@@ -52,7 +52,7 @@ class Delegations_model extends CI_Model
         $this->db->where('delegate_id', $employeeId);
         $this->db->where('manager_id', $managerId);
         $results = $this->db->get()->row_array();
-        if (!empty($results)) {
+        if ($results != null) {
             return TRUE;
         } else {
             return FALSE;
@@ -69,7 +69,7 @@ class Delegations_model extends CI_Model
         $this->db->from('delegations');
         $this->db->where('delegate_id', $employeeId);
         $results = $this->db->get()->row_array();
-        if (!empty($results)) {
+        if ($results != null) {
             return TRUE;
         } else {
             return FALSE;
@@ -108,7 +108,7 @@ class Delegations_model extends CI_Model
         $this->db->where('manager_id', $managerId);
         $query = $this->db->get();
         $results = $query->row_array();
-        if (!empty($results)) {
+        if ($results != null) {
             return $results['list'];
         } else {
             return [];

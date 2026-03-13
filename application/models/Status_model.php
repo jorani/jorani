@@ -27,9 +27,9 @@ class Status_model extends CI_Model
     /**
      * Get the list of status or one status
      * @param int $id optional id of a status
-     * @return array record of types
+     * @return ?array record of status(es) or NULL if status was not found
      */
-    public function getStatus(int $id = 0): array
+    public function getStatus(int $id = 0): ?array
     {
         if ($id === 0) {
             $query = $this->db->get('status');

@@ -29,9 +29,9 @@ class Users_model extends CI_Model
     /**
      * Get the list of users or one user
      * @param int $id optional id of one user
-     * @return array record of users
+     * @return ?array record of user(s) or NULL if user was not found
      */
-    public function getUsers(int $id = 0): array
+    public function getUsers(int $id = 0): ?array
     {
         if ($id === 0) {
             $query = $this->db->get('users');

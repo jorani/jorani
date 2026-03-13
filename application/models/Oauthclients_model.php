@@ -36,9 +36,9 @@ class OAuthClients_model extends CI_Model
     /**
      * Get the list of OAuth clients or one client
      * @param string $clientId optional id of a OAuth client
-     * @return array record of clients
+     * @return ?array list of client(s) or NULL if client was not found
      */
-    public function getOAuthClients(string $clientId = ''): array
+    public function getOAuthClients(string $clientId = ''): ?array
     {
         if ($clientId === '') {
             $query = $this->db->get('oauth_clients');

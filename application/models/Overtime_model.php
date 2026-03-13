@@ -31,9 +31,9 @@ class Overtime_model extends CI_Model
     /**
      * Get the list of all overtime requests or one overtime request
      * @param int $id Id of the overtime request
-     * @return array list of records
+     * @return ?array list of extra(s) or NULL if extra was not found
      */
-    public function getExtras($id = 0)
+    public function getExtras($id = 0): ?array
     {
         $this->db->select('overtime.*');
         $this->db->select('status.name as status_name');
@@ -51,7 +51,7 @@ class Overtime_model extends CI_Model
      * @param int $employee ID of the employee
      * @return array list of records
      */
-    public function getExtrasOfEmployee($employee)
+    public function getExtrasOfEmployee($employee): array
     {
         $this->db->select('overtime.*');
         $this->db->select('status.name as status_name');

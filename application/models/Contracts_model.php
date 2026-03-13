@@ -28,9 +28,9 @@ class Contracts_model extends CI_Model
     /**
      * Get the list of contracts or one contract
      * @param int $contractId optional id of a contract
-     * @return array records of contracts
+     * @return ?array list of contract(s) or NULL if contract was not found
      */
-    public function getContracts(int $contractId = 0): array
+    public function getContracts(int $contractId = 0): ?array
     {
         if ($contractId === 0) {
             $this->db->order_by("name", "asc");

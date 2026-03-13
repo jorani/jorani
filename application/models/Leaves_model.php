@@ -39,9 +39,9 @@ class Leaves_model extends CI_Model
     /**
      * Get the list of all leave requests or one leave
      * @param int $leaveRequestId Id of the leave request
-     * @return array list of records
+     * @return ?array list of leave(s) or NULL if leave was not found
      */
-    public function getLeaves(int $leaveRequestId = 0): array
+    public function getLeaves(int $leaveRequestId = 0): ?array
     {
         $this->db->select('leaves.*');
         $this->db->select('status.name as status_name, types.name as type_name');

@@ -28,7 +28,7 @@ class Types_model extends CI_Model
     /**
      * Get the list of types or one type
      * @param int $id optional id of a type
-     * @return array|null record of types or list of types
+     * @return ?array list of type(s) or NULL if list was not found
      */
     public function getTypes(int $id = 0): ?array
     {

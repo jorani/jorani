@@ -38,9 +38,9 @@ class Roles_model extends CI_Model
     /**
      * Get the list of roles or one role
      * @param int $id optional id of one role
-     * @return array record of roles
+     * @return ?array record of role(s) or NULL if role was not found
      */
-    public function getRoles(int $id = 0): array
+    public function getRoles(int $id = 0): ?array
     {
         if ($id === 0) {
             $query = $this->db->get('roles');

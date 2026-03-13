@@ -82,10 +82,10 @@ class History_model extends CI_Model
      * Get the details of a modification
      * @param string $table Table modified
      * @param int $id Unique Identifier of the modification
-     * @return array row as an array
+     * @return ?array row as an array or null if not found
      * @throws InvalidArgumentException if the table is not allowed
      */
-    public function getHistoryDetail(string $table, int $id): array
+    public function getHistoryDetail(string $table, int $id): ?array
     {
         if (!in_array($table, $this->allowedTables, true)) {
             throw new InvalidArgumentException("The provided table is not allowed for history details.");
