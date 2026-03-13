@@ -48,24 +48,17 @@ export const test = base.extend<AppFixtures>({
         await use(page);
 
         // Assert that the page did not have hard JS crashes
-        // We only fail on [pageerror]. [console.error] often contains non-breaking items like missing icons (404)
         const jsCrashes = consoleErrors.filter(e => e.startsWith('[pageerror]'));
         expect(
             jsCrashes,
             `JavaScript crashes were detected:\n${jsCrashes.join('\n')}`
         ).toEqual([]);
 
-        // Read visible text from the page body to detect rendered PHP errors
-        // We exclude the CodeIgniter Profiler and other debug tools if present
-        const body = page.locator('body');
-        let bodyText = (await body.textContent()) ?? '';
+        // Hide profiler and debug bars to avoid false positives in error detection
+        await page.addStyleTag({ content: '#codeigniter_profiler, .phpdebugbar { display: none !important; }' });
 
-        // Remove profiler content from search to avoid false positives in debug bar
-        const profiler = page.locator('#codeigniter_profiler, .phpdebugbar');
-        if (await profiler.count() > 0) {
-            const profilerText = (await profiler.allTextContents()).join(' ');
-            bodyText = bodyText.replace(profilerText, '');
-        }
+        // Read visible text from the page body to detect rendered PHP errors
+        const bodyText = await page.innerText('body');
 
         const matchedPatterns = PHP_ERROR_PATTERNS
             .filter(entry => entry.regex.test(bodyText))

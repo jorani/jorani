@@ -3,7 +3,6 @@
  * This view displays the list of users.
  * 
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
  * @since      0.1.0
  */
 ?>
@@ -204,7 +203,7 @@
 
         //On showing the confirmation pop-up, add the user id as an attribute of the delete url link
         $('#frmConfirmDelete').on('show', function () {
-            $("#action-delete").attr('data-id', $(this).data('id'));
+            $("#action-delete").data('id', $(this).data('id'));
         });
 
         //Display a modal pop-up so as to confirm if a user has to be deleted or not
@@ -240,9 +239,13 @@
         //Delete a user
         $("#action-delete").on('click', function () {
             var id = $(this).data('id');
-            $.post("<?php echo base_url(); ?>users/account", { operation: "delete", id: id }).done(function () {
-                oTable.rows('tr[data-id="' + id + '"]').remove().draw();
-                $('#frmConfirmDelete').modal('hide');
+            $.post("<?php echo base_url(); ?>users/account", { operation: "delete", id: id }).done(function (data) {
+                if (data == "") {
+                    oTable.rows('tr[data-id="' + id + '"]').remove().draw();
+                    $('#frmConfirmDelete').modal('hide');
+                } else {
+                    bootbox.alert(data);
+                }
             });
         });
 

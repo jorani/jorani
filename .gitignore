@@ -27,3 +27,4 @@ application/temp/*
 yarn-error.log
 
 test-results/
+test_*.txt

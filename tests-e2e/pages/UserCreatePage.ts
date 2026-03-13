@@ -18,13 +18,23 @@ export class UserCreatePage {
     // Fill basic info first (this triggers auto-generation of login in JS)
     await this.page.fill('#firstname', details.firstname);
     await this.page.fill('#lastname', details.lastname);
+    
+    // Trigger any auto-fill JS by focusing another field
+    await this.page.focus('#email');
     await this.page.fill('#email', details.email);
     
     // Force the login value LAST to overwrite any auto-generated value
-    // We use a small delay or ensure the field is cleared to be safe
     const loginField = this.page.locator('#login');
-    await loginField.fill(''); // Clear first
     await loginField.fill(details.login);
+    await loginField.dispatchEvent('change');
+    await loginField.blur();
+    
+    // Double check that JS didn't overwrite our value (Jorani has auto-generation logic)
+    const actualLogin = await loginField.inputValue();
+    if (actualLogin !== details.login) {
+        await loginField.fill(details.login);
+        await loginField.dispatchEvent('change');
+    }
     
     if (details.password) {
       await this.page.fill('#password', details.password);

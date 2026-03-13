@@ -3,7 +3,6 @@
  * This controller serves the user management pages and tools.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.4.2
  */
 
@@ -20,7 +19,6 @@ class Users extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -32,7 +30,6 @@ class Users extends CI_Controller
 
     /**
      * Display the list of all users
-     * 
      */
     public function index()
     {
@@ -53,38 +50,38 @@ class Users extends CI_Controller
     /**
      * Account management (activate/disable/delete) is done by a 
      * POST request with a CSRF token for an improved security
-     * 
      */
     public function account()
     {
         $this->auth->checkIfOperationIsAllowed('list_users');
-        $id = $this->input->post('id');
+        $userId = $this->input->post('id');
         $operation = $this->input->post('operation');
         //Test if user exists
-        $data['users_item'] = $this->users_model->getUsers($id);
-        if (empty($data['users_item'])) {
-            redirect('notfound');
+        $user = $this->users_model->getUsers($userId);
+        if ($user == null) {
+            log_message('error', 'User #' . $userId . ' not found');
+            echo 'user not found';
         } else {
             switch ($operation) {
                 case 'enable':
-                    $this->users_model->setActive($id, TRUE);
-                    log_message('error', 'User #' . $id . ' has been enabled by user #' . $this->session->userdata('id'));
+                    $this->users_model->setActive($userId, TRUE);
+                    log_message('info', 'User #' . $userId . ' has been enabled by user #' . $this->session->userdata('id'));
                     break;
                 case 'disable':
-                    $this->users_model->setActive($id, FALSE);
-                    log_message('error', 'User #' . $id . ' has been disabled by user #' . $this->session->userdata('id'));
+                    $this->users_model->setActive($userId, FALSE);
+                    log_message('info', 'User #' . $userId . ' has been disabled by user #' . $this->session->userdata('id'));
                     break;
                 case 'delete':
                     $this->auth->checkIfOperationIsAllowed('delete_user');
-                    $this->users_model->deleteUser($id);
-                    log_message('error', 'User #' . $id . ' has been deleted by user #' . $this->session->userdata('id'));
+                    $this->users_model->deleteUser($userId);
+                    log_message('info', 'User #' . $userId . ' has been deleted by user #' . $this->session->userdata('id'));
+                    break;
             }
         }
     }
 
     /**
      * Display the modal pop-up content of the list of employees
-     * 
      */
     public function employees()
     {
@@ -102,7 +99,6 @@ class Users extends CI_Controller
      * allowed and the last column contains the name of the entity the employee
      * belongs to.
      * @see employees
-     * 
      */
     public function employeesMultiSelect()
     {
@@ -116,7 +112,6 @@ class Users extends CI_Controller
 
     /**
      * Display details of the connected user (contract, line manager, etc.)
-     * 
      */
     public function myProfile()
     {
@@ -147,7 +142,6 @@ class Users extends CI_Controller
     /**
      * Display a for that allows updating a given user
      * @param int $id User identifier
-     * 
      */
     public function edit($id)
     {
@@ -158,7 +152,6 @@ class Users extends CI_Controller
         $this->load->library('polyglot');
         $data['title'] = lang('users_edit_html_title');
         $data['help'] = $this->help->create_help_link('global_link_doc_page_create_user');
-
         $this->form_validation->set_rules('firstname', lang('users_edit_field_firstname'), 'required|strip_tags');
         $this->form_validation->set_rules('lastname', lang('users_edit_field_lastname'), 'required|strip_tags');
         $this->form_validation->set_rules('login', lang('users_edit_field_login'), 'required|strip_tags');
@@ -209,9 +202,8 @@ class Users extends CI_Controller
      * Reset the password of a user
      * Can be accessed by the user itself or by admin
      * @param int $id User identifier
-     * 
      */
-    public function reset($id)
+    public function reset(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('change_password', $id);
 
@@ -277,7 +269,6 @@ class Users extends CI_Controller
 
     /**
      * Display the form / action Create a new user
-     * 
      */
     public function create()
     {
@@ -364,9 +355,8 @@ class Users extends CI_Controller
      * Form validation callback : prevent from login duplication
      * @param string $login Login
      * @return boolean TRUE if the field is valid, FALSE otherwise
-     * 
      */
-    public function checkLogin($login)
+    public function checkLogin(string $login): bool
     {
         if (!$this->users_model->isLoginAvailable($login)) {
             $this->form_validation->set_message('checkLogin', lang('users_create_checkLogin'));
@@ -378,7 +368,6 @@ class Users extends CI_Controller
 
     /**
      * Ajax endpoint : check login duplication
-     * 
      */
     public function checkLoginByAjax()
     {
@@ -392,7 +381,6 @@ class Users extends CI_Controller
 
     /**
      * Action: export the list of all users into an Excel file
-     * 
      */
     public function export()
     {

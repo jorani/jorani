@@ -18,11 +18,11 @@ export class UsersPage {
     const searchBox = filterWrapper.locator('input');
     await searchBox.fill(login);
 
-    // Find the row where the 4th column (login) matches exactly
-    // We use a regex for exact match to avoid partial matches with old test data
-    const row = this.page.locator('table#users tbody tr').filter({
-      has: this.page.locator('td:nth-child(4)').filter({ hasText: new RegExp(`^${login}$`) })
-    }).first();
+    // Wait for Datatables to filter and update its info text
+    await expect(this.page.locator('#users_info')).toContainText(/1 to 1 of 1/i, { timeout: 10000 });
+    
+    // Now get the visible row from the tbody
+    const row = this.page.locator('#users tbody tr').first();
     await expect(row).toBeVisible();
 
     const deleteButton = row.locator('.confirm-delete');
