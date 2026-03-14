@@ -257,7 +257,7 @@
 
         //Remove an employee to an entity
         $("#cmdRemoveEmployee").click(function () {
-            var id = oTable.rows({ selected: true }).data()[0][0];
+            var id = oTable.rows({ selected: true }).data()[0].id;
             if (id != "") {
                 if ($("#organization").jstree('get_selected').length == 1) {
                     var entity = $('#organization').jstree('get_selected')[0];
