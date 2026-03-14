@@ -166,6 +166,9 @@ class Authorization extends CI_Controller
             } else {
                 $this->session->set_flashdata('msg', lang('session_login_flash_account_disabled'));
             }
+        } else {
+            $this->load->model('sessions_model');
+            $this->sessions_model->purgeOldData();
         }
 
         //Redirect to the OAtuh2 endpoint whatever the outcome

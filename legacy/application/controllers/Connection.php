@@ -127,6 +127,8 @@ class Connection extends CI_Controller
                 }
                 redirect('session/login');
             } else {
+                $this->load->model('sessions_model');
+                $this->sessions_model->purgeOldData();
                 $this->redirectToLastPage();
             }
         }
@@ -402,6 +404,8 @@ class Connection extends CI_Controller
             $this->load->model('users_model');
             $loggedin = $this->users_model->checkCredentialsEmail($auth->getNameId());
             if ($loggedin === TRUE) {
+                $this->load->model('sessions_model');
+                $this->sessions_model->purgeOldData();
                 $this->redirectToLastPage();
             }
 
