@@ -131,6 +131,7 @@ class Ics extends CI_Controller
                 ));
             }
         }
+        header("Content-Type: text/calendar");
         echo $vcalendar->serialize();
     }
 
@@ -177,6 +178,7 @@ class Ics extends CI_Controller
                     ));
                 }
             }
+            header("Content-Type: text/calendar");
             echo $vcalendar->serialize();
         }
     }
@@ -225,6 +227,7 @@ class Ics extends CI_Controller
                     ));
                 }
             }
+            header("Content-Type: text/calendar");
             echo $vcalendar->serialize();
         }
     }
@@ -270,6 +273,7 @@ class Ics extends CI_Controller
                     ));
                 }
             }
+            header("Content-Type: text/calendar");
             echo $vcalendar->serialize();
         }
     }
@@ -302,6 +306,7 @@ class Ics extends CI_Controller
             'DTEND' => $enddate,
             'URL' => base_url() . "leaves/" . $leaveRequestId,
         ));
+        header("Content-Type: text/calendar");
         echo $vcalendar->serialize();
     }
 }
