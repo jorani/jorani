@@ -20,7 +20,6 @@ if (function_exists('apache_get_modules')) {
 $env = is_null(getenv('CI_ENV')) ? '' : getenv('CI_ENV');
 $allow_overwrite = getenv('ALLOW_OVERWRITE');
 $server_software = getenv('SERVER_SOFTWARE');
-$mod_gzip = getenv('HTTP_MOD_GZIP');
 $rowOrg = NULL;
 
 if ($mod_rewrite == "")
@@ -28,10 +27,8 @@ if ($mod_rewrite == "")
 if ($allow_overwrite == "")
     $allow_overwrite = '<b>Off</b>';
 
-$tmz = @date_default_timezone_get();
-
 //Check if we can access to the configuration file
-$pathConfigFile = realpath(join(DIRECTORY_SEPARATOR, array('application', 'config', $env, 'database.php')));
+$pathConfigFile = __DIR__ . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database.php';
 $configFileExists = file_exists($pathConfigFile);
 $dbErrorMessages = array();
 $dbConn = NULL;
@@ -92,9 +89,8 @@ if ($configFileExists) {
     <title>Jorani Requirements</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" sizes="32x32">
     <link rel="stylesheet" href="assets/dist/requirements.css">
-    <script type="text/javascript" src="assets/dist/requirements.js"></script>
 </head>
 
 <body>
@@ -112,11 +108,7 @@ if ($configFileExists) {
             <li class="nav-item"><a class="nav-link" href="testapi.php">API HTTP</a></li>
         </ul>
 
-        <h1>
-            Jorani Requirements
-            <button class="btn btn-light" onclick="export2csv();"><i class="mdi mdi-download"></i>&nbsp;Export to a CSV
-                file</button>
-        </h1>
+        <h1>Jorani Requirements</h1>
 
         <h2>Web Server</h2>
 
@@ -157,42 +149,8 @@ if ($configFileExists) {
                 </tr>
 
                 <tr>
-                    <td><?php if (strtolower($mod_gzip) == "on") { ?><i class="mdi mdi-check"></i><?php } else { ?><i
-                                class="mdi mdi-alert"></i><?php } ?>
-                        &nbsp;Apache module gzip (mod_gzip)</td>
-                    <td><?php echo $mod_gzip; ?> (turning it On would improve response times).</td>
-                </tr>
-
-                <?php if (version_compare(PHP_VERSION, '5.6.0') >= 0) { ?>
-                    <tr>
-                        <td><i class="mdi mdi-check"></i>&nbsp;PHP 5.6.0+</td>
-                    <?php } else { ?>
-                    <tr>
-                        <td><i class="mdi mdi-alert"></i>&nbsp;Old PHP version</td>
-                    <?php } ?>
-                    <td>Ignore this message if you are running an exotic PHP runtime</td>
-                </tr>
-
-                <?php if (defined('HHVM_VERSION')) { ?>
-                    <tr>
-                        <td><i class="mdi mdi-information-outline"></i>&nbsp;HHVM</td>
-                        <td><?php echo HHVM_VERSION; ?></td>
-                    </tr>
-                <?php } else { ?>
-                    <tr>
-                        <td><i class="mdi mdi-information-outline"></i>&nbsp;PHP</td>
-                        <td><?php echo PHP_VERSION; ?></td>
-                    </tr>
-                <?php } ?>
-
-                <?php if ($tmz != 'UTC') { ?>
-                    <tr>
-                        <td><i class="mdi mdi-check"></i>&nbsp;Timezone defined</td>
-                    <?php } else { ?>
-                    <tr>
-                        <td><i class="mdi mdi-alert"></i>&nbsp;Timezone undefined</td>
-                    <?php } ?>
-                    <td>If error, please check date.timezone into PHP.ini.</td>
+                    <td><i class="mdi mdi-information-outline"></i>&nbsp;PHP</td>
+                    <td><?php echo PHP_VERSION; ?></td>
                 </tr>
 
                 <?php if (function_exists('mb_strimwidth')) { ?>
@@ -217,7 +175,7 @@ if ($configFileExists) {
                             target="_blank">json support<a>.</td>
                 </tr>
 
-                <?php if (is_writable(realpath('application/logs/'))) { ?>
+                <?php if (is_writable(__DIR__ . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR)) { ?>
                     <tr>
                         <td><i class="mdi mdi-check"></i>&nbsp;Jorani can write into logs folder</td>
                     <?php } else { ?>
@@ -225,16 +183,6 @@ if ($configFileExists) {
                         <td><i class="mdi mdi-alert"></i>&nbsp;Jorani can't write into logs folder</td>
                     <?php } ?>
                     <td>The folder application/logs/ must be writable.</td>
-                </tr>
-
-                <?php if (is_writable(realpath('local/upload/leaves/'))) { ?>
-                    <tr>
-                        <td><i class="mdi mdi-check"></i>&nbsp;Jorani can write files</td>
-                    <?php } else { ?>
-                    <tr>
-                        <td><i class="mdi mdi-alert"></i>&nbsp;Jorani can't write files</td>
-                    <?php } ?>
-                    <td>The folder local/upload/leaves/ must be writable.</td>
                 </tr>
 
                 <?php if (extension_loaded('pdo_mysql')) { ?>
@@ -344,11 +292,9 @@ if ($configFileExists) {
 
         <p>You can test the following settings, but you need to edit the corresponding PHP scripts :</p>
         <ul>
-            <li><a href="testssl.php" target="_blank">SSL Configuration and Utility.</a></li>
-            <li><a href="testoauth2.php" target="_blank">OAuth2 Settings.</a></li>
             <li><a href="testmail.php" target="_blank">E-mail Settings.</a></li>
             <li><a href="testldap.php" target="_blank">LDAP Settings.</a></li>
-            <li><a href="opcache.php" target="_blank">OPCache Tester.</a></li>
+            <li><a href="testapi.php" target="_blank">API HTTP Settings.</a></li>
         </ul>
 
         <h2>Database</h2>

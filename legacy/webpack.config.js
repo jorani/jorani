@@ -11,7 +11,7 @@ module.exports = {
     swagger: './src/swagger.js',
   },
   output: {
-    path: path.resolve(__dirname, 'assets/dist'),
+    path: path.resolve(__dirname, '../assets/dist'),
     publicPath: ASSET_PATH,
     library: 'jorani',
     libraryTarget: 'var',
@@ -51,7 +51,7 @@ module.exports = {
   plugins: [
     // Strip all moment's locales except those supported by Jorani
     new MomentLocalesPlugin({
-        localesToKeep: ['en','en-gb','fr','es','nl','de','it','ru','cs','uk','km','fa','vi','tr','zh-cn','el','pt','ar','hu','ca','ro','sk'],
+      localesToKeep: ['en', 'en-gb', 'fr', 'es', 'nl', 'de', 'it', 'ru', 'cs', 'uk', 'km', 'fa', 'vi', 'tr', 'zh-cn', 'el', 'pt', 'ar', 'hu', 'ca', 'ro', 'sk'],
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css',

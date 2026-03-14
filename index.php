@@ -26,6 +26,17 @@ if ($basePath !== '' && $basePath !== '/' && str_starts_with($uri, $basePath)) {
  */
 $useLaravel = false;
 
+switch ($uri) {
+    case '/requirements.php':
+    case '/testapi.php':
+    case '/testldap.php':
+    case '/testmail.php':
+        require __DIR__ . '/legacy/' . $uri;
+        exit;
+    default:
+        break;
+}
+
 if (
     str_starts_with($uri, '/api/v2/')
 ) {

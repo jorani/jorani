@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install -y zlib1g-dev \
     && docker-php-ext-install -j$(nproc) gd ldap zip pdo pdo_mysql \
     && rm -rf /var/lib/apt/lists/
 RUN a2enmod rewrite
+RUN a2enmod headers
+RUN a2enmod deflate
+RUN a2enmod filter
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 WORKDIR /var/www/html
 COPY --from=composer /app/legacy/vendor ./legacy/vendor

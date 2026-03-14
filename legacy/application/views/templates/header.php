@@ -27,7 +27,7 @@
     <![endif]-->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/dist/legacy.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/bootstrap/js/bootstrap.min.js"></script>
-    <link rel="icon" type="image/x-icon" href="<?php echo base_url(); ?>favicon.ico" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="<?php echo base_url(); ?>assets/favicon.ico" sizes="32x32">
     <style>
         <?php //Font mapping with languages needing a better font than the default font
         $fonts = $this->config->item('fonts');

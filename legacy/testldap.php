@@ -24,7 +24,7 @@ define('LDAP_PASSWORD', '');  //This is the password we will use to bind to LDAP
 <head>
     <title>Jorani LDAP Configuration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" sizes="32x32">
     <link rel="stylesheet" href="assets/dist/requirements.css">
     <script type="text/javascript" src="assets/dist/requirements.js"></script>
 </head>
