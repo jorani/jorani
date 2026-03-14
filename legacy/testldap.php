@@ -2,8 +2,7 @@
 /**
  * This diagnostic page helps you to check ldap setup.
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
- * @since         0.4.2
+ * @since      0.4.2
  */
 
 define('BASEPATH', '.'); //Make this script works with nginx

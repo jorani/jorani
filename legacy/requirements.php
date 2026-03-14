@@ -2,7 +2,6 @@
 /**
  * This diagnostic page helps you to check your setup.
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
  * @since      0.3.0
  */
 
