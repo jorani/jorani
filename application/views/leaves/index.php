@@ -148,8 +148,8 @@
                 <?php } ?>
             </div>
         </td>
-        <td data-order="<?php echo $tmpStartDate; ?>"><?php echo $startdate . ' (' . lang($leave['startdatetype']). ')'; ?></td>
-        <td data-order="<?php echo $tmpEndDate; ?>"><?php echo $enddate . ' (' . lang($leave['enddatetype']) . ')'; ?></td>
+        <td data-order="<?php echo $tmpStartDate; ?>"><?php echo $startdate . ' (' . $leave['startdatetype']. ')'; ?></td>
+        <td data-order="<?php echo $tmpEndDate; ?>"><?php echo $enddate . ' (' . $leave['enddatetype'] . ')'; ?></td>
         <td><?php echo $leave['cause']; ?></td>
         <td><?php echo $leave['duration']; ?></td>
         <td><?php echo $leave['type_name']; ?></td>

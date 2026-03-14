@@ -274,7 +274,19 @@ $(function () {
         $("#days").val(value);
     });
 
-    $('#viz_startdate').change(function() {getLeaveLength(true);});
+    $('#viz_startdate').change(function() {
+	// set end date equal to start date for Short Leave    
+     if ($("#type option:selected").text() == "Short Leave")
+     {
+       
+           var sd=$("#startdate").val();
+       
+           $("#viz_enddate" ).datepicker('setDate', new Date(sd));
+     }
+	    
+	    getLeaveLength(true);
+      
+    });
     $('#viz_enddate').change(function() {getLeaveLength();});
     $('#startdatetype').change(function() {getLeaveLength();});
     $('#enddatetype').change(function() {getLeaveLength();});
@@ -284,11 +296,20 @@ $(function () {
     $("#duration").keyup(function() {getLeaveInfos(true);});
 
     $("#frmLeaveForm").submit(function(e) {
-        if (validate_form()) {
+        // To vaildate enddate , duration if Leave type is not equal to Short Leave
+      if ($("#type option:selected").text() != "Short Leave")
+      {	    
+	if (validate_form()) {
             return true;
         } else {
             e.preventDefault();
             return false;
         }
+       }else{
+              shortleave();
+              return true;
+
+       }
+
     });
 });

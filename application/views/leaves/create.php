@@ -37,13 +37,16 @@ echo form_open('leaves/create', $attributes) ?>
         <option value="Afternoon"><?php echo lang('Afternoon');?></option>
     </select><br />
 
-    <label for="viz_enddate"><?php echo lang('leaves_create_field_end');?></label>
+    <label for="viz_enddate" id="enddatelabel"><?php echo lang('leaves_create_field_end');?></label>
     <input type="text" name="viz_enddate" id="viz_enddate" value="<?php echo set_value('enddate'); ?>" autocomplete="off" />
     <input type="hidden" name="enddate" id="enddate" />
     <select name="enddatetype" id="enddatetype">
         <option value="Morning"><?php echo lang('Morning');?></option>
         <option value="Afternoon" selected><?php echo lang('Afternoon');?></option>
     </select><br />
+<!-- Show input field for start time -->
+<label for="shorttime" id="timelabel"><?php echo 'Start time (24 hours format)';?></label>
+<input type="time" name="shorttime" id="shorttime">
 
     <label for="duration"><?php echo lang('leaves_create_field_duration');?> <span id="tooltipDayOff"></span></label>
     <?php if ($this->config->item('disable_edit_leave_duration') == TRUE) { ?>
@@ -53,6 +56,10 @@ echo form_open('leaves/create', $attributes) ?>
     <?php } ?>
 
     <span style="margin-left: 2px;position: relative;top: -5px;" id="spnDayType"></span>
+<!-- show duration fo short leave -->
+  <p id="showduration" >2 hours</p>
+
+
 
     <div class="alert hide alert-error" id="lblCreditAlert" onclick="$('#lblCreditAlert').hide();">
         <button type="button" class="close">&times;</button>
@@ -105,6 +112,62 @@ if ($language_code != 'en') { ?>
 $(document).on("click", "#showNoneWorkedDay", function(e) {
   showListDayOffHTML();
 });
+</script>
+
+<script>
+	// this will hide or show enddate , Startdatetype , enddatetype, enddatelabel, duration etc.
+	//  accordimg to type of leave (Short Leave or not). 
+$(document).ready(function(){
+        $("#shorttime").hide();
+            $("#timelabel").hide();
+           $('#showduration').hide();
+
+        $("#type").change(function(){
+           
+            var type= $(this).children("option:selected").text();
+            if (type == "Short Leave")
+            { $("#startdatetype" ).hide();
+               $("#enddatetype").hide();
+	    $("#duration" ).hide();
+	     $("#enddatelabel" ).hide();
+
+
+            $("#viz_enddate" ).hide();
+            $("#shorttime").show();
+            $("#timelabel").show();
+            $('#showduration').show();
+            }
+            else
+            { $("#shorttime").hide();
+            $("#timelabel").hide();
+             $('#showduration').hide();
+              $("#startdatetype" ).show();
+               $("#enddatetype").show();
+                $("#duration" ).show();
+	    $("#viz_enddate" ).show();
+	     $("#enddatelabel" ).show();
+
+
+            }
+    });
+});
+
+// this function set end date and end time for short leave
+//
+function shortleave(){
+ $("#startdatetype option:selected").val($("#shorttime").val());
+ var time=   $('#shorttime').val().split(':');;
+                 var h=parseInt(time[0]);
+                   h=h+2;
+    var endtime = h+ ":"+time[1];
+                
+                     $("#enddatetype option:selected").val(endtime);
+             $("#duration" ).val(0.33);
+           var sd=$("#startdate").val();
+           $("#viz_enddate" ).datepicker('setDate', new Date(sd));
+
+}
+
 </script>
 <script type="text/javascript">
     var baseURL = '<?php echo base_url();?>';
