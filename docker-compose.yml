@@ -3,19 +3,13 @@ services:
     build: .
     ports:
       - "80:80"
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_DATABASE=jorani
-      - MYSQL_USER=jorani
-      - MYSQL_PASSWORD=jorani
+    env_file: .env
+    depends_on:
+      - mysql
   mysql:
     image: mysql:8
     ports:
       - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=jorani
-      - MYSQL_DATABASE=jorani
-      - MYSQL_USER=jorani
-      - MYSQL_PASSWORD=jorani
+    env_file: .env
     volumes:
-      - ./sql/jorani.sql:/docker-entrypoint-initdb.d/jorani.sql
+      - ./legacy/sql/init:/docker-entrypoint-initdb.d

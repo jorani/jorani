@@ -1,15 +1,6 @@
 SetEnv ALLOW_OVERWRITE On
 SetEnv HTTP_MOD_GZIP Off
 
-# You can define various environments and load the correponding config files:
-# If not set, application/config/config.php
-# application/config/development/config.php
-# application/config/testing/config.php
-# application/config/production/config.php
-#SetEnvIf Host localhost CI_ENV=development
-#SetEnvIf Host localhost CI_ENV=testing
-#SetEnvIf Host localhost CI_ENV=production
-
 <IfModule mod_rewrite.c>
     Options +FollowSymLinks
 

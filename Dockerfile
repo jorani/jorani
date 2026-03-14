@@ -1,5 +1,6 @@
 FROM composer as composer
-COPY composer.json composer.lock ./
+WORKDIR /app/legacy
+COPY legacy/composer.json legacy/composer.lock ./
 RUN composer install --ignore-platform-reqs --no-dev
 
 FROM php:8.3-apache
@@ -16,7 +17,7 @@ RUN apt-get update && apt-get install -y zlib1g-dev \
     && rm -rf /var/lib/apt/lists/
 RUN a2enmod rewrite
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY --from=composer /app/vendor /var/www/html/vendor
+WORKDIR /var/www/html
+COPY --from=composer /app/legacy/vendor ./legacy/vendor
 COPY . .
-RUN chown www-data application/logs local/upload/leaves/
-COPY docker/config.php docker/database.php docker/email.php application/config/
+RUN chown www-data legacy/application/logs

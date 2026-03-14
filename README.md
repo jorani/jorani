@@ -49,6 +49,39 @@ Use bbalet / bbalet for login / password.
 * Check your installation with the <code>requirements.php</code> page at the root of your installation (e.g. http://localhost/lms/requirements.php).
 * The default user is *bbalet* and password is *bbalet*.
 
+## Quick start with Docker
+
+Copy the environment file and adjust the values if needed:
+
+```bash
+cp .env.example .env   # or edit .env directly
+```
+
+Start all services (application + MySQL + Mailpit):
+
+```bash
+docker compose up -d
+```
+
+The MySQL container automatically executes `sql/jorani.sql` on first start (via `docker-entrypoint-initdb.d`).
+If you need to (re-)initialize the database manually, run:
+
+```bash
+docker compose exec -T mysql mysql \
+  -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" "${MYSQL_DATABASE}" \
+  < legacy/sql/jorani.sql
+```
+
+Or with the default credentials from `.env`:
+
+```bash
+docker compose exec -T mysql mysql -ujorani -pjorani jorani < legacy/sql/jorani.sql
+```
+
+> **Note :** the `-T` flag disables pseudo-TTY allocation, which is required when piping stdin.
+
+
+
 ## Contribute
 
 * Help us to translate the software in your language https://www.transifex.com/projects/p/jorani

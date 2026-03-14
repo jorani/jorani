@@ -1,30 +1,31 @@
-application/cache/*
-!application/cache/index.html
-!application/cache/.htaccess
+legacy/application/cache/*
+!legacy/application/cache/index.html
+!legacy/application/cache/.htaccess
 
-application/logs/*
-!application/logs/index.html
-!application/logs/.htaccess
+legacy/application/logs/*
+!legacy/application/logs/index.html
+!legacy/application/logs/.htaccess
 /nbproject/private/
 
-application/temp/*
-!application/temp/index.html
-!application/temp/.htaccess
-!application/temp/README.TXT
-/tests/emails-recus/
-/application/language/extract.php
-/application/language/test.txt
+legacy/application/temp/*
+!legacy/application/temp/index.html
+!legacy/application/temp/.htaccess
+!legacy/application/temp/README.TXT
+/legacy/application/language/extract.php
+/legacy/application/language/test.txt
 /.sonar/
 
 /.vscode/
 
+/legacy/vendor/
 /vendor/
 
+/legacy/node_modules/
 /node_modules/
-/assets/js/app.js
-/assets/css/app.css
+/legacy/assets/js/app.js
+/legacy/assets/css/app.css
 
-yarn-error.log
+/legacy/yarn-error.log
 
-test-results/
-test_*.txt
+/legacy/test-results/
+/legacy/test_*.txt
