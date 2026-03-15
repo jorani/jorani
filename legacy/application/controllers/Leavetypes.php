@@ -68,7 +68,7 @@ class LeaveTypes extends CI_Controller
             $deduct = ($this->input->post('deduct_days_off') == 'on') ? TRUE : FALSE;
             $acronym = $this->input->post('acronym');
             $name = $this->input->post('name');
-            $this->types_model->setTypes();
+            $this->types_model->setTypes($name, $deduct, $acronym);
             $this->session->set_flashdata('msg', lang('leavetypes_popup_create_flash_msg'));
             redirect('leavetypes');
         }
