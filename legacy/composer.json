@@ -11,6 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "php": ">=8.0",
         "sabre/vobject": "^4.5.8",
         "bshaffer/oauth2-server-php": "^1.14.2",
         "sabre/xml": "^4.0",
