@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * This file is only used to generate the swagger documentation
+ * @license https://opensource.org/licenses/MIT MIT
+ */
 namespace Jorani\Api;
 
 use OpenApi\Attributes as OA;
@@ -27,6 +30,10 @@ use OpenApi\Attributes as OA;
     ]
 )]
 #[OA\License(name: 'MIT')]
+#[OA\Tag(name: "Contracts", description: "Operations related to employee contracts")]
+#[OA\Tag(name: "Entitled Days", description: "Operations related to entitled days")]
+#[OA\Tag(name: "Leaves", description: "Management of leave requests")]
+#[OA\Tag(name: "Positions", description: "Management of positions")]
 class OpenApiSpec
 {
 }

@@ -20,7 +20,7 @@ if ($basePath !== '' && $basePath !== '/' && str_starts_with($uri, $basePath)) {
 }
 
 /*
- * Sécurité : interdire l'accès aux fichiers de la racine
+ * Forbidden access to root files
  */
 $requestedPath = __DIR__ . DIRECTORY_SEPARATOR . ltrim($uri, '/');
 if (is_file($requestedPath)) {

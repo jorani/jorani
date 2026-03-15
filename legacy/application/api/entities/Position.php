@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * This file is only used to generate the swagger documentation
+ * @license https://opensource.org/licenses/MIT MIT
+ */
 namespace Jorani\Api\Entities;
 
 use OpenApi\Attributes as OA;

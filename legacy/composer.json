@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
     "require": {
         "sabre/vobject": "^4.5.8",
-        "bshaffer/oauth2-server-php": "^1.13.0",
+        "bshaffer/oauth2-server-php": "^1.14.2",
         "sabre/xml": "^4.0.0",
         "sabre/uri": "^3.0.0",
         "phpoffice/phpspreadsheet": "^1.28",

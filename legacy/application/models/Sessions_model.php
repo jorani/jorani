@@ -7,14 +7,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * This model manages the purging of old session data.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @since   1.1.0
+ * @since   1.0.4
  */
 class Sessions_model extends CI_Model
 {
     /**
      * Purge old data from session and oauth tables.
      * Deletes rows older than a month.
-     *
      * @return void
      */
     public function purgeOldData(): void
