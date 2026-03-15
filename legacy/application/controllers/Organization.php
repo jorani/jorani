@@ -3,7 +3,6 @@
  * This controller contains the actions allowing to manage and display the organization tree
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.2.0
  */
 
@@ -21,7 +20,6 @@ class Organization extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -33,7 +31,6 @@ class Organization extends CI_Controller
     /**
      * Main view that allows to describe the entities of the organization
      * And to attach employees to entities (lot of Ajax callbacks)
-     * 
      */
     public function index()
     {
@@ -54,7 +51,6 @@ class Organization extends CI_Controller
     /**
      * Pop-up showing the tree of the organization and allowing a
      * user to choose an entity (filter of a report or a calendar)
-     * 
      */
     public function select()
     {
@@ -80,7 +76,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Rename an entity of the organization
      * takes parameters by GET
-     * 
      */
     public function rename()
     {
@@ -99,7 +94,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Create an entity in the organization
      * takes parameters by GET
-     * 
      */
     public function create()
     {
@@ -118,7 +112,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Move an entity into the organization
      * takes parameters by GET
-     * 
      */
     public function move()
     {
@@ -137,7 +130,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Copy an entity into the organization
      * takes parameters by GET
-     * 
      */
     public function copy()
     {
@@ -156,7 +148,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Returns the list of the employees attached to an entity
      * Prints the table content in a JSON format expected by jQuery Datatable
-     * 
      */
     public function employees()
     {
@@ -188,7 +179,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Add an employee to an entity of the organization
      * takes parameters by GET
-     * 
      */
     public function addemployee()
     {
@@ -207,7 +197,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Add an employee to an entity of the organization
      * takes parameters by GET
-     * 
      */
     public function delemployee()
     {
@@ -225,7 +214,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Cascade delete children and set employees' org to NULL
      * takes parameters by GET
-     * 
      */
     public function delete()
     {
@@ -243,7 +231,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Returns a JSON string describing the organization structure.
      * In a format expected by jsTree component.
-     * 
      */
     public function root()
     {
@@ -280,7 +267,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint:Returns the supervisor of an entity of the organization
      * (string containing an id)
-     * 
      */
     public function getsupervisor()
     {
@@ -298,7 +284,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: Select the supervisor of an entity of the organization
      * takes parameters by GET
-     * 
      */
     public function setsupervisor()
     {
@@ -320,7 +305,6 @@ class Organization extends CI_Controller
 
     /**
      * Modal form allowing to create and manage custom lists of employees
-     * 
      */
     public function listsIndex()
     {
@@ -340,7 +324,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint allowing to create a new list of employees
      * Return the last inserted ID
-     * 
      */
     public function listsCreate()
     {
@@ -359,7 +342,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint allowing to rename a list of employees
      * Return the last inserted ID
-     * 
      */
     public function listsRename()
     {
@@ -378,7 +360,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint allowing to delete a list of employees
      * Return the last inserted ID
-     * 
      */
     public function listsDelete()
     {
@@ -396,7 +377,6 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint: load the list of employees attached to a given list id
      * Format the data as expected by JQuery Datatable 1.10
-     * 
      */
     public function listsEmployees()
     {
@@ -428,7 +408,6 @@ class Organization extends CI_Controller
 
     /**
      * Ajax endpoint allowing to add a list of employees into a list
-     * 
      */
     public function listsAddEmployees()
     {
@@ -447,7 +426,6 @@ class Organization extends CI_Controller
 
     /**
      * Ajax endpoint allowing to remove a list of employees from a list
-     * 
      */
     public function listsRemoveEmployees()
     {
@@ -466,7 +444,6 @@ class Organization extends CI_Controller
 
     /**
      * Ajax endpoint allowing to remove a list of employees from a list
-     * 
      */
     public function listsReorder()
     {
@@ -485,7 +462,6 @@ class Organization extends CI_Controller
 
     /**
      * Ajax endpoint retrieving the name of a list
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function listName()
     {

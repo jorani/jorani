@@ -4,7 +4,6 @@
  * Full documentation is available at https://developers.onelogin.com/saml/php
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
  * @since         0.5.0
  */
 

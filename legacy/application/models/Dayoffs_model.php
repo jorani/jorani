@@ -430,7 +430,6 @@ class Dayoffs_model extends CI_Model
      * @param string $endDate End date displayed on calendar
      * @param integer $listId identifiers of the entities
      * @return string JSON encoded list of full calendar events
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function allDayoffsForList(string $startDate, string $endDate, int $listId): string
     {

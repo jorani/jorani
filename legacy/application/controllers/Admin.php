@@ -3,7 +3,6 @@
  * This controller serves the administration pages
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.4.2
  */
 
@@ -20,7 +19,6 @@ class Admin extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -32,7 +30,6 @@ class Admin extends CI_Controller
 
     /**
      * Display the settings of the system (extract of config.php)
-     * 
      */
     public function settings()
     {
@@ -48,7 +45,6 @@ class Admin extends CI_Controller
 
     /**
      * Display the diagnostic of the content (duplicated requests, etc.) and configuration
-     * 
      */
     public function diagnostic()
     {
@@ -92,7 +88,6 @@ class Admin extends CI_Controller
 
     /**
      * Display the list of OAuth clients
-     * 
      */
     public function oauthClients()
     {

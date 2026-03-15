@@ -3,7 +3,6 @@
  * This controller manages the connection to the application
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -21,7 +20,6 @@ class Connection extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -44,7 +42,6 @@ class Connection extends CI_Controller
 
     /**
      * Login form
-     * 
      */
     public function login()
     {
@@ -137,7 +134,6 @@ class Connection extends CI_Controller
 
     /**
      * Logout the user and destroy the session data
-     * 
      */
     public function logout()
     {
@@ -147,7 +143,6 @@ class Connection extends CI_Controller
 
     /**
      * Change the language and redirect to last page (i.e. page that submit the language form)
-     * 
      */
     public function language()
     {
@@ -170,7 +165,6 @@ class Connection extends CI_Controller
     /**
      * If the user has a target page (e.g. link in an e-mail), redirect to this destination
      * @param string $page Force the redirection to a given page
-     * 
      */
     private function redirectToLastPage($page = "")
     {
@@ -196,7 +190,6 @@ class Connection extends CI_Controller
      * Ajax : Send the password by e-mail to a user requesting it
      * POST: string login Login of the user
      * RETURN: UNKNOWN if the login was not found, OK otherwise
-     * 
      */
     public function forgetpassword()
     {
@@ -239,7 +232,6 @@ class Connection extends CI_Controller
 
     /**
      * Try to authenticate the user using one of the OAuth2 providers
-     * 
      */
     public function loginOAuth2()
     {
@@ -289,7 +281,6 @@ class Connection extends CI_Controller
 
     /**
      * Returns the metadata needed for SAML2 Authentication
-     * 
      */
     public function metadata()
     {
@@ -310,7 +301,6 @@ class Connection extends CI_Controller
 
     /**
      * SAML2 SSO endpoint that starts the login via SSO
-     * 
      */
     public function sso()
     {
@@ -323,7 +313,6 @@ class Connection extends CI_Controller
      * SAML2 Logout endpoint that perfom the logout
      * This feature is not supported by all IdP (eg. Google)
      * That why a message might appear to explain that you are not logged from the IdP
-     * 
      */
     public function slo()
     {
@@ -355,7 +344,6 @@ class Connection extends CI_Controller
 
     /**
      * SAML2 sls endpoint
-     * 
      */
     public function sls()
     {
@@ -378,7 +366,6 @@ class Connection extends CI_Controller
 
     /**
      * SAML2 acs endpoint. Called by the IdP to perform the connection
-     * 
      */
     public function acs()
     {
@@ -395,10 +382,6 @@ class Connection extends CI_Controller
         if (!empty($errors)) {
             log_message('error', '{controllers/session/acs} SSO Errors=' . implode(', ', $errors));
         }
-
-        echo 'debug', 'SAML NameID=' . var_export($auth->getNameId(), true);
-        echo "\n<br />\n";
-        echo 'debug', 'SAML Errors=' . json_encode($auth->getErrors());
 
         $loggedin = FALSE;
         if ($auth->isAuthenticated()) {

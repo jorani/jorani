@@ -3,7 +3,6 @@
  * This controller contains the actions allowing an employee to list and manage its leave requests
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -182,7 +181,6 @@ class Leaves extends CI_Controller
      * on a leave request
      * @param int $id Id of the leave request
      * @param string $source Page where we redirect after posting
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function createComment($id, $source = "leaves/leaves")
     {
@@ -399,7 +397,6 @@ class Leaves extends CI_Controller
     /**
      * change a the status of a planned request to  requested
      * @param int $id id of the leave
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function requestLeave($id)
     {
@@ -753,7 +750,6 @@ class Leaves extends CI_Controller
      * Send a notification to the line manager.
      * Next status is 'Canceled'
      * @param int $id identifier of the leave request
-     * 
      */
     public function cancel($id)
     {
@@ -782,7 +778,6 @@ class Leaves extends CI_Controller
 
     /**
      * Export the list of all leaves into an Excel file
-     * 
      */
     public function export()
     {
@@ -792,7 +787,6 @@ class Leaves extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      * @param int $id employee id or connected user (from session)
-     * 
      */
     public function individual($id = 0)
     {
@@ -806,7 +800,6 @@ class Leaves extends CI_Controller
 
     /**
      * Ajax endpoint : Send a list of fullcalendar events
-     * 
      */
     public function workmates()
     {
@@ -818,7 +811,6 @@ class Leaves extends CI_Controller
 
     /**
      * Ajax endpoint : Send a list of fullcalendar events
-     * 
      */
     public function collaborators()
     {
@@ -831,7 +823,6 @@ class Leaves extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      * @param int $entity_id Entity identifier
-     * 
      */
     public function organization($entity_id)
     {
@@ -846,7 +837,6 @@ class Leaves extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      * @param int $list_id List identifier
-     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
     public function listEvents($list_id)
     {
