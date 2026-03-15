@@ -18,3 +18,17 @@ services:
     environment:
       MP_SMTP_AUTH_ACCEPT_ANY: "1"
       MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+  ldap:
+    image: public.ecr.aws/bitnami/openldap:latest
+    environment:
+      LDAP_ROOT: "${LDAP_BASEDN}"
+      LDAP_ADMIN_USERNAME: "admin"
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_CUSTOM_LDIF_DIR: "/ldifs"
+    ports:
+      - "${LDAP_PORT}:1389"
+    volumes:
+      - ldap_data:/bitnami/openldap
+      - ./docker/ldap/ldif:/ldifs:ro
+volumes:
+  ldap_data:

@@ -1,0 +1,37 @@
+dn: ou=people,dc=example,dc=org
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=example,dc=org
+objectClass: organizationalUnit
+ou: groups
+
+dn: uid=bob,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: John Doe
+sn: Doe
+uid: jdoe
+mail: jdoe@example.org
+userPassword: jdoe
+
+dn: uid=alice,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: Alice Doe
+sn: Doe
+uid: alice
+mail: alice@example.org
+userPassword: alice
+
+dn: uid=bob,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: Bob Dylan
+sn: Dylan
+uid: bob
+mail: bob@example.org
+userPassword: bob
+
+dn: cn=jorani-users,ou=groups,dc=example,dc=org
+objectClass: groupOfNames
+cn: jorani-users
+member: uid=alice,ou=people,dc=example,dc=org
+member: uid=bob,ou=people,dc=example,dc=org

@@ -83,7 +83,8 @@ class Connection extends CI_Controller
             $loggedin = FALSE;
             if ($this->config->item('ldap_enabled') === TRUE) {
                 if ($password != "") { //Bind to MS-AD with blank password might return OK
-                    $ldap = ldap_connect($this->config->item('ldap_host'), $this->config->item('ldap_port'));
+                    $ldapUri = sprintf('ldap://%s:%d', $this->config->item('ldap_host'), $this->config->item('ldap_port'));
+                    $ldap = ldap_connect($ldapUri);
                     ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
                     set_error_handler(function () { /* ignore errors */
                     });
@@ -97,7 +98,7 @@ class Connection extends CI_Controller
                     } else {
                         //Priority is given to the base DN defined into the database, then try with the template
                         $basedn = $this->users_model->getBaseDN($this->input->post('login'));
-                        if ($basedn == "") {//can return NULL
+                        if ($basedn == "") {
                             $basedn = sprintf($this->config->item('ldap_basedn'), $this->input->post('login'));
                         }
                     }
@@ -225,10 +226,12 @@ class Connection extends CI_Controller
             );
             $message = $this->parser->parse('emails/' . $user->language . '/password_forgotten', $data, TRUE);
             //Send the e-mail
-            sendMailByWrapper($this,
+            sendMailByWrapper(
+                $this,
                 $lang_mail->line('email_password_forgotten_subject'),
                 $message,
-                $user->email);
+                $user->email
+            );
             //Tell to the frontend that we've found the login and sent the email
             $this->output->set_output('OK');
         }

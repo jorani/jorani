@@ -652,9 +652,9 @@ class Users_model extends CI_Model
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            return $row->ldap_path;
+            return $row->ldap_path ?? '';
         } else {
-            return "";
+            return '';
         }
     }
 
