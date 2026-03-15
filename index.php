@@ -20,6 +20,19 @@ if ($basePath !== '' && $basePath !== '/' && str_starts_with($uri, $basePath)) {
 }
 
 /*
+ * Sécurité : interdire l'accès aux fichiers de la racine
+ */
+$requestedPath = __DIR__ . DIRECTORY_SEPARATOR . ltrim($uri, '/');
+if (is_file($requestedPath)) {
+    $realRequested = realpath($requestedPath);
+    $realCurrentDir = realpath(__DIR__);
+    if ($realRequested && dirname($realRequested) === $realCurrentDir && basename($realRequested) !== 'index.php') {
+        header('HTTP/1.1 403 Forbidden');
+        exit('Direct access to root files is forbidden.');
+    }
+}
+
+/*
  * Routing strategy:
  * - Laravel handles new APIs and new features
  * - Legacy handles the existing UI and remaining routes
