@@ -1,6 +1,6 @@
 {
   "name": "jorani",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Jorani is a free and open source leave management system",
   "main": "index.js",
   "repository": "https://github.com/jorani/jorani.git",
@@ -38,6 +38,7 @@
     "webpack-cli": "^4.0.0"
   },
   "scripts": {
+    "build": "webpack --mode production",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed"

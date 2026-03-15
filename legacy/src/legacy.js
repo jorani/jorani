@@ -1,3 +1,9 @@
+/**
+ * Combined legacy scripts for Jorani
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @since      1.0.1
+ */
 window.Cookies = require('js-cookie')
 window.ClipboardJS = require('clipboard')
 window.Hammer = require('hammerjs')
@@ -8,4 +14,4 @@ window.$ = window.jQuery = require('jquery-legacy')
 require('imports-loader?imports=default|jQuery|$!select2')
 require('imports-loader?imports=default|jQuery|$!jstree')
 
-import css from '../assets/css/legacy.scss'
+import css from '../../assets/css/legacy.scss'

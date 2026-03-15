@@ -16,6 +16,12 @@ module.exports = {
     library: 'jorani',
     libraryTarget: 'var',
   },
+  resolve: {
+    modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
+    fallback: {
+      "stream": false
+    }
+  },
   module: {
     rules: [
       {
@@ -24,7 +30,14 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
-          'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, 'node_modules')],
+              },
+            },
+          },
         ],
       },
       {
