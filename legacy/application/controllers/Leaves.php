@@ -882,7 +882,7 @@ class Leaves extends CI_Controller
     public function validate()
     {
         header("Content-Type: application/json");
-        $id = $this->input->post('id', TRUE);
+        $id = intval($this->input->post('id', TRUE));
         $type = trim($this->input->post('type', TRUE));
         $date = $this->input->post('startdate', TRUE);
         $d = DateTime::createFromFormat('Y-m-d', $date);
@@ -916,8 +916,8 @@ class Leaves extends CI_Controller
 
         //Returns end date of the yearly leave period or NULL if the user is not linked to a contract
         $this->load->model('contracts_model');
-        $startentdate = NULL;
-        $endentdate = NULL;
+        $startentdate = '';
+        $endentdate = '';
         $hasContract = $this->contracts_model->getBoundaries($id, $startentdate, $endentdate);
         $leaveValidator->PeriodStartDate = $startentdate;
         $leaveValidator->PeriodEndDate = $endentdate;
