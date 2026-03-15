@@ -3,7 +3,7 @@ WORKDIR /app/legacy
 COPY legacy/composer.json legacy/composer.lock ./
 RUN composer install --ignore-platform-reqs --no-dev
 
-FROM php:8.3-apache
+FROM php:8.4-apache
 RUN apt-get update && apt-get install -y zlib1g-dev \
     libzip-dev \
     libldap2-dev \
