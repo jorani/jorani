@@ -25,14 +25,14 @@ $samlSettings = array(
         'NameIDFormat' => 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
     ),
     'idp' => array(
-        'entityId' => '',
+        'entityId' => ($v = getenv('SAML_IDP_ENTITY_ID')) !== false ? $v : '',
         'singleSignOnService' => array(
-            'url' => '',
+            'url' => ($v = getenv('SAML_IDP_SINGLE_SIGNON_SERVICE')) !== false ? $v : '',
         ),
         'singleLogoutService' => array(
-            'url' => '',
+            'url' => ($v = getenv('SAML_IDP_SINGLE_LOGOUT_SERVICE')) !== false ? $v : '',
         ),
-        'x509cert' => '',
+        'x509cert' => ($v = getenv('SAML_IDP_X509_CERT')) !== false ? $v : '',
     ),
 
     /////////////////////////////////////////////////////////////////////////////////

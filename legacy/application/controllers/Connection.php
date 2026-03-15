@@ -396,6 +396,10 @@ class Connection extends CI_Controller
             log_message('error', '{controllers/session/acs} SSO Errors=' . implode(', ', $errors));
         }
 
+        echo 'debug', 'SAML NameID=' . var_export($auth->getNameId(), true);
+        echo "\n<br />\n";
+        echo 'debug', 'SAML Errors=' . json_encode($auth->getErrors());
+
         $loggedin = FALSE;
         if ($auth->isAuthenticated()) {
             $this->session->set_userdata("samlUserdata", $auth->getAttributes());

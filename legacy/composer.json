@@ -18,7 +18,7 @@
         "phpoffice/phpspreadsheet": "^5.5",
         "mitoteam/jpgraph": "^10.5.2",
         "respect/validation": "^2.4",
-        "onelogin/php-saml": "^4.1.0",
+        "onelogin/php-saml": "^4.3",
         "zircote/swagger-php": "^6.0.6",
         "phpmailer/phpmailer": "^6.8.0"
     },

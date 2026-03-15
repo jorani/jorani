@@ -30,5 +30,20 @@ services:
     volumes:
       - ldap_data:/bitnami/openldap
       - ./docker/ldap/ldif:/ldifs:ro
+  saml-idp:
+    image: kenchan0130/simplesamlphp
+    container_name: saml-idp
+    ports:
+      - "8080:8080"
+    environment:
+      SIMPLESAMLPHP_SP_ENTITY_ID: "http://localhost/api/metadata"
+      SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE: "http://localhost/api/acs"
+      SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE: "http://localhost/api/sls"
+    volumes:
+      - ./docker/simplesamlphp/config/authsources.php:/var/www/simplesamlphp/config/authsources.php
+      - ./docker/simplesamlphp/config/config.php:/var/www/simplesamlphp/config/config.php
+      - ./docker/simplesamlphp/metadata/saml20-idp-hosted.php:/var/www/simplesamlphp/metadata/saml20-idp-hosted.php
+      - ./docker/simplesamlphp/cert/my-idp.crt:/var/www/simplesamlphp/cert/my-idp.crt:ro
+      - ./docker/simplesamlphp/cert/my-idp.pem:/var/www/simplesamlphp/cert/my-idp.pem:ro
 volumes:
   ldap_data:
