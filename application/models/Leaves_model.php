@@ -869,13 +869,52 @@ class Leaves_model extends CI_Model {
      * @return string JSON encoded list of full calendar events
      * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function collaborators($user_id, $start = "", $end = "") {
+
+    private function getCollaboratorLeaves($user_id, $start = "", $end = "") {
+        if ($this->config->item('manager_sees_multiple_level_collaborators') === TRUE) {
+            $this->load->model('users_model');
+            $collaborators = $this->users_model->getCollaboratorsOfManager($user_id);
+            $leaves = $this->getLeavesForUsers($collaborators, $start, $end);
+            return $leaves;
+        }
+        // This one should be much more efficient it is only based on one SQL query
+        $leaves = $this->getDirectCollaboratorLeaves($user_id, $start, $end);
+        return $leaves;
+    }
+
+    private function getLeavesForUsers($collaborators, $start = "", $end = "") {
+        $expandedleaves = array();
+        foreach ($collaborators as $collaborator) {
+           $leaves = $this->getIndividualLeaves($collaborator['id'], $start, $end);
+           if (!empty($leaves)) {
+               $expandedleaves = array_merge($expandedleaves, $leaves);
+           }
+        }
+        return $expandedleaves;
+    }
+
+    private function getIndividualLeaves($user_id, $start = "", $end = "") {
+        $this->db->join('users', 'users.id = leaves.employee');
+        $this->db->where('leaves.employee', $user_id);
+        $this->db->where('(leaves.startdate <= DATE(' . $this->db->escape($end) . ') AND leaves.enddate >= DATE(' . $this->db->escape($start) . '))');
+        $this->db->order_by('startdate', 'desc');
+        $this->db->limit(1024);  //Security limit
+        $events = $this->db->get('leaves')->result();
+        return $events;
+    }
+
+    private function getDirectCollaboratorLeaves($user_id, $start = "", $end = "") {
         $this->db->join('users', 'users.id = leaves.employee');
         $this->db->where('users.manager', $user_id);
         $this->db->where('(leaves.startdate <= DATE(' . $this->db->escape($end) . ') AND leaves.enddate >= DATE(' . $this->db->escape($start) . '))');
         $this->db->order_by('startdate', 'desc');
         $this->db->limit(1024);  //Security limit
         $events = $this->db->get('leaves')->result();
+        return $events;
+    }
+
+    public function collaborators($user_id, $start = "", $end = "") {
+        $events = $this->getCollaboratorLeaves($user_id, $start, $end);
 
         $jsonevents = array();
         foreach ($events as $entry) {

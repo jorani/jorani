@@ -488,6 +488,12 @@ $config['extra_status_requested'] = FALSE;
 //Set this value to TRUE if you want to allow manager to create leave requests in behalf of their collaborators
 $config['requests_by_manager'] = TRUE;
 
+//____________________________________________________________________________
+//Set this value to TRUE if you want to allow manager to see the collaborators of the collaboratos
+//By default only the immediate collaborators (direct reports) are shown
+//(beware that it will impact the performance setting this to TRUE)
+$config['manager_sees_multiple_level_collaborators'] = FALSE;
+
 //Set this value to true if you want to force the manager to comment rejections
 $config['mandatory_comment_on_reject'] = FALSE;
 

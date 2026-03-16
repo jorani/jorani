@@ -99,6 +99,14 @@ class Users_model extends CI_Model {
      * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
     public function getCollaboratorsOfManager($id = 0) {
+        if ($this->config->item('manager_sees_multiple_level_collaborators') === TRUE) {
+           $collaborators = $this->getMultipleLevelOfCollaboratorsOfManager($id);
+           return $collaborators;
+        }
+        return $this->getDirectCollaboratorsOfManager($id);
+    }
+
+    private function getDirectCollaboratorsOfManager($id = 0) {
         $this->db->select('users.*');
         $this->db->select('organization.name as department_name, positions.name as position_name, contracts.name as contract_name');
         $this->db->from('users');
@@ -111,6 +119,24 @@ class Users_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+
+    private function getMultipleLevelOfCollaboratorsOfManager($id = 0) {
+        $collaborators = $this->getDirectCollaboratorsOfManager($id);
+        if (empty($collaborators)) {
+           return $collaborators;
+        }
+        $expandedcollaborators = $collaborators;
+        foreach ($collaborators as $collaborator) {
+           if ($collaborator['id'] === $id) {
+              // already added, so do not add again (avoid infinite loop). Case of manager of himself.
+              continue;
+           }
+           $collaboratorsofcollaborator = $this->getMultipleLevelOfCollaboratorsOfManager($collaborator['id']);
+           $expandedcollaborators = array_merge($expandedcollaborators, $collaboratorsofcollaborator);
+        }
+        return $expandedcollaborators;
+    }
+
 
     /**
      * Check if an employee is the collaborator of the given user
