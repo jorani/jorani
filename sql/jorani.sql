@@ -485,7 +485,9 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
     `ip_address` varchar(45) NOT NULL,
     `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
     `data` blob NOT NULL,
-    KEY `ci_sessions_timestamp` (`timestamp`)
+    KEY `ci_sessions_timestamp` (`timestamp`),
+    INDEX `id` (`id`),
+    INDEX `ip_address` (`ip_address`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='CodeIgniter sessions (you can empty this table without consequence)';
 
 --
