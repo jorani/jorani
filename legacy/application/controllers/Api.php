@@ -62,10 +62,16 @@ class Api extends CI_Controller
 
     /**
      * Get a OAuth2 token
+     * @throws RuntimeException if the response is not an OAuth2\Response
      */
     public function token(): void
     {
-        $this->server->handleTokenRequest(OAuth2\Request::createFromGlobals())->send();
+        $response = $this->server->handleTokenRequest(OAuth2\Request::createFromGlobals());
+        if ($response instanceof OAuth2\Response) {
+            $response->send();
+            return;
+        }
+        throw new RuntimeException('Unexpected OAuth2 response type.');
     }
 
     /**
@@ -204,7 +210,7 @@ class Api extends CI_Controller
 
     /**
      * Add entitled days to a given employee
-     * @param int $id Unique identifier of an employee
+     * @param int $employeeId Unique identifier of an employee
      */
     public function addentitleddaysemployee($employeeId)
     {
@@ -239,9 +245,9 @@ class Api extends CI_Controller
     /**
      * Get the leaves counter of a given employee
      * @param int $employeeId Unique identifier of an employee
-     * @param string $refTmp tmp of the Date of reference (or current date if NULL)
+     * @param int|string|null $refTmp tmp of the Date of reference (or current date if NULL)
      */
-    public function leavessummary($employeeId, $refTmp = NULL)
+    public function leavessummary(int $employeeId, int|string|null $refTmp = NULL)
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -257,8 +263,8 @@ class Api extends CI_Controller
             $this->load->model('leaves_model');
             $refDate = $refTmp;
             if ($refTmp != NULL) {
-                if (strpos($refTmp, '-') === false) { //If we passed a timestamp
-                    $refDate = date("Y-m-d", $refTmp);
+                if (strpos((string) $refTmp, '-') === false) { //If we passed a timestamp
+                    $refDate = date("Y-m-d", (int) $refTmp);
                 }
             } else {
                 $refDate = date("Y-m-d");
@@ -281,20 +287,20 @@ class Api extends CI_Controller
 
     /**
      * Get all the leaves requests
-     * @param string $startDate tmp or string (YYYY-MM-DD) of the Start Date
-     * @param string $endDate tmp or string (YYYY-MM-DD) of the End Date
+     * @param int|string $startDate tmp or string (YYYY-MM-DD) of the Start Date
+     * @param int|string $endDate tmp or string (YYYY-MM-DD) of the End Date
      */
-    public function leavesInRange($startDate, $endDate)
+    public function leavesInRange(int|string $startDate, int|string $endDate)
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
         } else {
             //Convert the input timestamp if needed
             if (strpos($startDate, '-') === false) { //If we passed a timestamp
-                $startDate = date("Y-m-d", $startDate);
+                $startDate = date("Y-m-d", (int) $startDate);
             }
             if (strpos($endDate, '-') === false) { //If we passed a timestamp
-                $endDate = date("Y-m-d", $endDate);
+                $endDate = date("Y-m-d", (int) $endDate);
             }
             //Validate the input
             if (!$this->validateDate($startDate)) {

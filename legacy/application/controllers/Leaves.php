@@ -37,7 +37,6 @@ class Leaves extends CI_Controller
 
     /**
      * Display the list of the leave requests of the connected user
-     * 
      */
     public function index()
     {
@@ -62,9 +61,8 @@ class Leaves extends CI_Controller
     /**
      * Display the history of changes of a leave request
      * @param int $id Identifier of the leave request
-     * 
      */
-    public function history($id)
+    public function history(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('list_leaves');
         $data = getUserContext($this);
@@ -78,9 +76,8 @@ class Leaves extends CI_Controller
     /**
      * Display the details of leaves taken/entitled for the connected user
      * @param string $refDate Date (e.g. 2011-10-05)
-     * 
      */
-    public function counters($refDate = NULL)
+    public function counters(?string $refDate = NULL)
     {
         $this->auth->checkIfOperationIsAllowed('counters_leaves');
         $data = getUserContext($this);
@@ -111,9 +108,8 @@ class Leaves extends CI_Controller
      * Display a leave request
      * @param string $source Page source (leaves, requests) (self, manager)
      * @param int $id identifier of the leave request
-     * 
      */
-    public function view($source, $id)
+    public function view(string $source, int $id)
     {
         $this->auth->checkIfOperationIsAllowed('view_leaves');
         $this->load->model('users_model');
@@ -182,7 +178,7 @@ class Leaves extends CI_Controller
      * @param int $id Id of the leave request
      * @param string $source Page where we redirect after posting
      */
-    public function createComment($id, $source = "leaves/leaves")
+    public function createComment(int $id, string $source = "leaves/leaves")
     {
         $this->auth->checkIfOperationIsAllowed('view_leaves');
         $data = getUserContext($this);
@@ -201,14 +197,17 @@ class Leaves extends CI_Controller
         $json = json_encode($oldComment);
         $this->leaves_model->addComments($id, $json);
         if (isset($_GET['source'])) {
-            $source = $_GET['source'];
+            $source = trim((string) $_GET['source']);
+        }
+        // Reject absolute URLs and keep the default internal route.
+        if (preg_match('#^https?://#i', $source)) {
+            $source = "leaves/leaves";
         }
         redirect("/$source/$id");
     }
 
     /**
      * Create a leave request
-     * 
      */
     public function create()
     {
@@ -280,9 +279,8 @@ class Leaves extends CI_Controller
     /**
      * Edit a leave request
      * @param int $id Identifier of the leave request
-     * 
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('edit_leaves');
         $this->load->model('users_model');
@@ -426,9 +424,8 @@ class Leaves extends CI_Controller
      * Send an email reminder (so as to remind to the manager that he
      * must either accept/reject a request or a cancellation)
      * @param int $id Identifier of the leave request
-     * 
      */
-    public function reminder($id)
+    public function reminder(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('create_leaves');
         $data = getUserContext($this);
@@ -452,10 +449,9 @@ class Leaves extends CI_Controller
     /**
      * Send a leave request creation email to the manager of the connected employee
      * @param int $id Leave request identifier
-     * @param int $reminder In case where the employee wants to send a reminder
-     * 
+     * @param bool $reminder In case where the employee wants to send a reminder
      */
-    private function sendMailOnLeaveRequestCreation($id, $reminder = FALSE)
+    private function sendMailOnLeaveRequestCreation(int $id, bool $reminder = FALSE)
     {
         $this->load->model('users_model');
         $this->load->model('types_model');
@@ -507,9 +503,8 @@ class Leaves extends CI_Controller
      * Send a notification to the manager of the connected employee when the
      * leave request has been canceled by its collaborator.
      * @param int $id Leave request identifier
-     * 
      */
-    private function sendMailOnLeaveRequestCanceled($id)
+    private function sendMailOnLeaveRequestCanceled(int $id)
     {
         $this->load->model('users_model');
         $this->load->model('types_model');
@@ -547,10 +542,9 @@ class Leaves extends CI_Controller
     /**
      * Send a leave request cancellation email to the manager of the connected employee
      * @param int $id Leave request identifier
-     * @param int $reminder In case where the employee wants to send a reminder
-     * @author Guillaume Blaquiere <guillaume.blaquiere@gmail.com>
+     * @param bool $reminder In case where the employee wants to send a reminder
      */
-    private function sendMailOnLeaveRequestCancellation($id, $reminder = FALSE)
+    private function sendMailOnLeaveRequestCancellation(int $id, bool $reminder = FALSE)
     {
         $this->load->model('users_model');
         $this->load->model('types_model');
@@ -600,17 +594,15 @@ class Leaves extends CI_Controller
 
     /**
      * Send a generic email from the collaborator to the manager (delegate in copy) when a leave request is created or cancelled
-     * @param $leave Leave request
-     * @param $user Connected employee
-     * @param $manager Manger of connected employee
-     * @param $lang_mail Email language library
-     * @param $title Email Title
-     * @param $detailledSubject Email detailled Subject
-     * @param $emailModel template email to use
-     * @author Guillaume Blaquiere <guillaume.blaquiere@gmail.com>
-     *
+     * @param array $leave Leave request
+     * @param array $user Connected employee
+     * @param array $manager Manger of connected employee
+     * @param CI_Lang $lang_mail Email language library
+     * @param string $title Email Title
+     * @param string $detailledSubject Email detailled Subject
+     * @param string $emailModel template email to use
      */
-    private function sendGenericMail($leave, $user, $manager, $lang_mail, $title, $detailledSubject, $emailModel)
+    private function sendGenericMail(array $leave, array $user, array $manager, CI_Lang $lang_mail, string $title, string $detailledSubject, string $emailModel)
     {
 
         $date = new DateTime($leave['startdate']);
@@ -664,9 +656,8 @@ class Leaves extends CI_Controller
     /**
      * Delete a leave request
      * @param int $id identifier of the leave request
-     * 
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         $can_delete = FALSE;
         //Test if the leave request exists
@@ -717,9 +708,8 @@ class Leaves extends CI_Controller
      *  - Only the connected user can reject its own requests.
      *  - If the cancellation request is accepted, it goes on accepted
      * @param int $id identifier of the leave request
-     * 
      */
-    public function cancellation($id)
+    public function cancellation(int $id)
     {
         //Test if the leave request exists
         $leave = $this->leaves_model->getLeaves($id);
@@ -751,7 +741,7 @@ class Leaves extends CI_Controller
      * Next status is 'Canceled'
      * @param int $id identifier of the leave request
      */
-    public function cancel($id)
+    public function cancel(int $id)
     {
         //Test if the leave request exists
         $leave = $this->leaves_model->getLeaves($id);
@@ -788,7 +778,7 @@ class Leaves extends CI_Controller
      * Ajax endpoint : Send a list of fullcalendar events
      * @param int $id employee id or connected user (from session)
      */
-    public function individual($id = 0)
+    public function individual(int $id = 0)
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -822,34 +812,33 @@ class Leaves extends CI_Controller
 
     /**
      * Ajax endpoint : Send a list of fullcalendar events
-     * @param int $entity_id Entity identifier
+     * @param int $entityId Entity identifier
      */
-    public function organization($entity_id)
+    public function organization(int $entityId)
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
         $end = $this->input->get('end', TRUE);
         $children = filter_var($this->input->get('children', TRUE), FILTER_VALIDATE_BOOLEAN);
         $statuses = $this->input->get('statuses');
-        echo $this->leaves_model->department($entity_id, $start, $end, $children, $statuses);
+        echo $this->leaves_model->department($entityId, $start, $end, $children, $statuses);
     }
 
     /**
      * Ajax endpoint : Send a list of fullcalendar events
-     * @param int $list_id List identifier
+     * @param int $listId List identifier
      */
-    public function listEvents($list_id)
+    public function listEvents(int $listId)
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
         $end = $this->input->get('end', TRUE);
         $statuses = $this->input->get('statuses');
-        echo $this->leaves_model->getListRequest($list_id, $start, $end, $statuses);
+        echo $this->leaves_model->getListRequest($listId, $start, $end, $statuses);
     }
 
     /**
      * Ajax endpoint : Send a list of fullcalendar events
-     * 
      */
     public function department()
     {
@@ -867,12 +856,11 @@ class Leaves extends CI_Controller
      *  - try to calculate the duration of the leave
      *  - try to detect overlapping leave requests
      *  If the user is linked to a contract, returns end date of the yearly leave period or NULL
-     * 
      */
     public function validate()
     {
         header("Content-Type: application/json");
-        $id = intval($this->input->post('id', TRUE));
+        $employeeId = intval($this->input->post('id', TRUE));
         $type = trim($this->input->post('type', TRUE));
         $date = $this->input->post('startdate', TRUE);
         $d = DateTime::createFromFormat('Y-m-d', $date);
@@ -884,23 +872,23 @@ class Leaves extends CI_Controller
         $enddate = preg_replace("([^0-9-])", "", $enddate);
         $startdatetype = $this->input->post('startdatetype', TRUE);     //Mandatory field checked by frontend
         $enddatetype = $this->input->post('enddatetype', TRUE);       //Mandatory field checked by frontend
-        $leave_id = intval($this->input->post('leave_id', TRUE));
+        $leaveId = intval($this->input->post('leave_id', TRUE));
         $leaveValidator = new stdClass;
         $deductDayOff = FALSE;
-        if (isset($id) && isset($type)) {
+        if (($employeeId > 0) && ($type !== "")) {
             $typeObject = $this->types_model->getTypeByName($type);
             $deductDayOff = $typeObject['deduct_days_off'];
             if (isset($startdate) && $startdate !== "") {
-                $leaveValidator->credit = $this->leaves_model->getLeavesTypeBalanceForEmployee($id, $type, $startdate);
+                $leaveValidator->credit = $this->leaves_model->getLeavesTypeBalanceForEmployee($employeeId, $type, $startdate);
             } else {
-                $leaveValidator->credit = $this->leaves_model->getLeavesTypeBalanceForEmployee($id, $type);
+                $leaveValidator->credit = $this->leaves_model->getLeavesTypeBalanceForEmployee($employeeId, $type);
             }
         }
-        if (isset($id) && isset($startdate) && isset($enddate)) {
-            if (isset($leave_id)) {
-                $leaveValidator->overlap = $this->leaves_model->detectOverlappingLeaves($id, $startdate, $enddate, $startdatetype, $enddatetype, $leave_id);
+        if (($employeeId > 0) && isset($startdate) && isset($enddate)) {
+            if ($leaveId > 0) {
+                $leaveValidator->overlap = $this->leaves_model->detectOverlappingLeaves($employeeId, $startdate, $enddate, $startdatetype, $enddatetype, $leaveId);
             } else {
-                $leaveValidator->overlap = $this->leaves_model->detectOverlappingLeaves($id, $startdate, $enddate, $startdatetype, $enddatetype);
+                $leaveValidator->overlap = $this->leaves_model->detectOverlappingLeaves($employeeId, $startdate, $enddate, $startdatetype, $enddatetype);
             }
         }
 
@@ -908,15 +896,15 @@ class Leaves extends CI_Controller
         $this->load->model('contracts_model');
         $startentdate = '';
         $endentdate = '';
-        $hasContract = $this->contracts_model->getBoundaries($id, $startentdate, $endentdate);
+        $hasContract = $this->contracts_model->getBoundaries($employeeId, $startentdate, $endentdate);
         $leaveValidator->PeriodStartDate = $startentdate;
         $leaveValidator->PeriodEndDate = $endentdate;
         $leaveValidator->hasContract = $hasContract;
 
         //Add non working days between the two dates (including their type: morning, afternoon and all day)
-        if (isset($id) && ($startdate != '') && ($enddate != '') && $hasContract === TRUE) {
+        if (($employeeId > 0) && ($startdate != '') && ($enddate != '') && $hasContract === TRUE) {
             $this->load->model('dayoffs_model');
-            $leaveValidator->listDaysOff = $this->dayoffs_model->listOfDaysOffBetweenDates($id, $startdate, $enddate);
+            $leaveValidator->listDaysOff = $this->dayoffs_model->listOfDaysOffBetweenDates($employeeId, $startdate, $enddate);
             //Sum non-working days and overlapping with day off detection
             $result = $this->leaves_model->actualLengthAndDaysOff($startdate, $enddate, $startdatetype, $enddatetype, $leaveValidator->listDaysOff, $deductDayOff);
             $leaveValidator->overlapDayOff = $result['overlapping'];
@@ -924,16 +912,13 @@ class Leaves extends CI_Controller
             $leaveValidator->length = $result['length'];
         }
         //If the user has no contract, simply compute a date difference between start and end dates
-        if (isset($id) && isset($startdate) && isset($enddate) && $hasContract === FALSE) {
-            $leaveValidator->length = $this->leaves_model->length($id, $startdate, $enddate, $startdatetype, $enddatetype);
+        if (($employeeId > 0) && isset($startdate) && isset($enddate) && $hasContract === FALSE) {
+            $leaveValidator->length = $this->leaves_model->length($employeeId, $startdate, $enddate, $startdatetype, $enddatetype);
         }
 
         //Repeat start and end dates of the leave request
         $leaveValidator->RequestStartDate = $startdate;
         $leaveValidator->RequestEndDate = $enddate;
-
-        //log_message('error', '{controllers/leaves/validate} type=' . $type . ' id=' . $id . ' startdate=' . $startdate . ' enddate=' . $enddate . ' startdatetype=' . $startdatetype . ' enddatetype=' . $enddatetype . ' leave_id=' . $leave_id . ' deductDayOff=' . $deductDayOff . ' hasContract=' . $hasContract . ' PeriodStartDate=' . $startentdate . ' PeriodEndDate=' . $endentdate . ' overlap=' . $leaveValidator->overlap . ' overlapDayOff=' . $leaveValidator->overlapDayOff . ' lengthDaysOff=' . $leaveValidator->lengthDaysOff . ' length=' . $leaveValidator->length . ' RequestStartDate=' . $leaveValidator->RequestStartDate . ' RequestEndDate=' . $leaveValidator->RequestEndDate);
-
         echo json_encode($leaveValidator);
     }
 }

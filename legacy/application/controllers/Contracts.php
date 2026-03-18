@@ -3,7 +3,6 @@
  * This controller allows to manage the contracts
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -248,7 +247,6 @@ class Contracts extends CI_Controller
      * Ajax endpoint : include a leave type into a contract
      * @param int $contractId identifier of the contract
      * @param int $typeId identifier of the leave type
-     * 
      */
     public function includeTypeFromContract(int $contractId, int $typeId)
     {

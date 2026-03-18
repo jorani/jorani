@@ -107,7 +107,6 @@ class Admin extends CI_Controller
 
     /**
      * Ajax action: create an OAuth clients
-     * 
      */
     public function oauthClientsCreate()
     {
@@ -135,7 +134,6 @@ class Admin extends CI_Controller
 
     /**
      * Ajax action: delete an OAuth client
-     * 
      */
     public function oauthClientsDelete()
     {
@@ -158,7 +156,6 @@ class Admin extends CI_Controller
 
     /**
      * purgeAccessTokens
-     * 
      */
     public function oauthTokensPurge()
     {
@@ -167,5 +164,4 @@ class Admin extends CI_Controller
         $this->oauthclients_model->purgeAccessTokens();
         redirect('admin/oauthclients#sessions');
     }
-
 }

@@ -18,10 +18,11 @@
         "sabre/uri": "^3.0",
         "phpoffice/phpspreadsheet": "^5.5",
         "mitoteam/jpgraph": "^10.5.2",
-        "respect/validation": "^2.4",
         "onelogin/php-saml": "^4.3",
         "zircote/swagger-php": "^6.0.6",
-        "phpmailer/phpmailer": "^7.0"
+        "phpmailer/phpmailer": "^7.0",
+        "league/oauth2-client": "^2.9",
+        "league/oauth2-google": "^4.2"
     },
     "autoload": {
         "psr-4": {

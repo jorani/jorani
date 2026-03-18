@@ -3,7 +3,6 @@
  * This controller serves the ajax endpoints that manages entitled days
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -20,7 +19,6 @@ class Entitleddays extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -33,20 +31,19 @@ class Entitleddays extends CI_Controller
     /**
      * Display an ajax-based form that list entitled days of a user
      * and allow updating the list by adding or removing one item
-     * @param int $id User identifier
-     * 
+     * @param int $userId User identifier
      */
-    public function user($id)
+    public function user(int $userId)
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_user');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
-        $data['id'] = $id;
-        $data['entitleddays'] = $this->entitleddays_model->getEntitledDaysForEmployee($id);
+        $data['id'] = $userId;
+        $data['entitleddays'] = $this->entitleddays_model->getEntitledDaysForEmployee($userId);
         $this->load->model('types_model');
         $data['types'] = $this->types_model->getTypes();
         $this->load->model('users_model');
-        $user = $this->users_model->getUsers($id);
+        $user = $this->users_model->getUsers($userId);
         $data['employee_name'] = $user['firstname'] . ' ' . $user['lastname'];
 
         if (!empty($user['contract'])) {
@@ -72,20 +69,19 @@ class Entitleddays extends CI_Controller
     /**
      * Display an ajax-based form that list entitled days of a contract
      * and allow updating the list by adding or removing one item
-     * @param int $id contract identifier
-     * 
+     * @param int $contractId contract identifier
      */
-    public function contract($id)
+    public function contract(int $contractId)
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_contract');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
-        $data['id'] = $id;
-        $data['entitleddays'] = $this->entitleddays_model->getEntitledDaysForContract($id);
+        $data['id'] = $contractId;
+        $data['entitleddays'] = $this->entitleddays_model->getEntitledDaysForContract($contractId);
         $this->load->model('types_model');
         $data['types'] = $this->types_model->getTypes();
         $this->load->model('contracts_model');
-        $contract = $this->contracts_model->getContracts($id);
+        $contract = $this->contracts_model->getContracts($contractId);
         $data['contract_name'] = $contract['name'];
         $data['contract_start_month'] = intval(substr($contract['startentdate'], 0, 2));
         $data['contract_start_day'] = intval(substr($contract['startentdate'], 3));
@@ -104,9 +100,8 @@ class Entitleddays extends CI_Controller
      * Ajax endpoint : delete an entitled days credit (to an employee)
      * and returns the number of rows affected
      * @param int $id entitled days credit identifier
-     * 
      */
-    public function userdelete($id)
+    public function userdelete(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_user_delete');
         $this->output->set_content_type('text/plain');
@@ -117,9 +112,8 @@ class Entitleddays extends CI_Controller
      * Ajax endpoint : delete an entitled days credit (to a contract)
      * and returns the number of rows affected
      * @param int $id entitled days credit identifier
-     * 
      */
-    public function contractdelete($id)
+    public function contractdelete(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_contract_delete');
         $this->output->set_content_type('text/plain');
@@ -128,7 +122,6 @@ class Entitleddays extends CI_Controller
 
     /**
      * Ajax endpoint : insert into the list of entitled days for a given user
-     * 
      */
     public function ajax_user()
     {
@@ -153,7 +146,6 @@ class Entitleddays extends CI_Controller
 
     /**
      * Ajax endpoint : insert into the list of entitled days for a given contract
-     * 
      */
     public function ajax_contract()
     {
@@ -180,10 +172,10 @@ class Entitleddays extends CI_Controller
      * Ajax endpoint : Update an entitled days row 
      * on a contract of an employee (as the both are stored into the same table)
      * id : row identifier into the database
-     * operation : "increase" or "decrease" by 1 (the number can be negative).
-     *                  "credit" modify the value of the credit
-     *                  "update" update all the value of the credit line
-     * 
+     * operation : 
+     *  - "increase" or "decrease" by 1 (the number can be negative).
+     *  - "credit" modify the value of the credit
+     *  - "update" update all the value of the credit line
      */
     public function ajax_update()
     {

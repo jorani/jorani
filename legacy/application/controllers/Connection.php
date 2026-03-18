@@ -10,6 +10,10 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
+use League\OAuth2\Client\Provider\Google;
+use League\OAuth2\Client\Token\AccessToken;
+use RuntimeException;
+
 /**
  * This class manages the connection to the application
  * CodeIgniter uses a cookie to store session's details.
@@ -83,9 +87,9 @@ class Connection extends CI_Controller
                     $ldapUri = sprintf('ldap://%s:%d', $this->config->item('ldap_host'), $this->config->item('ldap_port'));
                     $ldap = ldap_connect($ldapUri);
                     ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-                    set_error_handler(function () { /* ignore errors */
+                    set_error_handler(static function (int $_errno, string $_errstr, string $_errfile, int $_errline): bool {
+                        return true; /* ignore errors */
                     });
-
                     $basedn = "";
                     if (($this->config->item('ldap_search_enabled')) === TRUE) {
                         $bind = ldap_bind($ldap, $this->config->item('ldap_search_user'), $this->config->item('ldap_search_password'));
@@ -247,17 +251,18 @@ class Connection extends CI_Controller
 
         if (!is_null($authCode)) {
             $this->load->model('users_model');
-            switch ($oauth2Provider) {
+            switch (strtolower($oauth2Provider)) {
                 case 'google':
-                    $provider = new League\OAuth2\Client\Provider\Google(array(
+                    $provider = new Google([
                         'clientId' => $oauth2ClientId,
                         'clientSecret' => $oauth2ClientSecret,
                         'redirectUri' => 'postmessage',
                         'accessType' => 'offline',
-                    ));
-                    $token = $provider->getAccessToken('authorization_code', array('code' => $authCode));
+                    ]);
+                    /** @var AccessToken $token */
+                    $token = $provider->getAccessToken('authorization_code', ['code' => $authCode]);
                     try {
-                        //We try to get the e-mail address from the Google+ API
+                        /** @var \League\OAuth2\Client\Provider\GoogleUser $ownerDetails */
                         $ownerDetails = $provider->getResourceOwner($token);
                         $email = $ownerDetails->getEmail();
                         //If we find the e-mail address into the database, we're good
@@ -273,9 +278,11 @@ class Connection extends CI_Controller
                     break;
                 default:
                     $this->output->set_output('ERROR: unsupported OAuth2 provider');
+                    return;
             }
         } else {
             $this->output->set_output('ERROR: Invalid OAuth2 token');
+            return;
         }
     }
 
@@ -284,6 +291,8 @@ class Connection extends CI_Controller
      */
     public function metadata()
     {
+        /** @var array<string, mixed> $samlSettings */
+        $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
         require_once APPPATH . 'config/saml.php';
         $settings = new OneLogin\Saml2\Settings($samlSettings, true);
         $metadata = $settings->getSPMetadata();
@@ -304,6 +313,8 @@ class Connection extends CI_Controller
      */
     public function sso()
     {
+        /** @var array<string, mixed> $samlSettings */
+        $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
         require_once APPPATH . 'config/saml.php';
         $auth = new OneLogin\Saml2\Auth($samlSettings);
         $auth->login();
@@ -316,6 +327,8 @@ class Connection extends CI_Controller
      */
     public function slo()
     {
+        /** @var array<string, mixed> $samlSettings */
+        $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
         require_once APPPATH . 'config/saml.php';
         $auth = new OneLogin\Saml2\Auth($samlSettings);
         if ($samlSettings['idp']['singleLogoutService']['url'] === '') {
@@ -327,7 +340,7 @@ class Connection extends CI_Controller
             $this->load->view('templates/footer');
         } else {
             $returnTo = null;
-            $paramters = array();
+            $paramters = [];
             $nameId = null;
             $sessionIndex = null;
             if ($this->session->userdata("samlNameId") !== FALSE) {
@@ -336,9 +349,9 @@ class Connection extends CI_Controller
             if ($this->session->userdata("samlSessionIndex") !== FALSE) {
                 $sessionIndex = $this->session->userdata("samlSessionIndex");
             }
-            $auth->logout($returnTo, $paramters, $nameId, $sessionIndex);
             $this->session->sess_destroy();
-            redirect('api/sso');
+            $auth->logout($returnTo, $paramters, $nameId, $sessionIndex, false);
+            redirect('api/sso'); // @phpstan-ignore deadCode.unreachable (False positive)
         }
     }
 
@@ -347,21 +360,18 @@ class Connection extends CI_Controller
      */
     public function sls()
     {
+        /** @var array<string, mixed> $samlSettings */
+        $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
         require_once APPPATH . 'config/saml.php';
         $auth = new OneLogin\Saml2\Auth($samlSettings);
-        if (isset($this->session) && ($this->session->userdata("LogoutRequestID") !== FALSE)) {
+        if ($this->session->userdata("LogoutRequestID") !== FALSE) {
             $requestID = $this->session->userdata("LogoutRequestID");
         } else {
             $requestID = null;
         }
-
-        $auth->processSLO(false, $requestID);
-        $errors = $auth->getErrors();
-        if (!empty($errors)) {
-            log_message('error', '{controllers/session/sls} SSO Errors=' . implode(', ', $errors));
-        }
         $this->session->sess_destroy();
-        redirect('api/sso');
+        $auth->processSLO(false, $requestID, false, null, false);
+        redirect('api/sso'); // @phpstan-ignore deadCode.unreachable (False positive)
     }
 
     /**
@@ -369,9 +379,11 @@ class Connection extends CI_Controller
      */
     public function acs()
     {
+        /** @var array<string, mixed> $samlSettings */
+        $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
         require_once APPPATH . 'config/saml.php';
         $auth = new OneLogin\Saml2\Auth($samlSettings);
-        if (isset($this->session) && ($this->session->userdata("AuthNRequestID") !== FALSE)) {
+        if ($this->session->userdata("AuthNRequestID") !== FALSE) {
             $requestID = $this->session->userdata("AuthNRequestID");
         } else {
             $requestID = null;

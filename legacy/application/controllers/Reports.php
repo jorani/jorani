@@ -3,7 +3,6 @@
  * This controller serves the list of custom reports and the system reports.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.2.0
  */
 
@@ -22,7 +21,6 @@ class Reports extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -34,7 +32,6 @@ class Reports extends CI_Controller
 
     /**
      * List the available custom reports (provided they are described into local/reports/*.ini)
-     * 
      */
     public function index()
     {
@@ -393,5 +390,4 @@ class Reports extends CI_Controller
         $data['include_children'] = filter_var($_GET['children'], FILTER_VALIDATE_BOOLEAN);
         $this->load->view('reports/leaves/export', $data);
     }
-
 }

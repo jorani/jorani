@@ -3,7 +3,6 @@
  * This controller serves all the actions performed on postions
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -21,7 +20,6 @@ class Positions extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -33,7 +31,6 @@ class Positions extends CI_Controller
 
     /**
      * Display list of positions
-     * 
      */
     public function index()
     {
@@ -52,7 +49,6 @@ class Positions extends CI_Controller
 
     /**
      * Display a popup showing the list of positions
-     * 
      */
     public function select()
     {
@@ -65,7 +61,6 @@ class Positions extends CI_Controller
 
     /**
      * Display a form that allows adding a position
-     * 
      */
     public function create()
     {
@@ -93,9 +88,8 @@ class Positions extends CI_Controller
     /**
      * Display a form that allows to edit a position
      * @param int $id position identifier
-     * 
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('edit_positions');
         $data = getUserContext($this);
@@ -125,9 +119,8 @@ class Positions extends CI_Controller
     /**
      * Delete a position
      * @param int $id position identifier
-     * 
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('delete_positions');
         $this->positions_model->deletePosition($id);
@@ -137,7 +130,6 @@ class Positions extends CI_Controller
 
     /**
      * Export the list of all positions into an Excel file
-     * 
      */
     public function export()
     {

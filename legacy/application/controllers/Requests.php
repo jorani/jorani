@@ -3,7 +3,6 @@
  * This controller allows a manager to list and manage leave requests submitted to him
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -24,7 +23,6 @@ class Requests extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -38,10 +36,9 @@ class Requests extends CI_Controller
     /**
      * Display the list of all requests submitted to you
      * Status is submitted or accepted/rejected depending on the filter parameter.
-     * @param string $name Filter the list of submitted leave requests (all or requested)
-     * 
+     * @param string $filter Filter the list of submitted leave requests (all or requested)
      */
-    public function index($filter = 'requested')
+    public function index(string $filter = 'requested')
     {
         $this->auth->checkIfOperationIsAllowed('list_requests');
         $data = getUserContext($this);
@@ -69,9 +66,8 @@ class Requests extends CI_Controller
     /**
      * Accept a leave request
      * @param int $id leave request identifier
-     * 
      */
-    public function accept($id)
+    public function accept(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('accept_requests');
         $this->load->model('users_model');
@@ -101,9 +97,8 @@ class Requests extends CI_Controller
     /**
      * Reject a leave request
      * @param int $id leave request identifier
-     * 
      */
-    public function reject($id)
+    public function reject(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('reject_requests');
         $this->load->model('users_model');
@@ -137,9 +132,8 @@ class Requests extends CI_Controller
     /**
      * Accept the cancellation of a leave request
      * @param int $id leave request identifier
-     * 
      */
-    public function acceptCancellation($id)
+    public function acceptCancellation(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('accept_requests');
         $this->load->model('users_model');
@@ -169,9 +163,8 @@ class Requests extends CI_Controller
     /**
      * Reject the cancellation of a leave request
      * @param int $id leave request identifier
-     * 
      */
-    public function rejectCancellation($id)
+    public function rejectCancellation(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('reject_requests');
         $this->load->model('users_model');
@@ -205,7 +198,6 @@ class Requests extends CI_Controller
 
     /**
      * Display the list of all requests submitted to the line manager (Status is submitted)
-     * 
      */
     public function collaborators()
     {
@@ -226,9 +218,8 @@ class Requests extends CI_Controller
     /**
      * Display the list of delegations
      * @param int $id Identifier of the manager (from HR/Employee) or 0 if self
-     * 
      */
-    public function delegations($id = 0)
+    public function delegations(int $id = 0)
     {
         if ($id == 0)
             $id = $this->user_id;
@@ -256,7 +247,6 @@ class Requests extends CI_Controller
 
     /**
      * Ajax endpoint : Delete a delegation for a manager
-     * 
      */
     public function deleteDelegations()
     {
@@ -278,7 +268,6 @@ class Requests extends CI_Controller
 
     /**
      * Ajax endpoint : Add a delegation for a manager
-     * 
      */
     public function addDelegations()
     {
@@ -305,7 +294,6 @@ class Requests extends CI_Controller
     /**
      * Create a leave request in behalf of a collaborator
      * @param int $id Identifier of the employee
-     * 
      */
     public function createleave($id)
     {
@@ -362,9 +350,8 @@ class Requests extends CI_Controller
      * Send a leave request email to the employee that requested the leave.
      * @param int $id Leave request identifier
      * @param int $transition Transition in the workflow of leave request
-     * 
      */
-    private function sendMail($id, $transition)
+    private function sendMail(int $id, int $transition)
     {
         $this->load->model('users_model');
         $this->load->model('organization_model');
@@ -386,6 +373,9 @@ class Requests extends CI_Controller
         $startdate = $date->format($lang_mail->line('global_date_format'));
         $date = new DateTime($leave['enddate']);
         $enddate = $date->format($lang_mail->line('global_date_format'));
+        $title = '';
+        $subject = '';
+        $message = '';
 
         switch ($transition) {
             case LMS_REQUESTED_ACCEPTED:
@@ -450,9 +440,8 @@ class Requests extends CI_Controller
     /**
      * Export the list of all leave requests (sent to the connected user) into an Excel file
      * @param string $filter Filter the list of submitted leave requests (all or requested)
-     * 
      */
-    public function export($filter = 'requested')
+    public function export(string $filter = 'requested')
     {
         $data['filter'] = $filter;
         $this->load->view('requests/export', $data);
@@ -462,9 +451,8 @@ class Requests extends CI_Controller
      * Leave balance report limited to the subordinates of the connected manager
      * Status is submitted or accepted/rejected depending on the filter parameter.
      * @param int $dateTmp (Timestamp) date of report
-     * 
      */
-    public function balance($dateTmp = NULL)
+    public function balance(?int $dateTmp = NULL)
     {
         $this->auth->checkIfOperationIsAllowed('list_requests');
         $data = getUserContext($this);

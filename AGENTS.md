@@ -22,11 +22,11 @@
 - **Documentation:** All code comments must be in **English**. Explanations to the user should be in **French**.
 
 ## 4. Key Directory Map
-- `application/controllers/`: Routing and request validation.
-- `application/models/`: Database interactions (currently contains too much business logic).
-- `application/services/`: (New) Target folder for extracted business logic.
-- `application/views/`: Legacy HTML templates (to be deprecated by API endpoints).
-- `assets/`: Static files (JS/CSS).
+- `legacy/application/controllers/`: Routing and request validation.
+- `legacy/application/models/`: Database interactions (currently contains too much business logic).
+- `legacy/application/services/`: (New) Target folder for extracted business logic.
+- `legacy/application/views/`: Legacy HTML templates (to be deprecated by API endpoints).
+- `legacy/assets/`: Static files (JS/CSS).
 
 ## 5. Database Schema & Truth
 - **Schema Reference:** The source of truth for the database structure is located at `sql/jorani.sql`.

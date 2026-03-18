@@ -3,7 +3,6 @@
  * This controller allows to manage the list of leave types
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -19,7 +18,6 @@ class LeaveTypes extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -31,7 +29,6 @@ class LeaveTypes extends CI_Controller
 
     /**
      * Display the list of leave types
-     * 
      */
     public function index()
     {
@@ -49,7 +46,6 @@ class LeaveTypes extends CI_Controller
 
     /**
      * Display a form that allows adding a leave type
-     * 
      */
     public function create()
     {
@@ -77,9 +73,8 @@ class LeaveTypes extends CI_Controller
     /**
      * Display a form that allows editing a leave type
      * @param int $id Identitier of the leave type
-     * 
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_edit');
         $data = getUserContext($this);
@@ -110,9 +105,8 @@ class LeaveTypes extends CI_Controller
     /**
      * Action : delete a leave type
      * @param int $id leave type identifier
-     * 
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_delete');
         if ($id != 0) {
@@ -130,7 +124,6 @@ class LeaveTypes extends CI_Controller
 
     /**
      * Action: export the list of all leave types into an Excel file
-     * 
      */
     public function export()
     {

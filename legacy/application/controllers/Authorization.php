@@ -6,7 +6,6 @@
  * http://bshaffer.github.io/oauth2-server-php-docs/cookbook/
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since      0.6.0
  */
 
@@ -30,7 +29,6 @@ class Authorization extends CI_Controller
     /**
      * Default constructor
      * Initializing of OAuth2 server
-     * 
      */
     public function __construct()
     {
@@ -59,7 +57,6 @@ class Authorization extends CI_Controller
 
     /**
      * OAuth2 authorize endpoint 
-     * 
      */
     public function authorize()
     {
@@ -133,7 +130,6 @@ class Authorization extends CI_Controller
 
     /**
      * Get the details of the connected user
-     * 
      */
     public function userinfo()
     {
@@ -151,7 +147,6 @@ class Authorization extends CI_Controller
 
     /**
      * Handle the Simplified login form for OAuth authorization
-     * 
      */
     public function login()
     {

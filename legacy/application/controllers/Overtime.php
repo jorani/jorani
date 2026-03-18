@@ -3,7 +3,6 @@
  * This controller contains the actions allowing a manager to list and manage overtime requests
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -19,7 +18,6 @@ class Overtime extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -33,10 +31,9 @@ class Overtime extends CI_Controller
     /**
      * Display the list of all overtime requests submitted to the connected manager.
      * Status is submitted or accepted/rejected depending on the filter parameter.
-     * @param string $name Filter the list of submitted overtime requests (all or requested)
-     * 
+     * @param string $filter Filter the list of submitted overtime requests (all or requested)
      */
-    public function index($filter = 'requested')
+    public function index(string $filter = 'requested')
     {
         $this->auth->checkIfOperationIsAllowed('list_overtime');
         if ($filter == 'all') {
@@ -172,7 +169,7 @@ class Overtime extends CI_Controller
 
     /**
      * Export the list of all overtime requests (sent to the connected user) into an Excel file
-     * @param string $name Filter the list of submitted overtime requests (all or requested)
+     * @param string $filter Filter the list of submitted overtime requests (all or requested)
      * 
      */
     public function export($filter = 'requested')

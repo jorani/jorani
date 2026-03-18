@@ -75,10 +75,11 @@ class OAuthClients_model extends CI_Model
     /**
      * Delete an OAuth client from the database
      * @param string $clientId identifier of the OAuth client
+     * @return mixed TRUE or error message
      */
-    public function deleteOAuthClients(string $clientId): void
+    public function deleteOAuthClients(string $clientId): mixed
     {
-        $this->db->delete('oauth_clients', array('client_id' => $clientId));
+        return $this->db->delete('oauth_clients', array('client_id' => $clientId));
     }
 
     /**

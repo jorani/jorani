@@ -3,7 +3,6 @@
  * This controller contains the actions allowing an employee to list and manage its overtime requests
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -24,7 +23,6 @@ class Extra extends CI_Controller
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
@@ -37,7 +35,6 @@ class Extra extends CI_Controller
 
     /**
      * Display the list of the overtime requests by the connected employee
-     * 
      */
     public function index()
     {
@@ -58,9 +55,8 @@ class Extra extends CI_Controller
      * Display an overtime request
      * @param string $source Page source (extra, overtime) (self, manager)
      * @param int $id identifier of the overtime request
-     * 
      */
-    public function view($source, $id)
+    public function view(string $source, int $id)
     {
         $this->auth->checkIfOperationIsAllowed('view_extra');
         $data = getUserContext($this);
@@ -105,7 +101,6 @@ class Extra extends CI_Controller
 
     /**
      * Create an overtime request
-     * 
      */
     public function create()
     {
@@ -153,9 +148,8 @@ class Extra extends CI_Controller
     /**
      * Edit an overtime request
      * @param int $id identifier of the overtime request
-     * 
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $this->auth->checkIfOperationIsAllowed('edit_extra');
         $data = getUserContext($this);
@@ -167,8 +161,10 @@ class Extra extends CI_Controller
         //If the user is not its own manager and if the overtime is
         //already requested, the employee can't modify it
         if (!$this->is_hr) {
-            if (($this->session->userdata('manager') != $this->user_id) &&
-                $data['extra']['status'] != 1) {
+            if (
+                ($this->session->userdata('manager') != $this->user_id) &&
+                $data['extra']['status'] != 1
+            ) {
                 log_message('error', 'User #' . $this->user_id . ' illegally tried to edit overtime request #' . $id);
                 $this->session->set_flashdata('msg', lang('extra_edit_msg_error'));
                 redirect('extra');
@@ -216,9 +212,8 @@ class Extra extends CI_Controller
     /**
      * Send a overtime request email to the manager of the connected employee
      * @param int $id overtime request identifier
-     * 
      */
-    private function sendMail($id)
+    private function sendMail(int $id)
     {
         $this->load->model('users_model');
         $this->load->model('delegations_model');
@@ -268,9 +263,8 @@ class Extra extends CI_Controller
     /**
      * Delete an overtime request
      * @param int $id identifier of the overtime request
-     * 
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         $can_delete = FALSE;
         //Test if the overtime request exists
@@ -301,7 +295,6 @@ class Extra extends CI_Controller
 
     /**
      * Export the list of all ovetime requests of the connected user into an Excel file
-     * 
      */
     public function export()
     {

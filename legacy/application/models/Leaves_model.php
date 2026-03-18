@@ -3,7 +3,6 @@
  * This Model contains all the business logic and the persistence layer for leave request objects.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.1.0
  */
 
@@ -1742,8 +1741,8 @@ class Leaves_model extends CI_Model
         foreach ($dayoffs as $dayoff) {
             $iDate = new DateTime($dayoff->date);
             $dayNum = intval($iDate->format('d'));
-            $user->days[$dayNum]->display = (string) $dayoff->type + 3;
-            $user->days[$dayNum]->status = (string) $dayoff->type + 10;
+            $user->days[$dayNum]->display = (int) $dayoff->type + 3;
+            $user->days[$dayNum]->status = (int) $dayoff->type + 10;
             $user->days[$dayNum]->type = $dayoff->title;
         }
 

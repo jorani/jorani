@@ -65,13 +65,13 @@ class Hr extends CI_Controller
      * @param string $date2 Date Hired (optional)
      */
     public function employeesOfEntity(
-        $id = 0,
-        $children = TRUE,
-        $filterActive = "all",
-        $criterion1 = NULL,
-        $date1 = NULL,
-        $criterion2 = NULL,
-        $date2 = NULL
+        int $id = 0,
+        bool $children = TRUE,
+        string $filterActive = "all",
+        ?string $criterion1 = NULL,
+        ?string $date1 = NULL,
+        ?string $criterion2 = NULL,
+        ?string $date2 = NULL
     ) {
         if ($this->auth->isAllowed('list_employees') == FALSE) {
             return $this->output->set_header("HTTP/1.1 403 Forbidden");

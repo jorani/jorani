@@ -3,7 +3,6 @@
  * This controller loads the static and custom pages of the application
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.4.0
  */
 
@@ -48,7 +47,7 @@ class Pages extends CI_Controller
      * If the page name contains the keyword export, then we don't output the default template.
      * @param string $page Name of the view (and of the corresponding PHP file)
      */
-    public function view($page = 'home')
+    public function view(string $page = 'home')
     {
         $data = getUserContext($this);
         $trans = array("-" => " ", "_" => " ", "." => " ");
