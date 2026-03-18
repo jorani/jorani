@@ -14,7 +14,7 @@ class PositionAPI
      * Useful to get the labels into a cache
      */
     #[OA\Get(
-        path: "/api/positions/",
+        path: "/api/positions",
         summary: "List all positions",
         description: "Get the list of positions (useful to get the labels into a cache)",
         tags: ["Positions"],

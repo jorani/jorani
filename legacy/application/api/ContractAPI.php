@@ -13,7 +13,7 @@ class ContractAPI
      * Get all contracts
      */
     #[OA\Get(
-        path: "/api/contracts/",
+        path: "/api/contracts",
         description: "Get the list of contracts",
         tags: ["Contracts"],
         security: [['jorani_auth' => []]],

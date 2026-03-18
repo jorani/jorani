@@ -30,10 +30,13 @@ use OpenApi\Attributes as OA;
     ]
 )]
 #[OA\License(name: 'MIT')]
+#[OA\Tag(name: "Users", description: "Management of users")]
+#[OA\Tag(name: "Positions", description: "Management of positions")]
 #[OA\Tag(name: "Contracts", description: "Operations related to employee contracts")]
 #[OA\Tag(name: "Entitled Days", description: "Operations related to entitled days")]
 #[OA\Tag(name: "Leaves", description: "Management of leave requests")]
-#[OA\Tag(name: "Positions", description: "Management of positions")]
+#[OA\Tag(name: "Overtime", description: "Management of overtime requests")]
+#[OA\Tag(name: "Organization", description: "Management of the organization")]
 class OpenApiSpec
 {
 }

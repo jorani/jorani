@@ -169,7 +169,7 @@ class LeaveAPI
 
 
     #[OA\Post(
-        path: "/api/leaves/",
+        path: "/api/leaves",
         description: "Create a new leave request in the database. This endpoint is typically used for imposed leaves and does not trigger email notifications.",
         tags: ["Leaves"],
         security: [['jorani_auth' => []]],

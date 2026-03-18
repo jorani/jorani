@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
 class LeaveTypeAPI
 {
     #[OA\Get(
-        path: "/api/leavetypes/",
+        path: "/api/leavetypes",
         summary: "List all leave types",
         description: "Get the list of leave types (useful to get the labels into a cache)",
         tags: ["Leaves"],
