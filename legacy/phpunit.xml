@@ -3,13 +3,6 @@
 
     <php>
         <ini name="error_reporting" value="-1" />
-        <env name="TEST_API_BASE_URL" value="http://localhost/jorani/api/rest/" />
     </php>
 
-    <testsuites>
-        <testsuite name="REST API Test Suite">
-            <directory suffix=".php">tests/</directory>
-            <exclude>tests/rest/</exclude>
-        </testsuite>
-    </testsuites>
 </phpunit>
