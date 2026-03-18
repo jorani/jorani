@@ -18,8 +18,7 @@
     "moment": "^2.29.1",
     "popper.js": "^1.16.0",
     "sass": "^1.69.1",
-    "select2": "^4.0.13",
-    "swagger-ui": "^5.9.0"
+    "select2": "^4.0.13"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

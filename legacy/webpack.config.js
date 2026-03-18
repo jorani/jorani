@@ -7,8 +7,7 @@ module.exports = {
   entry: {
     legacy: './src/legacy.js',
     modern: './src/modern.js',
-    requirements: './src/requirements.js',
-    swagger: './src/swagger.js',
+    requirements: './src/requirements.js'
   },
   output: {
     path: path.resolve(__dirname, '../assets/dist'),
@@ -18,9 +17,6 @@ module.exports = {
   },
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
-    fallback: {
-      "stream": false
-    }
   },
   module: {
     rules: [

@@ -108,7 +108,7 @@
  */
 
 /*!
- * jsTree 3.3.16
+ * jsTree 3.3.17
  * http://jstree.com/
  *
  * Copyright (c) 2014 Ivan Bozhanov (http://vakata.com)
