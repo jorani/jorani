@@ -20,6 +20,7 @@ if (!defined('BASEPATH')) {
  *  - contracts
  *  - leaves
  *  - selfservice
+ * @property CI_DB_query_builder $db
  */
 class OAuthClients_model extends CI_Model
 {

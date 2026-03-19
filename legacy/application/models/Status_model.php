@@ -12,6 +12,7 @@ if (!defined('BASEPATH')) {
 
 /**
  * This Class contains all the business logic and the persistence layer for the status of leave request.
+ * @property CI_DB_query_builder $db
  */
 class Status_model extends CI_Model
 {

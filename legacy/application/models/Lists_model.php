@@ -15,6 +15,7 @@ if (!defined('BASEPATH')) {
 /**
  * This Class contains all the business logic and the persistence layer for
  * custom lists of employees.
+ * @property CI_DB_query_builder $db
  */
 class Lists_model extends CI_Model
 {

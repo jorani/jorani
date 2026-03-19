@@ -14,6 +14,8 @@ if (!defined('BASEPATH')) {
  * This class contains the business logic and manages the persistence of delegations.
  * A manager (M) can give a delegation to any other employee (E).
  * An employee (E) having the delegation can act as a manager of the employees managed by the manager (M).
+ * @property CI_Config $config
+ * @property CI_DB $db
  */
 class Delegations_model extends CI_Model
 {

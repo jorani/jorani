@@ -12,6 +12,12 @@ if (!defined('BASEPATH')) {
 
 /**
  * This class contains the business logic and manages the persistence of contracts.
+ * @property CI_Config $config
+ * @property CI_DB $db
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
  */
 class Contracts_model extends CI_Model
 {

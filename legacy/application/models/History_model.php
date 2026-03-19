@@ -24,6 +24,8 @@ if (!defined('BASEPATH')) {
  *     1 - create
  *     2 - update
  *     3 - delete
+ * 
+ * @property CI_DB_query_builder $db
  */
 class History_model extends CI_Model
 {

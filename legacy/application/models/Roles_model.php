@@ -14,6 +14,7 @@ if (!defined('BASEPATH')) {
  * Not fully implemented, this class will allow to tweak user management with 
  * a binary mask indicating the authorizations granted for each role.
  * As of today, the user management is simplified with libraries/Auth
+ * @property CI_DB_query_builder $db
  */
 class Roles_model extends CI_Model
 {

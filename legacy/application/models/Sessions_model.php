@@ -8,6 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 
  * @license https://opensource.org/licenses/MIT MIT
  * @since   1.0.4
+ * @property CI_DB_query_builder $db
  */
 class Sessions_model extends CI_Model
 {

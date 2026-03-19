@@ -14,6 +14,7 @@ if (!defined('BASEPATH')) {
  * This class allows to manage the organization of of users. Users can be attached to a node of a tree.
  * These nodes are called 'entities' and can be 'departments' or 'sub-departments', 'groups', etc.
  * It allows to use filters on a part of your structure, whatever your organization is.
+ * @property CI_DB_query_builder $db
  */
 class Organization_model extends CI_Model
 {

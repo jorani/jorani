@@ -12,6 +12,7 @@ if (!defined('BASEPATH')) {
 
 /**
  * This Class contains all the business logic and the persistence layer for the types of leave request.
+ * @property CI_DB_query_builder $db
  */
 class Types_model extends CI_Model
 {

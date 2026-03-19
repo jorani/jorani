@@ -16,6 +16,12 @@ if (!defined('BASEPATH')) {
  * It encompasses the notions of:
  *  - Extra (when requested by an employee).
  *  - Overtime (when sumitted to a manager for a validation).
+ * @property CI_DB $db
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property CI_Session $session
+ * @property Contracts_model $contracts_model
+ * @property Delegations_model $delegations_model
  */
 class Overtime_model extends CI_Model
 {

@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="3"
+    errorLevel="5"
     resolveFromConfigFile="true"
+    allFunctionsGlobal="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -18,6 +19,14 @@
             <directory name="application/views" />
         </ignoreFiles>
     </projectFiles>
+
+    <extraFiles>
+        <directory name="system" />
+    </extraFiles>
+
+    <stubs>
+        <file name="psalm-stubs.php" />
+    </stubs>
 
     <issueHandlers>
         <UndefinedPropertyFetch errorLevel="suppress" />

@@ -13,6 +13,7 @@ if (!defined('BASEPATH')) {
 /**
  * This class contains the business logic and manages the persistence of entitled days.
  * Entitled days are a kind of leave credit given at a contract (many employees) or at employee level.
+ * @property CI_DB $db
  */
 class Entitleddays_model extends CI_Model
 {

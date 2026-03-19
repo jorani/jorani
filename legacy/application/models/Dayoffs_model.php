@@ -16,6 +16,11 @@ use Sabre\VObject;
 /**
  * This class contains the business logic and manages the persistence of non working days.
  * non working days are defined on a contract. This operation must be done every year.
+ * @property CI_Config $config
+ * @property CI_DB $db
+ * @property CI_Loader $load
+ * @property CI_Session $session
+ * @property Organization_model $organization_model
  */
 class Dayoffs_model extends CI_Model
 {

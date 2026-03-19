@@ -14,6 +14,16 @@ if (!defined('BASEPATH')) {
  * This model contains the business logic and manages the persistence of users (employees)
  * It is also used by the session controller for the authentication.
  * As of today ther is no distinction between an employee and a user.
+ * @property CI_Config $config
+ * @property CI_DB $db
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property CI_Session $session
+ * @property Delegations_model $delegations_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property Overtime_model $overtime_model
+ * @property Organization_model $organization_model
  */
 class Users_model extends CI_Model
 {

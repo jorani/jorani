@@ -12,6 +12,17 @@ if (!defined('BASEPATH')) {
 
 /**
  * This class contains the business logic and manages the persistence of leave requests.
+ * @property CI_Config $config
+ * @property CI_DB $db
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property CI_Session $session
+ * @property Dayoffs_model $dayoffs_model
+ * @property Delegations_model $delegations_model
+ * @property History_model $history_model
+ * @property Organization_model $organization_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Leaves_model extends CI_Model
 {
@@ -1355,7 +1366,7 @@ class Leaves_model extends CI_Model
         } else {
             $this->db->where('organization.id', $entity_id);
         }
-        $this->db->where('leaves.status != ', 4);       //Exclude rejected requests
+        $this->db->where('leaves.status != ', LMS_REJECTED);       //Exclude rejected requests
         $this->db->order_by('startdate', 'desc');
         $events = $this->db->get()->result_array();
         return $events;

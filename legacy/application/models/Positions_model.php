@@ -15,6 +15,7 @@ if (!defined('BASEPATH')) {
  * A postion describes the kind of job of an employee. As Jorani is not an HRM System,
  * This information has no technical value, but can be useful for an HR Manager for
  * verification purposes or if a position grants some kind of entitilments.
+ * @property CI_DB_query_builder $db
  */
 class Positions_model extends CI_Model
 {
