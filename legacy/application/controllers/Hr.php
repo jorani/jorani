@@ -275,8 +275,8 @@ class Hr extends CI_Controller
         $this->load->model('types_model');
         $data['types'] = $this->types_model->getTypes();
         $data['leaves'] = $this->leaves_model->getLeavesOfEmployee($id);
-        $enableHistory = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
-        if ($enableHistory === TRUE) {
+        $enableHistory = filter_var($this->config->item('enable_history'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($enableHistory == TRUE) {
             $this->load->model('history_model');
             $data['deletedLeaves'] = $this->history_model->getDeletedLeaveRequests($id);
         }

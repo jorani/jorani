@@ -122,8 +122,12 @@ class Reports extends CI_Controller
             $result[$user->id]['identifier'] = $user->identifier;
             $result[$user->id]['firstname'] = $user->firstname;
             $result[$user->id]['lastname'] = $user->lastname;
-            $date = new DateTime($user->datehired);
-            $result[$user->id]['datehired'] = $date->format(lang('global_date_format'));
+            if (!is_null($user->datehired)) {
+                $date = new DateTime($user->datehired);
+                $result[$user->id]['datehired'] = $date->format(lang('global_date_format'));
+            } else {
+                $result[$user->id]['datehired'] = '';
+            }
             $result[$user->id]['department'] = $user->department;
             $result[$user->id]['position'] = $user->position;
             $result[$user->id]['contract'] = $user->contract;
@@ -264,8 +268,12 @@ class Reports extends CI_Controller
             $result[$user->id]['identifier'] = $user->identifier;
             $result[$user->id]['firstname'] = $user->firstname;
             $result[$user->id]['lastname'] = $user->lastname;
-            $date = new DateTime($user->datehired);
-            $result[$user->id]['datehired'] = $date->format(lang('global_date_format'));
+            if (!is_null($user->datehired)) {
+                $date = new DateTime($user->datehired);
+                $result[$user->id]['datehired'] = $date->format(lang('global_date_format'));
+            } else {
+                $result[$user->id]['datehired'] = '';
+            }
             $result[$user->id]['department'] = $user->department;
             $result[$user->id]['position'] = $user->position;
             $result[$user->id]['contract'] = $user->contract;

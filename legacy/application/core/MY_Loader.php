@@ -18,9 +18,9 @@ class MY_Loader extends CI_Loader
    * @param string $view name of the extended view
    * @param array $vars data to be passed to the extended view
    * @param bool $return TRUE if we want to eval the view and to return it as a  string
-   * @return string (optionnal) content of the parsed view
+   * @return MY_Loader (optionnal) content of the parsed view
    */
-  function customView(string $folder, string $view, array $vars = array(), bool $return = FALSE): string
+  function customView(string $folder, string $view, array $vars = array(), bool $return = FALSE): MY_Loader
   {
     //We don't use $this->_ci_view_paths
     $this->_ci_view_paths = array_merge(array($folder . '/' => TRUE), $this->_ci_view_paths);
