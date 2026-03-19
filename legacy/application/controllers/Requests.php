@@ -17,6 +17,20 @@ if (!defined('BASEPATH')) {
  *  - counters of an employee (leave balance).
  *  - Yearly calendar of an employee.
  * But those reports are not served by this controller (either HR or Calendar controller).
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Requests extends CI_Controller
 {

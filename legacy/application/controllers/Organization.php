@@ -14,6 +14,20 @@ if (!defined('BASEPATH')) {
  * This class allows to manage the organization of of users. Users can be attached to a node of a tree.
  * These nodes are called 'entities' and can be 'departments' or 'sub-departments', 'groups', etc.
  * It allows to use filters on a part of your structure, whatever your organization is.
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Organization extends CI_Controller
 {
@@ -54,7 +68,8 @@ class Organization extends CI_Controller
      */
     public function select(): void
     {
-        if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if (($publicCalendar === TRUE) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
             $data['language'] = $this->config->item('language');
             $data['language_code'] = $this->polyglot->language2code($data['language']);
@@ -235,7 +250,8 @@ class Organization extends CI_Controller
     public function root(): void
     {
         header("Content-Type: application/json");
-        if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if (($publicCalendar === TRUE) && (!$this->session->userdata('logged_in'))) {
             //nop
         } else {
             setUserContext($this);

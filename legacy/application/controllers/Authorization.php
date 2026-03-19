@@ -15,6 +15,12 @@ if (!defined('BASEPATH')) {
 
 /**
  * This class implements a OAuth2 Authorization mechanism for a 3rd application
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property OAuthClients_model $oauthclients_model
+ * @property Users_model $users_model* 
  */
 class Authorization extends CI_Controller
 {

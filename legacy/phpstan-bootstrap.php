@@ -6,6 +6,8 @@ define('ENVIRONMENT', 'development');
 
 require_once 'system/core/Controller.php';
 require_once 'system/core/Model.php';
+require_once 'system/core/Loader.php';
+require_once 'application/core/MY_Loader.php';
 
 require_once 'system/database/DB_driver.php';
 require_once 'system/database/DB_query_builder.php';

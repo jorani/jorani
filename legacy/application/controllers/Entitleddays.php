@@ -13,6 +13,20 @@ if (!defined('BASEPATH')) {
 /**
  * This class serves the ajax endpoints that manages entitled days.
  * Entitled days are a kind of leave credit given at a contract (many employees) or at employee level.
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Entitleddays extends CI_Controller
 {

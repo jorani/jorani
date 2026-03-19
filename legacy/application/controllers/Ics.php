@@ -15,6 +15,20 @@ use Sabre\VObject;
 
 /**
  * This class builds all the ICS (webcal, ical) feeds exposed by Jorani.
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Ics extends CI_Controller
 {
@@ -53,11 +67,13 @@ class Ics extends CI_Controller
      */
     private function checkIfAccessIsGranted(): bool
     {
-        if ($this->config->item('ics_enabled') === FALSE) {
+        $icsEnabled = filter_var($this->config->item('ics_enabled'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        $legacyFeeds = filter_var($this->config->item('legacy_feeds'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($icsEnabled === FALSE) {
             return FALSE;
         }
         $this->load->model('users_model');
-        if ($this->config->item('legacy_feeds') === FALSE) {
+        if ($legacyFeeds === FALSE) {
             if ($this->input->get('token')) {
                 if (!$this->users_model->checkUserByHash($this->input->get('token', TRUE))) {
                     return FALSE;
@@ -80,7 +96,7 @@ class Ics extends CI_Controller
             $this->timezone = $employee['timezone'];
         } else {
             $this->timezone = $this->config->item('default_timezone');
-            if ($this->timezone === FALSE)
+            if ($this->timezone == null)
                 $this->timezone = 'Europe/Paris';
         }
         $this->lang->load('global', $this->polyglot->code2language($employee['language']));

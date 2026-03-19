@@ -13,6 +13,20 @@ if (!defined('BASEPATH')) {
 /**
  * This class displays the calendars of the leave requests.
  * In opposition to the other pages of the application, some calendars can be public (no need to be logged in).
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Calendar extends CI_Controller
 {
@@ -180,9 +194,9 @@ class Calendar extends CI_Controller
         $month = date('m');
         //When the user uses the calendar for the first time, select the root entity
         $this->load->model('organization_model');
-        if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($publicCalendar === TRUE && !$this->session->userdata('logged_in')) {
             $this->load->library('polyglot');
-            ;
             $data['language'] = $this->config->item('language');
             $data['language_code'] = $this->polyglot->language2code($data['language']);
             $data['title'] = lang('calendar_organization_title');
@@ -227,7 +241,8 @@ class Calendar extends CI_Controller
     public function publicOrganization(int $entityId): void
     {
         $this->output->set_content_type('application/json');
-        if ($this->config->item('public_calendar') === TRUE) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($publicCalendar === TRUE) {
             $this->load->model('leaves_model');
             $start = $this->input->get('start', TRUE);
             $end = $this->input->get('end', TRUE);
@@ -245,7 +260,8 @@ class Calendar extends CI_Controller
     public function publicDayoffs(): void
     {
         $this->output->set_content_type('application/json');
-        if ($this->config->item('public_calendar') === TRUE) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($publicCalendar === TRUE) {
             $start = $this->input->get('start', TRUE);
             $end = $this->input->get('end', TRUE);
             $entity = $this->input->get('entity', TRUE);
@@ -267,7 +283,8 @@ class Calendar extends CI_Controller
      */
     public function tabular(int $id = -1, int $month = 0, int $year = 0, bool $children = TRUE, bool $displayTypes = TRUE): void
     {
-        if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($publicCalendar === TRUE && !$this->session->userdata('logged_in')) {
             $this->load->library('polyglot');
             $data['mode'] = 'public';
             $data['language'] = $this->config->item('language');
@@ -329,7 +346,8 @@ class Calendar extends CI_Controller
      */
     public function tabularPartial(int $id = -1, int $month = 0, int $year = 0, bool $children = TRUE, bool $displayTypes = TRUE): void
     {
-        if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($publicCalendar === TRUE && !$this->session->userdata('logged_in')) {
             $this->load->library('polyglot');
             $data['mode'] = 'public';
             $data['language'] = $this->config->item('language');
@@ -436,9 +454,9 @@ class Calendar extends CI_Controller
     {
         $data = array();
         //Load the language file (the loaded language depends if it was called from the public view)
-        if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
+        $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($publicCalendar === TRUE && !$this->session->userdata('logged_in')) {
             $this->load->library('polyglot');
-            ;
             $language = $this->config->item('language');
             $data['user_id'] = 0;
             $data['is_admin'] = FALSE;

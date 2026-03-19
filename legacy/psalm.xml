@@ -22,6 +22,7 @@
 
     <extraFiles>
         <directory name="system" />
+        <directory name="application/core" />
     </extraFiles>
 
     <stubs>

@@ -16,6 +16,20 @@ if (!defined('BASEPATH')) {
  *  - The non-working days (week-ends, public days off, part-time, etc.).
  *  - Entitled days for all employees attached to this contract.
  *  - The default period for leave credit (taken, available, entitled).
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Contracts extends CI_Controller
 {

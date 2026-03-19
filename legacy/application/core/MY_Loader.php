@@ -20,7 +20,7 @@ class MY_Loader extends CI_Loader
    * @param bool $return TRUE if we want to eval the view and to return it as a  string
    * @return string (optionnal) content of the parsed view
    */
-  function customView($folder, $view, $vars = array(), $return = FALSE)
+  function customView(string $folder, string $view, array $vars = array(), bool $return = FALSE): string
   {
     //We don't use $this->_ci_view_paths
     $this->_ci_view_paths = array_merge(array($folder . '/' => TRUE), $this->_ci_view_paths);

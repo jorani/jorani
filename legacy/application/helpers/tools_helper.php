@@ -11,13 +11,15 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 /**
  * Check if user is connected, redirect to login form otherwise
  * Set the user context by retrieving infos from session
  * @param CI_Controller $controller reference to CI Controller object
- * 
  */
-function setUserContext(CI_Controller $controller)
+function setUserContext(CI_Controller $controller): void
 {
     //Memorize the last displayed page except for Ajax queries
     if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') !== 'XMLHttpRequest') {
@@ -47,9 +49,8 @@ function setUserContext(CI_Controller $controller)
  * Prepare an array containing information about the current user
  * @param CI_Controller $controller reference to CI Controller object
  * @return array data to be passed to the view
- * 
  */
-function getUserContext(CI_Controller $controller)
+function getUserContext(CI_Controller $controller): array
 {
     $data['fullname'] = $controller->fullname;
     $data['is_manager'] = $controller->is_manager;
@@ -76,10 +77,9 @@ function getUserContext(CI_Controller $controller)
  * Check if user is connected, redirect to login form otherwise
  * Set the user context by retrieving infos from session
  * and load these data into the array passed to the view
- * @see setUserContext and getUserContext
- * 
+ * @see self::getUserContext()
  */
-function getCIUserContext()
+function getCIUserContext(): array
 {
     $controller = &get_instance();
     setUserContext($controller);
@@ -90,9 +90,8 @@ function getCIUserContext()
  * Sanitizes an input (GET/POST) coming from outside a form (eg Ajax request)
  * @param string $value value to be cleansed from characters that prevent Jorani to work
  * @return string value where problematic characters have been removed
- * 
  */
-function sanitize($value)
+function sanitize(string $value): string
 {
     $value = trim($value);
     $value = str_replace('\\', '', $value);
@@ -108,10 +107,9 @@ function sanitize($value)
  * @param string $subject Subject of the e-mail
  * @param string $message Message of the e-mail
  * @param string $to Recipient of the e-mail
- * @param string $cc (optional) Copied to recipients
- * 
+ * @param string|null $cc (optional) Copied to recipients
  */
-function sendMailByWrapper(CI_Controller $controller, $subject, $message, $to, $cc = NULL)
+function sendMailByWrapper(CI_Controller $controller, string $subject, string $message, string $to, ?string $cc = NULL): void
 {
     $controller->load->library('email');
     if ($controller->config->item('subject_prefix') !== NULL) {
@@ -135,11 +133,10 @@ function sendMailByWrapper(CI_Controller $controller, $subject, $message, $to, $
 
 /**
  * Finalize the export to a spreadsheet. Called from an export view.
- * @param $spreadsheet reference to the spreadsheet to be exported
- * @param $exportName Excel filename
- * 
+ * @param Spreadsheet $spreadsheet reference to the spreadsheet to be exported
+ * @param string $exportName Excel filename
  */
-function writeSpreadsheet(&$spreadsheet, $exportName = '')
+function writeSpreadsheet(Spreadsheet $spreadsheet, string $exportName = ''): void
 {
     $CI =& get_instance();
     $format = 'xlsx';
@@ -153,11 +150,11 @@ function writeSpreadsheet(&$spreadsheet, $exportName = '')
     switch ($format) {
         case 'ods':
             $CI->output->set_header('Content-Type: application/vnd.oasis.opendocument.spreadsheet');
-            $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Ods');
+            $objWriter = IOFactory::createWriter($spreadsheet, 'Ods');
             break;
         case 'xlsx':
             $CI->output->set_header('Content-Type: application/vnd.ms-excel');
-            $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
             break;
     }
     $objWriter->setIncludeCharts(true);
@@ -173,9 +170,8 @@ function writeSpreadsheet(&$spreadsheet, $exportName = '')
  * would return F
  * @param int $number Column index
  * @return string Excel representation of the column index
- * 
  */
-function columnName($number)
+function columnName(int $number): string
 {
     if ($number < 27) {
         return substr("ABCDEFGHIJKLMNOPQRSTUVWXYZ", $number - 1, 1);
@@ -193,7 +189,7 @@ if (!function_exists('cal_days_in_month')) {
      * @param int $year year number
      * @return int number of days in the month or 0 if error
      */
-    function cal_days_in_month($calendar, $month, $year)
+    function cal_days_in_month(int $calendar, int $month, int $year): int
     {
         if (checkdate($month, 31, $year))
             return 31;

@@ -14,6 +14,20 @@ if (!defined('BASEPATH')) {
  * This class serves all the actions performed by human resources department.
  * There is a distinction with Admin controller which contain technical actions on users.
  * HR controller deals with employees.
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Hr extends CI_Controller
 {
@@ -260,7 +274,8 @@ class Hr extends CI_Controller
         $this->load->model('types_model');
         $data['types'] = $this->types_model->getTypes();
         $data['leaves'] = $this->leaves_model->getLeavesOfEmployee($id);
-        if ($this->config->item('enable_history') === TRUE) {
+        $enableHistory = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($enableHistory === TRUE) {
             $this->load->model('history_model');
             $data['deletedLeaves'] = $this->history_model->getDeletedLeaveRequests($id);
         }

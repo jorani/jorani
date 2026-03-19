@@ -13,6 +13,9 @@ if (!defined('BASEPATH')) {
 /**
  * This class serve default and cutom pages.
  * Please note that a page can be the implementation of a custom report (see Controller Report)
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property MY_Loader $load
  */
 class Pages extends CI_Controller
 {

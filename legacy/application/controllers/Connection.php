@@ -16,6 +16,20 @@ use League\OAuth2\Client\Token\AccessToken;
 /**
  * This class manages the connection to the application
  * CodeIgniter uses a cookie to store session's details.
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Connection extends CI_Controller
 {
@@ -48,7 +62,8 @@ class Connection extends CI_Controller
     public function login(): void
     {
         //The login form is not used with SAML2 authentication mode
-        if ($this->config->item('saml_enabled') === TRUE) {
+        $samlEnabled = filter_var($this->config->item('saml_enabled'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($samlEnabled === TRUE) {
             redirect('api/sso');
         }
         //If we are already connected (login bookmarked), then redirect to home
@@ -80,7 +95,8 @@ class Connection extends CI_Controller
             $password = $this->input->post('password');
 
             $loggedin = FALSE;
-            if ($this->config->item('ldap_enabled') === TRUE) {
+            $ldapEnabled = filter_var($this->config->item('ldap_enabled'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+            if ($ldapEnabled === TRUE) {
                 if ($password != "") { //Bind to MS-AD with blank password might return OK
                     $ldapUri = sprintf('ldap://%s:%d', $this->config->item('ldap_host'), $this->config->item('ldap_port'));
                     $ldap = ldap_connect($ldapUri);
@@ -89,7 +105,8 @@ class Connection extends CI_Controller
                         return true; /* ignore errors */
                     });
                     $basedn = "";
-                    if (($this->config->item('ldap_search_enabled')) === TRUE) {
+                    $ldapSearchUser = filter_var($this->config->item('ldap_search_user'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+                    if ($ldapSearchUser === TRUE) {
                         $bind = ldap_bind($ldap, $this->config->item('ldap_search_user'), $this->config->item('ldap_search_password'));
                         $resultSet = ldap_search($ldap, $this->config->item('ldap_basedn'), sprintf($this->config->item('ldap_search_pattern'), $this->input->post('login')));
                         $userEntry = ldap_first_entry($ldap, $resultSet);
@@ -240,7 +257,7 @@ class Connection extends CI_Controller
      */
     public function loginOAuth2(): void
     {
-        $oauth2Enabled = $this->config->item('oauth2_enabled');
+        $oauth2Enabled = filter_var($this->config->item('oauth2_enabled'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
         $oauth2Provider = $this->config->item('oauth2_provider');
         $oauth2ClientId = $this->config->item('oauth2_client_id');
         $oauth2ClientSecret = $this->config->item('oauth2_client_secret');

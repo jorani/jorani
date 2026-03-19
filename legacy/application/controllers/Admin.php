@@ -13,6 +13,16 @@ if (!defined('BASEPATH')) {
 /**
  * This class serves the administration pages (readonly settings page for the moment).
  * In Jorani the settings are set into a configuration file and not into DB.
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Overtime_model $overtime_model
  */
 class Admin extends CI_Controller
 {

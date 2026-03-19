@@ -65,6 +65,20 @@ abstract class CI_Controller
     public $input;
     /** @var CI_Lang */
     public $lang;
+    public $is_manager;
+    public $is_admin;
+    public $is_hr;
+    public $user_id;
+    public $manager;
+    public $language;
+    public $language_code;
+    public $fullname;
+    public $output;
+    public $email;
+    public $config;
+    public $leaves_model;
+    public $overtime_model;
+    public $debugbarservice;
 
     public function __construct()
     {

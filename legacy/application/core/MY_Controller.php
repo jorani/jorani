@@ -26,7 +26,6 @@ class MY_RestController extends CI_Controller
     /**
      * Default constructor
      * Check user credentials
-     * 
      */
     public function __construct()
     {
@@ -129,9 +128,8 @@ class MY_RestController extends CI_Controller
      * @param array $availableLanguages list of languages supported by Jorani
      * @param string $httpAcceptLanguage HTTP Request Header (accept-language)
      * @return array associative array langCode/Score (eg. [en] => 0.8, [es] => 0.4)
-     * 
      */
-    private function preferedLanguages($availableLanguages, $httpAcceptLanguage)
+    private function preferedLanguages(array $availableLanguages, string $httpAcceptLanguage): array
     {
         $availableLanguages = array_flip($availableLanguages);
         $langs = array();
@@ -159,7 +157,7 @@ class MY_RestController extends CI_Controller
      * Pre-flight check for CORS requests
      * 
      */
-    public function options()
+    public function options(): void
     {
         log_message('debug', '__options');
     }
@@ -167,7 +165,7 @@ class MY_RestController extends CI_Controller
     /**
      * Terminate lifecycle of the web request if the user can't be authenticated
      */
-    protected function notAuthenticated()
+    protected function notAuthenticated(): never
     {
         log_message('error', ' /!\ notAuthenticated: Send back HTTP 401 Error');
         http_response_code(401);
@@ -178,7 +176,7 @@ class MY_RestController extends CI_Controller
     /**
      * Terminate lifecycle of the web request if the user doesn't have enough privileges
      */
-    protected function forbidden()
+    protected function forbidden(): never
     {
         log_message('error', ' /!\ forbidden: Send back HTTP 403 Error');
         http_response_code(403);
@@ -188,7 +186,7 @@ class MY_RestController extends CI_Controller
     /**
      * Terminate lifecycle of the web request if the object was not found
      */
-    protected function notFound()
+    protected function notFound(): never
     {
         log_message('error', ' /!\ notFound: The object was not found');
         http_response_code(404);
@@ -198,7 +196,7 @@ class MY_RestController extends CI_Controller
     /**
      * Terminate lifecycle of the web request if the parameters are invalid
      */
-    protected function badRequest()
+    protected function badRequest(): never
     {
         log_message('error', ' /!\ badRequest: Invalid input');
         http_response_code(400);

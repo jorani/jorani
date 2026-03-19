@@ -15,6 +15,20 @@ if (!defined('BASEPATH')) {
  *  - the list of custom reports described into local/reports/*.ini
  *  - the system reports implemented into Jorani.
  * The custom reports need to be implemented into local/pages/{lang}/ (see Controller Page)
+ * @property CI_Config $config
+ * @property CI_Lang $lang
+ * @property CI_Loader $load
+ * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
+ * @property Entitleddays_model $entitleddays_model
+ * @property Leaves_model $leaves_model
+ * @property OAuthClients_model $oauthclients_model
+ * @property Organization_model $organization_model
+ * @property Positions_model $positions_model
+ * @property Overtime_model $overtime_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  */
 class Reports extends CI_Controller
 {
