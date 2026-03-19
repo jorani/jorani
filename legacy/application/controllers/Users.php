@@ -31,7 +31,7 @@ class Users extends CI_Controller
     /**
      * Display the list of all users
      */
-    public function index()
+    public function index(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_users');
         $data = getUserContext($this);
@@ -51,7 +51,7 @@ class Users extends CI_Controller
      * Account management (activate/disable/delete) is done by a 
      * POST request with a CSRF token for an improved security
      */
-    public function account()
+    public function account(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_users');
         $userId = $this->input->post('id');
@@ -83,7 +83,7 @@ class Users extends CI_Controller
     /**
      * Display the modal pop-up content of the list of employees
      */
-    public function employees()
+    public function employees(): void
     {
         $this->auth->checkIfOperationIsAllowed('employees_list');
         $data = getUserContext($this);
@@ -98,9 +98,9 @@ class Users extends CI_Controller
      * The differences with the function employees are that multi select is
      * allowed and the last column contains the name of the entity the employee
      * belongs to.
-     * @see employees
+     * @see Users::employees()
      */
-    public function employeesMultiSelect()
+    public function employeesMultiSelect(): void
     {
         $this->auth->checkIfOperationIsAllowed('employees_list');
         $data = getUserContext($this);
@@ -113,7 +113,7 @@ class Users extends CI_Controller
     /**
      * Display details of the connected user (contract, line manager, etc.)
      */
-    public function myProfile()
+    public function myProfile(): void
     {
         $this->auth->checkIfOperationIsAllowed('view_myprofile');
         $this->load->library('polyglot');
@@ -143,7 +143,7 @@ class Users extends CI_Controller
      * Display a for that allows updating a given user
      * @param int $id User identifier
      */
-    public function edit($id)
+    public function edit($id): void
     {
         $this->auth->checkIfOperationIsAllowed('edit_user');
         $data = getUserContext($this);
@@ -203,7 +203,7 @@ class Users extends CI_Controller
      * Can be accessed by the user itself or by admin
      * @param int $id User identifier
      */
-    public function reset(int $id)
+    public function reset(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('change_password', $id);
 
@@ -270,7 +270,7 @@ class Users extends CI_Controller
     /**
      * Display the form / action Create a new user
      */
-    public function create()
+    public function create(): void
     {
         $this->auth->checkIfOperationIsAllowed('create_user');
         $data = getUserContext($this);
@@ -369,7 +369,7 @@ class Users extends CI_Controller
     /**
      * Ajax endpoint : check login duplication
      */
-    public function checkLoginByAjax()
+    public function checkLoginByAjax(): void
     {
         $this->output->set_content_type('text/plain');
         if ($this->users_model->isLoginAvailable($this->input->post('login'))) {
@@ -382,7 +382,7 @@ class Users extends CI_Controller
     /**
      * Action: export the list of all users into an Excel file
      */
-    public function export()
+    public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('export_user');
         $this->load->view('users/export');

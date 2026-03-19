@@ -38,7 +38,7 @@ class Leaves extends CI_Controller
     /**
      * Display the list of the leave requests of the connected user
      */
-    public function index()
+    public function index(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_leaves');
         $data = getUserContext($this);
@@ -62,7 +62,7 @@ class Leaves extends CI_Controller
      * Display the history of changes of a leave request
      * @param int $id Identifier of the leave request
      */
-    public function history(int $id)
+    public function history(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('list_leaves');
         $data = getUserContext($this);
@@ -77,7 +77,7 @@ class Leaves extends CI_Controller
      * Display the details of leaves taken/entitled for the connected user
      * @param string $refDate Date (e.g. 2011-10-05)
      */
-    public function counters(?string $refDate = NULL)
+    public function counters(?string $refDate = NULL): void
     {
         $this->auth->checkIfOperationIsAllowed('counters_leaves');
         $data = getUserContext($this);
@@ -109,7 +109,7 @@ class Leaves extends CI_Controller
      * @param string $source Page source (leaves, requests) (self, manager)
      * @param int $id identifier of the leave request
      */
-    public function view(string $source, int $id)
+    public function view(string $source, int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('view_leaves');
         $this->load->model('users_model');
@@ -178,7 +178,7 @@ class Leaves extends CI_Controller
      * @param int $id Id of the leave request
      * @param string $source Page where we redirect after posting
      */
-    public function createComment(int $id, string $source = "leaves/leaves")
+    public function createComment(int $id, string $source = "leaves/leaves"): void
     {
         $this->auth->checkIfOperationIsAllowed('view_leaves');
         $data = getUserContext($this);
@@ -209,7 +209,7 @@ class Leaves extends CI_Controller
     /**
      * Create a leave request
      */
-    public function create()
+    public function create(): void
     {
         $this->auth->checkIfOperationIsAllowed('create_leaves');
         $data = getUserContext($this);
@@ -280,7 +280,7 @@ class Leaves extends CI_Controller
      * Edit a leave request
      * @param int $id Identifier of the leave request
      */
-    public function edit(int $id)
+    public function edit(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('edit_leaves');
         $this->load->model('users_model');
@@ -396,7 +396,7 @@ class Leaves extends CI_Controller
      * change a the status of a planned request to  requested
      * @param int $id id of the leave
      */
-    public function requestLeave($id)
+    public function requestLeave($id): void
     {
         $leave = $this->leaves_model->getLeaves($id);
         if (empty($leave)) {
@@ -425,7 +425,7 @@ class Leaves extends CI_Controller
      * must either accept/reject a request or a cancellation)
      * @param int $id Identifier of the leave request
      */
-    public function reminder(int $id)
+    public function reminder(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('create_leaves');
         $data = getUserContext($this);
@@ -451,7 +451,7 @@ class Leaves extends CI_Controller
      * @param int $id Leave request identifier
      * @param bool $reminder In case where the employee wants to send a reminder
      */
-    private function sendMailOnLeaveRequestCreation(int $id, bool $reminder = FALSE)
+    private function sendMailOnLeaveRequestCreation(int $id, bool $reminder = FALSE): void
     {
         $this->load->model('users_model');
         $this->load->model('types_model');
@@ -504,7 +504,7 @@ class Leaves extends CI_Controller
      * leave request has been canceled by its collaborator.
      * @param int $id Leave request identifier
      */
-    private function sendMailOnLeaveRequestCanceled(int $id)
+    private function sendMailOnLeaveRequestCanceled(int $id): void
     {
         $this->load->model('users_model');
         $this->load->model('types_model');
@@ -544,7 +544,7 @@ class Leaves extends CI_Controller
      * @param int $id Leave request identifier
      * @param bool $reminder In case where the employee wants to send a reminder
      */
-    private function sendMailOnLeaveRequestCancellation(int $id, bool $reminder = FALSE)
+    private function sendMailOnLeaveRequestCancellation(int $id, bool $reminder = FALSE): void
     {
         $this->load->model('users_model');
         $this->load->model('types_model');
@@ -594,22 +594,20 @@ class Leaves extends CI_Controller
 
     /**
      * Send a generic email from the collaborator to the manager (delegate in copy) when a leave request is created or cancelled
-     * @param array $leave Leave request
-     * @param array $user Connected employee
-     * @param array $manager Manger of connected employee
+     * @param array<string, mixed> $leave Leave request
+     * @param array<string, mixed> $user Connected employee
+     * @param array<string, mixed> $manager Manger of connected employee
      * @param CI_Lang $lang_mail Email language library
      * @param string $title Email Title
      * @param string $detailledSubject Email detailled Subject
      * @param string $emailModel template email to use
      */
-    private function sendGenericMail(array $leave, array $user, array $manager, CI_Lang $lang_mail, string $title, string $detailledSubject, string $emailModel)
+    private function sendGenericMail(array $leave, array $user, array $manager, CI_Lang $lang_mail, string $title, string $detailledSubject, string $emailModel): void
     {
-
         $date = new DateTime($leave['startdate']);
         $startdate = $date->format($lang_mail->line('global_date_format'));
         $date = new DateTime($leave['enddate']);
         $enddate = $date->format($lang_mail->line('global_date_format'));
-
         $comments = $leave['comments'];
         $comment = '';
         if (!empty($comments)) {
@@ -622,7 +620,7 @@ class Leaves extends CI_Controller
         }
         log_message('info', "comment : " . $comment);
         $this->load->library('parser');
-        $data = array(
+        $data = [
             'Title' => $title,
             'Firstname' => $user['firstname'],
             'Lastname' => $user['lastname'],
@@ -638,7 +636,7 @@ class Leaves extends CI_Controller
             'LeaveId' => $leave['id'],
             'UserId' => $this->user_id,
             'Comments' => $comment
-        );
+        ];
         $message = $this->parser->parse('emails/' . $manager['language'] . '/' . $emailModel, $data, TRUE);
 
         $to = $manager['email'];
@@ -657,7 +655,7 @@ class Leaves extends CI_Controller
      * Delete a leave request
      * @param int $id identifier of the leave request
      */
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         $can_delete = FALSE;
         //Test if the leave request exists
@@ -709,7 +707,7 @@ class Leaves extends CI_Controller
      *  - If the cancellation request is accepted, it goes on accepted
      * @param int $id identifier of the leave request
      */
-    public function cancellation(int $id)
+    public function cancellation(int $id): void
     {
         //Test if the leave request exists
         $leave = $this->leaves_model->getLeaves($id);
@@ -741,7 +739,7 @@ class Leaves extends CI_Controller
      * Next status is 'Canceled'
      * @param int $id identifier of the leave request
      */
-    public function cancel(int $id)
+    public function cancel(int $id): void
     {
         //Test if the leave request exists
         $leave = $this->leaves_model->getLeaves($id);
@@ -769,7 +767,7 @@ class Leaves extends CI_Controller
     /**
      * Export the list of all leaves into an Excel file
      */
-    public function export()
+    public function export(): void
     {
         $this->load->view('leaves/export');
     }
@@ -778,7 +776,7 @@ class Leaves extends CI_Controller
      * Ajax endpoint : Send a list of fullcalendar events
      * @param int $id employee id or connected user (from session)
      */
-    public function individual(int $id = 0)
+    public function individual(int $id = 0): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -791,7 +789,7 @@ class Leaves extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      */
-    public function workmates()
+    public function workmates(): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -802,7 +800,7 @@ class Leaves extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      */
-    public function collaborators()
+    public function collaborators(): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -814,7 +812,7 @@ class Leaves extends CI_Controller
      * Ajax endpoint : Send a list of fullcalendar events
      * @param int $entityId Entity identifier
      */
-    public function organization(int $entityId)
+    public function organization(int $entityId): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -828,7 +826,7 @@ class Leaves extends CI_Controller
      * Ajax endpoint : Send a list of fullcalendar events
      * @param int $listId List identifier
      */
-    public function listEvents(int $listId)
+    public function listEvents(int $listId): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -840,7 +838,7 @@ class Leaves extends CI_Controller
     /**
      * Ajax endpoint : Send a list of fullcalendar events
      */
-    public function department()
+    public function department(): void
     {
         header("Content-Type: application/json");
         $this->load->model('organization_model');
@@ -857,7 +855,7 @@ class Leaves extends CI_Controller
      *  - try to detect overlapping leave requests
      *  If the user is linked to a contract, returns end date of the yearly leave period or NULL
      */
-    public function validate()
+    public function validate(): void
     {
         header("Content-Type: application/json");
         $employeeId = intval($this->input->post('id', TRUE));

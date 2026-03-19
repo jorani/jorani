@@ -31,7 +31,7 @@ class Positions_model extends CI_Model
     /**
      * Get the list of positions or one position
      * @param int $id optional id of a position
-     * @return ?array record of position(s) or NULL if position was not found
+     * @return array<string, mixed>|null record of position(s) or NULL if position was not found
      */
     public function getPositions(int $id = 0): ?array
     {

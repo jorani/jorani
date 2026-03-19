@@ -58,7 +58,7 @@ class Authorization extends CI_Controller
     /**
      * OAuth2 authorize endpoint 
      */
-    public function authorize()
+    public function authorize(): void
     {
         $request = OAuth2\Request::createFromGlobals();
         $response = new OAuth2\Response();
@@ -131,7 +131,7 @@ class Authorization extends CI_Controller
     /**
      * Get the details of the connected user
      */
-    public function userinfo()
+    public function userinfo(): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -148,7 +148,7 @@ class Authorization extends CI_Controller
     /**
      * Handle the Simplified login form for OAuth authorization
      */
-    public function login()
+    public function login(): void
     {
         //Decrypt password
         $password = $this->input->post('password');

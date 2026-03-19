@@ -33,7 +33,7 @@ class Overtime extends CI_Controller
      * Status is submitted or accepted/rejected depending on the filter parameter.
      * @param string $filter Filter the list of submitted overtime requests (all or requested)
      */
-    public function index(string $filter = 'requested')
+    public function index(string $filter = 'requested'): void
     {
         $this->auth->checkIfOperationIsAllowed('list_overtime');
         if ($filter == 'all') {
@@ -58,9 +58,8 @@ class Overtime extends CI_Controller
     /**
      * Accept an overtime request
      * @param int $id overtime request identifier
-     * 
      */
-    public function accept($id)
+    public function accept($id): void
     {
         $this->auth->checkIfOperationIsAllowed('accept_overtime');
         $this->load->model('users_model');
@@ -90,9 +89,8 @@ class Overtime extends CI_Controller
     /**
      * Reject an overtime request
      * @param int $id overtime request identifier
-     * 
      */
-    public function reject($id)
+    public function reject($id): void
     {
         $this->auth->checkIfOperationIsAllowed('reject_overtime');
         $this->load->model('users_model');
@@ -123,9 +121,8 @@ class Overtime extends CI_Controller
      * Send a overtime request email to the employee that requested the overtime
      * The method will check if the overtime request was accepted or rejected before sending the e-mail
      * @param int $id overtime request identifier
-     * 
      */
-    private function sendMail($id)
+    private function sendMail($id): void
     {
         $this->load->model('users_model');
         $this->load->model('organization_model');
@@ -157,7 +154,7 @@ class Overtime extends CI_Controller
             'Cause' => $extra['cause']
         );
 
-        if ($extra['status'] == 3) {
+        if ($extra['status'] == LMS_ACCEPTED) {
             $message = $this->parser->parse('emails/' . $employee['language'] . '/overtime_accepted', $data, TRUE);
             $subject = $lang_mail->line('email_overtime_request_accept_subject');
         } else {
@@ -170,12 +167,10 @@ class Overtime extends CI_Controller
     /**
      * Export the list of all overtime requests (sent to the connected user) into an Excel file
      * @param string $filter Filter the list of submitted overtime requests (all or requested)
-     * 
      */
-    public function export($filter = 'requested')
+    public function export($filter = 'requested'): void
     {
         $data['filter'] = $filter;
         $this->load->view('overtime/export', $data);
     }
-
 }

@@ -31,7 +31,7 @@ class Overtime_model extends CI_Model
     /**
      * Get the list of all overtime requests or one overtime request
      * @param int $id Id of the overtime request
-     * @return ?array list of extra(s) or NULL if extra was not found
+     * @return array<string, mixed>|null list of extra(s) or NULL if extra was not found
      */
     public function getExtras($id = 0): ?array
     {
@@ -49,7 +49,7 @@ class Overtime_model extends CI_Model
     /**
      * Get the the list of overtime requested by a given employee
      * @param int $employee ID of the employee
-     * @return array list of records
+     * @return array<string, mixed> list of records
      */
     public function getExtrasOfEmployee($employee): array
     {
@@ -170,7 +170,7 @@ class Overtime_model extends CI_Model
      * Can be filtered with "Requested" status.
      * @param int $user_id connected user
      * @param bool $all TRUE all requests, FALSE otherwise
-     * @return array Recordset (can be empty if no requests or not a manager)
+     * @return array<string, mixed> Recordset of extras (can be empty if no requests or not a manager)
      */
     public function requests($user_id, $all = FALSE): array
     {
@@ -242,7 +242,7 @@ class Overtime_model extends CI_Model
 
     /**
      * Detect overtime with a negative duration. This is a warning as it substract entitled days to user.
-     * @return array list of invalid requests
+     * @return array<string, mixed> list of invalid requests
      */
     public function detectNegativeOvertime(): array
     {

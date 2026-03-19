@@ -29,7 +29,7 @@ class Users_model extends CI_Model
     /**
      * Get the list of users or one user
      * @param int $id optional id of one user
-     * @return ?array record of user(s) or NULL if user was not found
+     * @return array<string, mixed>|null record of user(s) or NULL if user was not found
      */
     public function getUsers(int $id = 0): ?array
     {
@@ -44,7 +44,7 @@ class Users_model extends CI_Model
 
     /**
      * Get the list of users and their roles
-     * @return array record of users
+     * @return array<string, mixed> record of users
      */
     public function getUsersAndRoles(): array
     {
@@ -58,7 +58,7 @@ class Users_model extends CI_Model
 
     /**
      * Get the list of employees
-     * @return array record of users
+     * @return array<string, mixed> record of users
      */
     public function getAllEmployees(): array
     {
@@ -69,7 +69,7 @@ class Users_model extends CI_Model
 
     /**
      * Get the list of employees and the name of their entities
-     * @return array record of users
+     * @return array<string, mixed> record of users
      */
     public function getAllEmployeesAndTheirEntities(): array
     {
@@ -100,7 +100,7 @@ class Users_model extends CI_Model
     /**
      * Get the list of employees that are the collaborators of the given user
      * @param int $id identifier of the manager
-     * @return array record of users
+     * @return array<string, mixed> record of users
      */
     public function getCollaboratorsOfManager(int $id = 0): array
     {
@@ -320,12 +320,11 @@ class Users_model extends CI_Model
      * Update a user record in the database. the difference with update_users function is that it doesn't rely
      * on values posted by en HTML form. Can be used by a mass importer for example.
      * @param int $id Id of the user
-     * @param array $data Associative array of fields to be updated
+     * @param array<string, mixed> $data Associative array of fields to be updated
      * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
     public function updateUserByApi(int $id, array $data): bool
     {
-        //TODO: this method is not completed
         $password = $data['password'];
         if (isset($password)) {
             //Hash the clear password using bcrypt (8 iterations)
@@ -667,7 +666,7 @@ class Users_model extends CI_Model
      * @param ?string $date1 Date Hired (optional)
      * @param ?string $criterion2 "lesser" or "greater" (optional)
      * @param ?string $date2 Date Hired (optional)
-     * @return array record of users
+     * @return array<object> record of users
      */
     public function employeesOfEntity(
         int $id = 0,
@@ -697,7 +696,7 @@ class Users_model extends CI_Model
         if ($children == TRUE) {
             $this->load->model('organization_model');
             $list = $this->organization_model->getAllChildren($id);
-            $ids = array();
+            $ids = [];
             if (count($list) > 0) {
                 if ($list[0]['id'] != '') {
                     $ids = explode(",", $list[0]['id']);
@@ -859,7 +858,7 @@ class Users_model extends CI_Model
     /**
      * Update the manager of a list of employees
      * @param int $managerId DB Identifier of the manager
-     * @param array $usersList List of DB ID of the affected employees
+     * @param array<int> $usersList List of DB ID of the affected employees
      * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
     public function updateManagerForUserList(int $managerId, array $usersList): bool
@@ -871,7 +870,7 @@ class Users_model extends CI_Model
     /**
      * Update the entity of a list of employees
      * @param int $entityId DB Identifier of the entity
-     * @param array $usersList List of DB ID of the affected employees
+     * @param array<int> $usersList List of DB ID of the affected employees
      * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
     public function updateEntityForUserList(int $entityId, array $usersList): bool
@@ -883,7 +882,7 @@ class Users_model extends CI_Model
     /**
      * Update the contract of a list of employees
      * @param int $contractId DB Identifier of the contract
-     * @param array $usersList List of DB ID of the affected employees
+     * @param array<int> $usersList List of DB ID of the affected employees
      * @return bool TRUE if the SQL query is successful, FALSE otherwise
      */
     public function updateContractForUserList(int $contractId, array $usersList): bool

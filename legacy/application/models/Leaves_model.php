@@ -38,7 +38,7 @@ class Leaves_model extends CI_Model
     /**
      * Get the list of all leave requests or one leave
      * @param int $leaveRequestId Id of the leave request
-     * @return ?array list of leave(s) or NULL if leave was not found
+     * @return array<string, mixed>|null list of leave(s) or NULL if leave was not found
      */
     public function getLeaves(int $leaveRequestId = 0): ?array
     {
@@ -58,7 +58,7 @@ class Leaves_model extends CI_Model
      * Get the the list of leaves requested for a given employee
      * Id are replaced by label
      * @param int $employeeId ID of the employee
-     * @return array list of records
+     * @return array<string, mixed> list of records
      */
     public function getLeavesOfEmployee(int $employeeId): array
     {
@@ -76,7 +76,7 @@ class Leaves_model extends CI_Model
     /**
      * Get the list of leaves of an employee with their history
      * @param int $employeeId Id of the employee
-     * @return array list of records
+     * @return array<string, mixed> list of records
      */
     public function getLeavesOfEmployeeWithHistory(int $employeeId): array
     {
@@ -103,7 +103,7 @@ class Leaves_model extends CI_Model
      * @param int $employeeId ID of the employee
      * @param string $startDate Start date
      * @param string $endDate End date
-     * @return array list of records
+     * @return array<string, mixed> list of records
      * @throws InvalidArgumentException if the dates are not valid or if the start date is after the end date
      */
     public function getAcceptedLeavesBetweenDates(int $employeeId, string $startDate, string $endDate): array
@@ -177,9 +177,17 @@ class Leaves_model extends CI_Model
      * @param string $enddate end date of the leave request
      * @param string $startdatetype start date type of leave request being created (Morning or Afternoon)
      * @param string $enddatetype end date type of leave request being created (Morning or Afternoon)
-     * @param array $daysoff List of non-working days
+     * @param array<int, array{
+     *     date:string,
+     *     length:int|float,
+     *     type:int
+     * }> $daysoff List of non-working days
      * @param bool $deductDayOff Deduct days off when evaluating the actual length
-     * @return array (length=>length of leave, overlapping=>excat match with a non-working day, daysoff=>sum of days off)
+     * @return array{
+     *     length:int|float,
+     *     daysoff:int|float,
+     *     overlapping:bool
+     * } (length=>length of leave, overlapping=>excat match with a non-working day, daysoff=>sum of days off)
      * @throws InvalidArgumentException if the dates are not valid or if the start date is after the end date
      */
     public function actualLengthAndDaysOff(
@@ -316,7 +324,7 @@ class Leaves_model extends CI_Model
      * @param int $employeeId Employee identifier
      * @param int $contractId contract identifier
      * @param string $refDate Date of execution
-     * @return array Array of entitled days associated to the key type id
+     * @return array<int, array<string, mixed>> Array of entitled days associated to the key type id
      * @throws InvalidArgumentException if the date is not valid or not in Y-m-d format
      */
     public function getSumEntitledDays(int $employeeId, int $contractId, string $refDate): array
@@ -338,9 +346,9 @@ class Leaves_model extends CI_Model
         $this->db->where($where, NULL, FALSE);   //Not very safe, but can't do otherwise
         $results = $this->db->get()->result_array();
         //Create an associated array have the leave type as key
-        $entitled_days = array();
+        $entitled_days = [];
         foreach ($results as $result) {
-            $entitled_days[$result['type_id']] = $result;
+            $entitled_days[(int) $result['type_id']] = $result;
         }
         return $entitled_days;
     }
@@ -349,7 +357,7 @@ class Leaves_model extends CI_Model
      * Compute the leave balance of an employee (used by report and counters)
      * @param int $employeeId ID of the employee
      * @param ?string $refDate tmp of the Date of reference (or current date if NULL)
-     * @return ?array computed aggregated taken/entitled leaves or NULL if no contract
+     * @return ?array<mixed,mixed> computed aggregated taken/entitled leaves or NULL if no contract
      * @throws InvalidArgumentException if the date is not valid or not in Y-m-d format
      */
     public function getLeaveBalanceForEmployee(int $employeeId, ?string $refDate = NULL): ?array
@@ -588,10 +596,10 @@ class Leaves_model extends CI_Model
      * @param string $enddatetype End date type of the leave (Morning/Afternoon)
      * @param string $cause Identifier of the leave
      * @param int $status status of the leave
-     * @param array $employees List of DB Ids of the affected employees
+     * @param array<int> $employees List of DB Ids of the affected employees
      * @return int Number of affected rows
      */
-    public function createRequestForUserList($type, $duration, $startdate, $enddate, $startdatetype, $enddatetype, $cause, $status, array $employees): int
+    public function createRequestForUserList(int $type, float $duration, string $startdate, string $enddate, string $startdatetype, string $enddatetype, string $cause, int $status, array $employees): int
     {
         //TODO: decouple input ($this->input->post()) from model
         //TODO: sanitize entries
@@ -1236,7 +1244,7 @@ class Leaves_model extends CI_Model
 
     /**
      * Transform a list of leaves to a list of full calendar events
-     * @param array $events List of leaves
+     * @param array<object> $events List of leaves
      * @return string JSON encoded list of full calendar events
      */
     private function transformToEvent(array $events): string
@@ -1270,18 +1278,18 @@ class Leaves_model extends CI_Model
 
             $color = '#ff0000';
             switch ($entry->status) {
-                case 1:
+                case LMS_PLANNED:
                     $color = '#999';
-                    break;     // Planned
-                case 2:
+                    break;
+                case LMS_REQUESTED:
                     $color = '#f89406';
-                    break;  // Requested
-                case 3:
+                    break;
+                case LMS_ACCEPTED:
                     $color = '#468847';
-                    break;  // Accepted
-                case 4:
+                    break;
+                case LMS_REJECTED:
                     $color = '#ff0000';
-                    break;  // Rejected
+                    break;
                 default:
                     $color = '#ff0000';
                     break;  // Cancellation and Canceled
@@ -1307,7 +1315,7 @@ class Leaves_model extends CI_Model
             }
 
             //Create the JSON representation of the event
-            $jsonevents[] = array(
+            $jsonevents[] = [
                 'id' => $entry->id,
                 'title' => $title,
                 'imageurl' => $imageUrl,
@@ -1318,7 +1326,7 @@ class Leaves_model extends CI_Model
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype,
                 'url' => $url
-            );
+            ];
         }
         return json_encode($jsonevents);
     }
@@ -1327,7 +1335,7 @@ class Leaves_model extends CI_Model
      * Leave requests of All users of an entity
      * @param int $entity_id Entity identifier (the department)
      * @param bool $children Include sub department in the query
-     * @return array List of leave requests (DB records)
+     * @return array<string, mixed> List of leave requests (DB records)
      */
     public function entity(int $entity_id, bool $children = FALSE): array
     {
@@ -1359,7 +1367,7 @@ class Leaves_model extends CI_Model
      * Can be filtered with "Requested" status.
      * @param int $manager connected user
      * @param bool $all TRUE all requests, FALSE otherwise
-     * @return array Recordset (can be empty if no requests or not a manager)
+     * @return array<string, mixed> Recordset (can be empty if no requests or not a manager)
      */
     public function getLeavesRequestedToManager(int $manager, bool $all = FALSE): array
     {
@@ -1390,7 +1398,7 @@ class Leaves_model extends CI_Model
      * Get the list of history of an employee
      * @param int $manager Id of the employee
      * @param bool $all TRUE all requests, FALSE otherwise
-     * @return array list of records
+     * @return array<string, mixed> list of records
      */
     public function getLeavesRequestedToManagerWithHistory(int $manager, bool $all = FALSE): array
     {
@@ -1485,7 +1493,7 @@ class Leaves_model extends CI_Model
      * Get all leaves between two timestamps, no filters
      * @param string $startDate Start date displayed on calendar
      * @param string $endDate End date displayed on calendar
-     * @return array Array of results containing leave details
+     * @return array<int, object> Array of results containing leave details
      * @throws InvalidArgumentException if dates are invalid or start date is after end date
      */
     public function all(string $startDate, string $endDate): array
@@ -1513,7 +1521,7 @@ class Leaves_model extends CI_Model
      * @param bool $children Include sub department in the query
      * @param string $statusFilter optional filter on statuses (pipe separated)
      * @param boolean $calendar Is this function called to display a calendar
-     * @return array Array of objects containing leave details
+     * @return array<int, object> Array of objects containing leave details
      */
     public function tabular(
         int &$entity = -1,
@@ -1585,7 +1593,7 @@ class Leaves_model extends CI_Model
      * @param int $month Month number
      * @param int $year Year number
      * @param ?string $statusFilter optional filter on status
-     * @return array Array of objects containing leave details
+     * @return array<int, object> Array of objects containing leave details
      */
     public function tabularList(int $list, int &$month = 0, int &$year = 0, ?string $statusFilter = NULL): array
     {
@@ -1656,7 +1664,7 @@ class Leaves_model extends CI_Model
      * Count the total duration of leaves for the month, grouped by leave type.
      * Only accepted leaves are taken into account.
      * @param object $linear linear calendar for one employee
-     * @return array key/value array (k:leave type label, v:sum for the month)
+     * @return array<string, float> key/value array (k:leave type label, v:sum for the month)
      */
     public function monthlyLeavesByType(object $linear): array
     {
@@ -1911,7 +1919,7 @@ class Leaves_model extends CI_Model
     /**
      * List all duplicated leave requests (exact same dates, status, etc.)
      * Note: this doesn't detect overlapping requests.
-     * @return array List of duplicated leave requests
+     * @return array<string, mixed> List of duplicated leave requests
      */
     public function detectDuplicatedRequests(): array
     {
@@ -1935,7 +1943,7 @@ class Leaves_model extends CI_Model
 
     /**
      * List all leave requests with a wrong date type (starting afternoon and ending morning of the same day)
-     * @return array List of wrong leave requests
+     * @return array<string, mixed> List of wrong leave requests
      */
     public function detectWrongDateTypes(): array
     {
@@ -1955,7 +1963,7 @@ class Leaves_model extends CI_Model
     /**
      * List of leave requests for which they are not entitled days on contracts or employee
      * Note: this might be an expected behaviour (avoid to track them into the balance report).
-     * @return array List of duplicated leave requests
+     * @return array<string, mixed> List of duplicated leave requests
      */
     public function detectBalanceProblems(): array
     {
@@ -1980,7 +1988,7 @@ class Leaves_model extends CI_Model
 
     /**
      * List of leave requests overlapping on two yearly periods.
-     * @return array List of overlapping leave requests
+     * @return array<string, mixed> List of overlapping leave requests
      */
     public function detectOverlappingProblems(): array
     {
@@ -2000,7 +2008,7 @@ class Leaves_model extends CI_Model
     /**
      * Get one leave with his comment
      * @param int $leaveId Id of the leave request
-     * @return array list of records
+     * @return array<string, mixed> list of records
      */
     public function getLeaveWithComments(int $leaveId = 0): array
     {
@@ -2022,7 +2030,7 @@ class Leaves_model extends CI_Model
     /**
      * Get the JSON representation of comments posted on a leave request
      * @param int $leaveId Id of the leave request
-     * @return array list of records
+     * @return array<string, mixed> list of records
      */
     public function getCommentsLeaveJson(int $leaveId): array
     {
@@ -2051,7 +2059,7 @@ class Leaves_model extends CI_Model
     /**
      * Get one leave request with his comment and status
      * @param int $leaveId Id of the leave request
-     * @return array list of records
+     * @return array<string, mixed> list of records
      */
     private function getCommentLeaveAndStatus(int $leaveId): array
     {

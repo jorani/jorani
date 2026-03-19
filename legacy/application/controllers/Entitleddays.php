@@ -33,7 +33,7 @@ class Entitleddays extends CI_Controller
      * and allow updating the list by adding or removing one item
      * @param int $userId User identifier
      */
-    public function user(int $userId)
+    public function user(int $userId): void
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_user');
         $data = getUserContext($this);
@@ -71,7 +71,7 @@ class Entitleddays extends CI_Controller
      * and allow updating the list by adding or removing one item
      * @param int $contractId contract identifier
      */
-    public function contract(int $contractId)
+    public function contract(int $contractId): void
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_contract');
         $data = getUserContext($this);
@@ -101,7 +101,7 @@ class Entitleddays extends CI_Controller
      * and returns the number of rows affected
      * @param int $id entitled days credit identifier
      */
-    public function userdelete(int $id)
+    public function userdelete(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_user_delete');
         $this->output->set_content_type('text/plain');
@@ -113,7 +113,7 @@ class Entitleddays extends CI_Controller
      * and returns the number of rows affected
      * @param int $id entitled days credit identifier
      */
-    public function contractdelete(int $id)
+    public function contractdelete(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('entitleddays_contract_delete');
         $this->output->set_content_type('text/plain');
@@ -123,7 +123,7 @@ class Entitleddays extends CI_Controller
     /**
      * Ajax endpoint : insert into the list of entitled days for a given user
      */
-    public function ajax_user()
+    public function ajax_user(): void
     {
         if ($this->auth->isAllowed('entitleddays_user') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -147,7 +147,7 @@ class Entitleddays extends CI_Controller
     /**
      * Ajax endpoint : insert into the list of entitled days for a given contract
      */
-    public function ajax_contract()
+    public function ajax_contract(): void
     {
         if ($this->auth->isAllowed('entitleddays_user') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -177,7 +177,7 @@ class Entitleddays extends CI_Controller
      *  - "credit" modify the value of the credit
      *  - "update" update all the value of the credit line
      */
-    public function ajax_update()
+    public function ajax_update(): void
     {
         if ($this->auth->isAllowed('entitleddays_user') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");

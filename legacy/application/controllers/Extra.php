@@ -36,7 +36,7 @@ class Extra extends CI_Controller
     /**
      * Display the list of the overtime requests by the connected employee
      */
-    public function index()
+    public function index(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_extra');
         $data = getUserContext($this);
@@ -56,7 +56,7 @@ class Extra extends CI_Controller
      * @param string $source Page source (extra, overtime) (self, manager)
      * @param int $id identifier of the overtime request
      */
-    public function view(string $source, int $id)
+    public function view(string $source, int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('view_extra');
         $data = getUserContext($this);
@@ -102,7 +102,7 @@ class Extra extends CI_Controller
     /**
      * Create an overtime request
      */
-    public function create()
+    public function create(): void
     {
         $this->auth->checkIfOperationIsAllowed('create_extra');
         $data = getUserContext($this);
@@ -149,7 +149,7 @@ class Extra extends CI_Controller
      * Edit an overtime request
      * @param int $id identifier of the overtime request
      */
-    public function edit(int $id)
+    public function edit(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('edit_extra');
         $data = getUserContext($this);
@@ -213,7 +213,7 @@ class Extra extends CI_Controller
      * Send a overtime request email to the manager of the connected employee
      * @param int $id overtime request identifier
      */
-    private function sendMail(int $id)
+    private function sendMail(int $id): void
     {
         $this->load->model('users_model');
         $this->load->model('delegations_model');
@@ -264,7 +264,7 @@ class Extra extends CI_Controller
      * Delete an overtime request
      * @param int $id identifier of the overtime request
      */
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         $can_delete = FALSE;
         //Test if the overtime request exists
@@ -296,7 +296,7 @@ class Extra extends CI_Controller
     /**
      * Export the list of all ovetime requests of the connected user into an Excel file
      */
-    public function export()
+    public function export(): void
     {
         $this->load->view('extra/export');
     }

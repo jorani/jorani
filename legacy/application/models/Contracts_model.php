@@ -28,7 +28,7 @@ class Contracts_model extends CI_Model
     /**
      * Get the list of contracts or one contract
      * @param int $contractId optional id of a contract
-     * @return ?array list of contract(s) or NULL if contract was not found
+     * @return array<string, mixed>|null list of contract(s) or NULL if contract was not found
      */
     public function getContracts(int $contractId = 0): ?array
     {
@@ -161,7 +161,7 @@ class Contracts_model extends CI_Model
 
     /**
      * Detect not used contracts (maybe duplicated)
-     * @return array list of unused contracts
+     * @return array<string, mixed> list of unused contracts
      */
     public function notUsedContracts(): array
     {
@@ -174,7 +174,7 @@ class Contracts_model extends CI_Model
     /**
      * Get the list of included leave types in a contract
      * @param int $contractId identifier of the contract
-     * @return array Associative array of types (id, name)
+     * @return array<string, mixed> Associative array of types (id, name)
      */
     public function getListOfIncludedTypes(int $contractId): array
     {
@@ -198,11 +198,11 @@ class Contracts_model extends CI_Model
     /**
      * Get the list of excluded leave types in a contract
      * @param int $contractId identifier of the contract
-     * @return array Associative array of types (id, name)
+     * @return array<int, string> Associative array of types (id, name)
      */
     public function getListOfExcludedTypes(int $contractId): array
     {
-        $listOfTypes = array();
+        $listOfTypes = [];
         $this->db->select('types.id as id, types.name as name');
         $this->db->from('excluded_types');
         $this->db->join('types', 'excluded_types.type_id = types.id');
@@ -210,7 +210,7 @@ class Contracts_model extends CI_Model
         $this->db->where('excluded_types.contract_id', $contractId);
         $rows = $this->db->get()->result_array();
         foreach ($rows as $row) {
-            $listOfTypes[$row['id']] = $row['name'];
+            $listOfTypes[(int) $row['id']] = $row['name'];
         }
         return $listOfTypes;
     }
@@ -218,16 +218,16 @@ class Contracts_model extends CI_Model
     /**
      * Get the usage of leave types for a given contract
      * @param int $contractId identifier of the contract
-     * @ret urn array Associative array of types (id, name)
+     * @return array<int, int> Associative array of types (id, name)
      */
     public function getTypeUsageForContract(int $contractId): array
     {
         //Intit the list usage with zero values
-        $usageArray = array();
+        $usageArray = [];
         $this->load->model('types_model');
         $allTypes = $this->types_model->getTypes();
         foreach ($allTypes as $row) {
-            $usageArray[$row['id']] = (int) 0;
+            $usageArray[(int) $row['id']] = (int) 0;
         }
 
         //Find out the actual types usage for the contract
@@ -242,7 +242,7 @@ class Contracts_model extends CI_Model
         //Complete the associative array type:usage
         $rows = $this->db->get()->result_array();
         foreach ($rows as $row) {
-            $usageArray[$row['type_id']] = (int) $row['type_usage'];
+            $usageArray[(int) $row['type_id']] = (int) $row['type_usage'];
         }
         return $usageArray;
     }
@@ -256,7 +256,6 @@ class Contracts_model extends CI_Model
      *    * Name
      * @param int $userId identifier of the user
      * @param int $leaveType identifier of the selected leave type or NULL
-     * 
      */
     public function getLeaveTypesDetailsOTypesForUser(int $userId, ?int $leaveType = NULL): object
     {
@@ -323,9 +322,8 @@ class Contracts_model extends CI_Model
      * Exclude a leave type for a contract
      * @param int $contractId identifier of the contract
      * @param int $typeId identifier of the leave type
-     * 
      */
-    public function includeLeaveTypeInContract($contractId, $typeId)
+    public function includeLeaveTypeInContract(int $contractId, int $typeId): void
     {
         $this->db->delete('excluded_types', ['contract_id' => $contractId, 'type_id' => $typeId]);
     }

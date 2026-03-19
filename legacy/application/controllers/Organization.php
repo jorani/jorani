@@ -32,7 +32,7 @@ class Organization extends CI_Controller
      * Main view that allows to describe the entities of the organization
      * And to attach employees to entities (lot of Ajax callbacks)
      */
-    public function index()
+    public function index(): void
     {
         setUserContext($this);
         $this->auth->checkIfOperationIsAllowed('organization_index');
@@ -52,7 +52,7 @@ class Organization extends CI_Controller
      * Pop-up showing the tree of the organization and allowing a
      * user to choose an entity (filter of a report or a calendar)
      */
-    public function select()
+    public function select(): void
     {
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
@@ -77,7 +77,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Rename an entity of the organization
      * takes parameters by GET
      */
-    public function rename()
+    public function rename(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -95,7 +95,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Create an entity in the organization
      * takes parameters by GET
      */
-    public function create()
+    public function create(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -113,7 +113,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Move an entity into the organization
      * takes parameters by GET
      */
-    public function move()
+    public function move(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -131,7 +131,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Copy an entity into the organization
      * takes parameters by GET
      */
-    public function copy()
+    public function copy(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -149,7 +149,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Returns the list of the employees attached to an entity
      * Prints the table content in a JSON format expected by jQuery Datatable
      */
-    public function employees()
+    public function employees(): void
     {
         setUserContext($this);
         $id = $this->input->get('id', TRUE);
@@ -161,7 +161,7 @@ class Organization extends CI_Controller
         $msg->draw = 1;
         $msg->recordsTotal = count($employees);
         $msg->recordsFiltered = count($employees);
-        $msg->data = array();
+        $msg->data = [];
 
         foreach ($employees as $employee) {
             $row = new \stdClass();
@@ -171,7 +171,7 @@ class Organization extends CI_Controller
             $row->email = $employee->email;
             $msg->data[] = $row;
         }
-        return $this->output
+        $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($msg));
     }
@@ -180,7 +180,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Add an employee to an entity of the organization
      * takes parameters by GET
      */
-    public function addemployee()
+    public function addemployee(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -198,7 +198,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Add an employee to an entity of the organization
      * takes parameters by GET
      */
-    public function delemployee()
+    public function delemployee(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -215,7 +215,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Cascade delete children and set employees' org to NULL
      * takes parameters by GET
      */
-    public function delete()
+    public function delete(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -232,7 +232,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Returns a JSON string describing the organization structure.
      * In a format expected by jsTree component.
      */
-    public function root()
+    public function root(): void
     {
         header("Content-Type: application/json");
         if (($this->config->item('public_calendar') === TRUE) && (!$this->session->userdata('logged_in'))) {
@@ -268,7 +268,7 @@ class Organization extends CI_Controller
      * Ajax endpoint:Returns the supervisor of an entity of the organization
      * (string containing an id)
      */
-    public function getsupervisor()
+    public function getsupervisor(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -285,7 +285,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: Select the supervisor of an entity of the organization
      * takes parameters by GET
      */
-    public function setsupervisor()
+    public function setsupervisor(): void
     {
         header("Content-Type: application/json");
         setUserContext($this);
@@ -306,18 +306,14 @@ class Organization extends CI_Controller
     /**
      * Modal form allowing to create and manage custom lists of employees
      */
-    public function listsIndex()
+    public function listsIndex(): void
     {
         $data = getCIUserContext();
         $this->auth->checkIfOperationIsAllowed('organization_lists_index');
         $this->load->model('lists_model');
         $data['lists'] = $this->lists_model->getLists($this->user_id);
-        //
         $this->lang->load('organization', $this->language);
         $this->lang->load('datatable', $this->language);
-        //TODO remove
-        //$data['title'] = 'REMOVE ME !!';
-        //$this->load->view('templates/header', $data);
         $this->load->view('organization/lists', $data);
     }
 
@@ -325,7 +321,7 @@ class Organization extends CI_Controller
      * Ajax endpoint allowing to create a new list of employees
      * Return the last inserted ID
      */
-    public function listsCreate()
+    public function listsCreate(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
@@ -343,7 +339,7 @@ class Organization extends CI_Controller
      * Ajax endpoint allowing to rename a list of employees
      * Return the last inserted ID
      */
-    public function listsRename()
+    public function listsRename(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
@@ -361,7 +357,7 @@ class Organization extends CI_Controller
      * Ajax endpoint allowing to delete a list of employees
      * Return the last inserted ID
      */
-    public function listsDelete()
+    public function listsDelete(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
@@ -378,7 +374,7 @@ class Organization extends CI_Controller
      * Ajax endpoint: load the list of employees attached to a given list id
      * Format the data as expected by JQuery Datatable 1.10
      */
-    public function listsEmployees()
+    public function listsEmployees(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
@@ -409,7 +405,7 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint allowing to add a list of employees into a list
      */
-    public function listsAddEmployees()
+    public function listsAddEmployees(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
@@ -427,7 +423,7 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint allowing to remove a list of employees from a list
      */
-    public function listsRemoveEmployees()
+    public function listsRemoveEmployees(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
@@ -445,7 +441,7 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint allowing to remove a list of employees from a list
      */
-    public function listsReorder()
+    public function listsReorder(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
@@ -463,7 +459,7 @@ class Organization extends CI_Controller
     /**
      * Ajax endpoint retrieving the name of a list
      */
-    public function listName()
+    public function listName(): void
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();

@@ -36,7 +36,7 @@ class OAuthClients_model extends CI_Model
     /**
      * Get the list of OAuth clients or one client
      * @param string $clientId optional id of a OAuth client
-     * @return ?array list of client(s) or NULL if client was not found
+     * @return array<string, mixed>|null list of client(s) or NULL if client was not found
      */
     public function getOAuthClients(string $clientId = ''): ?array
     {
@@ -84,7 +84,7 @@ class OAuthClients_model extends CI_Model
 
     /**
      * Get the list of OAuth access tokens
-     * @return array record of tokens
+     * @return array<string, mixed> record of tokens
      */
     public function getAccessTokens(): array
     {
@@ -120,7 +120,7 @@ class OAuthClients_model extends CI_Model
     /**
      * List applications authorized by a user
      * @param string $userId id of a Jorani user
-     * @return array List of client names (name, url)
+     * @return array<string, mixed> List of client names (name, url)
      */
     public function listOAuthApps(string $userId): array
     {

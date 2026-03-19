@@ -134,7 +134,7 @@ class Api extends CI_Controller
     /**
      * @param int $contractId Unique identifier of an contract
      */
-    public function entitleddayscontract($contractId)
+    public function entitleddayscontract(int $contractId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -155,7 +155,7 @@ class Api extends CI_Controller
      * Add entitled days to a given contract
      * @param int $contractId Unique identifier of an contract
      */
-    public function addentitleddayscontract($contractId)
+    public function addentitleddayscontract(int $contractId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -187,7 +187,7 @@ class Api extends CI_Controller
      * Get the list of entitled days for a given employee
      * @param int $employeeId Unique identifier of an employee
      */
-    public function entitleddaysemployee($employeeId)
+    public function entitleddaysemployee(int $employeeId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -212,7 +212,7 @@ class Api extends CI_Controller
      * Add entitled days to a given employee
      * @param int $employeeId Unique identifier of an employee
      */
-    public function addentitleddaysemployee($employeeId)
+    public function addentitleddaysemployee(int $employeeId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -247,7 +247,7 @@ class Api extends CI_Controller
      * @param int $employeeId Unique identifier of an employee
      * @param int|string|null $refTmp tmp of the Date of reference (or current date if NULL)
      */
-    public function leavessummary(int $employeeId, int|string|null $refTmp = NULL)
+    public function leavessummary(int $employeeId, int|string|null $refTmp = NULL): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -290,7 +290,7 @@ class Api extends CI_Controller
      * @param int|string $startDate tmp or string (YYYY-MM-DD) of the Start Date
      * @param int|string $endDate tmp or string (YYYY-MM-DD) of the End Date
      */
-    public function leavesInRange(int|string $startDate, int|string $endDate)
+    public function leavesInRange(int|string $startDate, int|string $endDate): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -327,7 +327,7 @@ class Api extends CI_Controller
     /**
      * Get the list of leave types (useful to get the labels into a cache)
      */
-    public function leavetypes()
+    public function leavetypes(): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -345,7 +345,7 @@ class Api extends CI_Controller
      * @param int $leaveId identifier of the leave request to accept
      * @since 0.4.4
      */
-    public function acceptleave($leaveId)
+    public function acceptleave(int $leaveId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -366,7 +366,7 @@ class Api extends CI_Controller
      * @param int $leaveId identifier of leave request to reject
      * @since 0.4.4
      */
-    public function rejectleave($leaveId)
+    public function rejectleave(int $leaveId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -385,7 +385,7 @@ class Api extends CI_Controller
     /**
      * Get the list of positions (useful to get the labels into a cache)
      */
-    public function positions()
+    public function positions(): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -402,7 +402,7 @@ class Api extends CI_Controller
      * Get the department details of a given employee
      * @param int $employeeId Identifier of an employee (attached to an entity)
      */
-    public function userdepartment($employeeId)
+    public function userdepartment(int $employeeId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -432,7 +432,7 @@ class Api extends CI_Controller
      * The password, picture, and random_hash fields are removed from the result set
      * @param int $id Unique identifier of a user
      */
-    public function users($id = 0)
+    public function users(int $id = 0): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -472,7 +472,7 @@ class Api extends CI_Controller
      * Get the list of leaves for a given employee
      * @param int $employeeId Unique identifier of an employee
      */
-    public function userleaves($employeeId)
+    public function userleaves(int $employeeId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -497,7 +497,7 @@ class Api extends CI_Controller
      * Get the list of extra for a given employee
      * @param int $employeeId Unique identifier of an employee
      */
-    public function userextras($employeeId)
+    public function userextras(int $employeeId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -525,7 +525,7 @@ class Api extends CI_Controller
      * @param int $year Year number (XXXX)
      * @since 0.4.0
      */
-    public function monthlypresence($employeeId, $month, $year)
+    public function monthlypresence(int $employeeId, int $month, int $year): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -566,7 +566,7 @@ class Api extends CI_Controller
      * @param int $userId Unique identifier of an employee
      * @since 0.4.0
      */
-    public function deleteuser($userId)
+    public function deleteuser(int $userId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -588,7 +588,7 @@ class Api extends CI_Controller
      * @param int $userId Unique identifier of an employee
      * @since 0.4.0
      */
-    public function updateuser($userId)
+    public function updateuser(int $userId): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -745,7 +745,7 @@ class Api extends CI_Controller
      * @param bool $sendEmail Send an Email to the new employee (FALSE by default)
      * @since 0.4.0
      */
-    public function createuser($sendEmail = FALSE)
+    public function createuser(bool $sendEmail = FALSE): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -866,7 +866,7 @@ class Api extends CI_Controller
      * Returns the new inserted id.
      * @since 0.4.0
      */
-    public function createleave()
+    public function createleave(): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();
@@ -949,7 +949,7 @@ class Api extends CI_Controller
      * @param bool $children If TRUE, we include sub-entities, FALSE otherwise
      * @since 0.4.3
      */
-    public function getListOfEmployeesInEntity($entityId, $children)
+    public function getListOfEmployeesInEntity(int $entityId, bool $children): void
     {
         if (!$this->server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
             $this->server->getResponse()->send();

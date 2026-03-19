@@ -30,7 +30,7 @@ class LeaveTypes extends CI_Controller
     /**
      * Display the list of leave types
      */
-    public function index()
+    public function index(): void
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_list');
         $data = getUserContext($this);
@@ -47,7 +47,7 @@ class LeaveTypes extends CI_Controller
     /**
      * Display a form that allows adding a leave type
      */
-    public function create()
+    public function create(): void
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_create');
         $data = getUserContext($this);
@@ -74,7 +74,7 @@ class LeaveTypes extends CI_Controller
      * Display a form that allows editing a leave type
      * @param int $id Identitier of the leave type
      */
-    public function edit(int $id)
+    public function edit(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_edit');
         $data = getUserContext($this);
@@ -106,7 +106,7 @@ class LeaveTypes extends CI_Controller
      * Action : delete a leave type
      * @param int $id leave type identifier
      */
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_delete');
         if ($id != 0) {
@@ -125,7 +125,7 @@ class LeaveTypes extends CI_Controller
     /**
      * Action: export the list of all leave types into an Excel file
      */
-    public function export()
+    public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_export');
         $this->load->view('leavetypes/export');

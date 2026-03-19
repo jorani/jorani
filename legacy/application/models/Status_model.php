@@ -27,7 +27,7 @@ class Status_model extends CI_Model
     /**
      * Get the list of status or one status
      * @param int $id optional id of a status
-     * @return ?array record of status(es) or NULL if status was not found
+     * @return array<string, mixed>|null record of status(es) or NULL if status was not found
      */
     public function getStatus(int $id = 0): ?array
     {
@@ -43,7 +43,7 @@ class Status_model extends CI_Model
     /**
      * Get the list of status or one status
      * @param string $name status name
-     * @return array record of a leave status
+     * @return array<string, mixed> record of a leave status
      */
     public function getStatusByName(string $name): array
     {
@@ -54,9 +54,9 @@ class Status_model extends CI_Model
 
     /**
      * Get the list of status as an ordered associative array
-     * @return array Associative array of types (id, name)
+     * @return array<int, string> Associative array of types (id, name)
      */
-    public function getStatusAsArray(int $id = 0): array
+    public function getStatusAsArray(): array
     {
         $listOfTypes = [];
         $this->db->from('status');

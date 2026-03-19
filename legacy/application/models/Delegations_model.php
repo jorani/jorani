@@ -29,7 +29,7 @@ class Delegations_model extends CI_Model
     /**
      * Get the list of delegations for a manager
      * @param int $managerId id of manager
-     * @return array record of users
+     * @return array<string, mixed> record of users (delegates of the manager)
      */
     public function listDelegationsForManager(int $managerId): array
     {
@@ -79,7 +79,7 @@ class Delegations_model extends CI_Model
     /**
      * Get the list of manager ids for which an employee has the delegation
      * @param int $employeeId id of an employee
-     * @return array of employee identifiers
+     * @return array<int> list of manager identifiers
      */
     public function listManagersGivingDelegation(int $employeeId): array
     {
@@ -87,7 +87,7 @@ class Delegations_model extends CI_Model
         $this->db->from('delegations');
         $this->db->where('delegate_id', $employeeId);
         $results = $this->db->get()->result_array();
-        $ids = array();
+        $ids = [];
         foreach ($results as $row) {
             array_push($ids, $row['manager_id']);
         }
@@ -97,7 +97,7 @@ class Delegations_model extends CI_Model
     /**
      * Get the list of e-mails of employees having the delegation from a manager
      * @param int $managerId id of a manager
-     * @return array record of users
+     * @return array<string> list of e-mails or empty array
      */
     public function listMailsOfDelegates(int $managerId): array
     {

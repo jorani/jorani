@@ -12,12 +12,10 @@ if (!defined('BASEPATH')) {
 
 use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Token\AccessToken;
-use RuntimeException;
 
 /**
  * This class manages the connection to the application
  * CodeIgniter uses a cookie to store session's details.
- * Login page uses RSA so as to encrypt the user's password.
  */
 class Connection extends CI_Controller
 {
@@ -47,7 +45,7 @@ class Connection extends CI_Controller
     /**
      * Login form
      */
-    public function login()
+    public function login(): void
     {
         //The login form is not used with SAML2 authentication mode
         if ($this->config->item('saml_enabled') === TRUE) {
@@ -139,7 +137,7 @@ class Connection extends CI_Controller
     /**
      * Logout the user and destroy the session data
      */
-    public function logout()
+    public function logout(): void
     {
         $this->session->sess_destroy();
         redirect('session/login');
@@ -148,7 +146,7 @@ class Connection extends CI_Controller
     /**
      * Change the language and redirect to last page (i.e. page that submit the language form)
      */
-    public function language()
+    public function language(): void
     {
         $this->load->helper('form');
 
@@ -170,7 +168,7 @@ class Connection extends CI_Controller
      * If the user has a target page (e.g. link in an e-mail), redirect to this destination
      * @param string $page Force the redirection to a given page
      */
-    private function redirectToLastPage($page = "")
+    private function redirectToLastPage($page = ""): void
     {
         if ($page !== "") {
             redirect($page);
@@ -193,10 +191,13 @@ class Connection extends CI_Controller
     /**
      * Ajax : Send the password by e-mail to a user requesting it
      * POST: string login Login of the user
-     * RETURN: UNKNOWN if the login was not found, OK otherwise
+     * OUTPUT: UNKNOWN if the login was not found, OK otherwise
      */
-    public function forgetpassword()
+    public function forgetpassword(): void
     {
+        //TODO: We must change the way we send the password by e-mail
+        // The user should receive a temporary link to reset the password
+        // But we would need a DB model changge on user table
         $this->output->set_content_type('text/plain');
         $login = $this->input->post('login');
         $this->load->model('users_model');
@@ -237,7 +238,7 @@ class Connection extends CI_Controller
     /**
      * Try to authenticate the user using one of the OAuth2 providers
      */
-    public function loginOAuth2()
+    public function loginOAuth2(): void
     {
         $oauth2Enabled = $this->config->item('oauth2_enabled');
         $oauth2Provider = $this->config->item('oauth2_provider');
@@ -289,7 +290,7 @@ class Connection extends CI_Controller
     /**
      * Returns the metadata needed for SAML2 Authentication
      */
-    public function metadata()
+    public function metadata(): void
     {
         /** @var array<string, mixed> $samlSettings */
         $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
@@ -311,7 +312,7 @@ class Connection extends CI_Controller
     /**
      * SAML2 SSO endpoint that starts the login via SSO
      */
-    public function sso()
+    public function sso(): void
     {
         /** @var array<string, mixed> $samlSettings */
         $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
@@ -325,7 +326,7 @@ class Connection extends CI_Controller
      * This feature is not supported by all IdP (eg. Google)
      * That why a message might appear to explain that you are not logged from the IdP
      */
-    public function slo()
+    public function slo(): void
     {
         /** @var array<string, mixed> $samlSettings */
         $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
@@ -358,7 +359,7 @@ class Connection extends CI_Controller
     /**
      * SAML2 sls endpoint
      */
-    public function sls()
+    public function sls(): void
     {
         /** @var array<string, mixed> $samlSettings */
         $samlSettings = []; // From config/saml.php (to avoid PHPStan error)
@@ -377,7 +378,7 @@ class Connection extends CI_Controller
     /**
      * SAML2 acs endpoint. Called by the IdP to perform the connection
      */
-    public function acs()
+    public function acs(): void
     {
         /** @var array<string, mixed> $samlSettings */
         $samlSettings = []; // From config/saml.php (to avoid PHPStan error)

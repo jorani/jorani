@@ -33,7 +33,7 @@ class Hr extends CI_Controller
     /**
      * Display the list of all employees
      */
-    public function employees()
+    public function employees(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
@@ -72,9 +72,9 @@ class Hr extends CI_Controller
         ?string $date1 = NULL,
         ?string $criterion2 = NULL,
         ?string $date2 = NULL
-    ) {
+    ): void {
         if ($this->auth->isAllowed('list_employees') == FALSE) {
-            return $this->output->set_header("HTTP/1.1 403 Forbidden");
+            $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $children = filter_var($children, FILTER_VALIDATE_BOOLEAN);
             $this->load->model('users_model');
@@ -116,7 +116,7 @@ class Hr extends CI_Controller
                 $row->manager_name = $employee->manager_name;
                 $msg->data[] = $row;
             }
-            return $this->output
+            $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($msg));
         }
@@ -125,7 +125,7 @@ class Hr extends CI_Controller
     /**
      * Ajax endpoint: edit the manager for a list of employees
      */
-    public function editManager()
+    public function editManager(): void
     {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
@@ -143,7 +143,7 @@ class Hr extends CI_Controller
     /**
      * Ajax endpoint: edit the entity for a list of employees
      */
-    public function editEntity()
+    public function editEntity(): void
     {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
@@ -161,7 +161,7 @@ class Hr extends CI_Controller
     /**
      * Ajax endpoint: edit the contract for a list of employees
      */
-    public function editContract()
+    public function editContract(): void
     {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
@@ -179,7 +179,7 @@ class Hr extends CI_Controller
     /**
      * Ajax endpoint: create a leave request for a list of employees
      */
-    public function createLeaveRequest()
+    public function createLeaveRequest(): void
     {
         header("Content-Type: application/json");
         if ($this->auth->isAllowed('list_employees') == FALSE) {
@@ -214,7 +214,7 @@ class Hr extends CI_Controller
     /**
      * Ajax endpoint : insert into the list of entitled days for a list of employees
      */
-    public function editEntitlements()
+    public function editEntitlements(): void
     {
         if ($this->auth->isAllowed('entitleddays_user') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -242,7 +242,7 @@ class Hr extends CI_Controller
      * Display the list of leaves for a given employee
      * @param int $id employee id
      */
-    public function leaves(int $id)
+    public function leaves(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
@@ -275,7 +275,7 @@ class Hr extends CI_Controller
      * Display the list of overtime requests for a given employee
      * @param int $id employee id
      */
-    public function overtime(int $id)
+    public function overtime(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
@@ -303,7 +303,7 @@ class Hr extends CI_Controller
      * @param int $id Identifier of the employee
      * @param ?int $refTmp Timestamp (reference date)
      */
-    public function counters(string $source, int $id, ?int $refTmp = NULL)
+    public function counters(string $source, int $id, ?int $refTmp = NULL): void
     {
         if ($source == 'collaborators') {
             $this->auth->checkIfOperationIsAllowed('list_collaborators');
@@ -360,7 +360,7 @@ class Hr extends CI_Controller
      * Create a leave request in behalf of an employee
      * @param int $id Identifier of the employee
      */
-    public function createleave(int $id)
+    public function createleave(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $data = getUserContext($this);
@@ -408,7 +408,7 @@ class Hr extends CI_Controller
      * @param int $month Month number or 0 for last month (default)
      * @param int $year Year number or 0 for current year (default)
      */
-    public function presence(string $source, int $id, int $month = 0, int $year = 0)
+    public function presence(string $source, int $id, int $month = 0, int $year = 0): void
     {
         if ($source == 'collaborators') {
             $this->auth->checkIfOperationIsAllowed('list_collaborators');
@@ -496,7 +496,7 @@ class Hr extends CI_Controller
      * Export the list of all leave requests of an employee into an Excel file
      * @param int $id employee id
      */
-    public function exportLeaves(int $id)
+    public function exportLeaves(int $id): void
     {
         $this->load->model('leaves_model');
         $this->load->model('users_model');
@@ -508,7 +508,7 @@ class Hr extends CI_Controller
      * Export the list of all overtime requests of an employee into an Excel file
      * @param int $id employee id
      */
-    public function exportOvertime(int $id)
+    public function exportOvertime(int $id): void
     {
         $this->load->model('overtime_model');
         $this->load->model('users_model');
@@ -534,7 +534,7 @@ class Hr extends CI_Controller
         ?string $date1 = NULL,
         ?string $criterion2 = NULL,
         ?string $date2 = NULL
-    ) {
+    ): void {
         $this->load->model('users_model');
         $data['id'] = $id;
         $data['children'] = filter_var($children, FILTER_VALIDATE_BOOLEAN);
@@ -553,7 +553,7 @@ class Hr extends CI_Controller
      * @param int $month Month number or 0 for last month (default)
      * @param int $year Year number or 0 for current year (default)
      */
-    public function exportPresence(string $source, int $id, int $month = 0, int $year = 0)
+    public function exportPresence(string $source, int $id, int $month = 0, int $year = 0): void
     {
         if ($source == 'collaborators') {
             $this->auth->checkIfOperationIsAllowed('list_collaborators');

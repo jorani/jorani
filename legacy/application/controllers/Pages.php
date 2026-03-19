@@ -29,7 +29,7 @@ class Pages extends CI_Controller
     /**
      * Display a simple view indicating that the business object was not found.
      */
-    public function notfound()
+    public function notfound(): void
     {
         $data = getUserContext($this);
         $data['title'] = 'Error';
@@ -47,7 +47,7 @@ class Pages extends CI_Controller
      * If the page name contains the keyword export, then we don't output the default template.
      * @param string $page Name of the view (and of the corresponding PHP file)
      */
-    public function view(string $page = 'home')
+    public function view(string $page = 'home'): void
     {
         $data = getUserContext($this);
         $trans = array("-" => " ", "_" => " ", "." => " ");

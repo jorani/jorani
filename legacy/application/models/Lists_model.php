@@ -31,7 +31,7 @@ class Lists_model extends CI_Model
   /**
    * Get the list of custom lists for an employee (often the connected user)
    * @param int $userId identifier of a user owing the lists
-   * @return array record of lists
+   * @return array<string, mixed> record of lists
    */
   public function getLists(int $userId): array
   {
@@ -99,7 +99,7 @@ class Lists_model extends CI_Model
   /**
    * Add employees into a list
    * @param int $id identifier of the list
-   * @param array $employees List of employees
+   * @param array<int> $employees List of employees
    * @return int|bool number of inserted employees, FALSE if error
    */
   public function addEmployees(int $id, array $employees): int|bool
@@ -166,7 +166,7 @@ class Lists_model extends CI_Model
   /**
    * Remove a list of employees from a list
    * @param int $listId identifier of the list
-   * @param array $employees List of employees
+   * @param array<int> $employees List of employees
    */
   public function removeEmployees(int $listId, array $employees): void
   {
@@ -179,7 +179,7 @@ class Lists_model extends CI_Model
   /**
    * Get the list of employees for the given list identifier
    * @param int $listId identifier of the list
-   * @return array record of employees
+   * @return array<string, mixed> record of employees
    */
   public function getListOfEmployees(int $listId): array
   {
@@ -218,7 +218,7 @@ class Lists_model extends CI_Model
   /**
    * reorder the list
    * @param int $listId Id of the list
-   * @param array $moves move of the employees
+   * @param array<object{user: int, newPos: int}> $moves move of the employees
    */
   public function reorderListEmployees(int $listId, array $moves): void
   {
@@ -228,5 +228,4 @@ class Lists_model extends CI_Model
       $this->db->update('org_lists_employees', ['orderlist' => $move->newPos]);
     }
   }
-
 }

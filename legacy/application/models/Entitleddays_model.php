@@ -28,7 +28,7 @@ class Entitleddays_model extends CI_Model
     /**
      * Get the list of entitled days or one entitled day record associated to a contract
      * @param int $contractId id of a contract
-     * @return array record of entitled days
+     * @return array<string, mixed> record of entitled days
      */
     public function getEntitledDaysForContract(int $contractId): array
     {
@@ -43,7 +43,7 @@ class Entitleddays_model extends CI_Model
     /**
      * Get the list of entitled days or one entitled day record associated to an employee
      * @param int $employeeId id of an employee
-     * @return array record of entitled days
+     * @return array<string, mixed> record of entitled days
      */
     public function getEntitledDaysForEmployee(int $employeeId): array
     {
@@ -220,7 +220,7 @@ class Entitleddays_model extends CI_Model
 
     /**
      * List all entitlements overflowing (more than one year).
-     * @return array List of possible duplicated leave requests
+     * @return array<string, mixed> List of possible duplicated leave requests
      */
     public function detectOverflow(): array
     {

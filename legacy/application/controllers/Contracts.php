@@ -34,7 +34,7 @@ class Contracts extends CI_Controller
     /**
      * Display the list of all contracts defined in the system
      */
-    public function index()
+    public function index(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_contracts');
         $this->lang->load('datatable', $this->language);
@@ -53,7 +53,7 @@ class Contracts extends CI_Controller
      * Display a form that allows to update a contract
      * @param int $id Contract identifier
      */
-    public function edit(int $id)
+    public function edit(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('edit_contract');
         $data = getUserContext($this);
@@ -99,7 +99,7 @@ class Contracts extends CI_Controller
     /**
      * Display the form / action Create a new contract
      */
-    public function create()
+    public function create(): void
     {
         $this->auth->checkIfOperationIsAllowed('create_contract');
         $data = getUserContext($this);
@@ -135,7 +135,7 @@ class Contracts extends CI_Controller
      * Delete a given contract
      * @param int $id contract identifier
      */
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('delete_contract');
         //Test if the contract exists
@@ -155,7 +155,7 @@ class Contracts extends CI_Controller
      * @param int $id contract identifier
      * @param int $year optional year number (4 digits), current year if empty
      */
-    public function calendar(int $id, int $year = 0)
+    public function calendar(int $id, int $year = 0): void
     {
         $this->auth->checkIfOperationIsAllowed('calendar_contract');
         $data = getUserContext($this);
@@ -200,7 +200,7 @@ class Contracts extends CI_Controller
      * @param int $destination destination contract identifier
      * @param int $year year number (4 digits)
      */
-    public function copydayoff(int $source, int $destination, int $year)
+    public function copydayoff(int $source, int $destination, int $year): void
     {
         $this->auth->checkIfOperationIsAllowed('calendar_contract');
         $this->load->model('dayoffs_model');
@@ -214,7 +214,7 @@ class Contracts extends CI_Controller
      * Display a form that allows to exclude some leave types from a contract
      * @param int $id Contract identifier
      */
-    public function excludeTypes(int $id)
+    public function excludeTypes(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('edit_contract');
         $data = getUserContext($this);
@@ -248,7 +248,7 @@ class Contracts extends CI_Controller
      * @param int $contractId identifier of the contract
      * @param int $typeId identifier of the leave type
      */
-    public function includeTypeFromContract(int $contractId, int $typeId)
+    public function includeTypeFromContract(int $contractId, int $typeId): void
     {
         if ($this->auth->isAllowed('edit_contract') === FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -264,7 +264,7 @@ class Contracts extends CI_Controller
      * @param int $contractId identifier of the contract
      * @param int $typeId identifier of the leave type
      */
-    public function excludeTypeFromContract(int $contractId, int $typeId)
+    public function excludeTypeFromContract(int $contractId, int $typeId): void
     {
         if ($this->auth->isAllowed('edit_contract') === FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -277,7 +277,7 @@ class Contracts extends CI_Controller
     /**
      * Ajax endpoint : add a day off to a contract
      */
-    public function editdayoff()
+    public function editdayoff(): void
     {
         if ($this->auth->isAllowed('adddayoff_contract') === FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -304,7 +304,7 @@ class Contracts extends CI_Controller
     /**
      * Ajax endpoint : Edit a series of day offs for a given contract
      */
-    public function series()
+    public function series(): void
     {
         if ($this->auth->isAllowed('adddayoff_contract') === FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -359,7 +359,7 @@ class Contracts extends CI_Controller
      * POST: contract id
      * POST: URL of ICS feed
      */
-    public function import()
+    public function import(): void
     {
         header("Content-Type: plain/text");
         $contract = $this->input->post('contract', TRUE);
@@ -383,7 +383,7 @@ class Contracts extends CI_Controller
      * List of day offs for the connected user
      * @param int $id employee id or connected user (from session)
      */
-    public function userDayoffs(int $id = 0)
+    public function userDayoffs(int $id = 0): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -399,7 +399,7 @@ class Contracts extends CI_Controller
      * Ajax endpoint : Send a list of fullcalendar events
      * List of all possible day offs
      */
-    public function allDayoffs()
+    public function allDayoffs(): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -414,7 +414,7 @@ class Contracts extends CI_Controller
      * Ajax endpoint : Send a list of fullcalendar events
      * List of all possible day offs
      */
-    public function allDayoffsForList()
+    public function allDayoffsForList(): void
     {
         header("Content-Type: application/json");
         $start = $this->input->get('start', TRUE);
@@ -427,7 +427,7 @@ class Contracts extends CI_Controller
     /**
      * Action: export the list of all contracts into an Excel file
      */
-    public function export()
+    public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('export_contracts');
         $this->load->view('contracts/export');

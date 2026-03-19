@@ -61,7 +61,7 @@ class Organization_model extends CI_Model
 
     /**
      * List all entities of the organisation
-     * @return array all entities of the organization sorted out by id and name
+     * @return array<string, mixed> all entities of the organization sorted out by id and name
      */
     public function getAllEntities(): array
     {
@@ -74,7 +74,7 @@ class Organization_model extends CI_Model
     /**
      * Get all children of an entity
      * @param int $entityId identifier of the entity
-     * @return array list of entity identifiers
+     * @return array<array<string, mixed>> list of entity identifiers
      */
     public function getAllChildren(int $entityId): array
     {
@@ -196,7 +196,7 @@ class Organization_model extends CI_Model
     /**
      * Returns the list of the employees attached to an entity
      * @param int $entityId identifier of the entity
-     * @return array Result of the query
+     * @return array<string, mixed> Result of the query
      */
     public function employees(int $entityId): array
     {
@@ -212,7 +212,7 @@ class Organization_model extends CI_Model
      * Returns the list of the employees attached to an entity
      * @param int $entityId identifier of the entity
      * @param bool $children Include sub department in the query
-     * @return array Result of the query
+     * @return array<string, mixed> Result of the query
      */
     public function allEmployees(int $entityId, bool $children = FALSE): array
     {

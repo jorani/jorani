@@ -32,7 +32,7 @@ class Positions extends CI_Controller
     /**
      * Display list of positions
      */
-    public function index()
+    public function index(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_positions');
         $data = getUserContext($this);
@@ -50,7 +50,7 @@ class Positions extends CI_Controller
     /**
      * Display a popup showing the list of positions
      */
-    public function select()
+    public function select(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_positions');
         $data = getUserContext($this);
@@ -62,7 +62,7 @@ class Positions extends CI_Controller
     /**
      * Display a form that allows adding a position
      */
-    public function create()
+    public function create(): void
     {
         $this->auth->checkIfOperationIsAllowed('create_positions');
         $data = getUserContext($this);
@@ -89,7 +89,7 @@ class Positions extends CI_Controller
      * Display a form that allows to edit a position
      * @param int $id position identifier
      */
-    public function edit(int $id)
+    public function edit(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('edit_positions');
         $data = getUserContext($this);
@@ -120,7 +120,7 @@ class Positions extends CI_Controller
      * Delete a position
      * @param int $id position identifier
      */
-    public function delete(int $id)
+    public function delete(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('delete_positions');
         $this->positions_model->deletePosition($id);
@@ -131,7 +131,7 @@ class Positions extends CI_Controller
     /**
      * Export the list of all positions into an Excel file
      */
-    public function export()
+    public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('export_positions');
         $this->load->view('positions/export');

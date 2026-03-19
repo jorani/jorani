@@ -32,7 +32,7 @@ class Dayoffs_model extends CI_Model
      * Get the list of dayofs for a contract and a civil year (not to be confused with the yearly period)
      * @param int $contractId identifier of the contract
      * @param string $year year to be displayed on the calendar
-     * @return array record of contracts
+     * @return array<int, array<int, mixed>> record of contracts
      */
     public function getDaysOffForCivilYear(int $contractId, string $year): array
     {
@@ -54,7 +54,7 @@ class Dayoffs_model extends CI_Model
     /**
      * Get the list of dayofs for a contract (suitable fo ICS feed)
      * @param int $contractId identifier of the contract
-     * @return array record of contracts
+     * @return array<int, array<string, mixed>> record of contracts
      */
     public function getDaysOffForContract(int $contractId): array
     {
@@ -174,7 +174,7 @@ class Dayoffs_model extends CI_Model
      * @param int $employeeId employee identifier
      * @param string $startDate start date
      * @param string $endDate end date
-     * @return array list of days off
+     * @return array<int, array<string, mixed>> list of days off
      */
     public function listOfDaysOffBetweenDates(int $employeeId, string $startDate, string $endDate): array
     {
@@ -449,7 +449,13 @@ class Dayoffs_model extends CI_Model
 
     /**
      * Transform events to full calendar events
-     * @param array $events Array of events
+     * @param array<int, object{
+     *     id:int,
+     *     type:int,
+     *     title:string,
+     *     name:string,
+     *     date:string
+     * }> $events Array of events
      * @return string JSON encoded list of full calendar events
      */
     private function transformToEvent($events): string
@@ -547,7 +553,7 @@ class Dayoffs_model extends CI_Model
      * @param int $userId Id of user
      * @param string $startDate Start date displayed on calendar
      * @param string $endDate End date displayed on calendar
-     * @return array list of day offs
+     * @return array<object> list of day offs
      */
     public function lengthDaysOffBetweenDatesForEmployee(int $userId, string $startDate, string $endDate): array
     {
@@ -564,7 +570,7 @@ class Dayoffs_model extends CI_Model
     /**
      * Check if days off have been defined for year - 1, year and year + 1
      * @param int $year Year to check
-     * @return array (id, name, y-1, y, y+1)
+     * @return array<array<string, mixed>> (id, name, y-1, y, y+1)
      */
     public function checkIfDefined(int $year): array
     {

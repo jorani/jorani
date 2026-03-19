@@ -27,7 +27,10 @@ if (!defined('BASEPATH')) {
  */
 class History_model extends CI_Model
 {
-    private $allowedTables = ['leaves', 'overtime'];
+    /**
+     * @var array<string> list of allowed tables
+     */
+    private array $allowedTables = ['leaves', 'overtime'];
 
     /**
      * Default constructor
@@ -40,7 +43,7 @@ class History_model extends CI_Model
     /**
      * Get the list of changes into the 'leaves' table
      * @param int $leaveId Identifier of the leave request
-     * @return array esult rows as array of arrays
+     * @return array<string, mixed> result rows as array of arrays
      */
     public function getLeaveRequestsHistory(int $leaveId): array
     {
@@ -60,7 +63,7 @@ class History_model extends CI_Model
     /**
      * Get the list of deleted leave requests
      * @param int $userId Identifier of the user
-     * @return array rows as array of arrays
+     * @return array<string, mixed> rows as array of arrays
      */
     public function getDeletedLeaveRequests(int $userId): array
     {
@@ -82,7 +85,7 @@ class History_model extends CI_Model
      * Get the details of a modification
      * @param string $table Table modified
      * @param int $id Unique Identifier of the modification
-     * @return ?array row as an array or null if not found
+     * @return array<string, mixed>|null row as an array or null if not found
      * @throws InvalidArgumentException if the table is not allowed
      */
     public function getHistoryDetail(string $table, int $id): ?array

@@ -33,7 +33,7 @@ class Reports extends CI_Controller
     /**
      * List the available custom reports (provided they are described into local/reports/*.ini)
      */
-    public function index()
+    public function index(): void
     {
         $this->auth->checkIfOperationIsAllowed('report_list');
         $data = getUserContext($this);
@@ -67,7 +67,7 @@ class Reports extends CI_Controller
      * Landing page of the shipped-in balance report
      * @param ?string $refTmp Optional Unix timestamp (set a date of reference for the report).
      */
-    public function balance(?string $refTmp = null)
+    public function balance(?string $refTmp = null): void
     {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $data = getUserContext($this);
@@ -87,7 +87,7 @@ class Reports extends CI_Controller
     /**
      * Ajax end-point : execute the balance report
      */
-    public function executeBalanceReport()
+    public function executeBalanceReport(): void
     {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $this->load->model('leaves_model');
@@ -176,7 +176,7 @@ class Reports extends CI_Controller
     /**
      * Export the balance report into Excel
      */
-    public function exportBalanceReport()
+    public function exportBalanceReport(): void
     {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $this->load->model('leaves_model');
@@ -194,7 +194,7 @@ class Reports extends CI_Controller
      * Landing page of the shipped-in leaves report
      * @since 0.4.3
      */
-    public function leaves()
+    public function leaves(): void
     {
         $this->auth->checkIfOperationIsAllowed('native_report_leaves');
         $data = getUserContext($this);
@@ -211,7 +211,7 @@ class Reports extends CI_Controller
      * This report is inspired by the monthly presence report, but applicable to a set of employee.
      * @since 0.4.3
      */
-    public function executeLeavesReport()
+    public function executeLeavesReport(): void
     {
         $this->auth->checkIfOperationIsAllowed('native_report_leaves');
         $this->lang->load('leaves', $this->language);
@@ -375,7 +375,7 @@ class Reports extends CI_Controller
      * Export the leaves report into Excel
      * @since 0.4.3
      */
-    public function exportLeavesReport()
+    public function exportLeavesReport(): void
     {
         $this->auth->checkIfOperationIsAllowed('native_report_leaves');
         $this->lang->load('leaves', $this->language);

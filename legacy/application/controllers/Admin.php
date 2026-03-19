@@ -31,7 +31,7 @@ class Admin extends CI_Controller
     /**
      * Display the settings of the system (extract of config.php)
      */
-    public function settings()
+    public function settings(): void
     {
         $this->auth->checkIfOperationIsAllowed('list_settings');
         $data = getUserContext($this);
@@ -46,7 +46,7 @@ class Admin extends CI_Controller
     /**
      * Display the diagnostic of the content (duplicated requests, etc.) and configuration
      */
-    public function diagnostic()
+    public function diagnostic(): void
     {
         $this->auth->checkIfOperationIsAllowed('diagnostic');
         $data = getUserContext($this);
@@ -89,7 +89,7 @@ class Admin extends CI_Controller
     /**
      * Display the list of OAuth clients
      */
-    public function oauthClients()
+    public function oauthClients(): void
     {
         $this->auth->checkIfOperationIsAllowed('oauth_clients');
         $data = getUserContext($this);
@@ -108,7 +108,7 @@ class Admin extends CI_Controller
     /**
      * Ajax action: create an OAuth clients
      */
-    public function oauthClientsCreate()
+    public function oauthClientsCreate(): void
     {
         if ($this->auth->isAllowed('oauth_clients') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -135,7 +135,7 @@ class Admin extends CI_Controller
     /**
      * Ajax action: delete an OAuth client
      */
-    public function oauthClientsDelete()
+    public function oauthClientsDelete(): void
     {
         if ($this->auth->isAllowed('oauth_clients') == FALSE) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
@@ -157,7 +157,7 @@ class Admin extends CI_Controller
     /**
      * purgeAccessTokens
      */
-    public function oauthTokensPurge()
+    public function oauthTokensPurge(): void
     {
         $this->auth->checkIfOperationIsAllowed('oauth_clients');
         $this->load->model('oauthclients_model');

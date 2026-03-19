@@ -28,7 +28,7 @@ class Types_model extends CI_Model
     /**
      * Get the list of types or one type
      * @param int $id optional id of a type
-     * @return ?array list of type(s) or NULL if list was not found
+     * @return array<string, mixed>|null list of type(s) or NULL if list was not found
      */
     public function getTypes(int $id = 0): ?array
     {
@@ -44,7 +44,7 @@ class Types_model extends CI_Model
     /**
      * Get the list of types or one type
      * @param string $name type name
-     * @return array|null record of a leave type
+     * @return array<string, mixed>|null record of a leave type
      */
     public function getTypeByName(string $name): ?array
     {
@@ -55,7 +55,7 @@ class Types_model extends CI_Model
 
     /**
      * Get the list of types as an ordered associative array
-     * @return array Associative array of types (id, name)
+     * @return array<int, string> Associative array of types (id, name)
      */
     public function getTypesAsArray(int $id = 0): array
     {
@@ -64,7 +64,7 @@ class Types_model extends CI_Model
         $this->db->order_by('name');
         $rows = $this->db->get()->result_array();
         foreach ($rows as $row) {
-            $listOfTypes[$row['id']] = $row['name'];
+            $listOfTypes[(int) $row['id']] = $row['name'];
         }
         return $listOfTypes;
     }
@@ -100,7 +100,7 @@ class Types_model extends CI_Model
      * Delete a leave type from the database
      * @param int $id identifier of the leave type
      */
-    public function deleteType(int $id)
+    public function deleteType(int $id): void
     {
         $this->db->delete('types', ['id' => $id]);
     }
