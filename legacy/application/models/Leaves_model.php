@@ -15,7 +15,6 @@ if (!defined('BASEPATH')) {
  */
 class Leaves_model extends CI_Model
 {
-
     /**
      * Default constructor
      */

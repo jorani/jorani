@@ -78,10 +78,8 @@ class Organization_model extends CI_Model
      */
     public function getAllChildren(int $entityId): array
     {
-        $query = 'SELECT GetFamilyTree(id) as id' .
-            ' FROM organization' .
-            ' WHERE id =' . $entityId;
-        $query = $this->db->query($query);
+        $query = 'SELECT GetFamilyTree(id) as id FROM organization WHERE id = ?';
+        $query = $this->db->query($query, [$entityId]);
         if (!$query) {
             $arr = [];
         } else {

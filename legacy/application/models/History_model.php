@@ -56,8 +56,7 @@ class History_model extends CI_Model
         $this->db->where('leaves_history.id', $leaveId);
         $this->db->order_by('change_id', 'asc');
         $query = $this->db->get('leaves_history');
-        $results = $query->result_array();
-        return $results;
+        return $query->result_array();
     }
 
     /**
@@ -77,8 +76,7 @@ class History_model extends CI_Model
         $this->db->where('ul.id', $userId);
         $this->db->where('leaves_history.change_type = 3');
         $query = $this->db->get('leaves_history');
-        $results = $query->result_array();
-        return $results;
+        return $query->result_array();
     }
 
     /**
@@ -111,12 +109,12 @@ class History_model extends CI_Model
         if (!in_array($table, $this->allowedTables, true)) {
             throw new InvalidArgumentException("The provided table is not allowed for history details.");
         }
-        $sql = 'INSERT INTO ' . $table . '_history';
-        $sql .= ' SELECT *, NULL,';
-        $sql .= ' ' . $type;
-        $sql .= ', ' . $userId;
-        $sql .= ', NOW() FROM ' . $table . ' WHERE id = ' . $id;
-        $this->db->query($sql);
+        $historyTable = $this->db->protect_identifiers($table . '_history');
+        $sourceTable = $this->db->protect_identifiers($table);
+        $sql = "INSERT INTO {$historyTable}";
+        $sql .= ' SELECT *, NULL, ?, ?, NOW()';
+        $sql .= " FROM {$sourceTable} WHERE id = ?";
+        $this->db->query($sql, [$type, $userId, $id]);
     }
 
     /**
@@ -151,4 +149,3 @@ class History_model extends CI_Model
 
     //TODO:cascade delete on user delete
 }
-?>

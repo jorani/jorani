@@ -825,7 +825,7 @@ class Users_model extends CI_Model
 
     /**
      * Generate some random bytes by using openssl, dev/urandom or random
-     * @param int $length length of the random string
+     * @param int<1, max> $length length of the random string
      * @return string a string of pseudo-random bytes (must be encoded)
      */
     protected function getRandomBytes(int $length): string
@@ -850,7 +850,7 @@ class Users_model extends CI_Model
         for ($i = 0; $i < $length; $i++) {
             $sha = hash('sha256', $sha . mt_rand());
             $char = mt_rand(0, 62);
-            $rnd .= chr(hexdec($sha[$char] . $sha[$char + 1]));
+            $rnd .= chr((int) hexdec($sha[$char] . $sha[$char + 1]));
         }
         return $rnd;
     }

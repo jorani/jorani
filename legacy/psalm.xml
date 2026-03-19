@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="3"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="psalm-bootstrap.php"
+>
+    <projectFiles>
+        <directory name="application/controllers" />
+        <directory name="application/models" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="system" />
+            <directory name="application/language" />
+            <directory name="application/config" />
+            <directory name="application/views" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <UndefinedPropertyFetch errorLevel="suppress" />
+        <UndefinedClass errorLevel="suppress" />
+        <UndefinedGlobalVariable errorLevel="suppress" />
+    </issueHandlers>
+</psalm>

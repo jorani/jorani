@@ -29,6 +29,6 @@
 - `legacy/assets/`: Static files (JS/CSS).
 
 ## 5. Database Schema & Truth
-- **Schema Reference:** The source of truth for the database structure is located at `sql/jorani.sql`.
+- **Schema Reference:** The source of truth for the database structure is located at `legacy/sql/jorani.sql`.
 - **Relationship Knowledge:** Always refer to this file to identify table relationships (e.g., `leaves`, `users`, `entitlements`).
 - **Data Integrity:** When proposing migrations or new services, ensure consistency with the existing SQL constraints defined in this file.

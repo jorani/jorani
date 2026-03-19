@@ -453,18 +453,18 @@ class Hr extends CI_Controller
 
         //Compute facts about dates and the selected month
         if ($month == 0)
-            $month = date('m', strtotime('last month'));
+            $month = intval(date('m', strtotime('last month')));
         if ($year == 0)
-            $year = date('Y', strtotime('last month'));
+            $year = intval(date('Y', strtotime('last month')));
         $total_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $start = sprintf('%d-%02d-01', $year, $month);
-        $lastDay = date("t", strtotime($start));    //last day of selected month
+        $lastDay = date("t", (int) strtotime($start));    //last day of selected month
         $end = sprintf('%d-%02d-%02d', $year, $month, $lastDay);
         //Number of non working days during the selected month
         $non_working_days = $this->dayoffs_model->lengthDaysOffBetweenDates($employee['contract'], $start, $end);
         $opened_days = $total_days - $non_working_days;
         $data['month'] = $month;
-        $data['month_name'] = date('F', strtotime($start));
+        $data['month_name'] = date('F', (int) strtotime($start));
         $data['year'] = $year;
         $data['default_date'] = $start;
         $data['total_days'] = $total_days;

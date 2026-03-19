@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * Main front controller for the strangler fig pattern.
  * It routes incoming HTTP requests either to the legacy CodeIgniter app
- * or to the Laravel application based on URL rules.
+ * or to the new application based on URL rules.
  */
 
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
@@ -34,10 +34,10 @@ if (is_file($requestedPath)) {
 
 /*
  * Routing strategy:
- * - Laravel handles new APIs and new features
- * - Legacy handles the existing UI and remaining routes
+ * - New app handles new APIs and new features
+ * - Legacy CI app handles the existing UI and remaining routes
  */
-$useLaravel = false;
+$useNewApp = false;
 
 switch ($uri) {
     case '/requirements.php':
@@ -53,10 +53,10 @@ switch ($uri) {
 if (
     str_starts_with($uri, '/api/v2/')
 ) {
-    $useLaravel = true;
+    $useNewApp = true;
 }
 
-if ($useLaravel) {
+if ($useNewApp) {
     require __DIR__ . '/public/index.php';
     exit;
 }

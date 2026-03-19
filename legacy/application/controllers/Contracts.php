@@ -19,7 +19,6 @@ if (!defined('BASEPATH')) {
  */
 class Contracts extends CI_Controller
 {
-
     /**
      * Default constructor
      */
@@ -361,13 +360,13 @@ class Contracts extends CI_Controller
      */
     public function import(): void
     {
-        header("Content-Type: plain/text");
+        header("Content-Type: text/plain");
         $contract = $this->input->post('contract', TRUE);
         $url = $this->input->post('url', TRUE);
         //Check validity of URL and if the endpoint is reachable
         if (!filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
             $headers = @get_headers($url);
-            if (strpos($headers[0], '200') === FALSE) { //Anything else than HTTP 200 OK
+            if ($headers === false || strpos($headers[0], '200') === FALSE) { //Anything else than HTTP 200 OK
                 echo ("$url was not found or distant server is not reachable");
             } else {
                 $this->load->model('dayoffs_model');
