@@ -464,6 +464,8 @@ echo form_open('users/create', $attributes); ?>
                         $("#lblLoginAlert").show();
                     }
                 });
+        } else {
+            $("#lblLoginAlert").hide();
         }
     }
 
