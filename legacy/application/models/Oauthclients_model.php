@@ -21,6 +21,7 @@ if (!defined('BASEPATH')) {
  *  - leaves
  *  - selfservice
  * @property CI_DB_query_builder $db
+ * @property CI_Input $input
  */
 class OAuthClients_model extends CI_Model
 {

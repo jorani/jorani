@@ -20,6 +20,7 @@ if (!defined('BASEPATH')) {
  * @property CI_Lang $lang
  * @property CI_Loader $load
  * @property CI_Input $input
+ * @property CI_Output $output
  * @property Contracts_model $contracts_model
  * @property Dayoffs_model $dayoffs_model
  * @property Entitleddays_model $entitleddays_model

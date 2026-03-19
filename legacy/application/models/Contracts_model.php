@@ -16,7 +16,11 @@ if (!defined('BASEPATH')) {
  * @property CI_DB $db
  * @property CI_Loader $load
  * @property CI_Input $input
+ * @property Contracts_model $contracts_model
+ * @property Dayoffs_model $dayoffs_model
  * @property Entitleddays_model $entitleddays_model
+ * @property Types_model $types_model
+ * @property Users_model $users_model
  * @property Leaves_model $leaves_model
  */
 class Contracts_model extends CI_Model

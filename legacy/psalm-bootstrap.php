@@ -7,6 +7,8 @@ define('APPPATH', __DIR__ . '/application/');
 define('VIEWPATH', __DIR__ . '/application/views/');
 define('ENVIRONMENT', 'development');
 
+require_once APPPATH . 'config/constants.php';
+
 // Load CodeIgniter 3 global functions
 require_once BASEPATH . 'core/Common.php';
 require_once BASEPATH . 'helpers/url_helper.php';

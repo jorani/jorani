@@ -17,6 +17,7 @@ if (!defined('BASEPATH')) {
  * @property CI_Lang $lang
  * @property CI_Loader $load
  * @property CI_Input $input
+ * @property CI_Output $output
  * @property Contracts_model $contracts_model
  * @property Dayoffs_model $dayoffs_model
  * @property Entitleddays_model $entitleddays_model
@@ -25,6 +26,7 @@ if (!defined('BASEPATH')) {
  * @property Organization_model $organization_model
  * @property Positions_model $positions_model
  * @property Overtime_model $overtime_model
+ * @property Roles_model $roles_model
  * @property Types_model $types_model
  * @property Users_model $users_model
  */
