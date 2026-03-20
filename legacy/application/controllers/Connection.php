@@ -207,53 +207,6 @@ class Connection extends CI_Controller
     }
 
     /**
-     * Ajax : Send the password by e-mail to a user requesting it
-     * POST: string login Login of the user
-     * OUTPUT: UNKNOWN if the login was not found, OK otherwise
-     */
-    public function forgetpassword(): void
-    {
-        //TODO: We must change the way we send the password by e-mail
-        // The user should receive a temporary link to reset the password
-        // But we would need a DB model changge on user table
-        $this->output->set_content_type('text/plain');
-        $login = $this->input->post('login');
-        $this->load->model('users_model');
-        $user = $this->users_model->getUserByLogin($login);
-        if (is_null($user)) {
-            $this->output->set_output('UNKNOWN');
-        } else {
-            //We need to instance an different object as the languages of connected user may differ from the UI lang
-            $lang_mail = new CI_Lang();
-            $usr_lang = $this->polyglot->code2language($user->language);
-            $lang_mail->load('email', $usr_lang);
-            $lang_mail->load('global', $usr_lang);
-            //Generate random password and store its hash into db
-            $password = $this->users_model->resetClearPassword($user->id);
-            //Prepare the e-mail content by parsing a view
-            $this->load->library('parser');
-            $data = array(
-                'Title' => $lang_mail->line('email_password_forgotten_title'),
-                'BaseURL' => base_url(),
-                'Firstname' => $user->firstname,
-                'Lastname' => $user->lastname,
-                'Login' => $user->login,
-                'Password' => $password
-            );
-            $message = $this->parser->parse('emails/' . $user->language . '/password_forgotten', $data, TRUE);
-            //Send the e-mail
-            sendMailByWrapper(
-                $this,
-                $lang_mail->line('email_password_forgotten_subject'),
-                $message,
-                $user->email
-            );
-            //Tell to the frontend that we've found the login and sent the email
-            $this->output->set_output('OK');
-        }
-    }
-
-    /**
      * Try to authenticate the user using one of the OAuth2 providers
      */
     public function loginOAuth2(): void

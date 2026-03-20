@@ -78,12 +78,6 @@
                 <button type="submit" class="btn btn-primary"><i
                         class="mdi mdi-login"></i>&nbsp;<?php echo lang('session_login_button_login'); ?></button>
                 </form>
-
-                <?php if (($this->config->item('ldap_enabled') == FALSE) && (ENVIRONMENT != 'demo')) { ?>
-                    <!--
-    <button id="cmdForgetPassword" class="btn btn-danger"><i class="mdi mdi-email"></i>&nbsp;<?php echo lang('session_login_button_forget_password'); ?></button>
-    //-->
-                <?php } ?>
             </div>
             <div class="span6" style="height:100%;">
                 <div class="row-fluid">
@@ -150,37 +144,6 @@
         });
 
         $('#login').focus();
-
-        //If the user has forgotten his password, send an e-mail
-        $('#cmdForgetPassword').click(function () {
-            if ($('#login').val() == "") {
-                bootbox.alert("<?php echo lang('session_login_msg_empty_login'); ?>");
-            } else {
-                bootbox.confirm("<?php echo lang('session_login_msg_forget_password'); ?>",
-                    "<?php echo lang('Cancel'); ?>",
-                    "<?php echo lang('OK'); ?>", function (result) {
-                        if (result) {
-                            $('#frmModalAjaxWait').modal('show');
-                            $.ajax({
-                                type: "POST",
-                                url: "<?php echo base_url(); ?>session/forgetpassword",
-                                data: { login: $('#login').val() }
-                            })
-                                .done(function (msg) {
-                                    $('#frmModalAjaxWait').modal('hide');
-                                    switch (msg) {
-                                        case "OK":
-                                            bootbox.alert("<?php echo lang('session_login_msg_password_sent'); ?>");
-                                            break;
-                                        case "UNKNOWN":
-                                            bootbox.alert("<?php echo lang('session_login_flash_bad_credentials'); ?>");
-                                            break;
-                                    }
-                                });
-                        }
-                    });
-            }
-        });
 
         //Validate the form if the user press enter key in password field
         $('#password').keypress(function (e) {
