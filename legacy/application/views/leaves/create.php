@@ -193,5 +193,5 @@ if ($language_code != 'en') { ?>
         });
     <?php } ?>
 </script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/lms/leave.edit-0.7.0.js"
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/lms/leave.edit-1.0.4.js"
     type="text/javascript"></script>

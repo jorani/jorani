@@ -303,8 +303,45 @@ if ($language_code != 'en') { ?>
             bootbox.alert(<?php echo lang('leaves_validate_mandatory_js_msg'); ?>);
             return false;
         }
-
     }
+
+    /**
+     * Ensures date consistency and prevents invalid AJAX validation requests.
+     * Use camelCase as requested.
+     */
+    function checkDateConsistency(triggerField) {
+        var startDate = $('#startdate').val();
+        var endDate = $('#enddate').val();
+
+        if (startDate !== "" && endDate !== "" && startDate > endDate) {
+            if (triggerField === 'start') {
+                // Reset End Date if Start Date is later
+                $('#viz_enddate').val("");
+                $('#enddate').val("");
+            } else {
+                // Reset Start Date if End Date is earlier
+                $('#viz_startdate').val("");
+                $('#startdate').val("");
+            }
+            getLeaveLength(refreshInfos);
+            return false;
+        }
+        return startDate !== "" && endDate !== "";
+    }
+
+    // Intercept date changes to reset fields before Jorani's validation triggers
+    $('#viz_startdate').on('change', function () {
+        // Timeout ensures hidden ISO fields are updated by datepicker first
+        setTimeout(function () {
+            checkDateConsistency('start');
+        }, 100);
+    });
+
+    $('#viz_enddate').on('change', function () {
+        setTimeout(function () {
+            checkDateConsistency('end');
+        }, 100);
+    });
 
     <?php if ($this->config->item('csrf_protection') == TRUE) { ?>
         $(function () {
@@ -353,5 +390,5 @@ if ($language_code != 'en') { ?>
     });
 
 </script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/lms/leave.edit-0.7.0.js"
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/lms/leave.edit-1.0.4.js"
     type="text/javascript"></script>

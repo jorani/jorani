@@ -51,74 +51,76 @@ function getLeaveLength(refreshInfos) {
 //Get the leave credit, duration and detect overlapping cases (Ajax request)
 //Default behavour is to set the duration field. pass false if you want to disable this behaviour
 function getLeaveInfos(preventDefault) {
-    $('#frmModalAjaxWait').modal('show');
     var start = moment($('#startdate').val());
     var end = moment($('#enddate').val());
-    $.ajax({
-        type: "POST",
-        url: baseURL + "leaves/validate",
-        data: {
-            id: userId,
-            type: $("#type option:selected").text(),
-            startdate: $('#startdate').val(),
-            enddate: $('#enddate').val(),
-            startdatetype: $('#startdatetype').val(),
-            enddatetype: $('#enddatetype').val(),
-            leave_id: leaveId
-        }
-    })
-        .done(function (leaveInfo) {
-            if (typeof leaveInfo.length !== 'undefined') {
-                var duration = parseFloat(leaveInfo.length);
-                duration = Math.round(duration * 1000) / 1000;  //Round to 3 decimals only if necessary
-                if (!preventDefault) {
-                    if (start.isValid() && end.isValid()) {
-                        $('#duration').val(duration);
+
+    // Only proceed with AJAX if both dates exist and range is valid
+    if (start.isValid() && end.isValid() && start <= end) {
+        $('#frmModalAjaxWait').modal('show');
+        $.ajax({
+            type: "POST",
+            url: baseURL + "leaves/validate",
+            data: {
+                id: userId,
+                type: $("#type option:selected").text(),
+                startdate: $('#startdate').val(),
+                enddate: $('#enddate').val(),
+                startdatetype: $('#startdatetype').val(),
+                enddatetype: $('#enddatetype').val(),
+                leave_id: leaveId
+            }
+        })
+            .done(function (leaveInfo) {
+                if (typeof leaveInfo.length !== 'undefined') {
+                    var duration = parseFloat(leaveInfo.length);
+                    duration = Math.round(duration * 1000) / 1000;  //Round to 3 decimals only if necessary
+                    if (!preventDefault) {
+                        if (start.isValid() && end.isValid()) {
+                            $('#duration').val(duration);
+                        }
                     }
                 }
-            }
-            if (typeof leaveInfo.credit !== 'undefined') {
-                var credit = parseFloat(leaveInfo.credit);
-                var duration = parseFloat($("#duration").val());
-                if (duration > credit) {
-                    $("#lblCreditAlert").show();
+                if (typeof leaveInfo.credit !== 'undefined') {
+                    var credit = parseFloat(leaveInfo.credit);
+                    var duration = parseFloat($("#duration").val());
+                    if (duration > credit) {
+                        $("#lblCreditAlert").show();
+                    } else {
+                        $("#lblCreditAlert").hide();
+                    }
+                    if (leaveInfo.credit != null) {
+                        $("#lblCredit").text('(' + leaveInfo.credit + ')');
+                    }
+                }
+                //Check if the current request overlaps with another one
+                showOverlappingMessage(leaveInfo);
+                //Or overlaps with a non-working day
+                showOverlappingDayOffMessage(leaveInfo);
+                //Check if the employee has a contract
+                if (leaveInfo.hasContract == false) {
+                    bootbox.alert(noContractMsg);
                 } else {
-                    $("#lblCreditAlert").hide();
-                }
-                if (leaveInfo.credit != null) {
-                    $("#lblCredit").text('(' + leaveInfo.credit + ')');
-                }
-            }
-            //Check if the current request overlaps with another one
-            showOverlappingMessage(leaveInfo);
-            //Or overlaps with a non-working day
-            showOverlappingDayOffMessage(leaveInfo);
-            //Check if the employee has a contract
-            if (leaveInfo.hasContract == false) {
-                bootbox.alert(noContractMsg);
-            } else {
-                //If the employee has a contract, check if the current leave request is not on two yearly leave periods
-                var periodStartDate = moment(leaveInfo.PeriodStartDate);
-                var periodEndDate = moment(leaveInfo.PeriodEndDate);
-                if (start.isValid() && end.isValid() && periodEndDate.isValid()) {
-                    if (start.isBefore(periodEndDate) && periodEndDate.isBefore(end)) {
-                        bootbox.alert(noTwoPeriodsMsg);
-                    }
-                    if (start.isBefore(periodStartDate)) {
-                        bootbox.alert(noTwoPeriodsMsg);
+                    //If the employee has a contract, check if the current leave request is not on two yearly leave periods
+                    var periodStartDate = moment(leaveInfo.PeriodStartDate);
+                    var periodEndDate = moment(leaveInfo.PeriodEndDate);
+                    if (start.isValid() && end.isValid() && periodEndDate.isValid()) {
+                        if (start.isBefore(periodEndDate) && periodEndDate.isBefore(end)) {
+                            bootbox.alert(noTwoPeriodsMsg);
+                        }
+                        if (start.isBefore(periodStartDate)) {
+                            bootbox.alert(noTwoPeriodsMsg);
+                        }
                     }
                 }
-            }
-            showListDayOff(leaveInfo);
-            $('#frmModalAjaxWait').modal('hide');
-        });
+                showListDayOff(leaveInfo);
+                $('#frmModalAjaxWait').modal('hide');
+            });
+    }
 }
 
 //When editing/viewing a leave request, refresh the information about overlapping and days off in the period
 function refreshLeaveInfo() {
     $('#frmModalAjaxWait').modal('show');
-    var start = moment($('#startdate').val());
-    var end = moment($('#enddate').val());
     $.ajax({
         type: "POST",
         url: baseURL + "leaves/validate",

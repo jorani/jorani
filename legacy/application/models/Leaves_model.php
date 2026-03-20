@@ -718,16 +718,25 @@ class Leaves_model extends CI_Model
      * Update a leave request in the database with the values posted by an HTTP POST
      * @param int $leaveId of the leave request
      * @param int $userId Identifier of the user (optional)
+     * @param string $startdate Start date (MySQL format YYYY-MM-DD)
+     * @param string $enddate End date (MySQL format YYYY-MM-DD)
+     * @param int $status Status of leave (see table status or doc)
+     * @param int $employeeId Identifier of the employee
+     * @param string $cause Optional reason of the leave
+     * @param string $startdatetype Start date type (Morning/Afternoon)
+     * @param string $enddatetype End date type (Morning/Afternoon)
+     * @param float $duration duration of the leave request
+     * @param int $type Type of leave (except compensate, fully customizable by user)
+     * @param ?string $comments (optional) JSON encoded comment
+     * @param ?string $document Base64 encoded document
      */
-    public function updateLeaves(int $leaveId, int $userId = 0): void
+    public function updateLeaves(int $leaveId, int $userId, string $startdate, string $enddate, int $status, int $employeeId, string $cause, string $startdatetype, string $enddatetype, float $duration, int $type, ?string $comments = NULL, ?string $document = NULL): void
     {
-        //TODO: decouple the logic (not by controler->form)
         if ($userId == 0) {
             $userId = $this->session->userdata('id');
         }
 
-        //TODO: prepareCommentOnStatusChanged smells bad
-        $json = $this->prepareCommentOnStatusChanged($leaveId, $this->input->post('status'));
+        $json = $this->prepareCommentOnStatusChanged($leaveId, $status);
         if ($this->input->post('comment') != NULL) {
             $jsonDecode = json_decode($json);
             $commentObject = new stdClass;
@@ -744,14 +753,14 @@ class Leaves_model extends CI_Model
             $json = json_encode($jsonDecode);
         }
         $data = [
-            'startdate' => $this->input->post('startdate'),
-            'startdatetype' => $this->input->post('startdatetype'),
-            'enddate' => $this->input->post('enddate'),
-            'enddatetype' => $this->input->post('enddatetype'),
-            'duration' => abs($this->input->post('duration')),
-            'type' => $this->input->post('type'),
-            'cause' => $this->input->post('cause'),
-            'status' => $this->input->post('status'),
+            'startdate' => $startdate,
+            'startdatetype' => $startdatetype,
+            'enddate' => $enddate,
+            'enddatetype' => $enddatetype,
+            'duration' => abs($duration),
+            'type' => $type,
+            'cause' => $cause,
+            'status' => $status,
             'comments' => $json
         ];
         $this->db->where('id', $leaveId);

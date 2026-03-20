@@ -272,22 +272,73 @@ class Leaves extends CI_Controller
                 log_message('debug', 'LR type forced to ' . $leaveTypesDetails->defaultType);
             }
 
-            // Check if the leave request is valid regardingg the leave balance
+            $employeeId = $this->session->userdata('id');
+            $leaveTypeId = $this->input->post('type');
+            $startDate = $this->input->post('startdate');
+            $startDateType = $this->input->post('startdatetype');
+            $endDate = $this->input->post('enddate');
+            $endDateType = $this->input->post('enddatetype');
+            $duration = (float) $this->input->post('duration');
+
+            // Reinforce control for leave requests spanning two periods
+            $this->load->model('contracts_model');
+            $this->load->model('dayoffs_model');
+            $startEntDate = '';
+            $endEntDate = '';
+
+            // Fetch the contract boundaries for the employee at the requested start date
+            $hasContract = $this->contracts_model->getBoundaries($employeeId, $startEntDate, $endEntDate);
+
+            if ($hasContract === true) {
+                // Reject the request if the start or end date falls outside the current contract period
+                if ($startDate < $startEntDate || $endDate > $endEntDate) {
+                    $this->session->set_flashdata('msg', lang('leaves_validate_flash_msg_overlap_period'));
+
+                    // Redirect back to the appropriate form
+                    if (isset($_GET['source'])) {
+                        redirect($_GET['source']);
+                    } else {
+                        redirect('leaves');
+                    }
+                }
+            }
+
+            // Recalculate the Actual Duration ---
+            // Fetch leave type details to see if we should deduct days off
+            $typeObject = $this->types_model->getTypes($leaveTypeId);
+            $deductDayOff = isset($typeObject['deduct_days_off']) ? $typeObject['deduct_days_off'] : FALSE;
+
+            // Get non-working days for this employee in the given range
+            $listDaysOff = $this->dayoffs_model->listOfDaysOffBetweenDates($employeeId, $startDate, $endDate);
+
+            // Calculate length using the model logic
+            $calculationResult = $this->leaves_model->actualLengthAndDaysOff(
+                $startDate,
+                $endDate,
+                $startDateType,
+                $endDateType,
+                $listDaysOff,
+                $deductDayOff
+            );
+
+            $calculatedDuration = $calculationResult['length'];
+
+            // Overwrite the submitted duration with the server-calculated value
+            $duration = $calculatedDuration;
+
+            // Check if the leave request is valid regarding the leave balance
             $disallowRequestsWithoutCredit = filter_var($this->config->item('disallow_requests_without_credit'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
             if ($disallowRequestsWithoutCredit === true) {
-                $type_id = $this->input->post('type');
-                $type_name = $this->types_model->getName($type_id);
-                $start_date = $this->input->post('startdate');
-                $duration = (float) $this->input->post('duration');
+                $typeName = $this->types_model->getName($leaveTypeId);
 
                 // Get the real balance
-                $available_credit = $this->leaves_model->getLeavesTypeBalanceForEmployee(
+                $availableCredit = $this->leaves_model->getLeavesTypeBalanceForEmployee(
                     $this->session->userdata('id'),
-                    $type_name,
-                    $start_date
+                    $typeName,
+                    $startDate
                 );
                 // Forbid to create the leave request if the duration is greater than the available credit
-                if ($duration > $available_credit) {
+                if ($duration > $availableCredit) {
                     $this->session->set_flashdata('msg', lang('leaves_create_field_duration_message'));
                     if (isset($_GET['source'])) {
                         redirect($_GET['source']);
@@ -389,7 +440,7 @@ class Leaves extends CI_Controller
             $this->load->view('leaves/edit', $data);
             $this->load->view('templates/footer');
         } else {
-            //Prevent thugs to auto validate their leave requests
+            //Prevent employees to auto validate their leave requests
             if (!$this->is_hr && !$this->is_admin) {
                 if ($this->input->post('status') == LMS_ACCEPTED) {
                     log_message('error', 'User #' . $this->session->userdata('id') .
@@ -400,6 +451,79 @@ class Leaves extends CI_Controller
                     log_message('error', 'User #' . $this->session->userdata('id') .
                         ' tried to submit a LR with an wrong status = ' . $this->input->post('status'));
                     $_POST['status'] = LMS_CANCELLATION;
+                }
+            }
+
+            $employeeId = $this->session->userdata('id');
+            $leaveTypeId = $this->input->post('type');
+            $startDate = $this->input->post('startdate');
+            $startDateType = $this->input->post('startdatetype');
+            $endDate = $this->input->post('enddate');
+            $endDateType = $this->input->post('enddatetype');
+            $duration = (float) $this->input->post('duration');
+
+            // Reinforce control for leave requests spanning two periods
+            $this->load->model('contracts_model');
+            $this->load->model('dayoffs_model');
+            $startEntDate = '';
+            $endEntDate = '';
+
+            // Fetch the contract boundaries for the employee at the requested start date
+            $hasContract = $this->contracts_model->getBoundaries($employeeId, $startEntDate, $endEntDate);
+
+            if ($hasContract === true) {
+                // Reject the request if the start or end date falls outside the current contract period
+                if ($startDate < $startEntDate || $endDate > $endEntDate) {
+                    $this->session->set_flashdata('msg', lang('leaves_validate_flash_msg_overlap_period'));
+
+                    // Redirect back to the appropriate form
+                    if (isset($_GET['source'])) {
+                        redirect($_GET['source']);
+                    } else {
+                        redirect('leaves');
+                    }
+                }
+            }
+
+            // Recalculate the Actual Duration ---
+            // Fetch leave type details to see if we should deduct days off
+            $typeObject = $this->types_model->getTypes($leaveTypeId);
+            $deductDayOff = isset($typeObject['deduct_days_off']) ? $typeObject['deduct_days_off'] : FALSE;
+
+            // Get non-working days for this employee in the given range
+            $listDaysOff = $this->dayoffs_model->listOfDaysOffBetweenDates($employeeId, $startDate, $endDate);
+
+            // Calculate length using the model logic
+            $calculationResult = $this->leaves_model->actualLengthAndDaysOff(
+                $startDate,
+                $endDate,
+                $startDateType,
+                $endDateType,
+                $listDaysOff,
+                $deductDayOff
+            );
+            // Overwrite the submitted duration with the server-calculated value
+            $duration = $calculationResult['length'];
+
+            // Check if the leave request is valid regarding the leave balance
+            $disallowRequestsWithoutCredit = filter_var($this->config->item('disallow_requests_without_credit'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+            if ($disallowRequestsWithoutCredit === true) {
+                $typeName = $this->types_model->getName($leaveTypeId);
+
+                // Get the real balance
+                $availableCredit = $this->leaves_model->getLeavesTypeBalanceForEmployee(
+                    $this->session->userdata('id'),
+                    $typeName,
+                    $startDate
+                );
+                // Forbid to create the leave request if the duration is greater than the available credit
+                if ($duration > $availableCredit) {
+                    $this->session->set_flashdata('msg', lang('leaves_create_field_duration_message'));
+                    if (isset($_GET['source'])) {
+                        redirect($_GET['source']);
+                    } else {
+                        redirect('leaves');
+                    }
                 }
             }
 
@@ -414,7 +538,21 @@ class Leaves extends CI_Controller
                 log_message('debug', 'LR type forced to ' . $leaveTypesDetails->defaultType);
             }
 
-            $this->leaves_model->updateLeaves($id);       //We don't use the return value
+            $this->leaves_model->updateLeaves(
+                $id,
+                $this->session->userdata('id'),
+                $this->input->post('startdate'),
+                $this->input->post('enddate'),
+                $this->input->post('status'),
+                $this->session->userdata('id'),
+                $this->input->post('cause'),
+                $this->input->post('startdatetype'),
+                $this->input->post('enddatetype'),
+                abs($duration),
+                $this->input->post('type'),
+                $this->input->post('comment'),
+                $this->input->post('document')
+            );
             $this->session->set_flashdata('msg', lang('leaves_edit_flash_msg_success'));
             //If the status is requested or cancellation, send an email to the manager
             if ($this->input->post('status') == LMS_REQUESTED) {
