@@ -28,7 +28,6 @@ class Contracts_model extends CI_Model
 
     /**
      * Default constructor
-     * 
      */
     public function __construct()
     {
