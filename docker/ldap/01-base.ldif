@@ -6,7 +6,15 @@ dn: ou=groups,dc=example,dc=org
 objectClass: organizationalUnit
 ou: groups
 
-dn: uid=bob,ou=people,dc=example,dc=org
+dn: uid=jorani,ou=people,dc=example,dc=org
+objectClass: inetOrgPerson
+cn: Admin ADMINISTRATOR
+sn: ADMINISTRATOR
+uid: jorani
+mail: jorani@example.org
+userPassword: jorani
+
+dn: uid=jdoe,ou=people,dc=example,dc=org
 objectClass: inetOrgPerson
 cn: John Doe
 sn: Doe

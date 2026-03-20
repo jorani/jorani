@@ -8,6 +8,14 @@ $config = [
     'example-userpass' => [
         'exampleauth:UserPass',
 
+        'jorani:jorani' => [
+            'uid' => ['jorani'],
+            'mail' => ['jorani@example.org'],
+            'displayName' => ['Admin ADMINISTRATOR'],
+            'givenName' => ['Admin'],
+            'sn' => ['ADMINISTRATOR'],
+        ],
+
         'jdoe:jdoe' => [
             'uid' => ['jdoe'],
             'mail' => ['jdoe@example.org'],
