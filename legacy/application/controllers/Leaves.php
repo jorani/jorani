@@ -252,7 +252,7 @@ class Leaves extends CI_Controller
             $this->load->view('leaves/create');
             $this->load->view('templates/footer');
         } else {
-            //Prevent thugs to auto validate their leave requests
+            //Prevent employees to auto validate their leave requests
             if (!$this->is_hr && !$this->is_admin) {
                 if ($this->input->post('status') > LMS_REQUESTED) {
                     log_message('error', 'User #' . $this->session->userdata('id') .
@@ -270,6 +270,31 @@ class Leaves extends CI_Controller
                     $this->input->post('type'));
                 $_POST['type'] = $leaveTypesDetails->defaultType;
                 log_message('debug', 'LR type forced to ' . $leaveTypesDetails->defaultType);
+            }
+
+            // Check if the leave request is valid regardingg the leave balance
+            $disallowRequestsWithoutCredit = filter_var($this->config->item('disallow_requests_without_credit'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+            if ($disallowRequestsWithoutCredit === true) {
+                $type_id = $this->input->post('type');
+                $type_name = $this->types_model->getName($type_id);
+                $start_date = $this->input->post('startdate');
+                $duration = (float) $this->input->post('duration');
+
+                // Get the real balance
+                $available_credit = $this->leaves_model->getLeavesTypeBalanceForEmployee(
+                    $this->session->userdata('id'),
+                    $type_name,
+                    $start_date
+                );
+                // Forbid to create the leave request if the duration is greater than the available credit
+                if ($duration > $available_credit) {
+                    $this->session->set_flashdata('msg', lang('leaves_create_field_duration_message'));
+                    if (isset($_GET['source'])) {
+                        redirect($_GET['source']);
+                    } else {
+                        redirect('leaves');
+                    }
+                }
             }
 
             if (function_exists('triggerCreateLeaveRequest')) {
