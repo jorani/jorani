@@ -410,7 +410,17 @@ class Hr extends CI_Controller
             $this->load->view('hr/createleave');
             $this->load->view('templates/footer');
         } else {
-            $this->leaves_model->setLeaves($id);   //Return not used
+            $this->leaves_model->setLeaves(
+                $id,
+                $this->input->post('startdate'),
+                $this->input->post('enddate'),
+                $this->input->post('startdatetype'),
+                $this->input->post('enddatetype'),
+                (float) $this->input->post('duration'),
+                $this->input->post('type'),
+                $this->input->post('cause', true),
+                $this->input->post('status')
+            );   //Return not used
             $this->session->set_flashdata('msg', lang('hr_leaves_create_flash_msg_success'));
             //No mail is sent, because the HR Officer would set the leave status to accepted
             redirect('hr/employees');

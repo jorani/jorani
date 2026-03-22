@@ -325,6 +325,7 @@ class Requests extends CI_Controller
             $this->load->helper('form');
             $this->load->library('form_validation');
             $data['title'] = lang('hr_leaves_create_title');
+            $data['help'] = $this->help->create_help_link('global_link_doc_page_request_leave');
             $data['form_action'] = 'requests/createleave/' . $id;
             $data['source'] = 'requests/collaborators';
             $data['employee'] = $id;
@@ -354,7 +355,17 @@ class Requests extends CI_Controller
                 $this->load->view('hr/createleave');
                 $this->load->view('templates/footer');
             } else {
-                $this->leaves_model->setLeaves($id);       //We don't use the return value
+                $this->leaves_model->setLeaves(
+                    $id,
+                    $this->input->post('startdate'),
+                    $this->input->post('enddate'),
+                    $this->input->post('startdatetype'),
+                    $this->input->post('enddatetype'),
+                    (float) $this->input->post('duration'),
+                    $this->input->post('type'),
+                    $this->input->post('cause', true),
+                    $this->input->post('status')
+                );       //We don't use the return value
                 $this->session->set_flashdata('msg', lang('hr_leaves_create_flash_msg_success'));
                 //No mail is sent, because the manager would set the leave status to accepted
                 redirect('requests/collaborators');
