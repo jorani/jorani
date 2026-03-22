@@ -89,12 +89,17 @@ class Connection extends CI_Controller
         } else {
             $this->load->model('users_model');
             //Set language
-            $this->session->set_userdata('language_code', $this->input->post('language'));
-            $this->session->set_userdata('language', $this->polyglot->code2language($this->input->post('language')));
+            $languages = explode(",", $this->config->item('languages'));
+            $language = $this->input->get_post('language', true);
+            if (in_array($language, $languages)) {
+                $this->session->set_userdata('language_code', $language);
+                $this->session->set_userdata('language', $this->polyglot->code2language($language));
+            } else {
+                $this->session->set_userdata('language_code', 'en');
+                $this->session->set_userdata('language', $this->polyglot->code2language('en'));
+            }
 
-            //Decipher the password value (RSA encoded -> base64 -> decode -> decrypt) and remove the salt!
             $password = $this->input->post('password');
-
             $loggedin = FALSE;
             $ldapEnabled = filter_var($this->config->item('ldap_enabled'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
             if ($ldapEnabled === TRUE) {
