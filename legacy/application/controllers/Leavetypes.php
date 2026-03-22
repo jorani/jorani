@@ -76,8 +76,8 @@ class LeaveTypes extends CI_Controller
             $this->load->view('leavetypes/create', $data);
         } else {
             $deduct = ($this->input->post('deduct_days_off') == 'on') ? TRUE : FALSE;
-            $acronym = $this->input->post('acronym');
-            $name = $this->input->post('name');
+            $acronym = $this->input->post('acronym', true);
+            $name = $this->input->post('name', true);
             $this->types_model->setTypes($name, $deduct, $acronym);
             $this->session->set_flashdata('msg', lang('leavetypes_popup_create_flash_msg'));
             redirect('leavetypes');
@@ -107,9 +107,9 @@ class LeaveTypes extends CI_Controller
             $deduct = ($this->input->post('deduct_days_off') == 'on') ? TRUE : FALSE;
             $this->types_model->updateTypes(
                 $id,
-                $this->input->post('name'),
+                $this->input->post('name', true),
                 $deduct,
-                mb_substr($this->input->post('acronym'), 0, 10)
+                mb_substr($this->input->post('acronym', true), 0, 10)
             );
             $this->session->set_flashdata('msg', lang('leavetypes_popup_update_flash_msg'));
             redirect('leavetypes');
