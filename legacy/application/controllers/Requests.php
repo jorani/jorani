@@ -514,9 +514,11 @@ class Requests extends CI_Controller
             }
 
             $summary = $this->leaves_model->getLeaveBalanceForEmployee($user['id'], $refDate);
-            if (count($summary) > 0) {
-                foreach ($summary as $key => $value) {
-                    $result[$user['id']][$key] = round($value[1] - $value[0], 3, PHP_ROUND_HALF_DOWN);
+            if ($summary != null) {
+                if (count($summary) > 0) {
+                    foreach ($summary as $key => $value) {
+                        $result[$user['id']][$key] = round($value[1] - $value[0], 3, PHP_ROUND_HALF_DOWN);
+                    }
                 }
             }
         }
