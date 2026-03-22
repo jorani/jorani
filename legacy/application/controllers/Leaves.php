@@ -187,8 +187,7 @@ class Leaves extends CI_Controller
     }
 
     /**
-     * Create a new comment or append a comment to the comments
-     * on a leave request
+     * Create a new comment or append a comment to the comments on a leave request
      * @param int $id Id of the leave request
      * @param string $source Page where we redirect after posting
      */
@@ -200,7 +199,7 @@ class Leaves extends CI_Controller
         $newComment = new stdClass;
         $newComment->type = "comment";
         $newComment->author = $this->session->userdata('id');
-        $newComment->value = $this->input->post('comment', TRUE);
+        $newComment->value = $this->input->post('comment', true);
         $newComment->date = date("Y-n-j");
         if ($oldComment != NULL) {
             array_push($oldComment->comments, $newComment);
@@ -351,7 +350,17 @@ class Leaves extends CI_Controller
             if (function_exists('triggerCreateLeaveRequest')) {
                 triggerCreateLeaveRequest($this);
             }
-            $leave_id = $this->leaves_model->setLeaves($this->session->userdata('id'));
+            $leave_id = $this->leaves_model->setLeaves(
+                $this->session->userdata('id'),
+                $this->input->post('startdate'),
+                $this->input->post('enddate'),
+                $this->input->post('startdatetype'),
+                $this->input->post('enddatetype'),
+                $duration,
+                $this->input->post('type'),
+                $this->input->post('cause', true),
+                $this->input->post('status')
+            );
             $this->session->set_flashdata('msg', lang('leaves_create_flash_msg_success'));
 
             //If the status is requested, send an email to the manager
@@ -545,13 +554,12 @@ class Leaves extends CI_Controller
                 $this->input->post('enddate'),
                 $this->input->post('status'),
                 $this->session->userdata('id'),
-                $this->input->post('cause'),
+                $this->input->post('cause', true),
                 $this->input->post('startdatetype'),
                 $this->input->post('enddatetype'),
                 abs($duration),
                 $this->input->post('type'),
-                $this->input->post('comment'),
-                $this->input->post('document')
+                $this->input->post('comment', true)
             );
             $this->session->set_flashdata('msg', lang('leaves_edit_flash_msg_success'));
             //If the status is requested or cancellation, send an email to the manager
@@ -819,12 +827,11 @@ class Leaves extends CI_Controller
         $to = $manager['email'];
         $subject = $detailledSubject . ' ' . $user['firstname'] . ' ' . $user['lastname'];
         //Copy to the delegates, if any
-        $cc = NULL;
+        $cc = null;
         $delegates = $this->delegations_model->listMailsOfDelegates($manager['id']);
         if (!empty($delegates)) {
-            $cc = $delegates;
+            $cc = join(',', $delegates);
         }
-
         sendMailByWrapper($this, $subject, $message, $to, $cc);
     }
 

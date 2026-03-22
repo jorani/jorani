@@ -567,23 +567,42 @@ class Leaves_model extends CI_Model
     /**
      * Create a leave request
      * @param int $employeeId Identifier of the employee
+     * @param string $startdate Start date (MySQL format YYYY-MM-DD)
+     * @param string $enddate End date (MySQL format YYYY-MM-DD)
+     * @param string $startdatetype Start date type of the leave (Morning/Afternoon)
+     * @param string $enddatetype End date type of the leave (Morning/Afternoon)
+     * @param float $duration duration of the leave
+     * @param int $type Identifier of the leave type
+     * @param string $cause Identifier of the leave
+     * @param int $status status of the leave
+     * @param string|null $document document attached to the leave request
      * @return int id of the newly created leave request into the db
      */
-    public function setLeaves(int $employeeId): int
-    {
-        //TODO: decouple input ($this->input->post()) from model
+    public function setLeaves(
+        int $employeeId,
+        string $startdate,
+        string $enddate,
+        string $startdatetype,
+        string $enddatetype,
+        float $duration,
+        int $type,
+        string $cause,
+        int $status,
+        ?string $document = null
+    ): int {
         //TODO: decouple config
-        $data = array(
-            'startdate' => $this->input->post('startdate'),
-            'startdatetype' => $this->input->post('startdatetype'),
-            'enddate' => $this->input->post('enddate'),
-            'enddatetype' => $this->input->post('enddatetype'),
-            'duration' => abs($this->input->post('duration')),
-            'type' => $this->input->post('type'),
-            'cause' => $this->input->post('cause'),
-            'status' => $this->input->post('status'),
-            'employee' => $employeeId
-        );
+        $data = [
+            'startdate' => $startdate,
+            'startdatetype' => $startdatetype,
+            'enddate' => $enddate,
+            'enddatetype' => $enddatetype,
+            'duration' => abs($duration),
+            'type' => $type,
+            'cause' => $cause,
+            'status' => $status,
+            'employee' => $employeeId,
+            'document' => $document
+        ];
         $this->db->insert('leaves', $data);
         $newId = $this->db->insert_id();
 
@@ -622,7 +641,7 @@ class Leaves_model extends CI_Model
                     $this->input->post('enddate'),
                     $this->input->post('status'),
                     $id,
-                    $this->input->post('cause'),
+                    $this->input->post('cause', true),
                     $this->input->post('startdatetype'),
                     $this->input->post('enddatetype'),
                     abs($this->input->post('duration')),
@@ -640,7 +659,7 @@ class Leaves_model extends CI_Model
                     'enddatetype' => $this->input->post('enddatetype'),
                     'duration' => abs($this->input->post('duration')),
                     'type' => $this->input->post('type'),
-                    'cause' => $this->input->post('cause'),
+                    'cause' => $this->input->post('cause', true),
                     'status' => $this->input->post('status'),
                     'employee' => $id
                 ];

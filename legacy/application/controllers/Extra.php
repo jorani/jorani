@@ -267,10 +267,14 @@ class Extra extends CI_Controller
             );
             $message = $this->parser->parse('emails/' . $manager['language'] . '/overtime', $data, TRUE);
             //Copy to the delegates, if any
+            $cc = null;
             $delegates = $this->delegations_model->listMailsOfDelegates($manager['id']);
+            if (!empty($delegates)) {
+                $cc = join(',', $delegates);
+            }
             $subject = $lang_mail->line('email_extra_request_reject_subject') . ' ' .
                 $user['firstname'] . ' ' . $user['lastname'];
-            sendMailByWrapper($this, $subject, $message, $manager['email'], $delegates);
+            sendMailByWrapper($this, $subject, $message, $manager['email'], $cc);
         }
     }
 
