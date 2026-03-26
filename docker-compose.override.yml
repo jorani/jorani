@@ -31,7 +31,7 @@ services:
       - ldap_data:/bitnami/openldap
       - ./docker/ldap/ldif:/ldifs:ro
   saml-idp:
-    image: kenchan0130/simplesamlphp
+    image: kenchan0130/simplesamlphp:latest
     container_name: saml-idp
     ports:
       - "8080:8080"
@@ -45,5 +45,18 @@ services:
       - ./docker/simplesamlphp/metadata/saml20-idp-hosted.php:/var/www/simplesamlphp/metadata/saml20-idp-hosted.php
       - ./docker/simplesamlphp/cert/my-idp.crt:/var/www/simplesamlphp/cert/my-idp.crt:ro
       - ./docker/simplesamlphp/cert/my-idp.pem:/var/www/simplesamlphp/cert/my-idp.pem:ro
+  cas-server:
+    image: apereo/cas:7.3.4
+    platform: linux/amd64
+    container_name: cas-server
+    ports:
+      - "8443:8443"
+    environment:
+      - CAS_AUTHN_ACCEPT_USERS=jorani::jorani,jdoe::jdoe,alice::alice,bob::bob
+      - CAS_SERVICE_REGISTRY_CORE_INIT_DEFAULT_SERVICE_ID=^(https|http)://.*
+      - SERVER_SSL_ENABLED=false
+      - CAS_SERVER_HTTP_PROXY_ENABLED=true
+      - CAS_TG_CRYPTO_SIGNING_KEY=92e0f151df95287bb035ef11666016d909c385f6d9d0cbf994e9f7e2d2e8b6167b2314a580a6bc60e36b11de4bad00f9eafdfb15dd00db2052d520c7ae5e2267
+      - CAS_TG_CRYPTO_ENCRYPTION_KEY=38566b82e3a3db106a038ddb2c53e264
 volumes:
   ldap_data:

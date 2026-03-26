@@ -67,6 +67,13 @@ class Connection extends CI_Controller
         if ($samlEnabled === TRUE) {
             redirect('api/sso');
         }
+
+        //The login form is not used with CAS authentication mode
+        $casEnabled = filter_var($this->config->item('cas_enabled'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($casEnabled === TRUE) {
+            redirect('api/cas');
+        }
+
         //If we are already connected (login bookmarked), then redirect to home
         if ($this->session->userdata('logged_in') === TRUE) {
             redirect('home');
@@ -401,4 +408,65 @@ class Connection extends CI_Controller
         }
     }
 
+    /**
+     * CAS Authentication endpoint
+     */
+    public function cas(): void
+    {
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+        ini_set('display_errors', 0);
+
+        // Load CAS specific config and initialize phpCAS
+        echo 'Load CAS config<br>';
+        $this->config->load('cas');
+        echo "cas_server_hostname: " . $this->config->item('cas_server_hostname') . "<br>";
+        echo "cas_server_port: " . $this->config->item('cas_server_port') . "<br>";
+        echo "cas_server_path: " . $this->config->item('cas_server_path') . "<br>";
+        echo "base_url: " . base_url() . "<br>";
+        phpCAS::client(
+            CAS_VERSION_2_0,
+            $this->config->item('cas_server_hostname'),
+            $this->config->item('cas_server_port'),
+            $this->config->item('cas_server_path'),
+            base_url()
+        );
+        echo 'client initialized<br>';
+
+        // Disable CAS server validation for development
+        $casNoCasServerValidation = filter_var($this->config->item('cas_no_cas_server_validation'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        if ($casNoCasServerValidation === TRUE) {
+            echo 'disable server validation<br>';
+            phpCAS::setNoCasServerValidation();
+            echo 'no cas server validation<br>';
+        }
+
+        // Force authentication (redirect to CAS server if not connected)
+        echo 'force authentication<br>';
+        phpCAS::forceAuthentication();
+        echo 'forced authentication<br>';
+
+        // If we get here, the user is authenticated by the CAS
+        $casUser = phpCAS::getUser(); // Get the identifier (often the email or login)
+        echo $casUser;
+        $attributes = phpCAS::getAttributes(); // Get the attributes if available
+
+        $this->load->model('users_model');
+
+        // Check in local database
+        // Assume the CAS identifier is the email, otherwise adapt the search method
+        $loggedin = $this->users_model->checkCredentialsEmail($casUser);
+
+        if ($loggedin === TRUE) {
+            echo 'user found in local db<br>';
+            $this->load->model('sessions_model');
+            $this->sessions_model->purgeOldData();
+            $this->redirectToLastPage();
+        } else {
+            echo 'not logged in<br>';
+            // Handle failure (user unknown in local DB or disabled)
+            log_message('error', 'CAS Auth OK but user not found in local DB: ' . $casUser);
+            $this->session->set_flashdata('msg', lang('session_login_flash_bad_credentials'));
+            redirect('session/login');
+        }
+    }
 }

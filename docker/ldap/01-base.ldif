@@ -43,3 +43,5 @@ objectClass: groupOfNames
 cn: jorani-users
 member: uid=alice,ou=people,dc=example,dc=org
 member: uid=bob,ou=people,dc=example,dc=org
+member: uid=jdoe,ou=people,dc=example,dc=org
+member: uid=jorani,ou=people,dc=example,dc=org

@@ -336,6 +336,7 @@ $route['api/acs'] = 'connection/acs';
 $route['api/slo'] = 'connection/slo';
 $route['api/sls'] = 'connection/sls';
 $route['api/sso'] = 'connection/sso';
+$route['api/cas'] = 'connection/cas';
 
 //_______________________________________________
 //Authorization endpoint
