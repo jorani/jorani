@@ -33,15 +33,8 @@ if (!defined('BASEPATH')) {
  * @property Types_model $types_model
  * @property Users_model $users_model
  */
-class Api extends CI_Controller
+class Api extends MY_RestController
 {
-
-    /**
-     * OAuth2 server used by all methods in order to determine if the user is connected
-     * @var OAuth2\Server Authentication server 
-     */
-    protected $server;
-
     /**
      * Default constructor
      * Initializing of OAuth2 server
@@ -49,11 +42,6 @@ class Api extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        OAuth2\Autoloader::register();
-        $storage = new OAuth2\Storage\Pdo($this->db->conn_id);
-        $this->server = new OAuth2\Server($storage);
-        $this->server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
-        $this->server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
     }
 
     /**
@@ -90,19 +78,6 @@ class Api extends CI_Controller
     }
 
     /**
-     * Check if the input string contains a date
-     *
-     * @param string $date Date tobe validated
-     * @param string $format Optional Date format, 'Y-m-d' by default
-     * @return boolean TRUE if the string is a date,false otherwise
-     */
-    private function validateDate(string $date, string $format = 'Y-m-d'): bool
-    {
-        $d = DateTime::createFromFormat($format, $date);
-        return $d && $d->format($format) === $date;
-    }
-
-    /**
      * Get all contracts
      * @param int $contractId Id of the contract
      */
@@ -117,29 +92,6 @@ class Api extends CI_Controller
                 $this->output->set_header("HTTP/1.1 404 Not Found");
                 return;
             }
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($result));
-        }
-    }
-
-    /**
-     * Get the list of users with all their attributes
-     * Requires scope users (see tests/rest/api3.php)
-     * Not documented with OpenAPI, might be deprecated in a near future
-     * @since 0.6.0
-     */
-    public function usersExt(): void
-    {
-        $request = OAuth2\Request::createFromGlobals();
-        $response = new OAuth2\Response();
-        $scopeRequired = 'users';
-        if (!$this->server->verifyResourceRequest($request, $response, $scopeRequired)) {
-            $response->send();
-        } else {
-            $this->load->model('users_model');
-            $result = $this->users_model->getUsers();
-            header("Content-Type: application/json");
             $this->output
                 ->set_content_type('application/json')
                 ->set_output(json_encode($result));

@@ -313,8 +313,6 @@ $route['api/acceptleaves/(:num)'] = 'api/acceptleave/$1';
 $route['api/acceptleave/(:num)'] = 'api/acceptleave/$1';
 $route['api/rejectleaves/(:num)'] = 'api/rejectleave/$1';
 $route['api/rejectleave/(:num)'] = 'api/rejectleave/$1';
-//v0.6.0
-$route['api/users/ext'] = 'api/usersExt';
 
 //_______________________________________________
 //ICS Feeds

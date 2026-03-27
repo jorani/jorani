@@ -12,7 +12,7 @@ class LeaveAPI
 
     /**
      * Get the leaves counter of a given employee
-     * * @param int $employeeId Unique identifier of an employee
+     * @param int $employeeId Unique identifier of an employee
      * @param string|null $refTmp Date of reference (YYYY-MM-DD or Unix timestamp)
      */
     #[OA\Get(

@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/bbalet/jorani/master/assets/images/logo_simple.png" width="80" align="left" hspace="10">
 
-Jorani is a Leave Management System developed in PHP8.1+/MySQL with an MIT licence.
+Jorani is a Leave Management System developed in PHP8.1+/MySQL8+ with an MIT licence.
 Jorani is designed to provide simple leave and overtime request workflows for small organizations.
 
 ## Features

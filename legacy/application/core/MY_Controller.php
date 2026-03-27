@@ -8,20 +8,23 @@
 
 /**
  * This class specializes the CodeIgniter controller by adding
- * Everything needed for REST (Authentication, content negotiation, etc.)
+ * Everything needed for a REST API
  * CORS is supported (preflight requests, verbs, etc.).
  */
 class MY_RestController extends CI_Controller
 {
-    /**
-     * @var stdClass Properties of the connected user 
-     */
-    protected $user;
 
     /**
-     * @var string Requested language (english language name)
+     * OAuth2 server used by all methods in order to determine if the user is connected
+     * @var OAuth2\Server Authentication server 
      */
-    protected $language;
+    protected $server;
+
+    /**
+     * Is the API enabled or not
+     * @var bool
+     */
+    protected $isApiEnabled = false;
 
     /**
      * Default constructor
@@ -30,176 +33,34 @@ class MY_RestController extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        log_message('debug', 'Current URI = ' . $this->uri->uri_string());
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
-        header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding, Accept-Language");
-        if ($this->input->method(FALSE) != 'OPTIONS') {
-            if (empty($this->input->server('PHP_AUTH_USER'))) {
-                log_message('error', 'Authenticate: PHP_AUTH_USER is missing (webserver misconfiguration or BasicAuth wasn\'t sent)');
-                $this->notAuthenticated();
-            } else {
-                $this->load->model('users_model');
-                $username = $this->input->server('PHP_AUTH_USER');
-                $password = $this->input->server('PHP_AUTH_PW');
-                $user = NULL;
-                if ($this->config->item('ldap_enabled') === TRUE) {
-                    if ($password != "") { //Bind to MS-AD with blank password might return OK
-                        $ldap = ldap_connect($this->config->item('ldap_host'), $this->config->item('ldap_port'));
-                        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-                        set_error_handler(function () { /* ignore errors */
-                        });
+        $this->isApiEnabled = filter_var($this->config->item('api_enabled'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
+        header("Access-Control-Allow-Origin: {$this->config->item('api_access_control_allow_origin')}");
+        header("Access-Control-Allow-Methods: {$this->config->item('api_access_control_allow_methods')}");
+        header("Access-Control-Allow-Headers: {$this->config->item('api_access_control_allow_headers')}");
+        header("Access-Control-Max-Age: {$this->config->item('api_access_control_max_age')}");
 
-                        $basedn = "";
-                        if (($this->config->item('ldap_search_enabled')) === TRUE) {
-                            $bind = ldap_bind($ldap, $this->config->item('ldap_search_user'), $this->config->item('ldap_search_password'));
-                            $resultSet = ldap_search($ldap, $this->config->item('ldap_basedn'), sprintf($this->config->item('ldap_search_pattern'), $username));
-                            $userEntry = ldap_first_entry($ldap, $resultSet);
-                            $basedn = ldap_get_dn($ldap, $userEntry);
-                        } else {
-                            //Priority is given to the base DN defined into the database, then try with the template
-                            $basedn = $this->users_model->getBaseDN($username);
-                            if ($basedn == "") {//can return NULL
-                                $basedn = sprintf($this->config->item('ldap_basedn'), $username);
-                            }
-                        }
-
-                        $bind = ldap_bind($ldap, $basedn, $password);
-                        restore_error_handler();
-                        if ($bind) {
-                            $user = $this->users_model->checkCredentialsForREST($username, "ldap");
-                        } else {
-                            //Attempt to login the user with the password stored into DB, provided this password is not emptye
-                            if ($password != "") {
-                                $user = $this->users_model->checkCredentialsForREST($username, "internal", $password);
-                            }
-                        }
-                        ldap_close($ldap);
-                    } else {
-                        log_message('debug', 'Authenticate: Empty password provided for LDAP Backend');
-                    }
-                } else {
-                    $user = $this->users_model->checkCredentialsForREST($username, "internal", $password);
-                }
-
-                if (is_null($user)) {
-                    $this->notAuthenticated();
-                } else {
-                    $this->user = clone $user;
-                    log_message('debug', 'Authenticate: Welcome dear user #' . $user->id);
-                    $this->load->library('polyglot');
-                    if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-                        log_message('debug', 'Client sent us acceptable language codes: ' . $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-                        $availableLanguages = explode(",", $this->config->item('languages'));
-                        log_message('debug', 'Jorani currently support one of these lang codes: ' . $this->config->item('languages'));
-
-                        $possibleLanguage = $this->preferedLanguages($availableLanguages, $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-                        $langCode = $this->polyglot->language2code($this->config->item('language'));
-                        if (count($possibleLanguage) > 0) {
-                            if (!in_array($langCode, $availableLanguages)) {
-                                log_message('debug', 'Sorry, language code of client is not supported: ' . $langCode);
-                            } else {
-                                $langCode = key($possibleLanguage);
-                            }
-                        }
-                        $this->language = $this->polyglot->code2language($langCode);
-                    } else {
-                        log_message('debug', 'Client did not send its favorite languages.');
-                        $this->language = $this->config->item('language');
-                    }
-                    log_message('debug', 'We\'ll use ' . $this->language);
-
-                    //Decode JSON into POST array
-                    $mediaType = $this->input->get_request_header('Content-Type', TRUE);
-                    log_message('debug', 'Media Type = ' . $mediaType);
-                    if (strpos($mediaType, 'application/json') !== false) {
-                        log_message('debug', 'Decode input JSON into POST array');
-                        $_POST = json_decode(file_get_contents('php://input'), true);
-                    }
-                }
-            }
+        if (!$this->isApiEnabled) {
+            $this->output->set_status_header(503, 'Service Unavailable');
+            die();
         }
+
+        OAuth2\Autoloader::register();
+        $storage = new OAuth2\Storage\Pdo($this->db->conn_id);
+        $this->server = new OAuth2\Server($storage);
+        $this->server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
+        $this->server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
     }
 
     /**
-     * Get an associative array of the preferred languages 
-     * Languages are sorted out by their preference score
-     * 
-     * @param array $availableLanguages list of languages supported by Jorani
-     * @param string $httpAcceptLanguage HTTP Request Header (accept-language)
-     * @return array associative array langCode/Score (eg. [en] => 0.8, [es] => 0.4)
+     * Check if the input string contains a date
+     *
+     * @param string $date Date tobe validated
+     * @param string $format Optional Date format, 'Y-m-d' by default
+     * @return boolean TRUE if the string is a date,false otherwise
      */
-    private function preferedLanguages(array $availableLanguages, string $httpAcceptLanguage): array
+    protected function validateDate(string $date, string $format = 'Y-m-d'): bool
     {
-        $availableLanguages = array_flip($availableLanguages);
-        $langs = array();
-        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($httpAcceptLanguage), $matches, PREG_SET_ORDER);
-        foreach ($matches as $match) {
-
-            list($a, $b) = explode('-', $match[1]) + array('', '');
-            $value = isset($match[2]) ? (float) $match[2] : 1.0;
-
-            if (isset($availableLanguages[$match[1]])) {
-                $langs[$match[1]] = $value;
-                continue;
-            }
-
-            if (isset($availableLanguages[$a])) {
-                $langs[$a] = $value - 0.1;
-            }
-
-        }
-        arsort($langs);
-        return $langs;
-    }
-
-    /**
-     * Pre-flight check for CORS requests
-     * 
-     */
-    public function options(): void
-    {
-        log_message('debug', '__options');
-    }
-
-    /**
-     * Terminate lifecycle of the web request if the user can't be authenticated
-     */
-    protected function notAuthenticated(): never
-    {
-        log_message('error', ' /!\ notAuthenticated: Send back HTTP 401 Error');
-        http_response_code(401);
-        header('WWW-Authenticate: Basic realm="Jorani Rest API"');
-        die();
-    }
-
-    /**
-     * Terminate lifecycle of the web request if the user doesn't have enough privileges
-     */
-    protected function forbidden(): never
-    {
-        log_message('error', ' /!\ forbidden: Send back HTTP 403 Error');
-        http_response_code(403);
-        die();
-    }
-
-    /**
-     * Terminate lifecycle of the web request if the object was not found
-     */
-    protected function notFound(): never
-    {
-        log_message('error', ' /!\ notFound: The object was not found');
-        http_response_code(404);
-        die();
-    }
-
-    /**
-     * Terminate lifecycle of the web request if the parameters are invalid
-     */
-    protected function badRequest(): never
-    {
-        log_message('error', ' /!\ badRequest: Invalid input');
-        http_response_code(400);
-        die();
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) === $date;
     }
 }

@@ -7,16 +7,16 @@
  * For local development outside Docker, export them in your shell or load the
  * .env file via your web-server configuration (SetEnv / fastcgi_param).
  */
-$env_str  = static fn(string $k, string $default = ''): string
+$env_str = static fn(string $k, string $default = ''): string
     => ($v = getenv($k)) !== false ? $v : $default;
 
-$env_int  = static fn(string $k, int $default): int
+$env_int = static fn(string $k, int $default): int
     => ($v = getenv($k)) !== false ? (int) $v : $default;
 
 $env_bool = static fn(string $k, bool $default): bool
     => ($v = getenv($k)) !== false
-        ? filter_var($v, FILTER_VALIDATE_BOOLEAN)
-        : $default;
+    ? filter_var($v, FILTER_VALIDATE_BOOLEAN)
+    : $default;
 
 /*
 |--------------------------------------------------------------------------
@@ -469,25 +469,25 @@ $config['proxy_ips'] = '';
 
 //____________________________________________________________________________
 //default email from
-$config['from_mail']      = $env_str('FROM_MAIL', 'do.not@reply.me');
-$config['from_name']      = $env_str('FROM_NAME', 'Jorani');
+$config['from_mail'] = $env_str('FROM_MAIL', 'do.not@reply.me');
+$config['from_name'] = $env_str('FROM_NAME', 'Jorani');
 $config['subject_prefix'] = $env_str('SUBJECT_PREFIX', '[Jorani] ');
 
 //____________________________________________________________________________
 //User management
 $config['disable_capitalization'] = $env_bool('DISABLE_CAPITALIZATION', false); // TRUE to disable capitalization of lastname
-$config['password_length']        = $env_int('PASSWORD_LENGTH', 8);              // Password minimal length
-$config['default_role_id']        = $env_int('DEFAULT_ROLE_ID', 2);              // Default role id (e.g. 2 for user)
+$config['password_length'] = $env_int('PASSWORD_LENGTH', 8);              // Password minimal length
+$config['default_role_id'] = $env_int('DEFAULT_ROLE_ID', 2);              // Default role id (e.g. 2 for user)
 // Login pattern (automatically created from firstname and lastname)
-$config['login_pattern']          = $env_str('LOGIN_PATTERN', 'jdoe');           // (default) First letter of firstname and lastname
+$config['login_pattern'] = $env_str('LOGIN_PATTERN', 'jdoe');           // (default) First letter of firstname and lastname
 //$config['login_pattern'] = 'john.doe';    //Firstname plus dot plus lastname (up to field limit)
 //$config['login_pattern'] = 'john_doe';    //Firstname plus underscore plus lastname (up to field limit)
 //$config['login_pattern'] = '#email';       //Copy another field of the form (use an existing field name with the pound sign)
 
 //____________________________________________________________________________
 //Set this value to TRUE if you want to create leaves at status requested instead of planned
-$config['leave_status_requested']      = $env_bool('LEAVE_STATUS_REQUESTED', false);
-$config['default_leave_type']          = $env_bool('DEFAULT_LEAVE_TYPE', false);    // Default leave type identifier (integer).
+$config['leave_status_requested'] = $env_bool('LEAVE_STATUS_REQUESTED', false);
+$config['default_leave_type'] = $env_bool('DEFAULT_LEAVE_TYPE', false);    // Default leave type identifier (integer).
 
 // Create a leave request / Allow overwrite of the duration
 $config['disable_edit_leave_duration'] = $env_bool('DISABLE_EDIT_LEAVE_DURATION', false); // Switch to read-only (duration is computed)
@@ -527,16 +527,16 @@ $config['fonts'] =
 
 //____________________________________________________________________________
 // Hide/Disable features
-$config['disable_overtime']            = $env_bool('DISABLE_OVERTIME', false);            // TRUE to hide overtime menu entries
-$config['hide_global_cals_to_users']   = $env_bool('HIDE_GLOBAL_CALS_TO_USERS', false);   // TRUE to hide global calendars to users
+$config['disable_overtime'] = $env_bool('DISABLE_OVERTIME', false);            // TRUE to hide overtime menu entries
+$config['hide_global_cals_to_users'] = $env_bool('HIDE_GLOBAL_CALS_TO_USERS', false);   // TRUE to hide global calendars to users
 $config['disable_department_calendar'] = $env_bool('DISABLE_DEPARTMENT_CALENDAR', false); // TRUE to disable 'department' menu entry
-$config['disable_workmates_calendar']  = $env_bool('DISABLE_WORKMATES_CALENDAR', false);  // TRUE to disable 'my workmates' menu entry
+$config['disable_workmates_calendar'] = $env_bool('DISABLE_WORKMATES_CALENDAR', false);  // TRUE to disable 'my workmates' menu entry
 
 //____________________________________________________________________________
 //Google analytics tracking code (if empty, the Javascript tracking code will be desactivated).
 //An option allows you to send the identifier of the connected user (a special configuration must be set in GA first).
 //See https://developers.google.com/analytics/devguides/collection/analyticsjs/user-id
-$config['ga_code']        = $env_str('GA_CODE', '');
+$config['ga_code'] = $env_str('GA_CODE', '');
 $config['ga_send_userid'] = $env_bool('GA_SEND_USERID', false);
 
 //____________________________________________________________________________
@@ -544,25 +544,25 @@ $config['ga_send_userid'] = $env_bool('GA_SEND_USERID', false);
 
 //____________________________________________________________________________
 //LDAP configuration
-$config['ldap_enabled']         = $env_bool('LDAP_ENABLED', false);
-$config['ldap_host']            = $env_str('LDAP_HOST', '127.0.0.1');
-$config['ldap_port']            = $env_int('LDAP_PORT', 389);
-$config['ldap_basedn']          = $env_str('LDAP_BASEDN', 'uid=%s,ou=people,dc=company,dc=com'); // Let %s symbolize the user identifier
+$config['ldap_enabled'] = $env_bool('LDAP_ENABLED', false);
+$config['ldap_host'] = $env_str('LDAP_HOST', '127.0.0.1');
+$config['ldap_port'] = $env_int('LDAP_PORT', 389);
+$config['ldap_basedn'] = $env_str('LDAP_BASEDN', 'uid=%s,ou=people,dc=company,dc=com'); // Let %s symbolize the user identifier
 // If ldap_search_enabled is TRUE, ldap_basedn may look like "OU=Users,DC=COMPANY,DC=COM"
-$config['ldap_basedn_db']       = $env_bool('LDAP_BASEDN_DB', false); // If TRUE, ldap path is taken from user table
+$config['ldap_basedn_db'] = $env_bool('LDAP_BASEDN_DB', false); // If TRUE, ldap path is taken from user table
 
 // Use a LDAP search filter as a connection alternative
 // Requires ldap_enabled=TRUE and ldap_host/ldap_port/ldap_basedn to be set
-$config['ldap_search_enabled']  = $env_bool('LDAP_SEARCH_ENABLED', false);
-$config['ldap_search_user']     = $env_str('LDAP_SEARCH_USER', '');
+$config['ldap_search_enabled'] = $env_bool('LDAP_SEARCH_ENABLED', false);
+$config['ldap_search_user'] = $env_str('LDAP_SEARCH_USER', '');
 $config['ldap_search_password'] = $env_str('LDAP_SEARCH_PASSWORD', '');
-$config['ldap_search_pattern']  = $env_str('LDAP_SEARCH_PATTERN', 'cn=%s'); // Let %s symbolize the user identifier
+$config['ldap_search_pattern'] = $env_str('LDAP_SEARCH_PATTERN', 'cn=%s'); // Let %s symbolize the user identifier
 
 //____________________________________________________________________________
 //Oauth2 configuration
-$config['oauth2_enabled']       = $env_bool('OAUTH2_ENABLED', false);
-$config['oauth2_provider']      = $env_str('OAUTH2_PROVIDER', 'google'); // Supported providers: google
-$config['oauth2_client_id']     = $env_str('OAUTH2_CLIENT_ID', '');
+$config['oauth2_enabled'] = $env_bool('OAUTH2_ENABLED', false);
+$config['oauth2_provider'] = $env_str('OAUTH2_PROVIDER', 'google'); // Supported providers: google
+$config['oauth2_client_id'] = $env_str('OAUTH2_CLIENT_ID', '');
 $config['oauth2_client_secret'] = $env_str('OAUTH2_CLIENT_SECRET', '');
 
 //____________________________________________________________________________
@@ -572,9 +572,9 @@ $config['saml_enabled'] = $env_bool('SAML_ENABLED', false);
 
 //____________________________________________________________________________
 //Enable public ICS feeds (global calendar, contract, personal information)
-$config['ics_enabled']      = $env_bool('ICS_ENABLED', true);
+$config['ics_enabled'] = $env_bool('ICS_ENABLED', true);
 $config['default_timezone'] = $env_str('DEFAULT_TIMEZONE', 'Europe/Paris');
-$config['legacy_feeds']     = $env_bool('LEGACY_FEEDS', false); // TRUE to maintain the unsecure URLs for ICS feeds
+$config['legacy_feeds'] = $env_bool('LEGACY_FEEDS', false); // TRUE to maintain the unsecure URLs for ICS feeds
 
 //____________________________________________________________________________
 //Enable public access for tabular and global calendar
@@ -592,5 +592,13 @@ $config['enable_history'] = $env_bool('ENABLE_HISTORY', true);
 
 //____________________________________________________________________________
 //Set this value to TRUE if you want to enable the debug bar
-$config['debugbar_enabled']          = $env_bool('DEBUGBAR_ENABLED', ENVIRONMENT === 'development');
+$config['debugbar_enabled'] = $env_bool('DEBUGBAR_ENABLED', ENVIRONMENT === 'development');
 $config['debugbar_render_in_footer'] = $env_bool('DEBUGBAR_RENDER_IN_FOOTER', true);
+
+//____________________________________________________________________________
+// API Configuration
+$config['api_enabled'] = $env_bool('API_ENABLED', true);
+$config['api_access_control_allow_origin'] = $env_str('API_ACCESS_CONTROL_ALLOW_ORIGIN', '*');
+$config['api_access_control_allow_methods'] = $env_str('API_ACCESS_CONTROL_ALLOW_METHODS', 'GET, POST, OPTIONS');
+$config['api_access_control_allow_headers'] = $env_str('API_ACCESS_CONTROL_ALLOW_HEADERS', 'Content-Type, Content-Length, Accept-Encoding, Accept-Language');
+$config['api_access_control_max_age'] = $env_int('API_ACCESS_CONTROL_MAX_AGE', 86400);
