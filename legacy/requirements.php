@@ -57,15 +57,10 @@ if ($configFileExists) {
         if (!$dbQueryError) {
             $rowOrg = $resultOrg->fetch(PDO::FETCH_ASSOC);
 
-            //Try to use a procedure in order to check the install script
-            //We don't know if the user has access to information schema
-            //So we try to call one of the procedures with a parameter returning a small set of results
-            try {
-                $dbConn->query("SELECT GetParentIDByID(0) AS result");
-            } catch (PDOException $ex) {
-                $dbProcsError = TRUE;
-                array_push($dbErrorMessages, $ex->getMessage());
-            }
+            //Check CTE support
+            $cteSupport = getRecursiveCteSupport($dbConn);
+
+            //Get table signatures
             $sql = "SELECT TABLE_NAME, MD5(GROUP_CONCAT(CONCAT(TABLE_NAME, COLUMN_NAME, COALESCE(COLUMN_DEFAULT, ''), IS_NULLABLE, COLUMN_TYPE, COALESCE(COLLATION_NAME, '')) SEPARATOR ', ')) AS signature"
                 . " FROM information_schema.columns"
                 . " WHERE table_schema =  DATABASE()"
@@ -80,6 +75,55 @@ if ($configFileExists) {
             $rowsSchema = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+}
+
+/**
+ * Check if the database supports recursive CTE
+ * @param PDO $dBConnection Database connection
+ * @return array{supported: bool, supportedByQuery: bool, supportedByVersion: bool|int, version: mixed}
+ */
+function getRecursiveCteSupport(PDO $dBConnection): array
+{
+    $version = $dBConnection->query("SELECT VERSION() AS version")->fetch(PDO::FETCH_ASSOC)['version'];
+
+    $supportedByVersion = false;
+    $normalized = strtolower($version);
+
+    if (strpos($normalized, 'mariadb') !== false) {
+        if (preg_match('/(\d+\.\d+\.\d+)/', $version, $matches) === 1) {
+            $supportedByVersion = version_compare($matches[1], '10.2.0', '>=');
+        }
+    } else {
+        if (preg_match('/(\d+\.\d+\.\d+)/', $version, $matches) === 1) {
+            $supportedByVersion = version_compare($matches[1], '8.0.0', '>=');
+        }
+    }
+
+    $supportedByQuery = false;
+
+    try {
+        $sql = "
+            WITH RECURSIVE cte(n) AS (
+                SELECT 1
+                UNION ALL
+                SELECT n + 1
+                FROM cte
+                WHERE n < 2
+            )
+            SELECT MAX(n) AS max_n
+            FROM cte
+        ";
+
+        $row = $dBConnection->query($sql)->fetch(PDO::FETCH_ASSOC);
+        $supportedByQuery = isset($row['max_n']) && (int) $row['max_n'] === 2;
+    } catch (Throwable $e) {
+        $supportedByQuery = false;
+    }
+
+    return [
+        'DB version' => $version,
+        'CTE support' => $supportedByVersion && $supportedByQuery,
+    ];
 }
 ?>
 <html>
@@ -332,27 +376,25 @@ if ($configFileExists) {
 
                 <?php if (!$dbQueryError) { ?>
                     <tr>
-                        <td><i class="mdi mdi-check"></i>&nbsp;Database query</td>
-                        <td>OK</td>
+                        <td><i class="mdi mdi-check"></i>&nbsp;Database version</td>
+                        <td><?php echo $cteSupport['DB version']; ?></td>
                     </tr>
                 <?php } else { ?>
                     <tr>
-                        <td><i class="mdi mdi-alert"></i>&nbsp;Database query</td>
+                        <td><i class="mdi mdi-alert"></i>&nbsp;Database version</td>
                         <td>Error</td>
                     </tr>
                 <?php } ?>
 
-                <?php if (!$dbProcsError) { ?>
+                <?php if ($cteSupport['CTE support']) { ?>
                     <tr>
-                        <td><i class="mdi mdi-check"></i>&nbsp;Database procedures</td>
+                        <td><i class="mdi mdi-check"></i>&nbsp;CTE support</td>
                         <td>OK</td>
                     </tr>
                 <?php } else { ?>
                     <tr>
-                        <td><i class="mdi mdi-alert"></i>&nbsp;Database procedures</td>
-                        <td>Error. Please check if your hosting company allows custom procedures (e.g. <a
-                                href="https://techtavern.wordpress.com/2013/06/17/mysql-triggers-and-amazon-rds/"
-                                target="_blank">Amazon RDS</a>).</td>
+                        <td><i class="mdi mdi-alert"></i>&nbsp;CTE support</td>
+                        <td>Error. CTE support is required for Jorani.</td>
                     </tr>
                 <?php } ?>
 

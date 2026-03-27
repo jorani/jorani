@@ -79,7 +79,17 @@ class Organization_model extends CI_Model
      */
     public function getAllChildren(int $entityId): array
     {
-        $query = 'SELECT GetFamilyTree(id) as id FROM organization WHERE id = ?';
+        $query = "WITH RECURSIVE FamilyTree AS (
+                    SELECT id, parent_id
+                    FROM organization
+                    WHERE parent_id = ?
+                    UNION ALL
+                    SELECT o.id, o.parent_id
+                    FROM organization o
+                    INNER JOIN FamilyTree ft ON o.parent_id = ft.id
+                )
+                SELECT GROUP_CONCAT(id) AS id
+                FROM FamilyTree";
         $query = $this->db->query($query, [$entityId]);
         if (!$query) {
             $arr = [];
