@@ -111,7 +111,7 @@ class Delegations_model extends CI_Model
         $query = $this->db->get();
         $results = $query->row_array();
         if ($results != null) {
-            return $results['list'];
+            return [$results['list']];
         } else {
             return [];
         }
