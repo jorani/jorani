@@ -368,11 +368,7 @@ class Dayoffs_model extends CI_Model
 
         if ($children === TRUE) {
             $this->load->model('organization_model');
-            $list = $this->organization_model->getAllChildren($entityId);
-            $ids = [];
-            if (count($list) > 0) {
-                $ids = explode(",", $list[0]['id']);
-            }
+            $ids = $this->organization_model->getAllChildren($entityId);
             array_push($ids, $entityId);
             $this->db->where_in('organization.id', $ids);
         } else {

@@ -32,7 +32,14 @@ $env_bool = static fn(string $k, bool $default): bool
 | path to your installation.
 |
 */
-$config['base_url'] = $env_str('BASE_URL');
+if (PHP_SAPI === 'cli') {
+    $config['base_url'] = 'http://localhost/';
+    $_SERVER['HTTP_HOST'] = 'localhost';
+    $_SERVER['SERVER_PORT'] = '0';
+
+} else {
+    $config['base_url'] = $env_str('BASE_URL');
+}
 
 if (($config['base_url'] == '')) {
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";

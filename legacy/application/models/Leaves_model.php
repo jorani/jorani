@@ -1147,15 +1147,9 @@ class Leaves_model extends CI_Model
         $this->db->where('(leaves.startdate <= DATE(' . $this->db->escape($end) . ') AND leaves.enddate >= DATE(' . $this->db->escape($start) . '))');
         if ($children === TRUE) {
             $this->load->model('organization_model');
-            $list = $this->organization_model->getAllChildren($entity_id);
-            $ids = array();
-            if ($list[0]['id'] != '') {
-                $ids = explode(",", $list[0]['id']);
-                array_push($ids, $entity_id);
-                $this->db->where_in('organization.id', $ids);
-            } else {
-                $this->db->where('organization.id', $entity_id);
-            }
+            $ids = $this->organization_model->getAllChildren($entity_id);
+            array_push($ids, $entity_id);
+            $this->db->where_in('organization.id', $ids);
         } else {
             $this->db->where('organization.id', $entity_id);
         }
@@ -1384,11 +1378,7 @@ class Leaves_model extends CI_Model
         $this->db->join('types', 'leaves.type = types.id');
         if ($children === TRUE) {
             $this->load->model('organization_model');
-            $list = $this->organization_model->getAllChildren($entity_id);
-            $ids = [];
-            if (count($list) > 0) {
-                $ids = explode(",", $list[0]['id']);
-            }
+            $ids = $this->organization_model->getAllChildren($entity_id);
             array_push($ids, $entity_id);
             $this->db->where_in('organization.id', $ids);
         } else {

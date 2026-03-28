@@ -75,7 +75,7 @@ class Organization_model extends CI_Model
     /**
      * Get all children of an entity
      * @param int $entityId identifier of the entity
-     * @return array<array<string, mixed>> list of entity identifiers
+     * @return array<int> list of entity identifiers
      */
     public function getAllChildren(int $entityId): array
     {
@@ -88,15 +88,15 @@ class Organization_model extends CI_Model
                     FROM organization o
                     INNER JOIN FamilyTree ft ON o.parent_id = ft.id
                 )
-                SELECT GROUP_CONCAT(id) AS id
-                FROM FamilyTree";
+                SELECT id FROM FamilyTree";
         $query = $this->db->query($query, [$entityId]);
         if (!$query) {
-            $arr = [];
-        } else {
-            $arr = $query->result_array();
+            return [];
         }
-        return $arr;
+        return array_map(
+            'intval',
+            array_column($query->result_array(), 'id')
+        );
     }
 
     /**
@@ -130,12 +130,8 @@ class Organization_model extends CI_Model
      */
     public function delete(int $entityId): bool
     {
-        $list = $this->getAllChildren($entityId);
         //Detach all employees
-        $ids = [];
-        if (strlen($list[0]['id']) > 0) {
-            $ids = explode(",", $list[0]['id']);
-        }
+        $ids = $this->getAllChildren($entityId);
         array_push($ids, $entityId);
         $this->db->where_in('organization', $ids);
         $res1 = $this->db->update('users', ['organization' => NULL]);
@@ -233,17 +229,9 @@ class Organization_model extends CI_Model
         $this->db->join('positions', 'positions.id  = users.position', 'left');
         $this->db->join('contracts', 'contracts.id  = users.contract', 'left');
         if ($children === TRUE) {
-            $list = $this->getAllChildren($entityId);
-            $ids = [];
-            if (count($list) > 0) {
-                if ($list[0]['id'] != '') {
-                    $ids = explode(",", $list[0]['id']);
-                    array_push($ids, $entityId);
-                    $this->db->where_in('organization.id', $ids);
-                } else {
-                    $this->db->where('organization.id', $entityId);
-                }
-            }
+            $ids = $this->getAllChildren($entityId);
+            array_push($ids, $entityId);
+            $this->db->where_in('organization.id', $ids);
         } else {
             $this->db->where('organization.id', $entityId);
         }

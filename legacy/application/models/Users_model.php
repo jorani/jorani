@@ -705,13 +705,7 @@ class Users_model extends CI_Model
 
         if ($children == TRUE) {
             $this->load->model('organization_model');
-            $list = $this->organization_model->getAllChildren($id);
-            $ids = [];
-            if (count($list) > 0) {
-                if ($list[0]['id'] != '') {
-                    $ids = explode(",", $list[0]['id']);
-                }
-            }
+            $ids = $this->organization_model->getAllChildren($id);
             array_push($ids, $id);
             $this->db->where_in('organization.id', $ids);
         } else {

@@ -34,6 +34,7 @@
         "sepia/po-parser": "^5.1.7",
         "phpstan/phpstan": "^2.1",
         "php-debugbar/php-debugbar": "^3.5",
-        "vimeo/psalm": "^6.16"
+        "vimeo/psalm": "^6.16",
+        "fakerphp/faker": "^1.24"
     }
 }

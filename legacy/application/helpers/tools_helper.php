@@ -21,10 +21,17 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  */
 function setUserContext(CI_Controller $controller): void
 {
+    // Fix for CLI mode
+    if (PHP_SAPI === 'cli') {
+        $queryString = '';
+    } else {
+        $queryString = $_SERVER['QUERY_STRING'] ?? '';
+    }
+
     //Memorize the last displayed page except for Ajax queries
     if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') !== 'XMLHttpRequest') {
         $controller->session->set_userdata('last_page', current_url());
-        $controller->session->set_userdata('last_page_params', $_SERVER['QUERY_STRING']);
+        $controller->session->set_userdata('last_page_params', $queryString);
     }
     if (!$controller->session->userdata('logged_in')) {
         //Test if the expired session was detected while responding to an Ajax request
