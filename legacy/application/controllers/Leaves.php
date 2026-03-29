@@ -311,7 +311,7 @@ class Leaves extends CI_Controller
             $endEntDate = '';
 
             // Fetch the contract boundaries for the employee at the requested start date
-            $hasContract = $this->contracts_model->getBoundaries($employeeId, $startEntDate, $endEntDate);
+            $hasContract = $this->contracts_model->getBoundaries($employeeId, $startEntDate, $endEntDate, $startDate);
 
             if ($hasContract === true) {
                 // Reject the request if the start or end date falls outside the current contract period
@@ -462,7 +462,6 @@ class Leaves extends CI_Controller
             $data['name'] = $this->users_model->getName($data['leave']['employee']);
             if (isset($data["leave"]["comments"])) {
                 $last_comment = new stdClass();
-                ;
                 foreach ($data["leave"]["comments"]->comments as $comments_item) {
                     if ($comments_item->type == "comment") {
                         $comments_item->author = $this->users_model->getName($comments_item->author);
@@ -508,7 +507,7 @@ class Leaves extends CI_Controller
             $endEntDate = '';
 
             // Fetch the contract boundaries for the employee at the requested start date
-            $hasContract = $this->contracts_model->getBoundaries($employeeId, $startEntDate, $endEntDate);
+            $hasContract = $this->contracts_model->getBoundaries($employeeId, $startEntDate, $endEntDate, $startDate);
 
             if ($hasContract === true) {
                 // Reject the request if the start or end date falls outside the current contract period
