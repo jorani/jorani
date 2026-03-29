@@ -30,8 +30,19 @@ function setUserContext(CI_Controller $controller): void
 
     //Memorize the last displayed page except for Ajax queries
     if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') !== 'XMLHttpRequest') {
-        $controller->session->set_userdata('last_page', current_url());
-        $controller->session->set_userdata('last_page_params', $queryString);
+        $currentUrl = current_url();
+        // Do not overwrite last_page with URLs pointing to static assets (vendor, assets, etc.)
+        // This prevents the DebugBar or other vendor assets from corrupting the post-login redirect.
+        $isStaticAsset = (
+            strpos($currentUrl, '/vendor/') !== false ||
+            strpos($currentUrl, '/assets/') !== false ||
+            strpos($currentUrl, '.json') !== false ||
+            strpos($currentUrl, '.js') !== false
+        );
+        if (!$isStaticAsset) {
+            $controller->session->set_userdata('last_page', current_url());
+            $controller->session->set_userdata('last_page_params', $queryString);
+        }
     }
     if (!$controller->session->userdata('logged_in')) {
         //Test if the expired session was detected while responding to an Ajax request
