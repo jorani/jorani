@@ -183,6 +183,11 @@ class Extra extends CI_Controller
                 $this->session->set_flashdata('msg', lang('extra_edit_msg_error'));
                 redirect('extra');
             }
+            if ($data['extra']['employee'] != $this->user_id) {
+                log_message('error', 'User #' . $this->user_id . ' illegally tried to edit overtime request #' . $id);
+                $this->session->set_flashdata('msg', lang('extra_edit_msg_error'));
+                redirect('extra');
+            }
         } //Admin
 
         $this->load->helper('form');
@@ -295,6 +300,9 @@ class Extra extends CI_Controller
             } else {
                 if ($extra['status'] == 1) {
                     $can_delete = TRUE;
+                }
+                if ($extra['employee'] != $this->user_id) {
+                    $can_delete = FALSE;
                 }
             }
             if ($can_delete === TRUE) {

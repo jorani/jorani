@@ -79,11 +79,36 @@ class Leaves extends CI_Controller
     public function history(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('list_leaves');
+        $can_view = FALSE;
         $data = getUserContext($this);
+        $this->load->model('users_model');
+        $this->load->model('delegations_model');
         $this->lang->load('datatable', $this->language);
         $data['leave'] = $this->leaves_model->getLeaves($id);
-        $this->load->model('history_model');
-        $data['events'] = $this->history_model->getLeaveRequestsHistory($id);
+        $user = $this->users_model->getUsers($data['leave']['employee']);
+        if (empty($user['email'])) {
+            $can_view = TRUE;
+        } else {
+            if ($user['manager'] == $this->user_id) {
+                $can_view = TRUE;
+            }
+        }
+        if ($data['leave']['employee'] == $this->user_id) {
+            $can_view = TRUE;
+        }
+        if ($this->is_hr) {
+            $can_view = TRUE;
+        }
+        if ($this->delegations_model->isDelegateOfEmployeeManager($this->user_id, $data['leave']['employee'])) {
+            $can_view = TRUE;
+        }
+        if (!$can_view) {
+            $data['leave'] = [];
+            $data['events'] = [];
+        } else {
+            $this->load->model('history_model');
+            $data['events'] = $this->history_model->getLeaveRequestsHistory($id);
+        }
         $this->load->view('leaves/history', $data);
     }
 
@@ -405,6 +430,11 @@ class Leaves extends CI_Controller
                     $this->session->set_flashdata('msg', lang('leaves_edit_flash_msg_error'));
                     redirect('leaves');
                 }
+            }
+            if ($data['leave']['employee'] != $this->user_id) {
+                log_message('error', 'User #' . $this->user_id . ' illegally tried to edit leave #' . $id);
+                $this->session->set_flashdata('msg', lang('leaves_edit_flash_msg_error'));
+                redirect('leaves');
             }
         } //Admin
 
@@ -861,6 +891,9 @@ class Leaves extends CI_Controller
                     $leaves['status'] == LMS_REJECTED
                 ) {
                     $can_delete = TRUE;
+                }
+                if ($leaves['employee'] != $this->user_id) {
+                    $can_delete = FALSE;
                 }
             }
             if ($can_delete === TRUE) {

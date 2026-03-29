@@ -62,6 +62,24 @@ class Delegations_model extends CI_Model
     }
 
     /**
+     * Return TRUE if a user has the delegation of the manager of a given employee, FALSE otherwise
+     * @param int $userId id of the user to be checked as delegate
+     * @param int $employeeId id of the employee whose manager delegation is checked
+     * @return bool has delegation of employee's manager
+     */
+    public function isDelegateOfEmployeeManager(int $userId, int $employeeId): bool
+    {
+        $this->db->select('delegations.id');
+        $this->db->from('users');
+        $this->db->join('delegations', 'delegations.manager_id = users.manager', 'inner');
+        $this->db->where('users.id', $employeeId);
+        $this->db->where('delegations.delegate_id', $userId);
+        $this->db->limit(1);
+        $result = $this->db->get()->row_array();
+        return $result !== null;
+    }
+
+    /**
      * Return TRUE if an employee has any delegation, FALSE otherwise
      * @param int $employeeId id of the employee to be checked
      * @return bool has delegation
