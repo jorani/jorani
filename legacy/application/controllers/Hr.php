@@ -524,6 +524,7 @@ class Hr extends CI_Controller
      */
     public function exportLeaves(int $id): void
     {
+        $this->auth->checkIfOperationIsAllowed('list_employees');
         $this->load->model('leaves_model');
         $this->load->model('users_model');
         $data['id'] = $id;
@@ -536,6 +537,7 @@ class Hr extends CI_Controller
      */
     public function exportOvertime(int $id): void
     {
+        $this->auth->checkIfOperationIsAllowed('list_employees');
         $this->load->model('overtime_model');
         $this->load->model('users_model');
         $data['id'] = $id;
@@ -561,6 +563,7 @@ class Hr extends CI_Controller
         ?string $criterion2 = NULL,
         ?string $date2 = NULL
     ): void {
+        $this->auth->checkIfOperationIsAllowed('list_employees');
         $this->load->model('users_model');
         $data['id'] = $id;
         $data['children'] = filter_var($children, FILTER_VALIDATE_BOOLEAN);
