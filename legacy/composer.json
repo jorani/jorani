@@ -25,7 +25,8 @@
         "league/oauth2-google": "^4.2",
         "doctrine/orm": "^3.6",
         "symfony/cache": "^7.4",
-        "symfony/translation": "^7.4"
+        "symfony/translation": "^7.4",
+        "twig/twig": "^3.24"
     },
     "autoload": {
         "psr-4": {
