@@ -294,7 +294,7 @@ header("Pragma: no-cache");
  * And away we go...
  */
 
-$GLOBALS['versionOfJorani'] = '1.0.4';
+$GLOBALS['versionOfJorani'] = '1.0.5';
 
 require_once FCPATH . 'vendor/autoload.php';
 require_once BASEPATH . 'core/CodeIgniter.php';
