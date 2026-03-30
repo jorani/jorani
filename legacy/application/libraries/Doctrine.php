@@ -43,7 +43,7 @@ class Doctrine
             'password' => $db_params['password'],
             'host' => $db_params['hostname'],
             'dbname' => $db_params['database'],
-            'charset' => $db_params['char_set'],
+            'charset' => $db_params['char_set']
         ];
 
         // 4. Set up Metadata Configuration (Using PHP 8 Attributes)

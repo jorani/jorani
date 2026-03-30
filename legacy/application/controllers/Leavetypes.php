@@ -7,6 +7,7 @@
  */
 
 use App\Traits\DoctrineBridge;
+use App\Traits\TranslationBridge;
 use App\Entity\Type;
 
 if (!defined('BASEPATH')) {
@@ -32,6 +33,7 @@ if (!defined('BASEPATH')) {
 class LeaveTypes extends CI_Controller
 {
     use DoctrineBridge;
+    use TranslationBridge;
 
     /**
      * Default constructor

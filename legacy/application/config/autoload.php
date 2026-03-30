@@ -60,7 +60,7 @@ $autoload['libraries'] = array('database', 'session', 'auth', 'help');
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'tools', 'language', 'debugbar');
+$autoload['helper'] = array('url', 'tools', 'language', 'translation', 'debugbar');
 
 /*
 | -------------------------------------------------------------------

@@ -80,7 +80,7 @@ $_db_name = ($v = getenv('MYSQL_DATABASE')) !== false ? $v : 'jorani';
 
 $db['default'] = array(
 	'dsn' => 'mysql:host=' . $_db_host . ';dbname=' . $_db_name,
-	'hostname' => '',
+	'hostname' => $_db_host,
 	'username' => $_db_user,
 	'password' => $_db_pass,
 	'database' => $_db_name,

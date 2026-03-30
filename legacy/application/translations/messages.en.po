@@ -1,0 +1,3507 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jorani-migration\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+
+msgid "Data & Config Diagnostic"
+msgstr "Data & Config Diagnostic"
+
+msgid "Detection of configuration and data problems"
+msgstr "Detection of configuration and data problems"
+
+msgid "No error"
+msgstr "No error"
+
+msgid "Leave Requests"
+msgstr "Leave Requests"
+
+msgid "Accepted but duplicated Leave Requests"
+msgstr "Accepted but duplicated Leave Requests"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Afternoon/Morning"
+msgstr "Afternoon/Morning"
+
+msgid "Leave Requests with a wrong start/end type."
+msgstr "Leave Requests with a wrong start/end type."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "End"
+msgstr "End"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Entitled days"
+msgstr "Entitled days"
+
+msgid "List of contracts and employees having entitlements for more than one year."
+msgstr "List of contracts and employees having entitlements for more than one year."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Incomplete deletion into database."
+msgstr "Incomplete deletion into database."
+
+msgid "Non-working days"
+msgstr "Non-working days"
+
+msgid "Number of days (per contract) for which a non-working duration has been defined."
+msgstr "Number of days (per contract) for which a non-working duration has been defined."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Last year"
+msgstr "Last year"
+
+msgid "This year"
+msgstr "This year"
+
+msgid "Next year"
+msgstr "Next year"
+
+msgid "Overtime"
+msgstr "Overtime"
+
+msgid "Overtime requests with a negative duration"
+msgstr "Overtime requests with a negative duration"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Contracts"
+msgstr "Contracts"
+
+msgid "Unused contracts (check if the contract is not duplicated)."
+msgstr "Unused contracts (check if the contract is not duplicated)."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Balance"
+msgstr "Balance"
+
+msgid "Leave requests for which there are no entitlments."
+msgstr "Leave requests for which there are no entitlments."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Overlapping"
+msgstr "Overlapping"
+
+msgid "Leave requests overlapping on two yearly periods."
+msgstr "Leave requests overlapping on two yearly periods."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "OAuth clients and sessions"
+msgstr "OAuth clients and sessions"
+
+msgid "Clients"
+msgstr "Clients"
+
+msgid "List of clients allowed to use the REST API"
+msgstr "List of clients allowed to use the REST API"
+
+msgid "edit client"
+msgstr "edit client"
+
+msgid "delete client"
+msgstr "delete client"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Add OAuth Client"
+msgstr "Add OAuth Client"
+
+msgid "Associate to an actual user"
+msgstr "Associate to an actual user"
+
+msgid "This client_id already exists"
+msgstr "This client_id already exists"
+
+msgid "Are you sure that you want to proceed?"
+msgstr "Are you sure that you want to proceed?"
+
+msgid "Sessions"
+msgstr "Sessions"
+
+msgid "List of active REST API OAuth Sessions"
+msgstr "List of active REST API OAuth Sessions"
+
+msgid "Purge"
+msgstr "Purge"
+
+msgid "Yearly calendar"
+msgstr "Yearly calendar"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "My calendar"
+msgstr "My calendar"
+
+msgid "Calendar of my leaves."
+msgstr "Calendar of my leaves."
+
+msgid "Download an iCal file"
+msgstr "Download an iCal file"
+
+msgid "(import the event into Outlook, Thunderbird, etc.)"
+msgstr "(import the event into Outlook, Thunderbird, etc.)"
+
+msgid "Event details"
+msgstr "Event details"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Days off"
+msgstr "Days off"
+
+msgid "Calendar of my workmates"
+msgstr "Calendar of my workmates"
+
+msgid "Leaves of employees having the same line manager"
+msgstr "Leaves of employees having the same line manager"
+
+msgid "Calendar of my subordinates"
+msgstr "Calendar of my subordinates"
+
+msgid "Leaves of my direct report subordinates (will be empty if I'm not a manager)."
+msgstr "Leaves of my direct report subordinates (will be empty if I'm not a manager)."
+
+msgid "Calendar of my department"
+msgstr "Calendar of my department"
+
+msgid "Calendar of employees working in my department"
+msgstr "Calendar of employees working in my department"
+
+msgid "It appears that you don't belong to any department. Please contact your HR Officer / Manager."
+msgstr "It appears that you don't belong to any department. Please contact your HR Officer / Manager."
+
+msgid "Calendar of the organization"
+msgstr "Calendar of the organization"
+
+msgid "Global calendar with a filter on entity"
+msgstr "Global calendar with a filter on entity"
+
+msgid "Select the entity"
+msgstr "Select the entity"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Include sub-departments"
+msgstr "Include sub-departments"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Tabular Calendar"
+msgstr "Tabular Calendar"
+
+msgid "Select the entity"
+msgstr "Select the entity"
+
+msgid "Month"
+msgstr "Month"
+
+msgid "Year"
+msgstr "Year"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "Select a list"
+msgstr "Select a list"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Include sub-departments"
+msgstr "Include sub-departments"
+
+msgid "Display leave types"
+msgstr "Display leave types"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Calendar Tabular"
+msgstr "Calendar Tabular"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Month"
+msgstr "Month"
+
+msgid "Year"
+msgstr "Year"
+
+msgid "Sub-entities"
+msgstr "Sub-entities"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Mo"
+msgstr "Mo"
+
+msgid "Tu"
+msgstr "Tu"
+
+msgid "We"
+msgstr "We"
+
+msgid "Th"
+msgstr "Th"
+
+msgid "Fr"
+msgstr "Fr"
+
+msgid "Sa"
+msgstr "Sa"
+
+msgid "Su"
+msgstr "Su"
+
+msgid "Monday"
+msgstr "Monday"
+
+msgid "Tuesday"
+msgstr "Tuesday"
+
+msgid "Wednesday"
+msgstr "Wednesday"
+
+msgid "Thursday"
+msgstr "Thursday"
+
+msgid "Friday"
+msgstr "Friday"
+
+msgid "Saturday"
+msgstr "Saturday"
+
+msgid "Sunday"
+msgstr "Sunday"
+
+msgid "All days"
+msgstr "All days"
+
+msgid "January"
+msgstr "January"
+
+msgid "February"
+msgstr "February"
+
+msgid "March"
+msgstr "March"
+
+msgid "April"
+msgstr "April"
+
+msgid "May"
+msgstr "May"
+
+msgid "June"
+msgstr "June"
+
+msgid "July"
+msgstr "July"
+
+msgid "August"
+msgstr "August"
+
+msgid "September"
+msgstr "September"
+
+msgid "October"
+msgstr "October"
+
+msgid "November"
+msgstr "November"
+
+msgid "December"
+msgstr "December"
+
+msgid "List of contracts"
+msgstr "List of contracts"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Start period"
+msgstr "Start period"
+
+msgid "End period"
+msgstr "End period"
+
+msgid "delete contract"
+msgstr "delete contract"
+
+msgid "edit contract"
+msgstr "edit contract"
+
+msgid "entitled days"
+msgstr "entitled days"
+
+msgid "days off and weekends"
+msgstr "days off and weekends"
+
+msgid "Exclude leave types"
+msgstr "Exclude leave types"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "Create contract"
+msgstr "Create contract"
+
+msgid "Delete Contract"
+msgstr "Delete Contract"
+
+msgid "You are about to delete one contract, this procedure is irreversible."
+msgstr "You are about to delete one contract, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Entitled days"
+msgstr "Entitled days"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Exclude leave types from a contract"
+msgstr "Exclude leave types from a contract"
+
+msgid "You cannot exclude leave types already in use (used at least one time by en employee attached to the contract) and the default leave type (set on the contract or into the configuration file)."
+msgstr "You cannot exclude leave types already in use (used at least one time by en employee attached to the contract) and the default leave type (set on the contract or into the configuration file)."
+
+msgid "Included leave types"
+msgstr "Included leave types"
+
+msgid "Excluded leave types"
+msgstr "Excluded leave types"
+
+msgid "Include this leave type"
+msgstr "Include this leave type"
+
+msgid "Exclude this leave type"
+msgstr "Exclude this leave type"
+
+msgid "This leave type is already in use"
+msgstr "This leave type is already in use"
+
+msgid "You cannot exclude the default leave type"
+msgstr "You cannot exclude the default leave type"
+
+msgid "Edit a contract"
+msgstr "Edit a contract"
+
+msgid "Edit contract #"
+msgstr "Edit contract #"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Month / Start"
+msgstr "Month / Start"
+
+msgid "Day / Start"
+msgstr "Day / Start"
+
+msgid "Month / End"
+msgstr "Month / End"
+
+msgid "Day / End"
+msgstr "Day / End"
+
+msgid "Default leave type"
+msgstr "Default leave type"
+
+msgid "Update contract"
+msgstr "Update contract"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The contract has been succesfully updated"
+msgstr "The contract has been succesfully updated"
+
+msgid "Create a new contract"
+msgstr "Create a new contract"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Month / Start"
+msgstr "Month / Start"
+
+msgid "Day / Start"
+msgstr "Day / Start"
+
+msgid "Month / End"
+msgstr "Month / End"
+
+msgid "Day / End"
+msgstr "Day / End"
+
+msgid "Default leave type"
+msgstr "Default leave type"
+
+msgid "Create contract"
+msgstr "Create contract"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The contract has been succesfully created"
+msgstr "The contract has been succesfully created"
+
+msgid "The contract has been succesfully deleted"
+msgstr "The contract has been succesfully deleted"
+
+msgid "List of contracts"
+msgstr "List of contracts"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Start period"
+msgstr "Start period"
+
+msgid "End period"
+msgstr "End period"
+
+msgid "Calendar of non working days"
+msgstr "Calendar of non working days"
+
+msgid "Days off and weekends are not configured by default. Click on a day to edit it individually or use the button \"Series\"."
+msgstr "Days off and weekends are not configured by default. Click on a day to edit it individually or use the button \"Series\"."
+
+msgid "Legend:"
+msgstr "Legend:"
+
+msgid "All day"
+msgstr "All day"
+
+msgid "Morning"
+msgstr "Morning"
+
+msgid "Afternoon"
+msgstr "Afternoon"
+
+msgid "Back to contracts"
+msgstr "Back to contracts"
+
+msgid "Series of non-working days"
+msgstr "Series of non-working days"
+
+msgid "Edit day off"
+msgstr "Edit day off"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Working day"
+msgstr "Working day"
+
+msgid "All day is off"
+msgstr "All day is off"
+
+msgid "Morning is off"
+msgstr "Morning is off"
+
+msgid "Afternoon is off"
+msgstr "Afternoon is off"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Import iCal"
+msgstr "Import iCal"
+
+msgid "URL of non-working days iCal file"
+msgstr "URL of non-working days iCal file"
+
+msgid "Edit a series of days off"
+msgstr "Edit a series of days off"
+
+msgid "Mark every"
+msgstr "Mark every"
+
+msgid "From"
+msgstr "From"
+
+msgid "Current"
+msgstr "Current"
+
+msgid "To"
+msgstr "To"
+
+msgid "As a"
+msgstr "As a"
+
+msgid "Working day"
+msgstr "Working day"
+
+msgid "All day is off"
+msgstr "All day is off"
+
+msgid "Morning is off"
+msgstr "Morning is off"
+
+msgid "Afternoon is off"
+msgstr "Afternoon is off"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Copy"
+msgstr "Copy"
+
+msgid "You must select a contract."
+msgstr "You must select a contract."
+
+msgid "Data has been copied successfully."
+msgstr "Data has been copied successfully."
+
+msgid "No data available in table"
+msgstr "No data available in table"
+
+msgid "Showing _START_ to _END_ of _TOTAL_ entries"
+msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
+
+msgid "Showing 0 to 0 of 0 entries"
+msgstr "Showing 0 to 0 of 0 entries"
+
+msgid "(filtered from _MAX_ total entries)"
+msgstr "(filtered from _MAX_ total entries)"
+
+msgid ""
+msgstr ""
+
+msgid ","
+msgstr ","
+
+msgid "Show _MENU_ entries"
+msgstr "Show _MENU_ entries"
+
+msgid "Loading..."
+msgstr "Loading..."
+
+msgid "Processing..."
+msgstr "Processing..."
+
+msgid "Search:"
+msgstr "Search:"
+
+msgid "No matching records found"
+msgstr "No matching records found"
+
+msgid "First"
+msgstr "First"
+
+msgid "Last"
+msgstr "Last"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid ": activate to sort column ascending"
+msgstr ": activate to sort column ascending"
+
+msgid ": activate to sort column descending"
+msgstr ": activate to sort column descending"
+
+msgid "Page length"
+msgstr "Page length"
+
+msgid "10 rows"
+msgstr "10 rows"
+
+msgid "25 rows"
+msgstr "25 rows"
+
+msgid "50 rows"
+msgstr "50 rows"
+
+msgid "Show all"
+msgstr "Show all"
+
+msgid "Change columns"
+msgstr "Change columns"
+
+msgid "Show all"
+msgstr "Show all"
+
+msgid "Your password has been reset"
+msgstr "Your password has been reset"
+
+msgid "Your password has been reset"
+msgstr "Your password has been reset"
+
+msgid "Your account has been created"
+msgstr "Your account has been created"
+
+msgid "Your account has been created"
+msgstr "Your account has been created"
+
+msgid "Leave Request from"
+msgstr "Leave Request from"
+
+msgid "Leave Request"
+msgstr "Leave Request"
+
+msgid "Leave Request Cancellation from"
+msgstr "Leave Request Cancellation from"
+
+msgid "Leave Request Cancellation"
+msgstr "Leave Request Cancellation"
+
+msgid "Your Cancellation Request has been accepted"
+msgstr "Your Cancellation Request has been accepted"
+
+msgid "Your Cancellation Request has been rejected"
+msgstr "Your Cancellation Request has been rejected"
+
+msgid "Your leave request has been accepted"
+msgstr "Your leave request has been accepted"
+
+msgid "Your leave request has been rejected"
+msgstr "Your leave request has been rejected"
+
+msgid "Leave Request"
+msgstr "Leave Request"
+
+msgid "[reminder]"
+msgstr "[reminder]"
+
+msgid "Your overtime request has been accepted"
+msgstr "Your overtime request has been accepted"
+
+msgid "Your overtime request has been rejected"
+msgstr "Your overtime request has been rejected"
+
+msgid "Overtime Request"
+msgstr "Overtime Request"
+
+msgid "Overtime request from"
+msgstr "Overtime request from"
+
+msgid "Overtime Request"
+msgstr "Overtime Request"
+
+msgid "Your password has been reset"
+msgstr "Your password has been reset"
+
+msgid "Your password has been reset"
+msgstr "Your password has been reset"
+
+msgid "Entitled days for contract"
+msgstr "Entitled days for contract"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Copy"
+msgstr "Copy"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "End"
+msgstr "End"
+
+msgid "Days"
+msgstr "Days"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Add entitled days"
+msgstr "Add entitled days"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Days"
+msgstr "Days"
+
+msgid "Current"
+msgstr "Current"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "\"The field \" + fieldname + \" is mandatory.\""
+msgstr "\"The field \" + fieldname + \" is mandatory.\""
+
+msgid "Back to the list of contracts"
+msgstr "Back to the list of contracts"
+
+msgid "Are you sure that you want to delete it?"
+msgstr "Are you sure that you want to delete it?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Step"
+msgstr "Step"
+
+msgid "Entitled days for employee"
+msgstr "Entitled days for employee"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Copy"
+msgstr "Copy"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "End"
+msgstr "End"
+
+msgid "Days"
+msgstr "Days"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Add entitled days"
+msgstr "Add entitled days"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Days"
+msgstr "Days"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "\"The field \" + fieldname + \" is mandatory.\""
+msgstr "\"The field \" + fieldname + \" is mandatory.\""
+
+msgid "Back to the list of employees"
+msgstr "Back to the list of employees"
+
+msgid "Are you sure that you want to delete it?"
+msgstr "Are you sure that you want to delete it?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Step"
+msgstr "Step"
+
+msgid "Entitled days to Contract #"
+msgstr "Entitled days to Contract #"
+
+msgid "Yearly leave period: "
+msgstr "Yearly leave period: "
+
+msgid "Entitled days to Employee"
+msgstr "Entitled days to Employee"
+
+msgid "My overtime requests"
+msgstr "My overtime requests"
+
+msgid "view"
+msgstr "view"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "New request"
+msgstr "New request"
+
+msgid "Delete overtime request"
+msgstr "Delete overtime request"
+
+msgid "You are about to delete one overtime request, this procedure is irreversible."
+msgstr "You are about to delete one overtime request, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Submit an overtime request"
+msgstr "Submit an overtime request"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "In days or fraction of days (e.g. 0.125 for 1h if you work 8h/day)."
+msgstr "In days or fraction of days (e.g. 0.125 for 1h if you work 8h/day)."
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Request overtime"
+msgstr "Request overtime"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The overtime request has been succesfully created"
+msgstr "The overtime request has been succesfully created"
+
+msgid "The overtime request has been succesfully created or updated, but you don't have a manager."
+msgstr "The overtime request has been succesfully created or updated, but you don't have a manager."
+
+msgid "\"The field \" + fieldname + \" is mandatory.\""
+msgstr "\"The field \" + fieldname + \" is mandatory.\""
+
+msgid "Edit overtime request #"
+msgstr "Edit overtime request #"
+
+msgid "Edit a overtime request"
+msgstr "Edit a overtime request"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "In days or fraction of days (e.g. 0.125 for 1h if you work 8h/day)."
+msgstr "In days or fraction of days (e.g. 0.125 for 1h if you work 8h/day)."
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Update overtime"
+msgstr "Update overtime"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "You cannot edit an overtime request already submitted"
+msgstr "You cannot edit an overtime request already submitted"
+
+msgid "The overtime request has been succesfully updated"
+msgstr "The overtime request has been succesfully updated"
+
+msgid "The overtime request has been succesfully deleted"
+msgstr "The overtime request has been succesfully deleted"
+
+msgid "You can't delete this overtime request"
+msgstr "You can't delete this overtime request"
+
+msgid "View overtime request #"
+msgstr "View overtime request #"
+
+msgid "View overtime request"
+msgstr "View overtime request"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Back to list"
+msgstr "Back to list"
+
+msgid "List of overtime worked"
+msgstr "List of overtime worked"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Leave Management System"
+msgstr "Leave Management System"
+
+msgid "Link to documentation"
+msgstr "Link to documentation"
+
+msgid "Operation (%s) is not granted"
+msgstr "Operation (%s) is not granted"
+
+msgid "Please wait"
+msgstr "Please wait"
+
+msgid "Internet Explorer 8 and older browser are not supported. Please upgrade to IE9 or use Firefox, Chrome, etc."
+msgstr "Internet Explorer 8 and older browser are not supported. Please upgrade to IE9 or use Firefox, Chrome, etc."
+
+msgid "Object not found. Maybe that you are trying to access to an object that was deleted."
+msgstr "Object not found. Maybe that you are trying to access to an object that was deleted."
+
+msgid "m/d/Y"
+msgstr "m/d/Y"
+
+msgid "mm/dd/yy"
+msgstr "mm/dd/yy"
+
+msgid "MM/DD/YYYY"
+msgstr "MM/DD/YYYY"
+
+msgid "A new version is available."
+msgstr "A new version is available."
+
+msgid "You are using a development version."
+msgstr "You are using a development version."
+
+msgid "Your version is up to date."
+msgstr "Your version is up to date."
+
+msgid "TRUE"
+msgstr "TRUE"
+
+msgid "FALSE"
+msgstr "FALSE"
+
+msgid "Go top"
+msgstr "Go top"
+
+msgid "&copy; 2014 Jorani Authors"
+msgstr "&copy; 2014 Jorani Authors"
+
+msgid "Requested"
+msgstr "Requested"
+
+msgid "Planned"
+msgstr "Planned"
+
+msgid "Accepted"
+msgstr "Accepted"
+
+msgid "Rejected"
+msgstr "Rejected"
+
+msgid "Cancellation"
+msgstr "Cancellation"
+
+msgid "Canceled"
+msgstr "Canceled"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "https://jorani.org/page-calendar-organization.html"
+msgstr "https://jorani.org/page-calendar-organization.html"
+
+msgid ""
+msgstr ""
+
+msgid "https://jorani.org/page-list-of-positions.html"
+msgstr "https://jorani.org/page-list-of-positions.html"
+
+msgid "https://jorani.org/page-list-of-contracts.html"
+msgstr "https://jorani.org/page-list-of-contracts.html"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "https://jorani.org/temporary-permanent-delegation.html"
+msgstr "https://jorani.org/temporary-permanent-delegation.html"
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "https://jorani.org/page-leave-entitlements-for-an-employee.html"
+msgstr "https://jorani.org/page-leave-entitlements-for-an-employee.html"
+
+msgid "https://jorani.org/page-leave-entitlements-for-a-contract.html"
+msgstr "https://jorani.org/page-leave-entitlements-for-a-contract.html"
+
+msgid "https://jorani.org/page-my-summary.html"
+msgstr "https://jorani.org/page-my-summary.html"
+
+msgid "https://jorani.org/how-to-request-a-leave.html"
+msgstr "https://jorani.org/how-to-request-a-leave.html"
+
+msgid "https://jorani.org/edit-leave-types.html"
+msgstr "https://jorani.org/edit-leave-types.html"
+
+msgid "https://jorani.org/page-describe-organization.html"
+msgstr "https://jorani.org/page-describe-organization.html"
+
+msgid "https://jorani.org/how-to-change-my-password.html"
+msgstr "https://jorani.org/how-to-change-my-password.html"
+
+msgid "https://jorani.org/page-leave-requests-validation.html"
+msgstr "https://jorani.org/page-leave-requests-validation.html"
+
+msgid "https://jorani.org/page-login-to-the-application.html"
+msgstr "https://jorani.org/page-login-to-the-application.html"
+
+msgid "https://jorani.org/page-create-a-new-user.html"
+msgstr "https://jorani.org/page-create-a-new-user.html"
+
+msgid "https://jorani.org/page-list-of-employees.html"
+msgstr "https://jorani.org/page-list-of-employees.html"
+
+msgid "https://jorani.org/page-list-of-users.html"
+msgstr "https://jorani.org/page-list-of-users.html"
+
+msgid "https://jorani.org/configuration-file.html"
+msgstr "https://jorani.org/configuration-file.html"
+
+msgid ""
+msgstr ""
+
+msgid "https://jorani.org/page-leave-balance-report.html"
+msgstr "https://jorani.org/page-leave-balance-report.html"
+
+msgid ""
+msgstr ""
+
+msgid "Morning"
+msgstr "Morning"
+
+msgid "Afternoon"
+msgstr "Afternoon"
+
+msgid "today"
+msgstr "today"
+
+msgid "identifier"
+msgstr "identifier"
+
+msgid "firstname"
+msgstr "firstname"
+
+msgid "lastname"
+msgstr "lastname"
+
+msgid "date hired"
+msgstr "date hired"
+
+msgid "department"
+msgstr "department"
+
+msgid "position"
+msgstr "position"
+
+msgid "contract"
+msgstr "contract"
+
+msgid "day off"
+msgstr "day off"
+
+msgid "leave"
+msgstr "leave"
+
+msgid "All"
+msgstr "All"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "copied"
+msgstr "copied"
+
+msgid "Do You Authorize %s application?"
+msgstr "Do You Authorize %s application?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Your session has expired please login again"
+msgstr "Your session has expired please login again"
+
+msgid "Unexpected Ajax Error"
+msgstr "Unexpected Ajax Error"
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "edit user"
+msgstr "edit user"
+
+msgid "entitled days"
+msgstr "entitled days"
+
+msgid "Leaves"
+msgstr "Leaves"
+
+msgid "OT Worked"
+msgstr "OT Worked"
+
+msgid "Leave Balance"
+msgstr "Leave Balance"
+
+msgid "Create Leave Request"
+msgstr "Create Leave Request"
+
+msgid "Yearly calendar"
+msgstr "Yearly calendar"
+
+msgid "Presence report"
+msgstr "Presence report"
+
+msgid "Delegations"
+msgstr "Delegations"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Manager"
+msgstr "Manager"
+
+msgid "Identifier"
+msgstr "Identifier"
+
+msgid "Date hired"
+msgstr "Date hired"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "Entitled days"
+msgstr "Entitled days"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Right-click / taphold on an employee for contextual actions."
+msgstr "Right-click / taphold on an employee for contextual actions."
+
+msgid "Include sub-departments"
+msgstr "Include sub-departments"
+
+msgid "All"
+msgstr "All"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Inactive"
+msgstr "Inactive"
+
+msgid "Selection"
+msgstr "Selection"
+
+msgid "Select all"
+msgstr "Select all"
+
+msgid "Deselect all"
+msgstr "Deselect all"
+
+msgid "Select Manager"
+msgstr "Select Manager"
+
+msgid "Select Contract"
+msgstr "Select Contract"
+
+msgid "Select Entity"
+msgstr "Select Entity"
+
+msgid "Select Contract"
+msgstr "Select Contract"
+
+msgid "Entitled days"
+msgstr "Entitled days"
+
+msgid "Submit a leave request"
+msgstr "Submit a leave request"
+
+msgid "Select the manager"
+msgstr "Select the manager"
+
+msgid "You must select at least one employee into the table"
+msgstr "You must select at least one employee into the table"
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Manager"
+msgstr "Manager"
+
+msgid "List of requested leaves"
+msgstr "List of requested leaves"
+
+msgid "List of leaves for employee #"
+msgstr "List of leaves for employee #"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "accept"
+msgstr "accept"
+
+msgid "reject"
+msgstr "reject"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "show history"
+msgstr "show history"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "Delete leave request"
+msgstr "Delete leave request"
+
+msgid "You are about to delete one leave request, this procedure is irreversible."
+msgstr "You are about to delete one leave request, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "List of deleted leave requests"
+msgstr "List of deleted leave requests"
+
+msgid "List of requested leaves"
+msgstr "List of requested leaves"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Submit a leave request"
+msgstr "Submit a leave request"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "You are exceeding your entitled days"
+msgstr "You are exceeding your entitled days"
+
+msgid "You have requested another leave request within the same dates."
+msgstr "You have requested another leave request within the same dates."
+
+msgid "Cause (optional)"
+msgstr "Cause (optional)"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Request leave"
+msgstr "Request leave"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The leave request has been succesfully created"
+msgstr "The leave request has been succesfully created"
+
+msgid "The leave request has been succesfully created or updated, but you don't have a manager."
+msgstr "The leave request has been succesfully created or updated, but you don't have a manager."
+
+msgid "%s non-working days in the period"
+msgstr "%s non-working days in the period"
+
+msgid "Your leave request matches with a non-working day."
+msgstr "Your leave request matches with a non-working day."
+
+msgid "\"The field \" + fieldname + \" is mandatory.\""
+msgstr "\"The field \" + fieldname + \" is mandatory.\""
+
+msgid "It appears that you have no contract. Please contact your HR Officer / Manager."
+msgstr "It appears that you have no contract. Please contact your HR Officer / Manager."
+
+msgid "You can't create a leave request for two yearly leave periods. Please create two different leave requests."
+msgstr "You can't create a leave request for two yearly leave periods. Please create two different leave requests."
+
+msgid "List of overtime requests"
+msgstr "List of overtime requests"
+
+msgid "List of overtime requests for employee #"
+msgstr "List of overtime requests for employee #"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "accept"
+msgstr "accept"
+
+msgid "reject"
+msgstr "reject"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "Delete overtime request"
+msgstr "Delete overtime request"
+
+msgid "You are about to delete one overtime request, this procedure is irreversible."
+msgstr "You are about to delete one overtime request, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "List of overtime requests"
+msgstr "List of overtime requests"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Leave balance for user #"
+msgstr "Leave balance for user #"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Available"
+msgstr "Available"
+
+msgid "Taken"
+msgstr "Taken"
+
+msgid "Entitled"
+msgstr "Entitled"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "This employee has no contract."
+msgstr "This employee has no contract."
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "Date of report"
+msgstr "Date of report"
+
+msgid "Presence report"
+msgstr "Presence report"
+
+msgid "By default this report shows the values for the last month. Please note that the list of leaves shows only the accepted leave requests."
+msgstr "By default this report shows the values for the last month. Please note that the list of leaves shows only the accepted leave requests."
+
+msgid "edit"
+msgstr "edit"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Execute"
+msgstr "Execute"
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Month"
+msgstr "Month"
+
+msgid "Number of days"
+msgstr "Number of days"
+
+msgid "Number of working days"
+msgstr "Number of working days"
+
+msgid "Number of non-working days"
+msgstr "Number of non-working days"
+
+msgid "Duration of leaves"
+msgstr "Duration of leaves"
+
+msgid "Duration of presence"
+msgstr "Duration of presence"
+
+msgid "Overlapping detected"
+msgstr "Overlapping detected"
+
+msgid "The employee has no contract"
+msgstr "The employee has no contract"
+
+msgid "Please check"
+msgstr "Please check"
+
+msgid "List of leaves in the month"
+msgstr "List of leaves in the month"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "My summary"
+msgstr "My summary"
+
+msgid "Overtime details (added to compensate leaves)"
+msgstr "Overtime details (added to compensate leaves)"
+
+msgid "Catch up for"
+msgstr "Catch up for"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Available"
+msgstr "Available"
+
+msgid "Taken"
+msgstr "Taken"
+
+msgid "Entitled"
+msgstr "Entitled"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "actual"
+msgstr "actual"
+
+msgid "simulated"
+msgstr "simulated"
+
+msgid "No entitled or taken days for this period. Please contact your HR Officer / Manager."
+msgstr "No entitled or taken days for this period. Please contact your HR Officer / Manager."
+
+msgid "It appears that you have no contract. Please contact your HR Officer / Manager."
+msgstr "It appears that you have no contract. Please contact your HR Officer / Manager."
+
+msgid "Date of report"
+msgstr "Date of report"
+
+msgid "My leave requests"
+msgstr "My leave requests"
+
+msgid "view"
+msgstr "view"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "cancel"
+msgstr "cancel"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "show history"
+msgstr "show history"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Requested"
+msgstr "Requested"
+
+msgid "Last change"
+msgstr "Last change"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "New request"
+msgstr "New request"
+
+msgid "Delete leave request"
+msgstr "Delete leave request"
+
+msgid "You are about to delete one leave request, this procedure is irreversible."
+msgstr "You are about to delete one leave request, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Changed Date"
+msgstr "Changed Date"
+
+msgid "Change Type"
+msgstr "Change Type"
+
+msgid "Changed By"
+msgstr "Changed By"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Submit a leave request"
+msgstr "Submit a leave request"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "You are exceeding your entitled days"
+msgstr "You are exceeding your entitled days"
+
+msgid "You have requested another leave request within the same dates."
+msgstr "You have requested another leave request within the same dates."
+
+msgid "Cause (optional)"
+msgstr "Cause (optional)"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Request leave"
+msgstr "Request leave"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The leave request has been successfully created"
+msgstr "The leave request has been successfully created"
+
+msgid "The leave request has been successfully created or updated, but you don't have a manager."
+msgstr "The leave request has been successfully created or updated, but you don't have a manager."
+
+msgid "%s non-working days in the period"
+msgstr "%s non-working days in the period"
+
+msgid "Your leave request matches with a non-working day."
+msgstr "Your leave request matches with a non-working day."
+
+msgid "Edit a leave request"
+msgstr "Edit a leave request"
+
+msgid "Edit leave request #"
+msgstr "Edit leave request #"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "You are exceeding your entitled days"
+msgstr "You are exceeding your entitled days"
+
+msgid "Cause (optional)"
+msgstr "Cause (optional)"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Update leave"
+msgstr "Update leave"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "You cannot edit a leave request already submitted"
+msgstr "You cannot edit a leave request already submitted"
+
+msgid "The leave request has been successfully updated"
+msgstr "The leave request has been successfully updated"
+
+msgid "\"The field \" + fieldname + \" is mandatory.\""
+msgstr "\"The field \" + fieldname + \" is mandatory.\""
+
+msgid "It appears that you have no contract. Please contact your HR Officer / Manager."
+msgstr "It appears that you have no contract. Please contact your HR Officer / Manager."
+
+msgid "You can't create a leave request for two yearly leave periods. Please create two different leave requests."
+msgstr "You can't create a leave request for two yearly leave periods. Please create two different leave requests."
+
+msgid "You can't cancel this leave request"
+msgstr "You can't cancel this leave request"
+
+msgid "The cancellation request has been successfully sent"
+msgstr "The cancellation request has been successfully sent"
+
+msgid "The leave request has been successfully cancelled"
+msgstr "The leave request has been successfully cancelled"
+
+msgid "An error occured while trying to accept the cancellation"
+msgstr "An error occured while trying to accept the cancellation"
+
+msgid "The leave request has now its original status of Accepted"
+msgstr "The leave request has now its original status of Accepted"
+
+msgid "An error occured while trying to reject the cancellation"
+msgstr "An error occured while trying to reject the cancellation"
+
+msgid "You can't delete this leave request"
+msgstr "You can't delete this leave request"
+
+msgid "The leave request has been successfully deleted"
+msgstr "The leave request has been successfully deleted"
+
+msgid "View leave request #"
+msgstr "View leave request #"
+
+msgid "View a leave request"
+msgstr "View a leave request"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Back to list"
+msgstr "Back to list"
+
+msgid "List of leaves"
+msgstr "List of leaves"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "Morning/Afternoon"
+msgstr "Morning/Afternoon"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Morning/Afternoon"
+msgstr "Morning/Afternoon"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Send a reminder"
+msgstr "Send a reminder"
+
+msgid "The reminder email was sent to the manager"
+msgstr "The reminder email was sent to the manager"
+
+msgid "Comments"
+msgstr "Comments"
+
+msgid "New comment"
+msgstr "New comment"
+
+msgid "Send comment"
+msgstr "Send comment"
+
+msgid " says"
+msgstr " says"
+
+msgid "The status of the leave have been changed to "
+msgstr "The status of the leave have been changed to "
+
+msgid "Leave types"
+msgstr "Leave types"
+
+msgid "Leave type #0 is a system type reserved for overtime management. You should not use it for other requests."
+msgstr "Leave type #0 is a system type reserved for overtime management. You should not use it for other requests."
+
+msgid "Leave type #0 is a system type reserved for overtime management. Are you sure that you want to rename it?"
+msgstr "Leave type #0 is a system type reserved for overtime management. Are you sure that you want to rename it?"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Acronym"
+msgstr "Acronym"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Deduct non working days"
+msgstr "Deduct non working days"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "Create a new type"
+msgstr "Create a new type"
+
+msgid "No leave type found into the database."
+msgstr "No leave type found into the database."
+
+msgid "This leave type already exists."
+msgstr "This leave type already exists."
+
+msgid "Add a leave type"
+msgstr "Add a leave type"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Suggest an acronym"
+msgstr "Suggest an acronym"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Acronym"
+msgstr "Acronym"
+
+msgid "Deduct non working days"
+msgstr "Deduct non working days"
+
+msgid "The leave type has been succesfully created."
+msgstr "The leave type has been succesfully created."
+
+msgid "Edit a Leave type"
+msgstr "Edit a Leave type"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Suggest an acronym"
+msgstr "Suggest an acronym"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Acronym"
+msgstr "Acronym"
+
+msgid "Deduct non working days"
+msgstr "Deduct non working days"
+
+msgid "The leave type has been succesfully updated."
+msgstr "The leave type has been succesfully updated."
+
+msgid "Delete Leave Type"
+msgstr "Delete Leave Type"
+
+msgid "You are about to delete one leave type, this procedure is irreversible."
+msgstr "You are about to delete one leave type, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "The leave type has been succesfully deleted."
+msgstr "The leave type has been succesfully deleted."
+
+msgid "You cannot delete a system leave type."
+msgstr "You cannot delete a system leave type."
+
+msgid "You cannot delete a leave type that is used."
+msgstr "You cannot delete a leave type that is used."
+
+msgid "Leave types"
+msgstr "Leave types"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Acronym"
+msgstr "Acronym"
+
+msgid "Deduct non working days"
+msgstr "Deduct non working days"
+
+msgid "Change password"
+msgstr "Change password"
+
+msgid "Welcome"
+msgstr "Welcome"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "View my personal information"
+msgstr "View my personal information"
+
+msgid "reset password"
+msgstr "reset password"
+
+msgid "Change password"
+msgstr "Change password"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "New request"
+msgstr "New request"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "List of users"
+msgstr "List of users"
+
+msgid "Create user"
+msgstr "Create user"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Diagnostic"
+msgstr "Diagnostic"
+
+msgid "OAuth Clients"
+msgstr "OAuth Clients"
+
+msgid "HR"
+msgstr "HR"
+
+msgid "Employees"
+msgstr "Employees"
+
+msgid "Organization"
+msgstr "Organization"
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "Contracts"
+msgstr "Contracts"
+
+msgid "List of contracts"
+msgstr "List of contracts"
+
+msgid "List of positions"
+msgstr "List of positions"
+
+msgid "Leaves"
+msgstr "Leaves"
+
+msgid "List of types"
+msgstr "List of types"
+
+msgid "Reports"
+msgstr "Reports"
+
+msgid "Leave balance"
+msgstr "Leave balance"
+
+msgid "Leave requests"
+msgstr "Leave requests"
+
+msgid "Approval"
+msgstr "Approval"
+
+msgid "Delegations"
+msgstr "Delegations"
+
+msgid "My subordinates"
+msgstr "My subordinates"
+
+msgid "Leaves"
+msgstr "Leaves"
+
+msgid "Overtime"
+msgstr "Overtime"
+
+msgid "Requests"
+msgstr "Requests"
+
+msgid "Leaves"
+msgstr "Leaves"
+
+msgid "Overtime"
+msgstr "Overtime"
+
+msgid "List of OT Worked"
+msgstr "List of OT Worked"
+
+msgid "Submit an OT Request"
+msgstr "Submit an OT Request"
+
+msgid "Counters"
+msgstr "Counters"
+
+msgid "List of leave requests"
+msgstr "List of leave requests"
+
+msgid "Request a leave"
+msgstr "Request a leave"
+
+msgid "Calendars"
+msgstr "Calendars"
+
+msgid "Yearly calendar"
+msgstr "Yearly calendar"
+
+msgid "My calendar"
+msgstr "My calendar"
+
+msgid "My workmates"
+msgstr "My workmates"
+
+msgid "My subordinates"
+msgstr "My subordinates"
+
+msgid "Department"
+msgstr "Department"
+
+msgid "Global"
+msgstr "Global"
+
+msgid "Tabular"
+msgstr "Tabular"
+
+msgid "Organization"
+msgstr "Organization"
+
+msgid "Search for an entity"
+msgstr "Search for an entity"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Employees attached to entity"
+msgstr "Employees attached to entity"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Attach an Employee"
+msgstr "Attach an Employee"
+
+msgid "Detach an Employee"
+msgstr "Detach an Employee"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Supervisor"
+msgstr "Supervisor"
+
+msgid "If you select a supervisor, he will receive a copy of accepted and rejected leave requests submitted by employees of this entity."
+msgstr "If you select a supervisor, he will receive a copy of accepted and rejected leave requests submitted by employees of this entity."
+
+msgid "Select a Supervisor"
+msgstr "Select a Supervisor"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Delete Entity"
+msgstr "Delete Entity"
+
+msgid "You are about to delete one entity, this procedure is irreversible."
+msgstr "You are about to delete one entity, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Add an Employee"
+msgstr "Add an Employee"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "An error occured"
+msgstr "An error occured"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Name of the entity"
+msgstr "Name of the entity"
+
+msgid "Please select one entity in the organization (treeview on the right)."
+msgstr "Please select one entity in the organization (treeview on the right)."
+
+msgid "Please select one employee in the table of users belonging to the selected entity."
+msgstr "Please select one employee in the table of users belonging to the selected entity."
+
+msgid "You cannot delete the root entity."
+msgstr "You cannot delete the root entity."
+
+msgid "Search for an entity"
+msgstr "Search for an entity"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Select a list of employees"
+msgstr "Select a list of employees"
+
+msgid "Rename a list"
+msgstr "Rename a list"
+
+msgid "Add a new list"
+msgstr "Add a new list"
+
+msgid "Delete a list"
+msgstr "Delete a list"
+
+msgid "Add employees"
+msgstr "Add employees"
+
+msgid "Remove selected employees"
+msgstr "Remove selected employees"
+
+msgid "Name of the list"
+msgstr "Name of the list"
+
+msgid "Are you sure that you want to delete this list?"
+msgstr "Are you sure that you want to delete this list?"
+
+msgid "New name of the list"
+msgstr "New name of the list"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Overtime Requests submitted to me"
+msgstr "Overtime Requests submitted to me"
+
+msgid "This screen lists the overtime requests submitted to you. If you are not a manager, this list will always be empty."
+msgstr "This screen lists the overtime requests submitted to you. If you are not a manager, this list will always be empty."
+
+msgid "view"
+msgstr "view"
+
+msgid "accept"
+msgstr "accept"
+
+msgid "reject"
+msgstr "reject"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Fullname"
+msgstr "Fullname"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "All requests"
+msgstr "All requests"
+
+msgid "Pending requests "
+msgstr "Pending requests "
+
+msgid "You are not the line manager of this employee. You cannot reject this overtime request."
+msgstr "You are not the line manager of this employee. You cannot reject this overtime request."
+
+msgid "The overtime request has been successfully rejected."
+msgstr "The overtime request has been successfully rejected."
+
+msgid "You are not the line manager of this employee. You cannot accept this overtime request."
+msgstr "You are not the line manager of this employee. You cannot accept this overtime request."
+
+msgid "The overtime request has been successfully accepted."
+msgstr "The overtime request has been successfully accepted."
+
+msgid "List of overtime requests"
+msgstr "List of overtime requests"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Fullname"
+msgstr "Fullname"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "List of positions"
+msgstr "List of positions"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "delete"
+msgstr "delete"
+
+msgid "edit"
+msgstr "edit"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "Create position"
+msgstr "Create position"
+
+msgid "Delete Position"
+msgstr "Delete Position"
+
+msgid "You are about to delete one position, this procedure is irreversible."
+msgstr "You are about to delete one position, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Create a new position"
+msgstr "Create a new position"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Create position"
+msgstr "Create position"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The position has been succesfully created."
+msgstr "The position has been succesfully created."
+
+msgid "Edit position #"
+msgstr "Edit position #"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Update position"
+msgstr "Update position"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The position has been succesfully updated."
+msgstr "The position has been succesfully updated."
+
+msgid "The position has been succesfully deleted."
+msgstr "The position has been succesfully deleted."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "List of positions"
+msgstr "List of positions"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "List of reports"
+msgstr "List of reports"
+
+msgid "Report"
+msgstr "Report"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Report"
+msgstr "Report"
+
+msgid "Back to list of reports"
+msgstr "Back to list of reports"
+
+msgid "List of Report"
+msgstr "List of Report"
+
+msgid "Balance of leaves"
+msgstr "Balance of leaves"
+
+msgid "Date of report"
+msgstr "Date of report"
+
+msgid "Select the entity"
+msgstr "Select the entity"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Include sub-departments"
+msgstr "Include sub-departments"
+
+msgid "Launch"
+msgstr "Launch"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Balance of leaves"
+msgstr "Balance of leaves"
+
+msgid "Leave requests"
+msgstr "Leave requests"
+
+msgid "Month"
+msgstr "Month"
+
+msgid "Year"
+msgstr "Year"
+
+msgid "Select the entity"
+msgstr "Select the entity"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Include sub-departments"
+msgstr "Include sub-departments"
+
+msgid "Leave requests"
+msgstr "Leave requests"
+
+msgid "Launch"
+msgstr "Launch"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Leave requests"
+msgstr "Leave requests"
+
+msgid "Leave Requests submitted to me"
+msgstr "Leave Requests submitted to me"
+
+msgid "This screen lists the leave requests submitted to you. If you are not a manager, this list will always be empty."
+msgstr "This screen lists the leave requests submitted to you. If you are not a manager, this list will always be empty."
+
+msgid "view"
+msgstr "view"
+
+msgid "accept"
+msgstr "accept"
+
+msgid "reject"
+msgstr "reject"
+
+msgid "show history"
+msgstr "show history"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Fullname"
+msgstr "Fullname"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Requested"
+msgstr "Requested"
+
+msgid "Last change"
+msgstr "Last change"
+
+msgid "List of my subordinates"
+msgstr "List of my subordinates"
+
+msgid "This screen lists your direct report subordinates. If you are not a manager, this list will always be empty."
+msgstr "This screen lists your direct report subordinates. If you are not a manager, this list will always be empty."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Leave Balance"
+msgstr "Leave Balance"
+
+msgid "Presence report"
+msgstr "Presence report"
+
+msgid "Yearly calendar"
+msgstr "Yearly calendar"
+
+msgid "Create a leave request in behalf of this subordinate"
+msgstr "Create a leave request in behalf of this subordinate"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Identifier"
+msgstr "Identifier"
+
+msgid "Leave balance for user #"
+msgstr "Leave balance for user #"
+
+msgid "Leave type"
+msgstr "Leave type"
+
+msgid "Available"
+msgstr "Available"
+
+msgid "Taken"
+msgstr "Taken"
+
+msgid "Entitled"
+msgstr "Entitled"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "This employee has no contract."
+msgstr "This employee has no contract."
+
+msgid "Your are not the manager of this employee."
+msgstr "Your are not the manager of this employee."
+
+msgid "List of subordinates"
+msgstr "List of subordinates"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "All requests"
+msgstr "All requests"
+
+msgid "Pending requests "
+msgstr "Pending requests "
+
+msgid "You are not the line manager of this employee. You cannot accept this leave request."
+msgstr "You are not the line manager of this employee. You cannot accept this leave request."
+
+msgid "The leave request has been successfully accepted."
+msgstr "The leave request has been successfully accepted."
+
+msgid "You are not the line manager of this employee. You cannot reject this leave request."
+msgstr "You are not the line manager of this employee. You cannot reject this leave request."
+
+msgid "The leave request has been successfully rejected."
+msgstr "The leave request has been successfully rejected."
+
+msgid "List of leave requests"
+msgstr "List of leave requests"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Fullname"
+msgstr "Fullname"
+
+msgid "Start Date"
+msgstr "Start Date"
+
+msgid "Morning/Afternoon"
+msgstr "Morning/Afternoon"
+
+msgid "End Date"
+msgstr "End Date"
+
+msgid "Morning/Afternoon"
+msgstr "Morning/Afternoon"
+
+msgid "Duration"
+msgstr "Duration"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "List of delegations"
+msgstr "List of delegations"
+
+msgid "This is the list of employees who can accept or reject a request in your behalf."
+msgstr "This is the list of employees who can accept or reject a request in your behalf."
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Revoke"
+msgstr "Revoke"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Add a delegate"
+msgstr "Add a delegate"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Are you sure that you want to revoke this delegation?"
+msgstr "Are you sure that you want to revoke this delegation?"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "Leave balance (subordinates)"
+msgstr "Leave balance (subordinates)"
+
+msgid "Leave balance of my direct report subordinates. If you are not a manager, this list will always be empty."
+msgstr "Leave balance of my direct report subordinates. If you are not a manager, this list will always be empty."
+
+msgid "Date of report"
+msgstr "Date of report"
+
+msgid "Comment"
+msgstr "Comment"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Reject"
+msgstr "Reject"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Send me my password"
+msgstr "Send me my password"
+
+msgid "Are you sure that you want to reset your password?"
+msgstr "Are you sure that you want to reset your password?"
+
+msgid "Please fill the login field"
+msgstr "Please fill the login field"
+
+msgid "Unknown login. Please contact your HR Officer / Manager."
+msgstr "Unknown login. Please contact your HR Officer / Manager."
+
+msgid "The password has been sent to your e-mail adress."
+msgstr "The password has been sent to your e-mail adress."
+
+msgid "Invalid login id or password"
+msgstr "Invalid login id or password"
+
+msgid "The language has been succesfully set to "
+msgstr "The language has been succesfully set to "
+
+msgid "Your account is disabled. Please contact your HR Officer / Manager."
+msgstr "Your account is disabled. Please contact your HR Officer / Manager."
+
+msgid "You have logged out of Jorani but are still logged into your Identity Provider. Click on Login to automatically log back into Jorani."
+msgstr "You have logged out of Jorani but are still logged into your Identity Provider. Click on Login to automatically log back into Jorani."
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Rename"
+msgstr "Rename"
+
+msgid "Remove"
+msgstr "Remove"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Copy"
+msgstr "Copy"
+
+msgid "Cut"
+msgstr "Cut"
+
+msgid "Paste"
+msgstr "Paste"
+
+msgid "List of users"
+msgstr "List of users"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Inactive"
+msgstr "Inactive"
+
+msgid "edit user details"
+msgstr "edit user details"
+
+msgid "delete user"
+msgstr "delete user"
+
+msgid "reset password"
+msgstr "reset password"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Role"
+msgstr "Role"
+
+msgid "Manager"
+msgstr "Manager"
+
+msgid "Export this list"
+msgstr "Export this list"
+
+msgid "Create a new user"
+msgstr "Create a new user"
+
+msgid "Import users"
+msgstr "Import users"
+
+msgid "Delete User"
+msgstr "Delete User"
+
+msgid "You are about to delete one user, this procedure is irreversible."
+msgstr "You are about to delete one user, this procedure is irreversible."
+
+msgid "Do you want to proceed?"
+msgstr "Do you want to proceed?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Change password"
+msgstr "Change password"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Import Users"
+msgstr "Import Users"
+
+msgid "Filename"
+msgstr "Filename"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "List of employees"
+msgstr "List of employees"
+
+msgid "My personal information"
+msgstr "My personal information"
+
+msgid "My personal information"
+msgstr "My personal information"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "Manager"
+msgstr "Manager"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Date hired/started"
+msgstr "Date hired/started"
+
+msgid "Internal/Company Identifier"
+msgstr "Internal/Company Identifier"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Edit user #"
+msgstr "Edit user #"
+
+msgid "Edit user"
+msgstr "Edit user"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Role"
+msgstr "Role"
+
+msgid "Manager"
+msgstr "Manager"
+
+msgid "No line manager."
+msgstr "No line manager."
+
+msgid "If a user has no manager (itself), it can validate its leave requests."
+msgstr "If a user has no manager (itself), it can validate its leave requests."
+
+msgid "Self"
+msgstr "Self"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Date hired/started"
+msgstr "Date hired/started"
+
+msgid "Timezone"
+msgstr "Timezone"
+
+msgid "LDAP Path"
+msgstr "LDAP Path"
+
+msgid "Internal/Company Identifier"
+msgstr "Internal/Company Identifier"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Select the manager"
+msgstr "Select the manager"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Select a position"
+msgstr "Select a position"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Update user"
+msgstr "Update user"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "The user has been succesfully updated"
+msgstr "The user has been succesfully updated"
+
+msgid "The user has been succesfully deleted"
+msgstr "The user has been succesfully deleted"
+
+msgid "The password has been succesfully changed"
+msgstr "The password has been succesfully changed"
+
+msgid "Create a new user"
+msgstr "Create a new user"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Role"
+msgstr "Role"
+
+msgid "Manager"
+msgstr "Manager"
+
+msgid "Self"
+msgstr "Self"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Contract"
+msgstr "Contract"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Date hired/started"
+msgstr "Date hired/started"
+
+msgid "Timezone"
+msgstr "Timezone"
+
+msgid "LDAP Path"
+msgstr "LDAP Path"
+
+msgid "Internal/Company Identifier"
+msgstr "Internal/Company Identifier"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Select the manager"
+msgstr "Select the manager"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Select an entity"
+msgstr "Select an entity"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Select a position"
+msgstr "Select a position"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "If a user has no manager (itself), it can validate its leave requests."
+msgstr "If a user has no manager (itself), it can validate its leave requests."
+
+msgid "No line manager."
+msgstr "No line manager."
+
+msgid "Generate password"
+msgstr "Generate password"
+
+msgid "Create user"
+msgstr "Create user"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "\"The field \" + fieldname + \" is mandatory.\""
+msgstr "\"The field \" + fieldname + \" is mandatory.\""
+
+msgid "It is recommended to select a contract. Do you want to create the user without a contract?"
+msgstr "It is recommended to select a contract. Do you want to create the user without a contract?"
+
+msgid "The user has been succesfully created"
+msgstr "The user has been succesfully created"
+
+msgid "Username already exists."
+msgstr "Username already exists."
+
+msgid "This username is not available."
+msgstr "This username is not available."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Entity"
+msgstr "Entity"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "List of users"
+msgstr "List of users"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Firstname"
+msgstr "Firstname"
+
+msgid "Lastname"
+msgstr "Lastname"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Manager"
+msgstr "Manager"
+

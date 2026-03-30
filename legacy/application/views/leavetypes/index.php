@@ -6,19 +6,20 @@
  */
 ?>
 
-<h2><?php echo lang('leavetypes_type_title'); ?><?php echo $help; ?></h2>
+<h2><?= t('Leave types') ?></h2>
 
-<p><?php echo lang('leavetypes_type_description'); ?></p>
+<p><?= t('Leave type #0 is a system type reserved for overtime management. You should not use it for other requests.') ?>
+</p>
 
 <?php echo $flash_partial_view; ?>
 
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th><?php echo lang('leavetypes_type_thead_id'); ?></th>
-            <th><?php echo lang('leavetypes_type_thead_acronym'); ?></th>
-            <th><?php echo lang('leavetypes_type_thead_name'); ?></th>
-            <th><?php echo lang('leavetypes_type_thead_deduct'); ?></th>
+            <th><?= t('ID') ?></th>
+            <th><?= __('Acronym') ?></th>
+            <th><?= t('Name') ?></th>
+            <th><?= t('Deduct non working days') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -65,11 +66,11 @@
 <div class="row-fluid">
     <div class="span12">
         <a href="<?php echo base_url(); ?>leavetypes/export" class="btn btn-primary"><i
-                class="mdi mdi-download"></i>&nbsp; <?php echo lang('leavetypes_type_button_export'); ?></a>
+                class="mdi mdi-download"></i>&nbsp; <?= t('Export this list') ?></a>
         &nbsp;
         <a href="<?php echo base_url(); ?>leavetypes/create" class="btn btn-primary" data-target="#frmAddLeaveType"
             data-toggle="modal"><i class="mdi mdi-plus-circle"></i>&nbsp;
-            <?php echo lang('leavetypes_type_button_create'); ?></a>
+            <?= t('Create a new type') ?></a>
     </div>
 </div>
 
@@ -86,8 +87,7 @@
         <img src="<?php echo base_url(); ?>assets/images/loading.gif">
     </div>
     <div class="modal-footer">
-        <a href="#" onclick="$('#frmAddLeaveType').modal('hide');"
-            class="btn btn-danger"><?php echo lang('leavetypes_popup_create_button_cancel'); ?></a>
+        <a href="#" onclick="$('#frmAddLeaveType').modal('hide');" class="btn btn-danger"><?= t('Cancel') ?></a>
     </div>
 </div>
 
