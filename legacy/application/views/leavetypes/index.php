@@ -1,10 +1,8 @@
 <?php
 /**
  * This view displays the list of leave types.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.1.0
+ * @since   0.1.0
  */
 ?>
 
@@ -26,25 +24,25 @@
     <tbody>
         <?php foreach ($leavetypes as $type) { ?>
             <tr>
-                <td><?php echo $type['id'] ?> &nbsp;
-                    <?php if ($type['id'] != 0) { ?>
-                        <a href="#" class="confirm-delete" data-id="<?php echo $type['id']; ?>"
+                <td><?php echo $type->getId(); ?> &nbsp;
+                    <?php if ($type->getId() !== 0) { ?>
+                        <a href="#" class="confirm-delete" data-id="<?php echo $type->getId(); ?>"
                             title="<?php echo lang('leavetypes_type_thead_tip_delete'); ?>"><i
                                 class="mdi mdi-delete nolink"></i></a>
                     <?php } ?>
                 </td>
                 <td>
-                    <?php echo $type['acronym']; ?>
+                    <?php echo $type->getAcronym(); ?>
                 </td>
                 <td>
-                    <a href="<?php echo base_url(); ?>leavetypes/edit/<?php echo $type['id'] ?>"
+                    <a href="<?php echo base_url(); ?>leavetypes/edit/<?php echo $type->getId(); ?>"
                         data-target="#frmEditLeaveType" data-toggle="modal"
                         title="<?php echo lang('leavetypes_type_thead_tip_edit'); ?>"><i
                             class="mdi mdi-pencil nolink"></i></a>
-                    &nbsp; <?php echo $type['name']; ?>
+                    &nbsp; <?php echo $type->getName(); ?>
                 </td>
                 <td>
-                    <?php if ($type['deduct_days_off'] == TRUE) { ?>
+                    <?php if ($type->isDeductDaysOff()) { ?>
                         <i class="mdi mdi-checkbox-marked-outline"></i>
                     <?php } else { ?>
                         <i class="mdi mdi-checkbox-blank-outline"></i>

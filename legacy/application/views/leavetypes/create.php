@@ -1,10 +1,8 @@
 <?php
 /**
  * This view allows an HR admin to create a new leave type.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.2.0
+ * @since   0.2.0
  */
 ?>
 
@@ -35,7 +33,7 @@ echo form_open('leavetypes/create', $attributes); ?>
         //Check if the leave type is unique
         $('#cmdCreateLeaveType').click(function () {
             var typeNames = [<?php echo implode(', ', array_map(function ($entry) {
-                return '"' . $entry['name'] . '"';
+                return '"' . $entry->getName() . '"';
             }, $leavetypes)); ?>];
             if (typeNames.indexOf($('#name').val()) > -1) {
                 bootbox.alert("<?php echo lang('leavetypes_js_unique_error_msg'); ?>");

@@ -22,11 +22,14 @@
         "zircote/swagger-php": "^6.0.6",
         "phpmailer/phpmailer": "^7.0",
         "league/oauth2-client": "^2.9",
-        "league/oauth2-google": "^4.2"
+        "league/oauth2-google": "^4.2",
+        "doctrine/orm": "^3.6",
+        "symfony/cache": "^7.4"
     },
     "autoload": {
         "psr-4": {
-            "Jorani\\": "application/"
+            "Jorani\\": "application/",
+            "App\\": "application/"
         }
     },
     "require-dev": {

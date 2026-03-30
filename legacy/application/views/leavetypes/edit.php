@@ -1,28 +1,27 @@
 <?php
 /**
  * This view allows an HR admin to edit a leave type.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.2.0
+ * @since   0.2.0
  */
 ?>
 
-<?php $attributes = array('id' => 'formEditLeaveType');
+<?php $attributes = ['id' => 'formEditLeaveType'];
 echo form_open('leavetypes/edit/' . $id, $attributes); ?>
 <input type="hidden" name="id" value="<?php echo $id; ?>" />
 <label for="name"><?php echo lang('leavetypes_popup_update_field_name'); ?></label>
-<input type="text" name="name" id="name" value="<?php echo $leavetype['name']; ?>" />
+<input type="text" name="name" id="name" value="<?php echo htmlspecialchars($leavetype->getName()); ?>" />
 <label for="acronym"><?php echo lang('leavetypes_popup_update_field_acronym'); ?></label>
 <div class="input-append">
-    <input type="text" name="acronym" id="acronym" value="<?php echo $leavetype['acronym']; ?>" />
+    <input type="text" name="acronym" id="acronym"
+        value="<?php echo htmlspecialchars((string) $leavetype->getAcronym()); ?>" />
     <a id="cmdSuggestAcronym" class="btn btn-primary"
         title="<?php echo lang('leavetypes_popup_update_button_suggest'); ?>">
         <i class="mdi mdi-auto-fix" aria-hidden="true"></i>
     </a>
 </div>
 <label for="deduct_days_off">
-    <input type="checkbox" name="deduct_days_off" id="deduct_days_off" <?php if ($leavetype['deduct_days_off'] == TRUE) {
+    <input type="checkbox" name="deduct_days_off" id="deduct_days_off" <?php if ($leavetype->isDeductDaysOff()) {
         echo "checked";
     } ?> />
     <?php echo lang('leavetypes_popup_update_field_deduct'); ?>
@@ -37,7 +36,11 @@ echo form_open('leavetypes/edit/' . $id, $attributes); ?>
     $(function () {
         //Check if the leave type is unique
         $('#cmdEditLeaveType').click(function () {
-            var types = <?php echo json_encode($leavetypes); ?>;
+            var types = [
+                <?php foreach ($leavetypes as $t) {
+                    echo '{ id: ' . $t->getId() . ', name: "' . addslashes($t->getName()) . '" },';
+                } ?>
+            ];
             var id = <?php echo $id; ?>;
             var found = false;
             for (var key in types) {
