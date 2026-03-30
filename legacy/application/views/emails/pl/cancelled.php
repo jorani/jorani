@@ -3,11 +3,10 @@
  * Email template.You can change the content of this template
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
  * @since         0.1.0
  */
 ?>
-<html lang="en">
+<html lang="pl">
 
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -38,39 +37,39 @@
 
 <body>
     <h3>{Title}</h3>
-    {Firstname} {Lastname} cancelled a requested time off. See the <a
-        href="{BaseUrl}leaves/leaves/{LeaveId}">details</a> below:<br />
+    {Firstname} {Lastname} anulowano czas żądania. Zobacz <a href="{BaseUrl}leaves/leaves/{LeaveId}">szczegóły</a>
+    poniżej:<br />
     <table border="0">
         <tr>
-            <td>From &nbsp;</td>
+            <td>Od &nbsp;</td>
             <td>{StartDate}&nbsp;({StartDateType})</td>
         </tr>
         <tr>
-            <td>To &nbsp;</td>
+            <td>Do &nbsp;</td>
             <td>{EndDate}&nbsp;({EndDateType})</td>
         </tr>
         <tr>
-            <td>Type &nbsp;</td>
+            <td>Typ &nbsp;</td>
             <td>{Type}</td>
         </tr>
         <tr>
-            <td>Duration &nbsp;</td>
+            <td>Czas trwania &nbsp;</td>
             <td>{Duration}</td>
         </tr>
         <tr>
-            <td>Balance &nbsp;</td>
+            <td>Stan &nbsp;</td>
             <td>{Balance}</td>
         </tr>
         <tr>
-            <td>Reason &nbsp;</td>
+            <td>Przyczyna &nbsp;</td>
             <td>{Reason}</td>
         </tr>
     </table>
     <br />
-    You can check the <a href="{BaseUrl}hr/counters/collaborators/{UserId}">leave balance</a> before validating the
-    leave request.
+    Możesz sprawdzić <a href="{BaseUrl}hr/counters/collaborators/{UserId}">bilans wyjść</a> przed zatwierdzeniem wniosku
+    o urlop.
     <hr>
-    <h5>*** This is an automatically generated message, please do not reply to this message ***</h5>
+    <h5>*** Ta wiadomość została wygenerowana automatycznie, prosimy nie odpowiadać na tę wiadomość ***</h5>
 </body>
 
 </html>

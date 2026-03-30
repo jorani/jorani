@@ -3,19 +3,17 @@
  * Utility script that converts a PO file to PHP array i18n files
  * 
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
  * @since      0.3.0
  */
 
 require_once "../../vendor/autoload.php";
-$target = "slovak";
+$target = "polish";
 
 $copyright = "<?php
 /**
  * Translation file
  * 
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
  * @since      1.0.0
  * @author     Transifex users
  */\n\n";
@@ -33,13 +31,13 @@ $files = scandir($target);
 foreach ($files as $file) {
     if (strpos($file, 'php') !== false) {
         echo "[INFO] Scanning resource: $file" . PHP_EOL;
-        $path = join_paths($target, $file);
+        $path = joinPaths($target, $file);
         $ci18n = file_get_contents($path);
 
         //Analyse CI i18n files containing the translations (key/value)
         //$lang['calendar_individual_title'] = 'My calendar';
         $pattern = "\$lang\['(.*)'\] = '(.*)';$";
-        $out = array(); //result to be inserted into the CI translation file
+        $out = []; //result to be inserted into the CI translation file
         preg_match_all($pattern, $ci18n, $out, PREG_PATTERN_ORDER);
         $lenI18N = count($out[0]);
         for ($jj = 0; $jj < $lenI18N; $jj++) {
@@ -79,10 +77,9 @@ echo "[INFO] Done." . PHP_EOL;
 
 /**
  * Internal utility function to join paths
- *
  * @return string normalized path
  */
-function join_paths()
+function joinPaths(): string
 {
     $paths = array();
     foreach (func_get_args() as $arg) {

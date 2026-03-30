@@ -1,0 +1,1705 @@
+# 
+# Translators:
+# Benjamin BALET <benjamin.balet@gmail.com>, 2015
+# David Gocel <dgocel@gmail.com>, 2018
+# pa ne <neskowiec@gmail.com>, 2019
+# Piotr Rawski <p.rawski@outlook.com>, 2015
+# Piotr Samek <piotr.samek@gmail.com>, 2017
+# Yevhen Kyrylchenko <yevhen.kyrylchenko@gmail.com>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: jorani\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-02-12 15:25+0000\n"
+"Last-Translator: pa ne <neskowiec@gmail.com>, 2019\n"
+"Language-Team: Polish (http://app.transifex.com/jorani/jorani/language/pl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+msgid "Data & Config Diagnostic"
+msgstr "Sprawdzenie danych oraz konfiguracji"
+
+msgid "Detection of configuration and data problems"
+msgstr "Sprawdzenie problemów w danych oraz konfiguracji"
+
+msgid "No error"
+msgstr "Nie ma błędów"
+
+msgid "Leave Requests"
+msgstr "Zgłoszenie nieobecności"
+
+msgid "Accepted but duplicated Leave Requests"
+msgstr "Zaakceptowany ale Zgłoszenie Nieobecności zdublowane"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Employee"
+msgstr "Pracownik"
+
+msgid "Start Date"
+msgstr "Początek"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Afternoon/Morning"
+msgstr "Popołudnie/Rano"
+
+msgid "Leave Requests with a wrong start/end type."
+msgstr "Zgłoszenie nieobecności z nieprawidłowym Początkiem i Zakończeniem"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "End"
+msgstr "Zakończenie"
+
+msgid "Entitled days"
+msgstr "uprawnione dni"
+
+msgid ""
+"List of contracts and employees having entitlements for more than one year."
+msgstr "Lista umów i pracowników posiadających przynależne dni więcej niż przez ponad rok."
+
+msgid "Name"
+msgstr "Imię"
+
+msgid "End Date"
+msgstr "Data Zakończenia"
+
+msgid "Contract"
+msgstr "Umowa"
+
+msgid "Incomplete deletion into database."
+msgstr "Niepełne usunięcie z bazy danych"
+
+msgid "Non-working days"
+msgstr "Dni niepracujące"
+
+msgid ""
+"Number of days (per contract) for which a non-working duration has been "
+"defined."
+msgstr "Liczba dni (na umowę), dla których zdefiniowano czas niepracowania."
+
+msgid "Last year"
+msgstr "Ostatni rok"
+
+msgid "This year"
+msgstr "Ten rok"
+
+msgid "Next year"
+msgstr "Następny rok"
+
+msgid "Overtime"
+msgstr "Nadgodziny"
+
+msgid "Overtime requests with a negative duration"
+msgstr "Wniosek nadgodzin z nieprawidłowym czasem trwania"
+
+msgid "Duration"
+msgstr "Czas trwania"
+
+msgid "Contracts"
+msgstr "Umowy"
+
+msgid "Unused contracts (check if the contract is not duplicated)."
+msgstr "Niewykorzystane umowy (sprawdź, czy umowa nie jest powielana)."
+
+msgid "Balance"
+msgstr "Stan"
+
+msgid "Leave requests for which there are no entitlments."
+msgstr "Wnioski o wyjście bez przynależnych dni"
+
+msgid "OAuth clients and sessions"
+msgstr "Klienci i sesje OAuth"
+
+msgid "Clients"
+msgstr "Klienci"
+
+msgid "List of clients allowed to use the REST API"
+msgstr "Lista klientów uprawnionych do użycia REST API"
+
+msgid "edit client"
+msgstr "edytuj klienta"
+
+msgid "delete client"
+msgstr "usuń klienta"
+
+msgid "Add"
+msgstr "Dodaj"
+
+msgid "Add OAuth Client"
+msgstr "Dodaj klienta OAuth"
+
+msgid "Associate to an actual user"
+msgstr "Przypisz do aktualnego użytkownika"
+
+msgid "This client_id already exists"
+msgstr "Ten client_id już istnieje"
+
+msgid "Are you sure that you want to proceed?"
+msgstr "Czy jesteś pewien, że chcesz kontynuować ?"
+
+msgid "Sessions"
+msgstr "Sesje"
+
+msgid "List of active REST API OAuth Sessions"
+msgstr "Lista aktywnych sesji OAuth REST API"
+
+msgid "Purge"
+msgstr "Oczyść"
+
+msgid "Yearly calendar"
+msgstr "Kalendarz roczny"
+
+msgid "Export"
+msgstr "Eksportuj"
+
+msgid "My calendar"
+msgstr "Mój kalendarz"
+
+msgid "Calendar of my leaves."
+msgstr "Kalendarz moich urlopów"
+
+msgid "Download an iCal file"
+msgstr "Pobierz plik iCal"
+
+msgid "(import the event into Outlook, Thunderbird, etc.)"
+msgstr "(pobierz wydarzenie do Outlooka, Thunderbirda, etc.)"
+
+msgid "Event details"
+msgstr "Szczegóły wydarzenia"
+
+msgid "Close"
+msgstr "Zamknij"
+
+msgid "Days off"
+msgstr "Dni wolne"
+
+msgid "Calendar of my workmates"
+msgstr "Kalendarz innych pracowników"
+
+msgid "Leaves of employees having the same line manager"
+msgstr "Wolne pracowników tego samego kierownika"
+
+msgid "Calendar of my subordinates"
+msgstr "Kalendarz moich podwładnych"
+
+msgid ""
+"Leaves of my direct report subordinates (will be empty if I'm not a "
+"manager)."
+msgstr "Nieobecności moich bezpośrednich podwładnych (pusty, jeśli nie jestem zwierzchnikiem)"
+
+msgid "Calendar of my department"
+msgstr "Kalendarz mojego działu"
+
+msgid "Calendar of employees working in my department"
+msgstr "Kalendarz pracowników z mojego działu"
+
+msgid ""
+"It appears that you don't belong to any department. Please contact your HR "
+"Officer / Manager."
+msgstr "Wygląda na to, że nie należysz do żadnego działu. Skontaktuj się z kierownikiem / pracownikiem działu HR."
+
+msgid "Calendar of the organization"
+msgstr "Kalendarz organizacji"
+
+msgid "Global calendar with a filter on entity"
+msgstr "Kalendarz globalny z filtrem encji"
+
+msgid "Select the entity"
+msgstr "Wybierz encję"
+
+msgid "Select"
+msgstr "Wybierz"
+
+msgid "Include sub-departments"
+msgstr "Zawiera działy podległe"
+
+msgid "Select an entity"
+msgstr "Wybierz encję"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Anuluj"
+
+msgid "Tabular Calendar"
+msgstr "Kalendarz tabularyczny"
+
+msgid "Month"
+msgstr "Miesiąc"
+
+msgid "Year"
+msgstr "Rok"
+
+msgid "Previous"
+msgstr "Poprzedni"
+
+msgid "Next"
+msgstr "Następny"
+
+msgid "Select a list"
+msgstr "Wybierz listę"
+
+msgid "Display leave types"
+msgstr "Wyświetl typy nieobecności"
+
+msgid "Calendar Tabular"
+msgstr "Kalendarz tabularyczny"
+
+msgid "Entity"
+msgstr "Encja"
+
+msgid "Sub-entities"
+msgstr "Encje podległe"
+
+msgid "Mo"
+msgstr "Po"
+
+msgid "Tu"
+msgstr "Wt"
+
+msgid "We"
+msgstr "Śr"
+
+msgid "Th"
+msgstr "Cz"
+
+msgid "Fr"
+msgstr "Pi"
+
+msgid "Sa"
+msgstr "So"
+
+msgid "Su"
+msgstr "Ni"
+
+msgid "Monday"
+msgstr "Poniedziałek"
+
+msgid "Tuesday"
+msgstr "Wtorek"
+
+msgid "Wednesday"
+msgstr "Środa"
+
+msgid "Thursday"
+msgstr "Czwartek"
+
+msgid "Friday"
+msgstr "Piątek"
+
+msgid "Saturday"
+msgstr "Sobota"
+
+msgid "Sunday"
+msgstr "Niedziela"
+
+msgid "All days"
+msgstr "Wszystkie dni"
+
+msgid "January"
+msgstr "Styczeń"
+
+msgid "February"
+msgstr "Luty"
+
+msgid "March"
+msgstr "Marzec"
+
+msgid "April"
+msgstr "Kwiecień"
+
+msgid "May"
+msgstr "Maj"
+
+msgid "June"
+msgstr "Czerwiec"
+
+msgid "July"
+msgstr "Lipiec"
+
+msgid "August"
+msgstr "Sierpień"
+
+msgid "September"
+msgstr "Wrzesień"
+
+msgid "October"
+msgstr "Październik"
+
+msgid "November"
+msgstr "Listopad"
+
+msgid "December"
+msgstr "Grudzień"
+
+msgid "List of contracts"
+msgstr "Lista umów"
+
+msgid "Start period"
+msgstr "Początek okresu"
+
+msgid "End period"
+msgstr "Koniec okresu"
+
+msgid "delete contract"
+msgstr "Usuń umowę"
+
+msgid "edit contract"
+msgstr "Edytuj umowę"
+
+msgid "entitled days"
+msgstr "uprawnione dni"
+
+msgid "days off and weekends"
+msgstr "dni wolne i weekendy"
+
+msgid "Exclude leave types"
+msgstr "Wyklucz typy nieobecności"
+
+msgid "Export this list"
+msgstr "Eksportuj tę listę"
+
+msgid "Create contract"
+msgstr "Utwórz umowę"
+
+msgid "Delete Contract"
+msgstr "Usuń umowę"
+
+msgid "You are about to delete one contract, this procedure is irreversible."
+msgstr "Zamierzasz usunąć umowę, tej akcji nie da się cofnąć."
+
+msgid "Do you want to proceed?"
+msgstr "Czy chcesz kontynuować?"
+
+msgid "Yes"
+msgstr "Tak"
+
+msgid "No"
+msgstr "Nie"
+
+msgid "Exclude leave types from a contract"
+msgstr "Wyklucz typy nieobecności z umowy"
+
+msgid ""
+"You cannot exclude leave types already in use (used at least one time by en "
+"employee attached to the contract) and the default leave type (set on the "
+"contract or into the configuration file)."
+msgstr "Nie możesz wykluczyć typu nieobecności będącego w użyciu (użytego przynajmniej raz przez pracownika przypisanego do umowy) oraz domyślnego typu nieobecności (przypisanego w umowie lub w pliku konfiguracyjnym)"
+
+msgid "Included leave types"
+msgstr "Załącz typy nieobecności"
+
+msgid "Excluded leave types"
+msgstr "Wyklucz typy nieobecności"
+
+msgid "Include this leave type"
+msgstr "Załącz ten typ nieobecności"
+
+msgid "Exclude this leave type"
+msgstr "Wyklucz ten typ nieobecności"
+
+msgid "This leave type is already in use"
+msgstr "Ten typ nieobecności jest już w użyciu"
+
+msgid "You cannot exclude the default leave type"
+msgstr "Nie możesz wykluczyć domyślnego typu nieobecności"
+
+msgid "Edit a contract"
+msgstr "Edytuj umowę"
+
+msgid "Edit contract #"
+msgstr "Edytuj umowę #"
+
+msgid "Month / Start"
+msgstr "Miesiąc / Start"
+
+msgid "Day / Start"
+msgstr "Dzień / Start"
+
+msgid "Month / End"
+msgstr "Miesiąc / Koniec"
+
+msgid "Day / End"
+msgstr "Dzień / Koniec"
+
+msgid "Default leave type"
+msgstr "Domyślny typ nieobecności"
+
+msgid "Update contract"
+msgstr "Aktualizuj umowę"
+
+msgid "The contract has been succesfully updated"
+msgstr "Umowa została zaktualizowana pomyślnie"
+
+msgid "Create a new contract"
+msgstr "Utwórz nową umowę"
+
+msgid "The contract has been succesfully created"
+msgstr "Umowa została pomyślnie utworzona"
+
+msgid "The contract has been succesfully deleted"
+msgstr "Umowa została pomyślnie usunięta"
+
+msgid "Calendar of non working days"
+msgstr "Kalendarz dni niepracujących"
+
+msgid ""
+"Days off and weekends are not configured by default. Click on a day to edit "
+"it individually or use the button \"Series\"."
+msgstr "Dni wolne i weekendy nie są domyślnie skonfigurowane. Kliknij dzień, aby edytować go indywidualnie lub użyj przycisku „Seria”."
+
+msgid "Legend:"
+msgstr "Legenda:"
+
+msgid "All day"
+msgstr "Cały dzień"
+
+msgid "Morning"
+msgstr "ranek"
+
+msgid "Afternoon"
+msgstr "popołudnie"
+
+msgid "Back to contracts"
+msgstr "Wróć do umów"
+
+msgid "Series of non-working days"
+msgstr "Serie dni niepracujących"
+
+msgid "Edit day off"
+msgstr "Edytuj dzień wolny"
+
+msgid "Title"
+msgstr "Tytuł"
+
+msgid "Working day"
+msgstr "Dzień pracujący"
+
+msgid "All day is off"
+msgstr "Cały dzień jest wolny"
+
+msgid "Morning is off"
+msgstr "Poranek jest wolny"
+
+msgid "Afternoon is off"
+msgstr "Popołudnie jest wolne"
+
+msgid "Delete"
+msgstr "Usuń"
+
+msgid "Import iCal"
+msgstr "Importuj iCal"
+
+msgid "URL of non-working days iCal file"
+msgstr "URL dla dni niepracujących, plik iCal"
+
+msgid "Edit a series of days off"
+msgstr "Edytuj serie dni wolnych"
+
+msgid "Mark every"
+msgstr "Zaznacz każdy"
+
+msgid "From"
+msgstr "Od"
+
+msgid "Current"
+msgstr "Bierzący"
+
+msgid "To"
+msgstr "Do"
+
+msgid "As a"
+msgstr "jako"
+
+msgid "Copy"
+msgstr "Kopiuj"
+
+msgid "You must select a contract."
+msgstr "Musisz wybrać umowę"
+
+msgid "Data has been copied successfully."
+msgstr "Dane zostały pomyślnie skopiowane"
+
+msgid "No data available in table"
+msgstr "Brak dostępnych danych w tablicy"
+
+msgid "Showing _START_ to _END_ of _TOTAL_ entries"
+msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
+
+msgid "Showing 0 to 0 of 0 entries"
+msgstr "Wyświetlono 0 do 0 z 0 wpisów"
+
+msgid "(filtered from _MAX_ total entries)"
+msgstr "(filtered from _MAX_ total entries)"
+
+msgid ","
+msgstr ","
+
+msgid "Show _MENU_ entries"
+msgstr "Pokaż _MENU_wpisy"
+
+msgid "Loading..."
+msgstr "Ładowanie..."
+
+msgid "Processing..."
+msgstr "Przetwarzanie..."
+
+msgid "Search:"
+msgstr "Wyszukiwanie:"
+
+msgid "No matching records found"
+msgstr "Nie znaleziono pasujących rekordów"
+
+msgid "First"
+msgstr "Pierwszy"
+
+msgid "Last"
+msgstr "Ostatni"
+
+msgid ": activate to sort column ascending"
+msgstr ": aktywuj, aby posortować rosnąco kolumnę"
+
+msgid ": activate to sort column descending"
+msgstr ": aktywuj, aby posortować malejąco kolumnę"
+
+msgid "Page length"
+msgstr "Długość strony"
+
+msgid "10 rows"
+msgstr "10 wierszy"
+
+msgid "25 rows"
+msgstr "25 wierszy"
+
+msgid "50 rows"
+msgstr "50 wierszy"
+
+msgid "Show all"
+msgstr "Pokaż wszystkie"
+
+msgid "Change columns"
+msgstr "Zmień kolumny"
+
+msgid "Your password has been reset"
+msgstr "Twoje hasło zostało zresetowane"
+
+msgid "Your account has been created"
+msgstr "Twoje konto zostało utworzone"
+
+msgid "Leave Request from"
+msgstr "Zgłoszenie nieobecności od"
+
+msgid "Leave Request"
+msgstr "Zgłoszenie nieobecności"
+
+msgid "Leave Request Cancellation from"
+msgstr "Anulowanie zgłoszenia nieobecności od"
+
+msgid "Leave Request Cancellation"
+msgstr "Anulowanie zgłoszenia nieobecności"
+
+msgid "Your Cancellation Request has been accepted"
+msgstr "Żądanie anulowania zostało zaakceptowane"
+
+msgid "Your Cancellation Request has been rejected"
+msgstr "Żądanie anulowania zostało anulowane"
+
+msgid "Your leave request has been accepted"
+msgstr "Twoje zgłoszenie nieobecności zostało zaakceptowane"
+
+msgid "Your leave request has been rejected"
+msgstr "Twoje zgłoszenie nieobecności zostało odrzucone"
+
+msgid "Your overtime request has been accepted"
+msgstr "Twoje zgłoszenie nadgodzin zostało zaakceptowane"
+
+msgid "Your overtime request has been rejected"
+msgstr "Twoje zgłoszenie nadgodzin zostało odrzucone"
+
+msgid "Overtime Request"
+msgstr "Zgłoszenie nadgodzin"
+
+msgid "Overtime request from"
+msgstr "Zgłoszenie nadgodzin od"
+
+msgid "Entitled days for contract"
+msgstr "Przynależne dni dla umowy"
+
+msgid "Edit"
+msgstr "Edytuj"
+
+msgid "Days"
+msgstr "Dni"
+
+msgid "Leave type"
+msgstr "Typ nieobecności"
+
+msgid "Description"
+msgstr "Opis"
+
+msgid "Add entitled days"
+msgstr "Dodaj przynależne dni"
+
+msgid "\"The field \" + fieldname + \" is mandatory.\""
+msgstr "\"Pole\" +fieldname +\" jest wymagane\"."
+
+msgid "Back to the list of contracts"
+msgstr "Powrót do listy umów"
+
+msgid "Are you sure that you want to delete it?"
+msgstr "Czy na pewno chcesz usunąć?"
+
+msgid "Step"
+msgstr "Krok"
+
+msgid "Entitled days for employee"
+msgstr "Przynależne dni dla pracownika"
+
+msgid "Back to the list of employees"
+msgstr "Powrót do listy pracowników"
+
+msgid "Entitled days to Contract #"
+msgstr "Przynależne dni dla umowy #"
+
+msgid "Yearly leave period: "
+msgstr "Roczny cykl wyjść"
+
+msgid "Entitled days to Employee"
+msgstr "Przynależne dni dla pracownika"
+
+msgid "My overtime requests"
+msgstr "Woje wnioski nadgodzin"
+
+msgid "view"
+msgstr "zobacz"
+
+msgid "edit"
+msgstr "edytuj"
+
+msgid "delete"
+msgstr "usuń"
+
+msgid "Reason"
+msgstr "Przyczyna"
+
+msgid "New request"
+msgstr "Nowy wniosek"
+
+msgid "Delete overtime request"
+msgstr "Usuń zgłoszenie nadgodzin"
+
+msgid ""
+"You are about to delete one overtime request, this procedure is "
+"irreversible."
+msgstr "Usuwasz jedno ze zgłoszeń nadgodzin, tej akcji nie można cofnąć"
+
+msgid "Submit an overtime request"
+msgstr "Zatwierdź wniosek nadgodzin"
+
+msgid "In days or fraction of days (e.g. 0.125 for 1h if you work 8h/day)."
+msgstr "W dniach lub części dni (np. 0,125 = 1 godzinę, jeśli pracujesz 8 godzin)"
+
+msgid "Request overtime"
+msgstr "Wniosek nadgodziny"
+
+msgid "The overtime request has been succesfully created"
+msgstr "Wniosek nadgodzin został utworzony"
+
+msgid ""
+"The overtime request has been succesfully created or updated, but you don't "
+"have a manager."
+msgstr "Wniosek o nadgodziny został pomyślnie utworzony lub zaktualizowany, ale nie masz przełożonego."
+
+msgid "Edit overtime request #"
+msgstr "Edycja wniosku nadgodzin #"
+
+msgid "Edit a overtime request"
+msgstr "Edycja wniosku nadgodzin"
+
+msgid "Update overtime"
+msgstr "Aktualizuj nadgodziny"
+
+msgid "You cannot edit an overtime request already submitted"
+msgstr "Nie można edytować już zaakceptowanego wniosku"
+
+msgid "The overtime request has been succesfully updated"
+msgstr "Wniosek nadgodzin został zaktualizowany"
+
+msgid "The overtime request has been succesfully deleted"
+msgstr "Wniosek nadgodzin został usunięty"
+
+msgid "You can't delete this overtime request"
+msgstr "Nie można usunąć tego wniosku nadgodzin"
+
+msgid "View overtime request #"
+msgstr "Wyświetl wnioski nadgodzin #"
+
+msgid "View overtime request"
+msgstr "Pokaż wnioski nadgodzin"
+
+msgid "Back to list"
+msgstr "Wróć do listy"
+
+msgid "List of overtime worked"
+msgstr "Lista przepracowanych nadgodzin"
+
+msgid "Leave Management System"
+msgstr "System Zarządzania Wyjściami"
+
+msgid "Link to documentation"
+msgstr "Link do dokumentacji"
+
+msgid "Operation (%s) is not granted"
+msgstr "Operacja (%s) jest nie dozwolona"
+
+msgid "Please wait"
+msgstr "Proszę czekać"
+
+msgid ""
+"Internet Explorer 8 and older browser are not supported. Please upgrade to "
+"IE9 or use Firefox, Chrome, etc."
+msgstr "Internet Explorer 8 i starsze nie są wspierane. Prosimy używać IE9 lub innej przeglądarki."
+
+msgid ""
+"Object not found. Maybe that you are trying to access to an object that was "
+"deleted."
+msgstr "Obiekt nie znaleziony. Może próbujesz uzyskać dostęp do obiektu, który został usunięty."
+
+msgid "m/d/Y"
+msgstr "m/d/R"
+
+msgid "mm/dd/yy"
+msgstr "mm/dd/rr"
+
+msgid "MM/DD/YYYY"
+msgstr "MM/DD/RRRR"
+
+msgid "TRUE"
+msgstr "PRAWDA"
+
+msgid "FALSE"
+msgstr "FAŁSZ"
+
+msgid "Go top"
+msgstr "Przejdź do góry"
+
+msgid "&copy; 2014 Jorani Authors"
+msgstr "&copy; 2014 Jorani Authors"
+
+msgid "Requested"
+msgstr "Zawnioskowane"
+
+msgid "Planned"
+msgstr "Planowany"
+
+msgid "Accepted"
+msgstr "Zaakceptowany"
+
+msgid "Rejected"
+msgstr "Odrzucony"
+
+msgid "Cancellation"
+msgstr "Anulowanie"
+
+msgid "Canceled"
+msgstr "Anulowany"
+
+msgid "today"
+msgstr "dziś"
+
+msgid "identifier"
+msgstr "Identyfikator"
+
+msgid "firstname"
+msgstr "Imię"
+
+msgid "lastname"
+msgstr "Nazwisko"
+
+msgid "date hired"
+msgstr "Data zatrudnienia"
+
+msgid "department"
+msgstr "Departament"
+
+msgid "position"
+msgstr "Stanowisko"
+
+msgid "contract"
+msgstr "Umowa"
+
+msgid "day off"
+msgstr "dzień wolny"
+
+msgid "leave"
+msgstr "Wyjście"
+
+msgid "All"
+msgstr "Wszystko"
+
+msgid "copied"
+msgstr "Kopia"
+
+msgid "Do You Authorize %s application?"
+msgstr "Czy Autoryzujesz %s aplikacje?"
+
+msgid "Your session has expired please login again"
+msgstr "Sesja wygasła, Zaloguj się ponownie."
+
+msgid "Unexpected Ajax Error"
+msgstr "Nieoczekiwany błąd Ajax"
+
+msgid "List of employees"
+msgstr "Lista pracowników"
+
+msgid "edit user"
+msgstr "Edycja użytkownika"
+
+msgid "Leaves"
+msgstr "Wyjścia"
+
+msgid "OT Worked"
+msgstr "Przepracowane nadgodziny"
+
+msgid "Leave Balance"
+msgstr "Zestawienie wyjść"
+
+msgid "Create Leave Request"
+msgstr "Utwórz wniosek wyjścia"
+
+msgid "Presence report"
+msgstr "Raport obecności"
+
+msgid "Delegations"
+msgstr "Delegacje"
+
+msgid "Firstname"
+msgstr "Imię"
+
+msgid "Lastname"
+msgstr "Nazwisko"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Manager"
+msgstr "Menadżer"
+
+msgid "Identifier"
+msgstr "Identyfikator"
+
+msgid "Date hired"
+msgstr "Data zatrudnienia"
+
+msgid "Position"
+msgstr "Stanowisko"
+
+msgid "Create"
+msgstr "Utwórz"
+
+msgid "Right-click / taphold on an employee for contextual actions."
+msgstr "Kliknij prawym przyciskiem myszy / przytrzymaj na pracowniku w celu podjęcia działań kontekstowych."
+
+msgid "Active"
+msgstr "Aktywny"
+
+msgid "Inactive"
+msgstr "Nieaktywny"
+
+msgid "Selection"
+msgstr "Wybór"
+
+msgid "Select all"
+msgstr "Wybierz wszystko"
+
+msgid "Deselect all"
+msgstr "Odznacz wszystko"
+
+msgid "Select Manager"
+msgstr "Wybierz Menadżera"
+
+msgid "Select Contract"
+msgstr "Wybierz umowę"
+
+msgid "Select Entity"
+msgstr "Wybierz jednostkę"
+
+msgid "Submit a leave request"
+msgstr "Zatwierdź wniosek wyjścia"
+
+msgid "Select the manager"
+msgstr "Wybierz kierownika"
+
+msgid "You must select at least one employee into the table"
+msgstr "Należy wybrać co najmniej jednego pracownika w tabeli"
+
+msgid "List of requested leaves"
+msgstr "Lista wniosków wyjść"
+
+msgid "List of leaves for employee #"
+msgstr "Lista wyjść pracownika #"
+
+msgid "accept"
+msgstr "Akceptować"
+
+msgid "reject"
+msgstr "Odmówić"
+
+msgid "show history"
+msgstr "Pokaż historię"
+
+msgid "Delete leave request"
+msgstr "Usuń wniosek wyjścia"
+
+msgid ""
+"You are about to delete one leave request, this procedure is irreversible."
+msgstr "Zamierzasz usunąć jeden wniosek wyjścia, ta procedura jest nieodwracalna."
+
+msgid "List of deleted leave requests"
+msgstr "Lista usuniętych wniosków wyjść"
+
+msgid "You are exceeding your entitled days"
+msgstr "Przekroczyłeś swoje przynależne dni"
+
+msgid "You have requested another leave request within the same dates."
+msgstr "Złożyłeś prośbę o urlop w dniach gdy już masz urlop."
+
+msgid "Cause (optional)"
+msgstr "Powód (opcjonalnie)"
+
+msgid "Request leave"
+msgstr "Wniosek wyjścia"
+
+msgid "The leave request has been succesfully created"
+msgstr "Wniosek o wyjście został utworzony"
+
+msgid ""
+"The leave request has been succesfully created or updated, but you don't "
+"have a manager."
+msgstr "Wniosek o wyjście zostało pomyślnie utworzone lub zaktualizowane, ale nie masz przełożonego."
+
+msgid "%s non-working days in the period"
+msgstr "%sdni niepracujących w okresie"
+
+msgid "Your leave request matches with a non-working day."
+msgstr "Wniosek wyjścia pasuje do dnia wolnego od pracy."
+
+msgid ""
+"It appears that you have no contract. Please contact your HR Officer / "
+"Manager."
+msgstr "Nie masz przydzielonego kontraktu, Skontaktuj się z Kadrami/Administratorem"
+
+msgid ""
+"You can't create a leave request for two yearly leave periods. Please create"
+" two different leave requests."
+msgstr "Nie możesz stworzyć wniosku o dwu letni urlop. Prosimy o stworzenie dwóch oddzielnych wniosków."
+
+msgid "List of overtime requests"
+msgstr "Lista wniosków wyjść"
+
+msgid "List of overtime requests for employee #"
+msgstr "Lista wniosków nadgodzin dla pracownika #"
+
+msgid "Leave balance for user #"
+msgstr "Bilans wyjść dla użytkownika #"
+
+msgid "Available"
+msgstr "Dostępne"
+
+msgid "Taken"
+msgstr "Wzięte"
+
+msgid "Entitled"
+msgstr "Uprawnienia"
+
+msgid "This employee has no contract."
+msgstr "Ten pracownik nie ma umowy"
+
+msgid "Date of report"
+msgstr "Data raportu"
+
+msgid ""
+"By default this report shows the values for the last month. Please note that"
+" the list of leaves shows only the accepted leave requests."
+msgstr "Domyślnie ten raport pokazuje wartości za ostatni miesiąc. Należy pamiętać, że lista wyświetla tylko listę zaakceptowanych wniosków urlopowych."
+
+msgid "Execute"
+msgstr "Wykonaj"
+
+msgid "Number of days"
+msgstr "Liczba dni"
+
+msgid "Number of working days"
+msgstr "Liczba dni pracujących"
+
+msgid "Number of non-working days"
+msgstr "Liczba dni nie pracujących"
+
+msgid "Duration of leaves"
+msgstr "Łączny czas wyjść"
+
+msgid "Duration of presence"
+msgstr "Czas obecności"
+
+msgid "Overlapping detected"
+msgstr "Wykryto duplikat"
+
+msgid "The employee has no contract"
+msgstr "Pracownik nie ma umowy"
+
+msgid "Please check"
+msgstr "Proszę sprawdzić"
+
+msgid "List of leaves in the month"
+msgstr "Lista wyjść w miesiącu"
+
+msgid "My summary"
+msgstr "Moje podsumowanie"
+
+msgid "Overtime details (added to compensate leaves)"
+msgstr "Szczegóły nadgodzin (dodane do skompensowanych wyjść )"
+
+msgid "Catch up for"
+msgstr "Nadrabianie zaległości"
+
+msgid ""
+"No entitled or taken days for this period. Please contact your HR Officer / "
+"Manager."
+msgstr "Brak przynależnych dni dla podanego okresu. Skontaktuj się z Kadrami / Administratorem"
+
+msgid "My leave requests"
+msgstr "Moje wnioski wyjść"
+
+msgid "cancel"
+msgstr "Anuluj"
+
+msgid "Last change"
+msgstr "Ostatnia zmiana"
+
+msgid "Changed Date"
+msgstr "Data zmiany"
+
+msgid "Change Type"
+msgstr "Zmiana typu"
+
+msgid "Changed By"
+msgstr "Zmieniono przez"
+
+msgid "The leave request has been successfully created"
+msgstr "Wniosek wyjścia zostawał utworzony"
+
+msgid ""
+"The leave request has been successfully created or updated, but you don't "
+"have a manager."
+msgstr "Wniosek o wyjście zostało pomyślnie utworzone lub zaktualizowane, ale nie masz menedżera."
+
+msgid "Edit a leave request"
+msgstr "Edytuj wniosek wyjścia #"
+
+msgid "Edit leave request #"
+msgstr "Edytuj wniosek wyjścia"
+
+msgid "Update leave"
+msgstr "Aktualizuj wyjście"
+
+msgid "You cannot edit a leave request already submitted"
+msgstr "Nie można edytować wniosku wyjścia już zaakceptowanego."
+
+msgid "The leave request has been successfully updated"
+msgstr "Wniosek o wyjście został zaktualizowany"
+
+msgid "You can't cancel this leave request"
+msgstr "Nie można anulować wniosku o wyjście"
+
+msgid "The cancellation request has been successfully sent"
+msgstr "Żądanie anulowania zostało wysłane"
+
+msgid "The leave request has been successfully cancelled"
+msgstr "Wniosek o wyjście został anulowany"
+
+msgid "An error occured while trying to accept the cancellation"
+msgstr "Wystąpił błąd przy próbie akceptowania żądania anulowania"
+
+msgid "The leave request has now its original status of Accepted"
+msgstr "Wniosek wyjścia ma teraz oryginalny status zaakceptowanego"
+
+msgid "An error occured while trying to reject the cancellation"
+msgstr "Wystąpił błąd podczas próby odrzucenia anulowania"
+
+msgid "You can't delete this leave request"
+msgstr "Nie można usunąć wniosku o wyjście"
+
+msgid "The leave request has been successfully deleted"
+msgstr "Wniosek o wyjście został usunięty"
+
+msgid "View leave request #"
+msgstr "Wyświetl wnioski wyjść #"
+
+msgid "View a leave request"
+msgstr "Wyświetl wnioski wyjść"
+
+msgid "List of leaves"
+msgstr "Lista wyjść"
+
+msgid "Morning/Afternoon"
+msgstr "Poranek/Popołudnie"
+
+msgid "Send a reminder"
+msgstr "Wyślij przypomnienie"
+
+msgid "The reminder email was sent to the manager"
+msgstr "Przypomnienie zostało wysłane do Menadżera"
+
+msgid "Comments"
+msgstr "Komentarze"
+
+msgid "New comment"
+msgstr "Nowy komentarz"
+
+msgid "Send comment"
+msgstr "Wyślij komentarz"
+
+msgid " says"
+msgstr "mówi"
+
+msgid "The status of the leave have been changed to "
+msgstr "Status wyjścia został zmieniony na :"
+
+msgid "Leave types"
+msgstr "Typy wyjść"
+
+msgid ""
+"Leave type #0 is a system type reserved for overtime management. You should "
+"not use it for other requests."
+msgstr "Typ wyjścia # 0 to typ systemu zarezerwowany do zarządzania w godzinach nadliczbowych. Nie należy go używać do innych żądań."
+
+msgid ""
+"Leave type #0 is a system type reserved for overtime management. Are you "
+"sure that you want to rename it?"
+msgstr "Typ wyjścia # 0 to typ systemu zarezerwowany do zarządzania w godzinach nadliczbowych. Czy chcesz zmienić jego nazwę."
+
+msgid "Acronym"
+msgstr "Skrót"
+
+msgid "Deduct non working days"
+msgstr "Podaj dni niepracujące"
+
+msgid "Create a new type"
+msgstr "Utwórz nowy typ"
+
+msgid "No leave type found into the database."
+msgstr "Nie znaleziono typu wyjścia w bazie danych"
+
+msgid "This leave type already exists."
+msgstr "Podany typ wyjścia już istnieje"
+
+msgid "Add a leave type"
+msgstr "Dodaj typ wyjścia"
+
+msgid "Suggest an acronym"
+msgstr "Zasugeruj skrót"
+
+msgid "The leave type has been succesfully created."
+msgstr "Typ wyjścia został utworzony."
+
+msgid "Edit a Leave type"
+msgstr "Edytuj typ wyjścia"
+
+msgid "Update"
+msgstr "Aktualizuj"
+
+msgid "The leave type has been succesfully updated."
+msgstr "Typ wyjścia został zaktualizowany"
+
+msgid "Delete Leave Type"
+msgstr "Usuń typ wyjścia"
+
+msgid ""
+"You are about to delete one leave type, this procedure is irreversible."
+msgstr "Zamierzasz usunąć jeden typ wyjścia, ta procedura jest nieodwracalna."
+
+msgid "The leave type has been succesfully deleted."
+msgstr "Typ wyjścia został usunięty."
+
+msgid "You cannot delete a system leave type."
+msgstr "Nie można usunąć systemowego typu wyjścia"
+
+msgid "You cannot delete a leave type that is used."
+msgstr "Nie można usunąć używanego typu wyjścia"
+
+msgid "Change password"
+msgstr "Zmiana hasła"
+
+msgid "Welcome"
+msgstr "Witamy"
+
+msgid "Logout"
+msgstr "Wylogowanie"
+
+msgid "View my personal information"
+msgstr "Moje dane"
+
+msgid "reset password"
+msgstr "Reset hasła"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "List of users"
+msgstr "Lista użytkowników"
+
+msgid "Create user"
+msgstr "Dodanie użytkownika"
+
+msgid "Settings"
+msgstr "Ustawienia"
+
+msgid "Diagnostic"
+msgstr "Diagnoza"
+
+msgid "OAuth Clients"
+msgstr "OAuth Klienci"
+
+msgid "HR"
+msgstr "Kadry"
+
+msgid "Employees"
+msgstr "Pracownicy"
+
+msgid "Organization"
+msgstr "Organizacja"
+
+msgid "List of positions"
+msgstr "Lista stanowisk"
+
+msgid "List of types"
+msgstr "Lista typów"
+
+msgid "Reports"
+msgstr "Raporty"
+
+msgid "Leave balance"
+msgstr "Bilans wyjść"
+
+msgid "Leave requests"
+msgstr "Wnioski wyjść"
+
+msgid "Approval"
+msgstr "Do zatwierdzenia"
+
+msgid "My subordinates"
+msgstr "Moi podwładni"
+
+msgid "Requests"
+msgstr "Wnioski"
+
+msgid "List of OT Worked"
+msgstr "Lista przepracowanych nadgodzin"
+
+msgid "Submit an OT Request"
+msgstr "Zatwierdź wniosek nadgodzin"
+
+msgid "Counters"
+msgstr "Liczniki"
+
+msgid "List of leave requests"
+msgstr "Lista wniosków wyjść"
+
+msgid "Request a leave"
+msgstr "Wniosek o wyjście"
+
+msgid "Calendars"
+msgstr "Kalendarze"
+
+msgid "My workmates"
+msgstr "Współpracownicy"
+
+msgid "Department"
+msgstr "Departament"
+
+msgid "Global"
+msgstr "Globalnie"
+
+msgid "Tabular"
+msgstr "tabelaryczny"
+
+msgid "Search for an entity"
+msgstr "Wyszukaj jednostkę"
+
+msgid "Search"
+msgstr "Wyszukaj"
+
+msgid "Employees attached to entity"
+msgstr "Pracownicy dodani do uprawnień."
+
+msgid "Attach an Employee"
+msgstr "Załącz pracownika"
+
+msgid "Detach an Employee"
+msgstr "Odłącz pracownika"
+
+msgid "Supervisor"
+msgstr "Opiekun"
+
+msgid ""
+"If you select a supervisor, he will receive a copy of accepted and rejected "
+"leave requests submitted by employees of this entity."
+msgstr "Jeśli wybierzesz przełożonego, otrzyma kopię zaakceptowanych i odrzuconych wniosków urlopowych składanych przez pracowników tego podmiotu."
+
+msgid "Select a Supervisor"
+msgstr "Wybierz Opiekuna"
+
+msgid "Delete Entity"
+msgstr "Usuń jednostkę"
+
+msgid "You are about to delete one entity, this procedure is irreversible."
+msgstr "Zamierzasz usunąć jedno z uprawnień, ta procedura jest nieodwracalna."
+
+msgid "Add an Employee"
+msgstr "Dodaj pracownika"
+
+msgid "An error occured"
+msgstr "Wystąpił błąd"
+
+msgid "Name of the entity"
+msgstr "Nazwa jednostki"
+
+msgid "Please select one entity in the organization (treeview on the right)."
+msgstr "Proszę wybrać jeden podmiot w organizacji (treeview po prawej)."
+
+msgid ""
+"Please select one employee in the table of users belonging to the selected "
+"entity."
+msgstr "Proszę wybrać jednego pracownika w tabeli użytkowników należących do wybranego podmiotu."
+
+msgid "You cannot delete the root entity."
+msgstr "Nie możesz usuwać podmiotu głównego."
+
+msgid "Select a list of employees"
+msgstr "Wybierz listę pracowników"
+
+msgid "Rename a list"
+msgstr "Zmień nazwę listy"
+
+msgid "Add a new list"
+msgstr "Dodaj liste"
+
+msgid "Delete a list"
+msgstr "Usuń listę"
+
+msgid "Add employees"
+msgstr "Dodaj pracownika"
+
+msgid "Remove selected employees"
+msgstr "Usuń wybranego pracownika"
+
+msgid "Name of the list"
+msgstr "Nazwa listy"
+
+msgid "Are you sure that you want to delete this list?"
+msgstr "Czy na pewno chcesz usunąć listę ?"
+
+msgid "New name of the list"
+msgstr "Nowa nazwa listy"
+
+msgid "Overtime Requests submitted to me"
+msgstr "Wnioski nadgodzin przydzielone do mnie"
+
+msgid ""
+"This screen lists the overtime requests submitted to you. If you are not a "
+"manager, this list will always be empty."
+msgstr "Ten ekran zawiera listę nadesłanych wniosków nadgodzin. Jeśli nie jesteś menedżerem, ta lista zawsze będzie pusta."
+
+msgid "Fullname"
+msgstr "Pełne imię"
+
+msgid "All requests"
+msgstr "Wszystkie zgłoszenia"
+
+msgid "Pending requests "
+msgstr "Oczekujące zgłoszenia"
+
+msgid ""
+"You are not the line manager of this employee. You cannot reject this "
+"overtime request."
+msgstr "Nie jesteś przełożonym tego pracownika. Nie możesz odrzucić tego żądania nadgodzin."
+
+msgid "The overtime request has been successfully rejected."
+msgstr "Wniosek nadgodzin został odrzucony"
+
+msgid ""
+"You are not the line manager of this employee. You cannot accept this "
+"overtime request."
+msgstr "Nie jesteś przełożonym tego pracownika. Nie możesz zaakceptować tego żądania nadgodzin."
+
+msgid "The overtime request has been successfully accepted."
+msgstr "Wniosek nadgodzin został zaakceptowany"
+
+msgid "Create position"
+msgstr "Utworzenie stanowiska"
+
+msgid "Delete Position"
+msgstr "Usunięcie stanowiska"
+
+msgid "You are about to delete one position, this procedure is irreversible."
+msgstr "Zamierzasz usunąć stanowisko , ta procedura jest nieodwracalna."
+
+msgid "Create a new position"
+msgstr "Nowe stanowisko"
+
+msgid "The position has been succesfully created."
+msgstr "Stanowisko zostało utworzone"
+
+msgid "Edit position #"
+msgstr "Edycja stanowiska #"
+
+msgid "Update position"
+msgstr "Aktualizacja stanowisko"
+
+msgid "The position has been succesfully updated."
+msgstr "Stanowisko zostało zaktualizowane"
+
+msgid "The position has been succesfully deleted."
+msgstr "Stanowisko zostało usunięte"
+
+msgid "List of reports"
+msgstr "Lista raportów"
+
+msgid "Report"
+msgstr "Raport"
+
+msgid "Back to list of reports"
+msgstr "Wróć do listy raportów"
+
+msgid "List of Report"
+msgstr "Lista raportów"
+
+msgid "Balance of leaves"
+msgstr "Bilans wyjść"
+
+msgid "Launch"
+msgstr "Uruchom"
+
+msgid "Leave Requests submitted to me"
+msgstr "Wnioski wyjścia przydzielone do mnie"
+
+msgid ""
+"This screen lists the leave requests submitted to you. If you are not a "
+"manager, this list will always be empty."
+msgstr "Ten ekran zawiera listę wniosków wyjść przesłanych do Ciebie. Jeśli nie jesteś przełożonym, ta lista zawsze będzie pusta."
+
+msgid "List of my subordinates"
+msgstr "Lista moich podwładnych"
+
+msgid ""
+"This screen lists your direct report subordinates. If you are not a manager,"
+" this list will always be empty."
+msgstr "Ten ekran zawiera listę Twoich podwładnych w raporcie bezpośrednim. Jeśli nie jesteś przełożonym, ta lista zawsze będzie pusta."
+
+msgid "Create a leave request in behalf of this subordinate"
+msgstr "Utwórz wniosek wyjścia w imieniu podwładnego"
+
+msgid "Your are not the manager of this employee."
+msgstr "Nie jesteś przełożonym tego pracownika"
+
+msgid "List of subordinates"
+msgstr "Lista podwładnych"
+
+msgid ""
+"You are not the line manager of this employee. You cannot accept this leave "
+"request."
+msgstr "Nie jesteś przełożonym tego pracownika. Nie możesz zaakceptować jego wniosku o urlop."
+
+msgid "The leave request has been successfully accepted."
+msgstr "Zgłoszenie nieobecności zostało poprawnie zaakceptowane."
+
+msgid ""
+"You are not the line manager of this employee. You cannot reject this leave "
+"request."
+msgstr "Nie jesteś przełożonym tego pracownika. Nie możesz odrzucić jego wniosek o urlop."
+
+msgid "The leave request has been successfully rejected."
+msgstr "Zgłoszenie nieobecności zostało poprawnie odrzucone."
+
+msgid "List of delegations"
+msgstr "Lista delegacji"
+
+msgid ""
+"This is the list of employees who can accept or reject a request in your "
+"behalf."
+msgstr "To jest lista pracowników którzy mogą akceptować lub odrzucać wnioski w twoim imieniu."
+
+msgid "Revoke"
+msgstr "Odwołać"
+
+msgid "Add a delegate"
+msgstr "Dodaj delegata"
+
+msgid "Are you sure that you want to revoke this delegation?"
+msgstr "Czy jesteś pewny że chcesz odwołać tę delegacje?"
+
+msgid "Leave balance (subordinates)"
+msgstr "Bilans wyjść (podwładni)"
+
+msgid ""
+"Leave balance of my direct report subordinates. If you are not a manager, "
+"this list will always be empty."
+msgstr "Bilans wyjść moich podwładnych w raporcie bezpośrednim. Jeśli nie jesteś przełożonym, ta lista zawsze będzie pusta."
+
+msgid "Send a new comment (optional)"
+msgstr "Wyślij nowy komentarz (opcjonalnie)"
+
+msgid "Reject"
+msgstr "Odrzuć"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Language"
+msgstr "Język"
+
+msgid "Password"
+msgstr "Hasło"
+
+msgid "Send me my password"
+msgstr "Wyślij mi moje hasło."
+
+msgid "Are you sure that you want to reset your password?"
+msgstr "Czy jesteś pewien, że chcesz zresetować hasło ?"
+
+msgid "Please fill the login field"
+msgstr "Proszę, wypełnij pole loginu."
+
+msgid "Unknown login. Please contact your HR Officer / Manager."
+msgstr "Nieznany login. Proszę skontaktuj się z działem HR."
+
+msgid "The password has been sent to your e-mail adress."
+msgstr "Hasło zostało wysłane na Twój adres e-mail."
+
+msgid "Invalid login id or password"
+msgstr "Nieprawidłowy login lub hasło"
+
+msgid "The language has been succesfully set to "
+msgstr "Język został pomyślnie ustawiona na"
+
+msgid "Your account is disabled. Please contact your HR Officer / Manager."
+msgstr "Twoje konto jest wyłączone. Skontaktuj się z przełożonym"
+
+msgid "Rename"
+msgstr "Zmień nazwę"
+
+msgid "Remove"
+msgstr "Usuń"
+
+msgid "Cut"
+msgstr "Wytnij"
+
+msgid "Paste"
+msgstr "Wklej"
+
+msgid "edit user details"
+msgstr "edytuj profil użytkownika"
+
+msgid "delete user"
+msgstr "usuń użytkownika"
+
+msgid "Role"
+msgstr "Rola"
+
+msgid "Create a new user"
+msgstr "Utwórz nowego użytkownika"
+
+msgid "Import users"
+msgstr "Importuj użytkowników"
+
+msgid "Delete User"
+msgstr "Usuń użytkownika"
+
+msgid "You are about to delete one user, this procedure is irreversible."
+msgstr "Zamierzasz usunąć jednego użytkownika, tej akcji nie da się cofnąć."
+
+msgid "Import Users"
+msgstr "Importuj użytkowników"
+
+msgid "Filename"
+msgstr "Nazwa pliku"
+
+msgid "My personal information"
+msgstr "Moje dane osobowe"
+
+msgid "Date hired/started"
+msgstr "Data zatrudnienia"
+
+msgid "Internal/Company Identifier"
+msgstr "Wewnętrzny/firmowy identyfikator"
+
+msgid "Edit user #"
+msgstr "Edycja użytkownika #"
+
+msgid "Edit user"
+msgstr "Edytuj użytkownika"
+
+msgid "No line manager."
+msgstr "Brak wyznaczonego przełożonego"
+
+msgid "If a user has no manager (itself), it can validate its leave requests."
+msgstr "Jeżeli użytkownik nie ma opiekuna, może weryfikować własne wnioski urlopowe."
+
+msgid "Self"
+msgstr "Ja"
+
+msgid "Timezone"
+msgstr "Strefa czasowa"
+
+msgid "LDAP Path"
+msgstr "Ścieżka LDAP"
+
+msgid "Select a position"
+msgstr "Wybierz stanowisko"
+
+msgid "Update user"
+msgstr "Aktualizuj użytkownika"
+
+msgid "The user has been succesfully updated"
+msgstr "Użytkownik został pomyślnie zaktualizowany"
+
+msgid "The user has been succesfully deleted"
+msgstr "Użytkownik został pomyślnie usunięty"
+
+msgid "The password has been succesfully changed"
+msgstr "Hasło zostało pomyślnie zmienione"
+
+msgid "Generate password"
+msgstr "Wygeneruj hasło"
+
+msgid ""
+"It is recommended to select a contract. Do you want to create the user "
+"without a contract?"
+msgstr "Zaleca się wybrać umowę. Czy chcesz utworzyć użytkownika bez przypisania umowy ?"
+
+msgid "The user has been succesfully created"
+msgstr "Użytkownik został poprawnie utworzony"
+
+msgid "Username already exists."
+msgstr "Użytkownik już istnieje"
+
+msgid "This username is not available."
+msgstr "Ta nazwa użytkownika nie jest dostępna."
+
+msgid "Reset"
+msgstr "Wyczyść"

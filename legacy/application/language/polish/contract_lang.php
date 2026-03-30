@@ -1,0 +1,100 @@
+<?php
+/**
+ * Translation file
+ * 
+ * @license    http://opensource.org/licenses/MIT MIT
+ * @since      1.0.0
+ * @author     Transifex users
+ */
+
+$lang['contract_index_title'] = 'Lista umów';
+$lang['contract_index_thead_id'] = 'ID';
+$lang['contract_index_thead_name'] = 'Imię';
+$lang['contract_index_thead_start'] = 'Początek okresu';
+$lang['contract_index_thead_end'] = 'Koniec okresu';
+$lang['contract_index_tip_delete'] = 'Usuń umowę';
+$lang['contract_index_tip_edit'] = 'Edytuj umowę';
+$lang['contract_index_tip_entitled'] = 'uprawnione dni';
+$lang['contract_index_tip_dayoffs'] = 'dni wolne i weekendy';
+$lang['contract_index_tip_exclude_types'] = 'Wyklucz typy nieobecności';
+$lang['contract_index_button_export'] = 'Eksportuj tę listę';
+$lang['contract_index_button_create'] = 'Utwórz umowę';
+$lang['contract_index_popup_delete_title'] = 'Usuń umowę';
+$lang['contract_index_popup_delete_description'] = 'Zamierzasz usunąć umowę, tej akcji nie da się cofnąć.';
+$lang['contract_index_popup_delete_confirm'] = 'Czy chcesz kontynuować?';
+$lang['contract_index_popup_delete_button_yes'] = 'Tak';
+$lang['contract_index_popup_delete_button_no'] = 'Nie';
+$lang['contract_index_popup_entitled_title'] = 'uprawnione dni';
+$lang['contract_index_popup_entitled_button_cancel'] = 'Anuluj';
+$lang['contract_index_popup_entitled_button_close'] = 'Zamknij';
+$lang['contract_exclude_title'] = 'Wyklucz typy nieobecności z umowy';
+$lang['contract_exclude_description'] = 'Nie możesz wykluczyć typu nieobecności będącego w użyciu (użytego przynajmniej raz przez pracownika przypisanego do umowy) oraz domyślnego typu nieobecności (przypisanego w umowie lub w pliku konfiguracyjnym)';
+$lang['contract_exclude_title_included'] = 'Załącz typy nieobecności';
+$lang['contract_exclude_title_excluded'] = 'Wyklucz typy nieobecności';
+$lang['contract_exclude_tip_include_type'] = 'Załącz ten typ nieobecności';
+$lang['contract_exclude_tip_exclude_type'] = 'Wyklucz ten typ nieobecności';
+$lang['contract_exclude_tip_already_used'] = 'Ten typ nieobecności jest już w użyciu';
+$lang['contract_exclude_tip_default_type'] = 'Nie możesz wykluczyć domyślnego typu nieobecności';
+$lang['contract_edit_title'] = 'Edytuj umowę';
+$lang['contract_edit_description'] = 'Edytuj umowę #';
+$lang['contract_edit_field_name'] = 'Imię';
+$lang['contract_edit_field_start_month'] = 'Miesiąc / Start';
+$lang['contract_edit_field_start_day'] = 'Dzień / Start';
+$lang['contract_edit_field_end_month'] = 'Miesiąc / Koniec';
+$lang['contract_edit_field_end_day'] = 'Dzień / Koniec';
+$lang['contract_edit_default_leave_type'] = 'Domyślny typ nieobecności';
+$lang['contract_edit_button_update'] = 'Aktualizuj umowę';
+$lang['contract_edit_button_cancel'] = 'Anuluj';
+$lang['contract_edit_msg_success'] = 'Umowa została zaktualizowana pomyślnie';
+$lang['contract_create_title'] = 'Utwórz nową umowę';
+$lang['contract_create_field_name'] = 'Imię';
+$lang['contract_create_field_start_month'] = 'Miesiąc / Start';
+$lang['contract_create_field_start_day'] = 'Dzień / Start';
+$lang['contract_create_field_end_month'] = 'Miesiąc / Koniec';
+$lang['contract_create_field_end_day'] = 'Dzień / Koniec';
+$lang['contract_create_default_leave_type'] = 'Domyślny typ nieobecności';
+$lang['contract_create_button_create'] = 'Utwórz umowę';
+$lang['contract_create_button_cancel'] = 'Anuluj';
+$lang['contract_create_msg_success'] = 'Umowa została pomyślnie utworzona';
+$lang['contract_delete_msg_success'] = 'Umowa została pomyślnie usunięta';
+$lang['contract_export_title'] = 'Lista umów';
+$lang['contract_export_thead_id'] = 'ID';
+$lang['contract_export_thead_name'] = 'Imię';
+$lang['contract_export_thead_start'] = 'Początek okresu';
+$lang['contract_export_thead_end'] = 'Koniec okresu';
+$lang['contract_calendar_title'] = 'Kalendarz dni niepracujących';
+$lang['contract_calendar_description'] = 'Days off and weekends are not configured by default. Click on a day to edit it individually or use the button "Series".';
+$lang['contract_calendar_legend_title'] = 'Legenda:';
+$lang['contract_calendar_legend_allday'] = 'Cały dzień';
+$lang['contract_calendar_legend_morning'] = 'ranek';
+$lang['contract_calendar_legend_afternoon'] = 'popołudnie';
+$lang['contract_calendar_button_back'] = 'Wróć do umów';
+$lang['contract_calendar_button_series'] = 'Serie dni niepracujących';
+$lang['contract_calendar_popup_dayoff_title'] = 'Edytuj dzień wolny';
+$lang['contract_calendar_popup_dayoff_field_title'] = 'Tytuł';
+$lang['contract_calendar_popup_dayoff_field_type'] = 'Typ';
+$lang['contract_calendar_popup_dayoff_type_working'] = 'Dzień pracujący';
+$lang['contract_calendar_popup_dayoff_type_off'] = 'Cały dzień jest wolny';
+$lang['contract_calendar_popup_dayoff_type_morning'] = 'Poranek jest wolny';
+$lang['contract_calendar_popup_dayoff_type_afternoon'] = 'Popołudnie jest wolne';
+$lang['contract_calendar_popup_dayoff_button_delete'] = 'Usuń';
+$lang['contract_calendar_popup_dayoff_button_ok'] = 'OK';
+$lang['contract_calendar_popup_dayoff_button_cancel'] = 'Anuluj';
+$lang['contract_calendar_button_import'] = 'Importuj iCal';
+$lang['contract_calendar_prompt_import'] = 'URL dla dni niepracujących, plik iCal';
+$lang['contract_calendar_popup_series_title'] = 'Edytuj serie dni wolnych';
+$lang['contract_calendar_popup_series_field_occurences'] = 'Zaznacz każdy';
+$lang['contract_calendar_popup_series_field_from'] = 'Od';
+$lang['contract_calendar_popup_series_button_current'] = 'Bierzący';
+$lang['contract_calendar_popup_series_field_to'] = 'Do';
+$lang['contract_calendar_popup_series_field_as'] = 'jako';
+$lang['contract_calendar_popup_series_field_as_working'] = 'Dzień pracujący';
+$lang['contract_calendar_popup_series_field_as_off'] = 'Cały dzień jest wolny';
+$lang['contract_calendar_popup_series_field_as_morning'] = 'Poranek jest wolny';
+$lang['contract_calendar_popup_series_field_as_afternnon'] = 'Popołudnie jest wolne';
+$lang['contract_calendar_popup_series_field_title'] = 'Tytuł';
+$lang['contract_calendar_popup_series_button_ok'] = 'OK';
+$lang['contract_calendar_popup_series_button_cancel'] = 'Anuluj';
+$lang['contract_calendar_button_copy'] = 'Kopiuj';
+$lang['contract_calendar_copy_destination_js_msg'] = 'Musisz wybrać umowę';
+$lang['contract_calendar_copy_msg_success'] = 'Dane zostały pomyślnie skopiowane';

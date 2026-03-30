@@ -3,8 +3,7 @@
  * Email template.You can change the content of this template
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.1.0
+ * @since   1.0.5
  */
 ?>
 <html lang="pl">
@@ -59,7 +58,7 @@
             <td>{Cause}</td>
         </tr>
         <tr>
-            <td>Last comment &nbsp;</td>
+            <td>Poprzedni komentarz &nbsp;</td>
             <td>{Comments}</td>
         </tr>
     </table>

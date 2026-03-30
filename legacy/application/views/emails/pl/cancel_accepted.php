@@ -3,11 +3,10 @@
  * Email template.You can change the content of this template
  * 
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
- * @since      0.6.1
+ * @since      1.0.5
  */
 ?>
-<html lang="en">
+<html lang="pl">
 
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -38,33 +37,33 @@
 
 <body>
     <h3>{Title}</h3>
-    Dear {Firstname} {Lastname}, <br />
+    Drogi / Droga {Firstname} {Lastname}, <br />
     <br />
-    <p>Your cancellation request was accepted and the leave request has been cancelled.</p>
+    <p>Twoja prośba o anulowanie została zaakceptowana, a wniosek o wyjście został anulowany.</p>
     <table border="0">
         <tr>
-            <td>From &nbsp;</td>
+            <td>Od &nbsp;</td>
             <td>{StartDate}&nbsp;({StartDateType})</td>
         </tr>
         <tr>
-            <td>To &nbsp;</td>
+            <td>Do &nbsp;</td>
             <td>{EndDate}&nbsp;({EndDateType})</td>
         </tr>
         <tr>
-            <td>Type &nbsp;</td>
+            <td>Typ &nbsp;</td>
             <td>{Type}</td>
         </tr>
         <tr>
-            <td>Reason &nbsp;</td>
+            <td>Przyczyna &nbsp;</td>
             <td>{Cause}</td>
         </tr>
         <tr>
-            <td>Last comment &nbsp;</td>
+            <td>Poprzedni komentarz &nbsp;</td>
             <td>{Comments}</td>
         </tr>
     </table>
     <hr>
-    <h5>*** This is an automatically generated message, please do not reply to this message ***</h5>
+    <h5>*** Ta wiadomość została wygenerowana automatycznie, prosimy nie odpowiadać na tę wiadomość ***</h5>
 </body>
 
 </html>
