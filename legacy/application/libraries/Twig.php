@@ -55,8 +55,11 @@ class Twig
         $view = (strpos($view, '.twig') === false) ? $view . '.twig' : $view;
         $data['app'] = [
             'user' => $this->CI->session->userdata('user'),
+            'is_admin' => $this->CI->session->userdata('is_admin'),
+            'is_hr' => $this->CI->session->userdata('is_hr'),
+            'is_manager' => $this->CI->session->userdata('is_manager'),
             'request' => $this->CI->input->get(),
-            'flash' => $this->CI->session->flashdata(),
+            'flashes' => $this->CI->session->flashdata(),
             'environment' => ENVIRONMENT
         ];
         return $this->twig->render($view, $data);

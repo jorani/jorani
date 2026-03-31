@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+{#
+ * Base layout template for Jorani — combines header, flash messages, navbar and footer.
+ *
+ * Variables expected:
+ *   - language_code  : string  — BCP-47 language code (e.g. "en", "fr")
+ *   - title          : string  — Page title (displayed in <title> tag)
+ *   - base_url       : string  — Application base URL (trailing slash)
+ *   - fullname       : string  — Authenticated user's full name
+ *   - user_id        : int     — Authenticated user's ID
+ *   - is_admin       : bool    — Whether the current user is an administrator
+ *   - is_hr          : bool    — Whether the current user is an HR officer
+ *   - is_manager     : bool    — Whether the current user is a manager
+ *   - requests_count          : int — Pending leave requests count (for manager badge)
+ *   - requested_leaves_count  : int — Pending leaves to validate count
+ *   - requested_extra_count   : int — Pending overtime requests count
+ *   - app.flashes    : array   — All CI flash data injected automatically by Twig::render().
+ *                       Keys are used as the Bootstrap alert type (success|danger|warning|info).
+ *                       The legacy key 'msg' is normalised to 'info'.
+ *                       Each value can be a plain string or an array of strings.
+ *                       Example: ['success' => 'Saved!', 'danger' => ['Error A', 'Error B']]
+ *   - ldap_enabled   : bool    — Whether LDAP authentication is enabled
+ *   - saml_enabled   : bool    — Whether SAML authentication is enabled
+ *   - ga_code        : string  — Google Analytics tracking ID (empty = disabled)
+ *   - disable_overtime          : bool — Whether overtime features are disabled
+ *   - disable_workmates_calendar: bool — Whether the workmates calendar is disabled
+ *   - disable_department_calendar: bool — Whether the department calendar is disabled
+ *   - hide_global_cals_to_users : bool — Whether global calendars are hidden from regular users
+ *   - fonts          : array|null — Language-specific font definitions (null = use defaults)
+ *                       Keys: language_code → { name: string, asset: string }
+ *   - debugbar_head  : string  — Raw HTML to inject in <head> for DebugBar (empty if disabled)
+ *   - debugbar_footer: string  — Raw HTML to inject before </body> for DebugBar (empty if disabled)
+ *
+ * Blocks available for child templates:
+ *   - head_extra  : Additional <head> content (styles, meta tags, etc.)
+ *   - content     : Main page body content ← required
+ *   - scripts     : Additional <script> tags before </body>
+ #}
+<html lang="{{ language_code }}">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <title>Jorani | {{ title }}</title>
+
+    {# DebugBar head assets (empty string when DebugBar is disabled) #}
+    {{ debugbar_head|raw }}
+
+    {# ─── Bootstrap 5.3.8 ─────────────────────────────────────────────── #}
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    {# Bootstrap Icons #}
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    {# ─── Application assets ───────────────────────────────────────────── #}
+    <link rel="stylesheet" href="{{ base_url }}assets/dist/legacy.css">
+    <link rel="icon" type="image/x-icon" href="{{ base_url }}assets/favicon.ico" sizes="32x32">
+
+    {# ─── Language-specific font override ─────────────────────────────── #}
+    {% if fonts is not null and fonts[language_code] is defined %}
+        {% set font = fonts[language_code] %}
+        <style>
+            @font-face {
+                font-family: '{{ font.name }}';
+                src: url('{{ base_url }}assets/fonts/{{ font.asset }}') format('truetype');
+            }
+
+            body,
+            button,
+            input,
+            select {
+                font-family: '{{ font.name }}' !important;
+            }
+        </style>
+    {% endif %}
+
+    {# ─── Google Analytics (optional) ─────────────────────────────────── #}
+    {% if ga_code is not empty %}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ ga_code }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            {% if user_id %}
+                gtag('config', '{{ ga_code }}', { 'user_id': '{{ user_id }}' });
+            {% else %}
+                gtag('config', '{{ ga_code }}');
+            {% endif %}
+        </script>
+    {% endif %}
+
+    {# ─── Application scripts (legacy bundle) ─────────────────────────── #}
+    <script src="{{ base_url }}assets/dist/legacy.js" defer></script>
+
+    {# ─── Child template head extras ───────────────────────────────────── #}
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body>
+
+{# ════════════════════════════════════════════════════════════════════════
+   NAVBAR — Bootstrap 5 (replaces Bootstrap 2 .navbar-inverse pattern)
+   ════════════════════════════════════════════════════════════════════════ #}
+
+{# Change-password modal (only shown when local auth is used) #}
+{% if not ldap_enabled %}
+<div id="frmChangeMyPwd" class="modal fade" tabindex="-1" aria-labelledby="frmChangeMyPwdLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="frmChangeMyPwdLabel">
+                    {# Translated at runtime via JS / CI lang helper — keep as placeholder #}
+                    Change password
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="frmChangeMyPwdBody">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading…</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('cmdChangePassword');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                var modal = new bootstrap.Modal(document.getElementById('frmChangeMyPwd'));
+                document.getElementById('frmChangeMyPwdBody').innerHTML =
+                    '<div class="d-flex justify-content-center">' +
+                    '<div class="spinner-border" role="status"></div></div>';
+                fetch('{{ base_url }}users/reset/{{ user_id }}')
+                    .then(function (r) { return r.text(); })
+                    .then(function (html) {
+                        document.getElementById('frmChangeMyPwdBody').innerHTML = html;
+                    });
+                modal.show();
+            });
+        }
+    });
+</script>
+{% endif %}
+
+{# ─── Top navigation bar ───────────────────────────────────────────────── #}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNavbar">
+    <div class="container-fluid">
+
+        {# Brand #}
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ base_url }}home">
+            <img src="{{ base_url }}assets/images/brand.png" height="22" width="22" alt="Jorani logo">
+            Jorani
+        </a>
+
+        {# Mobile toggler #}
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarMain"
+                aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+
+            {# ── Left-side menu items ── #}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                {# Admin / HR dropdown #}
+                {% if is_hr or is_admin %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navAdminDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navAdminDropdown">
+                        <li><a class="dropdown-item" href="{{ base_url }}users">Users</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}users/create">Add user</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Leave types</h6></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}leavetypes">Leave types</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Settings</h6></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}admin/diagnostic">Diagnostic</a></li>
+                        {% if is_admin %}
+                        <li><a class="dropdown-item" href="{{ base_url }}admin/settings">Settings</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}admin/oauthclients">OAuth clients</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+
+                {# HR dropdown #}
+                {% if is_hr %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navHrDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        HR
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navHrDropdown">
+                        <li><h6 class="dropdown-header">Employees</h6></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}hr/employees">Employees</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}organization">Organization</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Contracts</h6></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}contracts">Contracts</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}positions">Positions</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Reports</h6></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}reports/balance">Leave balance</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}reports/leaves">Leaves</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}reports">All reports</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+
+                {# Validation dropdown (managers) #}
+                {% if is_manager %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navValidationDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Validation
+                        {% if requests_count > 0 %}
+                            <span class="badge text-bg-warning">{{ requests_count }}</span>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navValidationDropdown">
+                        <li><a class="dropdown-item" href="{{ base_url }}requests/delegations">Delegations</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}requests/collaborators">Collaborators</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}requests/balance">Leave balance</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Validation</h6></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ base_url }}requests">
+                                {% if requested_leaves_count > 0 %}
+                                    <span class="badge text-bg-info">{{ requested_leaves_count }}</span>
+                                {% endif %}
+                                Leaves
+                            </a>
+                        </li>
+                        {% if not disable_overtime %}
+                        <li>
+                            <a class="dropdown-item" href="{{ base_url }}overtime">
+                                {% if requested_extra_count > 0 %}
+                                    <span class="badge text-bg-info">{{ requested_extra_count }}</span>
+                                {% endif %}
+                                Overtime
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+
+                {# My requests dropdown #}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navRequestsDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        My requests
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navRequestsDropdown">
+                        <li><h6 class="dropdown-header">Leaves</h6></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}leaves/counters">Counters</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}leaves">My requests</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}leaves/create">New request</a></li>
+                        {% if not disable_overtime %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">Overtime</h6></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}extra">My overtime</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}extra/create">New overtime request</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+
+                {# Calendars dropdown #}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navCalendarDropdown"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Calendar
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navCalendarDropdown">
+                        <li><a class="dropdown-item" href="{{ base_url }}calendar/individual">Individual</a></li>
+                        <li><a class="dropdown-item" href="{{ base_url }}calendar/year">Year</a></li>
+                        {% if not disable_workmates_calendar %}
+                        <li><a class="dropdown-item" href="{{ base_url }}calendar/workmates">Workmates</a></li>
+                        {% endif %}
+                        {% if is_manager %}
+                        <li><a class="dropdown-item" href="{{ base_url }}calendar/collaborators">Collaborators</a></li>
+                        {% endif %}
+                        {% if is_hr or is_admin or not hide_global_cals_to_users %}
+                            {% if not disable_department_calendar %}
+                            <li><a class="dropdown-item" href="{{ base_url }}calendar/department">Department</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{{ base_url }}calendar/organization">Organization</a></li>
+                            <li><a class="dropdown-item" href="{{ base_url }}calendar/tabular">Tabular</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+
+                {# Quick-action button #}
+                <li class="nav-item ms-1">
+                    <a class="btn btn-warning btn-sm" href="{{ base_url }}leaves/create">
+                        <i class="bi bi-plus-lg"></i> Request leave
+                    </a>
+                </li>
+
+            </ul>{# /navbar-nav me-auto #}
+
+            {# ── Right-side user actions ── #}
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ base_url }}users/myprofile" title="My profile">
+                        <i class="bi bi-person-circle"></i>
+                        <span class="ms-1 d-none d-lg-inline">{{ fullname }}</span>
+                    </a>
+                </li>
+                {% if not ldap_enabled and not saml_enabled %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="cmdChangePassword" title="Change password">
+                        <i class="bi bi-lock"></i>
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    {% set logout_url = saml_enabled ? base_url ~ 'api/slo' : base_url ~ 'session/logout' %}
+                    <a class="nav-link" href="{{ logout_url }}" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </div>{# /navbar-collapse #}
+    </div>{# /container-fluid #}
+</nav>
+
+{# ════════════════════════════════════════════════════════════════════════
+   FLASH MESSAGES — driven by app.flashes (injected by Twig::render())
+
+   app.flashes = $CI->session->flashdata() — associative array where:
+     - key   → Bootstrap alert type (success | danger | warning | info)
+               The legacy key 'msg' is normalised to 'info'.
+     - value → string  (single message)
+               OR array of strings (multiple messages for the same type)
+   ════════════════════════════════════════════════════════════════════════ #}
+{% set _bs_types = ['success', 'danger', 'warning', 'info', 'primary', 'secondary', 'light', 'dark'] %}
+{% if app.flashes is defined and app.flashes is not empty %}
+<div class="container-fluid mt-5 pt-2" id="flash-container">
+    {% for flash_key, flash_value in app.flashes %}
+        {# Normalise legacy 'msg' key → 'info'; unknown keys also fall back to 'info' #}
+        {% set alert_type = (flash_key in _bs_types) ? flash_key : 'info' %}
+
+        {# Support both a plain string and an array of strings #}
+        {% set messages = flash_value is iterable ? flash_value : [flash_value] %}
+
+        {% for message in messages %}
+            {% if message is not empty %}
+            <div class="alert alert-{{ alert_type }} alert-dismissible fade show"
+                 role="alert"
+                 id="flashbox-{{ alert_type }}-{{ loop.index }}">
+                {{ message|raw }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>
+{% endif %}
+
+{# ════════════════════════════════════════════════════════════════════════
+   MAIN CONTENT WRAPPER
+   Adds top padding to clear the fixed navbar
+   ════════════════════════════════════════════════════════════════════════ #}
+<div id="wrap" class="d-flex flex-column min-vh-100">
+    <main id="main-content" class="container-fluid flex-grow-1 pt-5 mt-3">
+
+        {# ── Child template inserts its content here ── #}
+        {% block content %}{% endblock %}
+
+    </main>
+
+    {# ════════════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════════════ #}
+    <footer class="footer mt-auto py-3 bg-dark text-light">
+        <div class="container-fluid">
+            <span class="text-muted small">
+                &copy; {{ "now"|date("Y") }} Jorani — Leave Management System
+            </span>
+        </div>
+    </footer>
+
+</div>{# /wrap #}
+
+{# ─── Bootstrap 5.3.8 bundle (includes Popper) ────────────────────────── #}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmCfeapCdXiEm9d2iEWoRyJJhH1"
+        crossorigin="anonymous"></script>
+
+{# ─── DebugBar footer assets ───────────────────────────────────────────── #}
+{{ debugbar_footer|raw }}
+
+{# ─── Child template extra scripts ────────────────────────────────────── #}
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

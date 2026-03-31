@@ -1,0 +1,47 @@
+{% extends "templates/base.html.twig" %}
+
+{#
+ * Example child template — demonstrates how to extend base.html.twig.
+ *
+ * Usage in the controller (once a Twig service is integrated):
+ *   $this->twig->render('leaves/index.html.twig', [
+ *       'title'        => 'My leave requests',
+ *       'language_code'=> $language_code,
+ *       'base_url'     => base_url(),
+ *       'fullname'     => $fullname,
+ *       'user_id'      => $this->session->userdata('id'),
+ *       'is_admin'     => $is_admin,
+ *       'is_hr'        => $is_hr,
+ *       'is_manager'   => $is_manager,
+ *       'flash_msg'    => $this->session->flashdata('msg'),
+ *       'flash_type'   => 'success',
+ *       // ... other required variables
+ *   ]);
+ #}
+
+{# ── Additional <head> content specific to this page ──────────────────── #}
+{% block head_extra %}
+    {# Example: page-specific stylesheet #}
+    {# <link rel="stylesheet" href="{{ base_url }}assets/dist/leaves.css"> #}
+{% endblock %}
+
+{# ── Main page content ─────────────────────────────────────────────────── #}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="h3 mb-4">My leave requests</h1>
+
+        {# Example table #}
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="text-muted">This is an example child template extending <code>base.html.twig</code>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{# ── Page-specific scripts ─────────────────────────────────────────────── #}
+{% block scripts %}
+    {# <script src="{{ base_url }}assets/dist/leaves.js" defer></script> #}
+{% endblock %}
