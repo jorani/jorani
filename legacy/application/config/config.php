@@ -599,8 +599,8 @@ $config['enable_history'] = $env_bool('ENABLE_HISTORY', true);
 
 //____________________________________________________________________________
 //Set this value to TRUE if you want to enable the debug bar
-$config['debugbar_enabled'] = $env_bool('DEBUGBAR_ENABLED', ENVIRONMENT === 'development');
-$config['debugbar_render_in_footer'] = $env_bool('DEBUGBAR_RENDER_IN_FOOTER', true);
+$config['debugbar_enabled'] = $env_bool('DEBUGBAR_RENDER_IN_FOOTER', false);
+$config['debugbar_render_in_footer'] = $env_bool('DEBUGBAR_RENDER_IN_FOOTER', false);
 
 //____________________________________________________________________________
 // API Configuration
