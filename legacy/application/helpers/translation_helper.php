@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 if (!function_exists('__')) {
     /**
      * Short alias for translation
-     * * @param string $id         The message ID (English string in your PO)
+     * @param string $id         The message ID (English string in your PO)
      * @param array  $parameters Placeholders like ['%name%' => 'John']
      * @param string $domain     The PO domain (default is 'messages')
      * @return string

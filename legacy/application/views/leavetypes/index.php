@@ -17,7 +17,7 @@
     <thead>
         <tr>
             <th><?= t('ID') ?></th>
-            <th><?= __('Acronym') ?></th>
+            <th><?= t('Acronym') ?></th>
             <th><?= t('Name') ?></th>
             <th><?= t('Deduct non working days') ?></th>
         </tr>
@@ -27,8 +27,7 @@
             <tr>
                 <td><?php echo $type->getId(); ?> &nbsp;
                     <?php if ($type->getId() !== 0) { ?>
-                        <a href="#" class="confirm-delete" data-id="<?php echo $type->getId(); ?>"
-                            title="<?php echo lang('leavetypes_type_thead_tip_delete'); ?>"><i
+                        <a href="#" class="confirm-delete" data-id="<?php echo $type->getId(); ?>" title="<?= t('delete') ?>"><i
                                 class="mdi mdi-delete nolink"></i></a>
                     <?php } ?>
                 </td>
@@ -37,8 +36,7 @@
                 </td>
                 <td>
                     <a href="<?php echo base_url(); ?>leavetypes/edit/<?php echo $type->getId(); ?>"
-                        data-target="#frmEditLeaveType" data-toggle="modal"
-                        title="<?php echo lang('leavetypes_type_thead_tip_edit'); ?>"><i
+                        data-target="#frmEditLeaveType" data-toggle="modal" title="<?= t('edit') ?>"><i
                             class="mdi mdi-pencil nolink"></i></a>
                     &nbsp; <?php echo $type->getName(); ?>
                 </td>
@@ -53,7 +51,7 @@
         <?php } ?>
         <?php if (count($leavetypes) == 0) { ?>
             <tr>
-                <td colspan="5"><?php echo lang('leavetypes_type_not_found'); ?></td>
+                <td colspan="5"><?= t('No leave type found into the database.') ?></td>
             </tr>
         <?php } ?>
     </tbody>
@@ -81,7 +79,7 @@
 <div id="frmAddLeaveType" class="modal hide fade">
     <div class="modal-header">
         <a href="#" onclick="$('#frmAddLeaveType').modal('hide');" class="close">&times;</a>
-        <h3><?php echo lang('leavetypes_popup_create_title'); ?></h3>
+        <h3><?= t('Add a leave type') ?></h3>
     </div>
     <div class="modal-body">
         <img src="<?php echo base_url(); ?>assets/images/loading.gif">
@@ -94,31 +92,28 @@
 <div id="frmEditLeaveType" class="modal hide fade">
     <div class="modal-header">
         <a href="#" onclick="$('#frmEditLeaveType').modal('hide');" class="close">&times;</a>
-        <h3><?php echo lang('leavetypes_popup_update_title'); ?></h3>
+        <h3><?= t('Edit a Leave type') ?></h3>
     </div>
     <div class="modal-body">
         <img src="<?php echo base_url(); ?>assets/images/loading.gif">
     </div>
     <div class="modal-footer">
-        <a href="#" onclick="$('#frmEditLeaveType').modal('hide');"
-            class="btn"><?php echo lang('leavetypes_popup_update_button_cancel'); ?></a>
+        <a href="#" onclick="$('#frmEditLeaveType').modal('hide');" class="btn"><?= t('Cancel') ?></a>
     </div>
 </div>
 
 <div id="frmDeleteLeaveType" class="modal hide fade">
     <div class="modal-header">
         <a href="#" onclick="$('#frmDeleteLeaveType').modal('hide');" class="close">&times;</a>
-        <h3><?php echo lang('leavetypes_popup_delete_title'); ?></h3>
+        <h3><?= t('Delete Leave Type') ?></h3>
     </div>
     <div class="modal-body">
-        <p><?php echo lang('leavetypes_popup_delete_description'); ?></p>
-        <p><?php echo lang('leavetypes_popup_delete_confirm'); ?></p>
+        <p><?= t('You are about to delete one leave type, this procedure is irreversible.') ?></p>
+        <p><?= t('Do you want to proceed?') ?></p>
     </div>
     <div class="modal-footer">
-        <a href="#" id="lnkDeleteLeaveType"
-            class="btn btn-danger"><?php echo lang('leavetypes_popup_delete_button_yes'); ?></a>
-        <a href="#" onclick="$('#frmDeleteLeaveType').modal('hide');"
-            class="btn"><?php echo lang('leavetypes_popup_delete_button_no'); ?></a>
+        <a href="#" id="lnkDeleteLeaveType" class="btn btn-danger"><?= t('Yes') ?></a>
+        <a href="#" onclick="$('#frmDeleteLeaveType').modal('hide');" class="btn"><?= t('No') ?></a>
     </div>
 </div>
 
