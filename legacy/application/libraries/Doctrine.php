@@ -7,6 +7,7 @@
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\DriverManager;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * This class is a bridge between Doctrine and CodeIgniter 3
@@ -48,7 +49,15 @@ class Doctrine
 
         // 4. Set up Metadata Configuration (Using PHP 8 Attributes)
         // This is the standard for modern Symfony applications
-        $config = ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode);
+        $config = ORMSetup::createAttributeMetadataConfiguration($paths, false);
+        $cache = new FilesystemAdapter(
+            namespace: 'doctrine',
+            defaultLifetime: 0,
+            directory: APPPATH . 'cache/doctrine'
+        );
+
+        $config->setMetadataCache($cache);
+        $config->setQueryCache($cache);
 
         // 5. Initialize the Connection and Entity Manager
         $connection = DriverManager::getConnection($connectionParams, $config);
