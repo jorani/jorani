@@ -1,7 +1,6 @@
 <?php
 /**
  * This controller contains the actions allowing an employee to list and manage its leave requests
- * 
  * @license https://opensource.org/licenses/MIT MIT
  * @since   0.1.0
  */
@@ -985,7 +984,8 @@ class Leaves extends CI_Controller
      */
     public function export(): void
     {
-        $this->load->view('leaves/export');
+        $data = ['leaves' => $this->leaves_model->getLeavesOfEmployee($this->user_id)];
+        $this->load->view('leaves/export', $data);
     }
 
     /**

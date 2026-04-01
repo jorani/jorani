@@ -3,16 +3,11 @@
  * This view builds a Spreadsheet file containing the list of overtime requests declared by the connected employee.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
  * @since         0.2.0
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -25,8 +20,6 @@ $sheet->setCellValue('D1', lang('extra_export_thead_cause'));
 $sheet->setCellValue('E1', lang('extra_export_thead_status'));
 $sheet->getStyle('A1:E1')->getFont()->setBold(true);
 $sheet->getStyle('A1:E1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-
-$extras = $this->overtime_model->getExtrasOfEmployee($this->user_id);
 
 $line = 2;
 foreach ($extras as $extra) {

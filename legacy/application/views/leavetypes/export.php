@@ -3,16 +3,11 @@
  * This view builds a Spreadsheet file containing the list of leave types.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.2.0
+ * @since   0.2.0
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -25,9 +20,8 @@ $sheet->setCellValue('D1', lang('leavetypes_type_export_thead_deduct'));
 $sheet->getStyle('A1:D1')->getFont()->setBold(true);
 $sheet->getStyle('A1:D1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-$types = $this->types_model->getTypes();
 $line = 2;
-foreach ($types as $type) {
+foreach ($leavetypes as $type) {
     $sheet->setCellValue('A' . $line, $type['id']);
     $sheet->setCellValue('B' . $line, $type['acronym']);
     $sheet->setCellValue('C' . $line, $type['name']);

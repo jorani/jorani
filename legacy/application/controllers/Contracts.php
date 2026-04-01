@@ -448,6 +448,7 @@ class Contracts extends CI_Controller
     public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('export_contracts');
-        $this->load->view('contracts/export');
+        $data = ['contracts' => $this->contracts_model->getContracts()];
+        $this->load->view('contracts/export', $data);
     }
 }

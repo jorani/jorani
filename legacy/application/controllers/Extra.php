@@ -324,6 +324,7 @@ class Extra extends CI_Controller
      */
     public function export(): void
     {
-        $this->load->view('extra/export');
+        $data = ['extras' => $this->overtime_model->getExtrasOfEmployee($this->user_id)];
+        $this->load->view('extra/export', $data);
     }
 }

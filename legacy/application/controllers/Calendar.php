@@ -502,12 +502,10 @@ class Calendar extends CI_Controller
         //Either self access, Manager or HR
         if ($employeeId == 0) {
             $employeeId = $this->user_id;
-            $user = $this->users_model->getUsers($employeeId);
         } else {
             if (!$this->is_hr) {
                 if ($this->user_id != $user['manager']) {
                     $employeeId = $this->user_id;
-                    $user = $this->users_model->getUsers($employeeId);
                 }
             }
         }
@@ -515,8 +513,25 @@ class Calendar extends CI_Controller
             $year = date("Y");
         }
         $this->load->model('leaves_model');
-        $data['employee'] = $employeeId;
-        $data['year'] = $year;
+        //Load the leaves for all the months of the selected year
+        $data = [
+            'year' => $year,
+            'employeeName' => $this->users_model->getName($employeeId),
+            'months' => [
+                lang('January') => $this->leaves_model->linear($employeeId, 1, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('February') => $this->leaves_model->linear($employeeId, 2, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('March') => $this->leaves_model->linear($employeeId, 3, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('April') => $this->leaves_model->linear($employeeId, 4, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('May') => $this->leaves_model->linear($employeeId, 5, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('June') => $this->leaves_model->linear($employeeId, 6, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('July') => $this->leaves_model->linear($employeeId, 7, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('August') => $this->leaves_model->linear($employeeId, 8, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('September') => $this->leaves_model->linear($employeeId, 9, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('October') => $this->leaves_model->linear($employeeId, 10, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('November') => $this->leaves_model->linear($employeeId, 11, $year, TRUE, TRUE, TRUE, TRUE),
+                lang('December') => $this->leaves_model->linear($employeeId, 12, $year, TRUE, TRUE, TRUE, TRUE),
+            ]
+        ];
         $this->load->view('calendar/export_year', $data);
     }
 }

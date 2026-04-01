@@ -470,7 +470,8 @@ class Requests extends CI_Controller
      */
     public function export(string $filter = 'requested'): void
     {
-        $data['filter'] = $filter;
+        $showAll = ($filter === 'all');
+        $data = ['requests' => $this->leaves_model->getLeavesRequestedToManager($this->user_id, $showAll)];
         $this->load->view('requests/export', $data);
     }
 

@@ -1,18 +1,12 @@
 <?php
 /**
  * This view builds a Spreadsheet file containing the list of leave requests (that a manager must validate).
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.2.0
+ * @since   0.2.0
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -31,8 +25,6 @@ $sheet->setCellValue('J1', lang('requests_export_thead_status'));
 $sheet->getStyle('A1:J1')->getFont()->setBold(true);
 $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-($filter == 'all') ? $showAll = TRUE : $showAll = FALSE;
-$requests = $this->leaves_model->getLeavesRequestedToManager($this->user_id, $showAll);
 $line = 2;
 foreach ($requests as $request) {
     $date = new DateTime($request['startdate']);

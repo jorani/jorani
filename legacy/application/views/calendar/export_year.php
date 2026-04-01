@@ -4,13 +4,10 @@
  * It builds an Excel 2007 file downloaded by the browser.
  * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.4.3
+ * @since   0.4.3
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
@@ -18,38 +15,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
-//Either self access, Manager or HR
-if ($employee == 0) {
-    $employee = $this->user_id;
-} else {
-    if (!$this->is_hr) {
-        if ($this->manager != $this->user_id) {
-            $employee = $this->user_id;
-        }
-    }
-}
-
-$employee_name = $this->users_model->getName($employee);
-//Load the leaves for all the months of the selected year
-
-$months = array(
-    lang('January') => $this->leaves_model->linear($employee, 1, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('February') => $this->leaves_model->linear($employee, 2, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('March') => $this->leaves_model->linear($employee, 3, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('April') => $this->leaves_model->linear($employee, 4, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('May') => $this->leaves_model->linear($employee, 5, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('June') => $this->leaves_model->linear($employee, 6, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('July') => $this->leaves_model->linear($employee, 7, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('August') => $this->leaves_model->linear($employee, 8, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('September') => $this->leaves_model->linear($employee, 9, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('October') => $this->leaves_model->linear($employee, 10, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('November') => $this->leaves_model->linear($employee, 11, $year, TRUE, TRUE, TRUE, TRUE),
-    lang('December') => $this->leaves_model->linear($employee, 12, $year, TRUE, TRUE, TRUE, TRUE),
-);
-
 //Print the header with the values of the export parameters
 $sheet->setTitle(mb_strimwidth(lang('calendar_year_title'), 0, 28, "..."));  //Maximum 31 characters allowed in sheet title.
-$sheet->setCellValue('A1', lang('calendar_year_title') . ' ' . $year . ' (' . $employee_name . ') ');
+$sheet->setCellValue('A1', lang('calendar_year_title') . ' ' . $year . ' (' . $employeeName . ') ');
 $sheet->getStyle('A1')->getFont()->setBold(true);
 $sheet->mergeCells('A1:C1');
 
@@ -125,8 +93,8 @@ $styleBgDayOff = array(
     )
 );
 
-$line = 4;
 //Iterate on all employees of the selected entity
+$line = 4;
 foreach ($months as $month_name => $month) {
     //Merge the two line containing the name of the month and apply a border around it
     $sheet->setCellValue('C' . $line, $month_name);

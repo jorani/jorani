@@ -148,6 +148,7 @@ class Positions extends CI_Controller
     public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('export_positions');
-        $this->load->view('positions/export');
+        $data = ['positions' => $this->positions_model->getPositions()];
+        $this->load->view('positions/export', $data);
     }
 }

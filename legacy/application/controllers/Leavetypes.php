@@ -142,6 +142,7 @@ class LeaveTypes extends CI_Controller
     public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('leavetypes_export');
-        $this->load->view('leavetypes/export');
+        $data = ['leavetypes' => $this->types_model->getTypes()];
+        $this->load->view('leavetypes/export', $data);
     }
 }

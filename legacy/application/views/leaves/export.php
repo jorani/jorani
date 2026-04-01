@@ -1,18 +1,12 @@
 <?php
 /**
  * This view builds an Excel5 file containing the list of leave requests declared by the connected employee.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.2.0
+ * @since   0.2.0
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -30,7 +24,6 @@ $sheet->setCellValue('I1', lang('leaves_export_thead_cause'));
 $sheet->getStyle('A1:I1')->getFont()->setBold(true);
 $sheet->getStyle('A1:I1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-$leaves = $this->leaves_model->getLeavesOfEmployee($this->user_id);
 $line = 2;
 foreach ($leaves as $leave) {
     $date = new DateTime($leave['startdate']);

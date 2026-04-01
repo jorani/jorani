@@ -1,7 +1,6 @@
 <?php
 /**
  * This controller contains the actions allowing a manager to list and manage overtime requests
- * 
  * @license https://opensource.org/licenses/MIT MIT
  * @since   0.1.0
  */
@@ -50,12 +49,7 @@ class Overtime extends CI_Controller
     public function index(string $filter = 'requested'): void
     {
         $this->auth->checkIfOperationIsAllowed('list_overtime');
-        if ($filter == 'all') {
-            $showAll = TRUE;
-        } else {
-            $showAll = FALSE;
-        }
-
+        $showAll = ($filter === 'all');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);
         $data['filter'] = $filter;
@@ -73,7 +67,7 @@ class Overtime extends CI_Controller
      * Accept an overtime request
      * @param int $id overtime request identifier
      */
-    public function accept($id): void
+    public function accept(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('accept_overtime');
         $this->load->model('users_model');
@@ -104,7 +98,7 @@ class Overtime extends CI_Controller
      * Reject an overtime request
      * @param int $id overtime request identifier
      */
-    public function reject($id): void
+    public function reject(int $id): void
     {
         $this->auth->checkIfOperationIsAllowed('reject_overtime');
         $this->load->model('users_model');
@@ -136,7 +130,7 @@ class Overtime extends CI_Controller
      * The method will check if the overtime request was accepted or rejected before sending the e-mail
      * @param int $id overtime request identifier
      */
-    private function sendMail($id): void
+    private function sendMail(int $id): void
     {
         $this->load->model('users_model');
         $this->load->model('organization_model');
@@ -182,9 +176,10 @@ class Overtime extends CI_Controller
      * Export the list of all overtime requests (sent to the connected user) into an Excel file
      * @param string $filter Filter the list of submitted overtime requests (all or requested)
      */
-    public function export($filter = 'requested'): void
+    public function export(string $filter = 'requested'): void
     {
-        $data['filter'] = $filter;
+        $showAll = ($filter === 'all');
+        $data = ['requests' => $this->overtime_model->requests($this->user_id, $showAll)];
         $this->load->view('overtime/export', $data);
     }
 }

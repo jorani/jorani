@@ -1,18 +1,12 @@
 <?php
 /**
  * This view builds a Spreadsheet file containing the list of users.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.2.0
+ * @since   0.2.0
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -27,7 +21,6 @@ $sheet->setCellValue('E1', lang('users_export_thead_manager'));
 $sheet->getStyle('A1:E1')->getFont()->setBold(true);
 $sheet->getStyle('A1:E1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-$users = $this->users_model->getUsers();
 $line = 2;
 foreach ($users as $user) {
     $sheet->setCellValue('A' . $line, $user['id']);

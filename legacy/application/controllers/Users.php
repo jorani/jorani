@@ -401,6 +401,7 @@ class Users extends CI_Controller
     public function export(): void
     {
         $this->auth->checkIfOperationIsAllowed('export_user');
-        $this->load->view('users/export');
+        $data = ['users' => $this->users_model->getUsers()];
+        $this->load->view('users/export', $data);
     }
 }

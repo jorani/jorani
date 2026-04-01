@@ -1,18 +1,12 @@
 <?php
 /**
  * This view exports the list of contracts into a Spreadsheet file
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.1.0
+ * @since   0.1.0
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
@@ -25,7 +19,6 @@ $sheet->setCellValue('D1', lang('contract_export_thead_end'));
 $sheet->getStyle('A1:D1')->getFont()->setBold(true);
 $sheet->getStyle('A1:D1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-$contracts = $this->contracts_model->getContracts();
 $line = 2;
 foreach ($contracts as $contract) {
     $sheet->setCellValue('A' . $line, $contract['id']);

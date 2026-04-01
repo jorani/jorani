@@ -2,14 +2,11 @@
 /**
  * This view exports the monthly presence report
  * It builds a Spreadsheet file downloaded by the browser.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.4.3
+ * @since   0.4.3
  */
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -19,35 +16,16 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
 //Details about the employee
-$employee_name = $employee['firstname'] . ' ' . $employee['lastname'];
-$contract = $this->contracts_model->getContracts($employee['contract']);
-if (!empty($contract)) {
-    $contract_name = $contract['name'];
-} else {
-    $contract_name = '';
-}
-
+$employeeName = $employee['firstname'] . ' ' . $employee['lastname'];
 //Compute facts about dates and the selected month
 if ($month == 0)
     $month = date('m', strtotime('last month'));
 if ($year == 0)
     $year = date('Y', strtotime('last month'));
 $total_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-$start = sprintf('%d-%02d-01', $year, $month);
-$lastDay = date("t", strtotime($start));    //last day of selected month
-$end = sprintf('%d-%02d-%02d', $year, $month, $lastDay);
-//Number of non working days during the selected month
-$non_working_days = $this->dayoffs_model->lengthDaysOffBetweenDates($employee['contract'], $start, $end);
-$opened_days = $total_days - $non_working_days;
+$opened_days = $total_days - $nonWorkingDays;
 $month_name = lang(date('F', strtotime($start)));
-
-//tabular view of the leaves
-$linear = $this->leaves_model->linear($id, $month, $year, FALSE, FALSE, TRUE, FALSE);
-$leave_duration = $this->leaves_model->monthlyLeavesDuration($linear);
-$work_duration = $opened_days - $leave_duration;
-$leaves_detail = $this->leaves_model->monthlyLeavesByType($linear);
-//Leave balance of the employee
-$summary = $this->leaves_model->getLeaveBalanceForEmployee($id, $end);
+$workDuration = $opened_days - $leaveDuration;
 
 //Print the header with the facts of the presence report
 $sheet->setTitle(mb_strimwidth(lang('hr_presence_title'), 0, 28, "..."));  //Maximum 31 characters allowed in sheet title.
@@ -62,18 +40,18 @@ $sheet->setCellValue('A7', lang('hr_presence_work_duration'));
 $sheet->setCellValue('A8', lang('hr_presence_leave_duration'));
 $sheet->getStyle('A1:A8')->getFont()->setBold(true);
 
-$sheet->setCellValue('B1', $employee_name);
-$sheet->setCellValue('B2', $month_name);
+$sheet->setCellValue('B1', $employeeName);
+$sheet->setCellValue('B2', $month_name . ' ' . (string) $year);
 $sheet->setCellValue('B3', $total_days);
-$sheet->setCellValue('B4', $contract_name);
+$sheet->setCellValue('B4', $contractName);
 $sheet->setCellValue('B5', $opened_days);
-$sheet->setCellValue('B6', $non_working_days);
-$sheet->setCellValue('B7', $work_duration);
-$sheet->setCellValue('B8', $leave_duration);
+$sheet->setCellValue('B6', $nonWorkingDays);
+$sheet->setCellValue('B7', $workDuration);
+$sheet->setCellValue('B8', $leaveDuration);
 
-if (count($leaves_detail) > 0) {
+if (count($leavesDetail) > 0) {
     $line = 9;
-    foreach ($leaves_detail as $leaves_type_name => $leaves_type_sum) {
+    foreach ($leavesDetail as $leaves_type_name => $leaves_type_sum) {
         $sheet->setCellValue('A' . $line, $leaves_type_name);
         $sheet->setCellValue('B' . $line, $leaves_type_sum);
         $sheet->getStyle('A' . $line)->getAlignment()->setIndent(2);

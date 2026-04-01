@@ -527,7 +527,10 @@ class Hr extends CI_Controller
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $this->load->model('leaves_model');
         $this->load->model('users_model');
-        $data['id'] = $id;
+        $data = [
+            'leaves' => $this->leaves_model->getLeavesOfEmployee($id),
+            'fullname' => $this->users_model->getName($id)
+        ];
         $this->load->view('hr/export_leaves', $data);
     }
 
@@ -540,7 +543,10 @@ class Hr extends CI_Controller
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $this->load->model('overtime_model');
         $this->load->model('users_model');
-        $data['id'] = $id;
+        $data = [
+            'requests' => $this->overtime_model->getExtrasOfEmployee($id),
+            'fullname' => $this->users_model->getName($id)
+        ];
         $this->load->view('hr/export_overtime', $data);
     }
 
@@ -565,24 +571,18 @@ class Hr extends CI_Controller
     ): void {
         $this->auth->checkIfOperationIsAllowed('list_employees');
         $this->load->model('users_model');
-        $data['id'] = $id;
-        $data['children'] = filter_var($children, FILTER_VALIDATE_BOOLEAN);
-        $data['filterActive'] = $filterActive;
-        $data['criterion1'] = $criterion1;
-        $data['date1'] = $date1;
-        $data['criterion2'] = $criterion2;
-        $data['date2'] = $date2;
+        $data = ['employees' => $this->users_model->employeesOfEntity($id, $children, $filterActive, $criterion1, $date1, $criterion2, $date2)];
         $this->load->view('hr/export_employees', $data);
     }
 
     /**
      * Action: export the presence details for a given employee
      * @param string $source page calling the report (employees, collaborators)
-     * @param int $id employee id
+     * @param int $employeeId employee id
      * @param int $month Month number or 0 for last month (default)
      * @param int $year Year number or 0 for current year (default)
      */
-    public function exportPresence(string $source, int $id, int $month = 0, int $year = 0): void
+    public function exportPresence(string $source, int $employeeId, int $month = 0, int $year = 0): void
     {
         if ($source == 'collaborators') {
             $this->auth->checkIfOperationIsAllowed('list_collaborators');
@@ -597,17 +597,36 @@ class Hr extends CI_Controller
         $this->load->model('dayoffs_model');
         $this->load->model('contracts_model');
 
-        $employee = $this->users_model->getUsers($id);
+        $employee = $this->users_model->getUsers($employeeId);
         if (($this->user_id != $employee['manager']) && ($this->is_hr === FALSE)) {
-            log_message('error', 'User #' . $this->user_id . ' illegally tried to access to hr/presence  #' . $id);
+            log_message('error', 'User #' . $this->user_id . ' illegally tried to access to hr/presence  #' . $employeeId);
             $this->session->set_flashdata('msg', sprintf(lang('global_msg_error_forbidden'), 'hr/presence'));
             redirect('leaves');
         }
 
-        $data['employee'] = $employee;
-        $data['month'] = $month;
-        $data['year'] = $year;
-        $data['id'] = $id;
+        $contract = $this->contracts_model->getContracts($employee['contract']);
+        $start = sprintf('%d-%02d-01', $year, $month);
+        $lastDay = date("t", strtotime($start));    //last day of selected month
+        $end = sprintf('%d-%02d-%02d', $year, $month, $lastDay);
+        $linear = $this->leaves_model->linear($employeeId, $month, $year, FALSE, FALSE, TRUE, FALSE);
+        $leaveDuration = $this->leaves_model->monthlyLeavesDuration($linear);
+        $leavesDetail = $this->leaves_model->monthlyLeavesByType($linear);
+
+        $data = [
+            'employee' => $employee,
+            'contractName' => $contract['name'] ?: '',
+            'start' => $start,
+            'end' => $end,
+            'lastDay' => $lastDay,
+            'nonWorkingDays' => $this->dayoffs_model->lengthDaysOffBetweenDates($employee['contract'], $start, $end),
+            'linear' => $linear,
+            'leaveDuration' => $leaveDuration,
+            'leavesDetail' => $leavesDetail,
+            'summary' => $this->leaves_model->getLeaveBalanceForEmployee($employeeId, $end),
+            'month' => $month,
+            'year' => $year,
+            'id' => $employeeId
+        ];
         $this->load->view('hr/export_presence', $data);
     }
 }
