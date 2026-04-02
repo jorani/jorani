@@ -1,10 +1,8 @@
 <?php
 /**
  * This view allows an employees (or HR admin/Manager) to create a new leave request
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.1.0
+ * @since 0.1.0
  */
 ?>
 

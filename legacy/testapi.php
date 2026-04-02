@@ -6,6 +6,8 @@
     //Pass some configuration to the embedded JS application
     $baseUrl = dirname((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
     $baseUrl = $baseUrl . "/api/doc";
+    $baseUrl = strip_tags($baseUrl);
+    $baseUrl = preg_replace('/[\x00-\x1F\x7F]/', '', $baseUrl);
     ?>
     <title>API Jorani</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="32x32">

@@ -9,6 +9,8 @@ declare(strict_types=1);
  */
 
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+$uri = strip_tags($uri);
+$uri = preg_replace('/[\x00-\x1F\x7F]/', '', $uri);
 
 /*
  * Normalize script base path if the application is not deployed at domain root.

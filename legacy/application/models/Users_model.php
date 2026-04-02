@@ -184,7 +184,6 @@ class Users_model extends CI_Model
      */
     public function setUsers(): string
     {
-        //TODO: remove the stuff about RSA encryption
         //TODO: decouple from CI controller, maybe '..byAPI' method is enough
         $password = $this->input->post('password');
         //Hash the clear password using bcrypt (8 iterations)

@@ -1,9 +1,7 @@
 <?php
 /**
  * This view displays a portion of the configuration file (the part containing the application parameters).
- * 
  * @license http://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.4.3
  */
 ?>

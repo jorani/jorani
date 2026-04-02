@@ -1,19 +1,17 @@
 <?php
 /**
  * This view allows an employees (or HR admin) to modify a leave request
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.1.0
+ * @since 0.1.0
  */
 ?>
 
 <h2><?php echo lang('leaves_edit_title'); ?><?php echo $leave['id']; ?> <?php echo $help; ?>&nbsp;<span
         class="muted">(<?php echo $name ?>)</span></h2>
 <?php
-$attributes = array('id' => 'frmLeaveForm');
+$attributes = ['id' => 'frmLeaveForm'];
 if (isset($_GET['source'])) {
-    echo form_open('leaves/edit/' . $id . '?source=' . $_GET['source'], $attributes);
+    echo form_open('leaves/edit/' . $id . '?source=' . clean_url_param($_GET['source']), $attributes);
 } else {
     echo form_open('leaves/edit/' . $id, $attributes);
 } ?>
@@ -175,7 +173,7 @@ if (isset($_GET['source'])) {
                 <?php } ?>
 
                 <?php if (isset($_GET['source'])) { ?>
-                    <a href="<?php echo base_url() . $_GET['source']; ?>" class="btn btn-danger"><i
+                    <a href="<?php echo base_url() . clean_url_param($_GET['source']); ?>" class="btn btn-danger"><i
                             class="mdi mdi-close"></i>&nbsp;<?php echo lang('leaves_edit_button_cancel'); ?></a>
                 <?php } else { ?>
                     <a href="<?php echo base_url(); ?>leaves" class="btn btn-danger"><i

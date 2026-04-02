@@ -1,9 +1,7 @@
 <?php
 /**
  * This view displays the diagnotic of confiuration and what was entered by employees (requests, etc.)
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since   0.4.6
  */
 ?>

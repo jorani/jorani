@@ -1,7 +1,6 @@
 <?php
 /**
  * This view allows to modify an employee record.
- * 
  * @license https://opensource.org/licenses/MIT MIT
  * @since   0.1.0
  */
@@ -18,7 +17,7 @@
 <?php
 $attributes = array('class' => 'form-horizontal');
 if (isset($_GET['source'])) {
-    echo form_open('users/edit/' . $users_item['id'] . '?source=' . $_GET['source'], $attributes);
+    echo form_open('users/edit/' . $users_item['id'] . '?source=' . clean_url_param($_GET['source']), $attributes);
 } else {
     echo form_open('users/edit/' . $users_item['id'], $attributes);
 } ?>
@@ -248,7 +247,7 @@ if (isset($_GET['source'])) {
                 class="mdi mdi-check"></i>&nbsp;<?php echo lang('users_edit_button_update'); ?></button>
         &nbsp;
         <?php if (isset($_GET['source'])) { ?>
-            <a href="<?php echo base_url() . $_GET['source']; ?>" class="btn btn-danger"><i
+            <a href="<?php echo base_url() . clean_url_param($_GET['source']); ?>" class="btn btn-danger"><i
                     class="mdi mdi-close"></i>&nbsp;<?php echo lang('users_edit_button_cancel'); ?></a>
         <?php } else { ?>
             <a href="<?php echo base_url(); ?>users" class="btn btn-danger"><i

@@ -78,9 +78,9 @@ $_db_user = ($v = getenv('MYSQL_USER')) !== false ? $v : 'jorani';
 $_db_pass = ($v = getenv('MYSQL_PASSWORD')) !== false ? $v : 'jorani';
 $_db_name = ($v = getenv('MYSQL_DATABASE')) !== false ? $v : 'jorani';
 
-$db['default'] = array(
+$db['default'] = [
 	'dsn' => 'mysql:host=' . $_db_host . ';dbname=' . $_db_name,
-	'hostname' => '',
+	'hostname' => $_db_host,
 	'username' => $_db_user,
 	'password' => $_db_pass,
 	'database' => $_db_name,
@@ -90,12 +90,12 @@ $db['default'] = array(
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
+	'char_set' => 'utf8mb4',
+	'dbcollat' => 'utf8mb4_unicode_ci',
 	'swap_pre' => '',
 	'encrypt' => FALSE,
 	'compress' => FALSE,
 	'stricton' => FALSE,
-	'failover' => array(),
+	'failover' => [],
 	'save_queries' => TRUE
-);
+];

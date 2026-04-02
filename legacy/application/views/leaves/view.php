@@ -1,9 +1,7 @@
 <?php
 /**
  * This view allows users to view a leave request in read-only mode
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
  * @since         0.1.0
  */
 ?>
@@ -144,7 +142,7 @@
     <?php
     $attributes = array('id' => 'frmLeaveNewCommentForm');
     if (isset($_GET['source'])) {
-      echo form_open('leaves/' . $leave['id'] . '/comments/add?source=' . $_GET['source'], $attributes);
+      echo form_open('leaves/' . $leave['id'] . '/comments/add?source=' . clean_url_param($_GET['source']), $attributes);
     } else {
       echo form_open('leaves/' . $leave['id'] . '/comments/add', $attributes);
     }

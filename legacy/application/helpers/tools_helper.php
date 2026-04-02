@@ -120,6 +120,20 @@ function sanitize(string $value): string
 }
 
 /**
+ * Clean a URL parameter
+ * @param string $param parameter to be cleansed
+ * @return string parameter where problematic characters have been removed
+ */
+function clean_url_param(string $param): string
+{
+    if (empty($param))
+        return '';
+    $param = strip_tags($param);
+    $param = preg_replace('/[\x00-\x1F\x7F]/', '', $param);
+    return $param;
+}
+
+/**
  * Wrapper between the controller and the e-mail library
  * @param CI_Controller $controller reference to CI Controller object
  * @param string $subject Subject of the e-mail

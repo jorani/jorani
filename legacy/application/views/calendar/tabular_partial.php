@@ -3,14 +3,10 @@
  * This partial view builds a "linear" calendar (which is technically a line into an HTML table).
  * A linear calendar displays the leaves of an employee during a month. Each cell is a day.
  * It can be loaded asynchronously.
- * 
  * @license    http://opensource.org/licenses/MIT MIT
- * @link       https://github.com/jorani/jorani
  * @since      0.6.0
  */
-?>
 
-<?php
 if (count($tabular) > 0) { ?>
     <table class="table table-bordered">
         <thead>
@@ -72,7 +68,6 @@ if (count($tabular) > 0) { ?>
 
             foreach ($tabular as $employee) {
                 $dayIterator = 0;
-                //echo var_dump($employee);
                 ?>
                 <tr>
                     <td><?php echo $employee->name; ?></td>
@@ -270,10 +265,12 @@ if (count($tabular) > 0) { ?>
                                 $dayType = "";
                             } else {
                                 //Hide leave type to users who are not part of HR/Admin
-                                if (($is_hr == TRUE) ||
+                                if (
+                                    ($is_hr == TRUE) ||
                                     ($is_admin == TRUE) ||
                                     ($employee->manager == $user_id) ||
-                                    ($employee->id == $user_id)) {
+                                    ($employee->id == $user_id)
+                                ) {
                                     $dayType = $day->type;
                                     $acronym = $day->acronym;
                                     $dataIds = $day->id;

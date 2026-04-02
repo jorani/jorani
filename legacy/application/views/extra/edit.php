@@ -1,10 +1,8 @@
 <?php
 /**
  * This view allows the modification of an overtime request.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link https://github.com/jorani/jorani
- * @since         0.2.0
+ * @since 0.2.0
  */
 ?>
 
@@ -14,9 +12,9 @@
 <?php echo validation_errors(); ?>
 
 <?php
-$attributes = array('id' => 'frmEditExtra');
+$attributes = ['id' => 'frmEditExtra'];
 if (isset($_GET['source'])) {
-    echo form_open('extra/edit/' . $id . '?source=' . $_GET['source'], $attributes);
+    echo form_open('extra/edit/' . $id . '?source=' . clean_url_param($_GET['source']), $attributes);
 } else {
     echo form_open('extra/edit/' . $id, $attributes);
 } ?>
@@ -57,7 +55,7 @@ echo $date->format(lang('global_date_format')); ?>" required />
             <?php echo lang('extra_edit_button_update'); ?></button>
         &nbsp;
         <?php if (isset($_GET['source'])) { ?>
-            <a href="<?php echo base_url() . $_GET['source']; ?>" class="btn btn-danger"><i
+            <a href="<?php echo base_url() . clean_url_param($_GET['source']); ?>" class="btn btn-danger"><i
                     class="mdi mdi-close"></i>&nbsp;<?php echo lang('extra_edit_button_cancel'); ?></a>
         <?php } else { ?>
             <a href="<?php echo base_url(); ?>extra" class="btn btn-danger"><i

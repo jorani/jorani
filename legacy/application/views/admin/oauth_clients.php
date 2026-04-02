@@ -1,9 +1,7 @@
 <?php
 /**
  * This view allows to manage the service accounts (OAuth clients) and sessions.
- * 
  * @license https://opensource.org/licenses/MIT MIT
- * @link    https://github.com/jorani/jorani
  * @since      0.6.0
  */
 ?>
