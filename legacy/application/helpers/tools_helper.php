@@ -134,6 +134,44 @@ function clean_url_param(string $param): string
 }
 
 /**
+ * Safely redirects the user to a source URL or a default destination.
+ * Prevents Open Redirect vulnerabilities by ensuring the target is a 
+ * relative internal path or matches the application's base domain.
+ * @param  string  $defaultUri  The fallback URI if the source is invalid or missing.
+ * @return void
+ */
+function safe_redirect(string $defaultUri = 'home'): void
+{
+    // Get the CI instance to access input library
+    $ci =& get_instance();
+    $sourceUrl = $ci->input->get('source', TRUE);
+
+    if ($sourceUrl) {
+        // Parse the URL to check for a host
+        $parsedUrl = parse_url($sourceUrl);
+
+        /**
+         * Validation logic:
+         * 1. Check if it's a relative path (no host)
+         * 2. If it has a host, ensure it matches our base_url host
+         * 3. Prevent protocol-relative URLs like "//evil.com"
+         */
+        $baseHost = parse_url(config_item('base_url'), PHP_URL_HOST);
+        $isRelative = !isset($parsedUrl['host']) || empty($parsedUrl['host']);
+        $isSameHost = isset($parsedUrl['host']) && $parsedUrl['host'] === $baseHost;
+        $isNotProtocolRelative = strpos($sourceUrl, '//') !== 0;
+
+        if (($isRelative || $isSameHost) && $isNotProtocolRelative) {
+            redirect($sourceUrl);
+            return;
+        }
+    }
+
+    // Fallback to default if source is missing or malicious
+    redirect($defaultUri);
+}
+
+/**
  * Wrapper between the controller and the e-mail library
  * @param CI_Controller $controller reference to CI Controller object
  * @param string $subject Subject of the e-mail

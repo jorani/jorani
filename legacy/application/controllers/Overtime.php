@@ -82,11 +82,7 @@ class Overtime extends CI_Controller
             $this->overtime_model->acceptExtra($id);
             $this->sendMail($id);
             $this->session->set_flashdata('msg', lang('overtime_accept_flash_msg_success'));
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('overtime');
-            }
+            safe_redirect('overtime');
         } else {
             log_message('error', 'User #' . $this->user_id . ' illegally tried to accept extra #' . $id);
             $this->session->set_flashdata('msg', lang('overtime_accept_flash_msg_error'));
@@ -113,11 +109,7 @@ class Overtime extends CI_Controller
             $this->overtime_model->rejectExtra($id);
             $this->sendMail($id);
             $this->session->set_flashdata('msg', lang('overtime_reject_flash_msg_success'));
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('overtime');
-            }
+            safe_redirect('overtime');
         } else {
             log_message('error', 'User #' . $this->user_id . ' illegally tried to reject extra #' . $id);
             $this->session->set_flashdata('msg', lang('overtime_reject_flash_msg_error'));

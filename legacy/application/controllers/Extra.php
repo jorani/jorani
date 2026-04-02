@@ -151,11 +151,7 @@ class Extra extends CI_Controller
             if ($this->input->post('status') == LMS_REQUESTED) {
                 $this->sendMail($extra_id);
             }
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('extra');
-            }
+            safe_redirect('extra');
         }
     }
 
@@ -220,11 +216,7 @@ class Extra extends CI_Controller
             if ($this->input->post('status') == LMS_REQUESTED) {
                 $this->sendMail($id);
             }
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('extra');
-            }
+            safe_redirect('extra');
         }
     }
 
@@ -312,11 +304,7 @@ class Extra extends CI_Controller
                 $this->session->set_flashdata('msg', lang('extra_delete_msg_error'));
             }
         }
-        if (isset($_GET['source'])) {
-            redirect($_GET['source']);
-        } else {
-            redirect('extra');
-        }
+        safe_redirect('extra');
     }
 
     /**

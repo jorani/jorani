@@ -233,14 +233,7 @@ class Leaves extends CI_Controller
         }
         $json = json_encode($oldComment);
         $this->leaves_model->addComments($id, $json);
-        if (isset($_GET['source'])) {
-            $source = trim((string) $_GET['source']);
-        }
-        // Reject absolute URLs and keep the default internal route.
-        if (preg_match('#^https?://#i', $source)) {
-            $source = "leaves/leaves";
-        }
-        redirect("/$source/$id");
+        safe_redirect("/$source/$id");
     }
 
     /**
@@ -318,11 +311,7 @@ class Leaves extends CI_Controller
                     $this->session->set_flashdata('msg', lang('leaves_validate_flash_msg_overlap_period'));
 
                     // Redirect back to the appropriate form
-                    if (isset($_GET['source'])) {
-                        redirect($_GET['source']);
-                    } else {
-                        redirect('leaves');
-                    }
+                    safe_redirect('leaves');
                 }
             }
 
@@ -363,11 +352,7 @@ class Leaves extends CI_Controller
                 // Forbid to create the leave request if the duration is greater than the available credit
                 if ($duration > $availableCredit) {
                     $this->session->set_flashdata('msg', lang('leaves_create_field_duration_message'));
-                    if (isset($_GET['source'])) {
-                        redirect($_GET['source']);
-                    } else {
-                        redirect('leaves');
-                    }
+                    safe_redirect('leaves');
                 }
             }
 
@@ -391,11 +376,7 @@ class Leaves extends CI_Controller
             if ($this->input->post('status') == LMS_REQUESTED) {
                 $this->sendMailOnLeaveRequestCreation($leave_id);
             }
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('leaves');
-            }
+            safe_redirect('leaves');
         }
     }
 
@@ -514,11 +495,7 @@ class Leaves extends CI_Controller
                     $this->session->set_flashdata('msg', lang('leaves_validate_flash_msg_overlap_period'));
 
                     // Redirect back to the appropriate form
-                    if (isset($_GET['source'])) {
-                        redirect($_GET['source']);
-                    } else {
-                        redirect('leaves');
-                    }
+                    safe_redirect('leaves');
                 }
             }
 
@@ -556,11 +533,7 @@ class Leaves extends CI_Controller
                 // Forbid to create the leave request if the duration is greater than the available credit
                 if ($duration > $availableCredit) {
                     $this->session->set_flashdata('msg', lang('leaves_create_field_duration_message'));
-                    if (isset($_GET['source'])) {
-                        redirect($_GET['source']);
-                    } else {
-                        redirect('leaves');
-                    }
+                    safe_redirect('leaves');
                 }
             }
 
@@ -597,11 +570,7 @@ class Leaves extends CI_Controller
             if ($this->input->post('status') == LMS_CANCELLATION) {
                 $this->sendMailOnLeaveRequestCreation($id);
             }
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('leaves');
-            }
+            safe_redirect('leaves');
         }
     }
 
@@ -652,11 +621,7 @@ class Leaves extends CI_Controller
                 break;
         }
         $this->session->set_flashdata('msg', lang('leaves_reminder_flash_msg_success'));
-        if (isset($_GET['source'])) {
-            redirect($_GET['source']);
-        } else {
-            redirect('leaves');
-        }
+        safe_redirect('leaves');
     }
 
     /**
@@ -898,19 +863,11 @@ class Leaves extends CI_Controller
                 $this->leaves_model->deleteLeave($id);
             } else {
                 $this->session->set_flashdata('msg', lang('leaves_delete_flash_msg_error'));
-                if (isset($_GET['source'])) {
-                    redirect($_GET['source']);
-                } else {
-                    redirect('leaves');
-                }
+                safe_redirect('leaves');
             }
         }
         $this->session->set_flashdata('msg', lang('leaves_delete_flash_msg_success'));
-        if (isset($_GET['source'])) {
-            redirect($_GET['source']);
-        } else {
-            redirect('leaves');
-        }
+        safe_redirect('leaves');
     }
 
     /**

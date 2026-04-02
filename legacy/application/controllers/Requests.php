@@ -98,11 +98,7 @@ class Requests extends CI_Controller
             $this->leaves_model->switchStatus($id, LMS_ACCEPTED);
             $this->sendMail($id, LMS_REQUESTED_ACCEPTED);
             $this->session->set_flashdata('msg', lang('requests_accept_flash_msg_success'));
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('requests');
-            }
+            safe_redirect('requests');
         } else {
             log_message('error', 'User #' . $this->user_id . ' illegally tried to accept leave #' . $id);
             $this->session->set_flashdata('msg', lang('requests_accept_flash_msg_error'));
@@ -133,11 +129,7 @@ class Requests extends CI_Controller
             }
             $this->sendMail($id, LMS_REQUESTED_REJECTED);
             $this->session->set_flashdata('msg', lang('requests_reject_flash_msg_success'));
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('requests');
-            }
+            safe_redirect('requests');
         } else {
             log_message('error', 'User #' . $this->user_id . ' illegally tried to reject leave #' . $id);
             $this->session->set_flashdata('msg', lang('requests_reject_flash_msg_error'));
@@ -164,11 +156,7 @@ class Requests extends CI_Controller
             $this->leaves_model->switchStatus($id, LMS_CANCELED);
             $this->sendMail($id, LMS_CANCELLATION_CANCELED);
             $this->session->set_flashdata('msg', lang('requests_cancellation_accept_flash_msg_success'));
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('requests');
-            }
+            safe_redirect('requests');
         } else {
             log_message('error', 'User #' . $this->user_id . ' illegally tried to accept the cancellation of leave #' . $id);
             $this->session->set_flashdata('msg', lang('requests_cancellation_accept_flash_msg_error'));
@@ -200,11 +188,7 @@ class Requests extends CI_Controller
             }
             $this->sendMail($id, LMS_CANCELLATION_REQUESTED);
             $this->session->set_flashdata('msg', lang('requests_cancellation_reject_flash_msg_success'));
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('requests');
-            }
+            safe_redirect('requests');
         } else {
             log_message('error', 'User #' . $this->user_id . ' illegally tried to accept the cancellation of leave #' . $id);
             $this->session->set_flashdata('msg', lang('requests_cancellation_reject_flash_msg_error'));

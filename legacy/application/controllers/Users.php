@@ -206,11 +206,7 @@ class Users extends CI_Controller
         } else {
             $this->users_model->updateUsers();
             $this->session->set_flashdata('msg', lang('users_edit_flash_msg_success'));
-            if (isset($_GET['source'])) {
-                redirect($_GET['source']);
-            } else {
-                redirect('users');
-            }
+            safe_redirect('users');
         }
     }
 
