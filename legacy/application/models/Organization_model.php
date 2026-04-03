@@ -1,7 +1,6 @@
 <?php
 /**
  * This Model contains all the business logic and the persistence layer for the organization tree.
- * 
  * @license https://opensource.org/licenses/MIT MIT
  * @since   0.1.0
  */
@@ -124,17 +123,20 @@ class Organization_model extends CI_Model
     }
 
     /**
-     * Cascade delete children and set employees' org to NULL
+     * Cascade delete children and set employees' org to null
      * @param int $entityId identifier of the entity
      * @return bool result of the update and delete queries
      */
     public function delete(int $entityId): bool
     {
+        if ($entityId == 0) {
+            return false;   // Prevent deletion of the root entity
+        }
         //Detach all employees
         $ids = $this->getAllChildren($entityId);
         array_push($ids, $entityId);
         $this->db->where_in('organization', $ids);
-        $res1 = $this->db->update('users', ['organization' => NULL]);
+        $res1 = $this->db->update('users', ['organization' => null]);
         //Delete node and its children
         $this->db->where_in('id', $ids);
         $res2 = $this->db->delete('organization');
@@ -149,7 +151,7 @@ class Organization_model extends CI_Model
     public function detachEmployee(int $employeeId): bool
     {
         $this->db->where('id', $employeeId);
-        return $this->db->update('users', ['organization' => NULL]);
+        return $this->db->update('users', ['organization' => null]);
     }
 
     /**
@@ -168,7 +170,7 @@ class Organization_model extends CI_Model
      * Create an entity in the organization
      * @param int $parentEntityId identifier of the parent entity
      * @param string $text name of the new entity
-     * @return bool TRUE if the insertion was successful, FALSE otherwise
+     * @return bool true if the insertion was successful, false otherwise
      */
     public function create(int $parentEntityId, string $text): bool
     {
@@ -183,7 +185,7 @@ class Organization_model extends CI_Model
      * Copy an entity in the organization
      * @param int $sourceEntityId identifier of the source entity
      * @param int $parentEntityId identifier of the new parent entity
-     * @return bool TRUE if the copy was successful, FALSE otherwise
+     * @return bool true if the copy was successful, false otherwise
      */
     public function copy(int $sourceEntityId, int $parentEntityId): bool
     {
@@ -219,7 +221,7 @@ class Organization_model extends CI_Model
      * @param bool $children Include sub department in the query
      * @return array<string, mixed> Result of the query
      */
-    public function allEmployees(int $entityId, bool $children = FALSE): array
+    public function allEmployees(int $entityId, bool $children = false): array
     {
         $this->db->select('users.id, users.identifier, users.firstname, users.lastname, users.datehired');
         $this->db->select('organization.name as department, positions.name as position, contracts.name as contract');
@@ -228,7 +230,7 @@ class Organization_model extends CI_Model
         $this->db->join('users', 'users.organization = organization.id');
         $this->db->join('positions', 'positions.id  = users.position', 'left');
         $this->db->join('contracts', 'contracts.id  = users.contract', 'left');
-        if ($children === TRUE) {
+        if ($children === true) {
             $ids = $this->getAllChildren($entityId);
             array_push($ids, $entityId);
             $this->db->where_in('organization.id', $ids);
@@ -260,7 +262,7 @@ class Organization_model extends CI_Model
      */
     public function getSupervisor(int $entityId): ?object
     {
-        $this->db->select('users.id, CONCAT(users.firstname, \' \', users.lastname) as username, email', FALSE);
+        $this->db->select('users.id, CONCAT(users.firstname, \' \', users.lastname) as username, email', false);
         $this->db->from('organization');
         $this->db->join('users', 'users.id = organization.supervisor');
         $this->db->where('organization.id', $entityId);
@@ -268,7 +270,7 @@ class Organization_model extends CI_Model
         if (count($result) > 0) {
             return $result[0];
         } else {
-            return NULL;
+            return null;
         }
     }
 }

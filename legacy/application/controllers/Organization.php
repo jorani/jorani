@@ -70,14 +70,14 @@ class Organization extends CI_Controller
     public function select(): void
     {
         $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
-        if (($publicCalendar === TRUE) && (!$this->session->userdata('logged_in'))) {
+        if (($publicCalendar === true) && (!$this->session->userdata('logged_in'))) {
             $this->load->library('polyglot');
             $data['language'] = $this->config->item('language');
             $data['language_code'] = $this->polyglot->language2code($data['language']);
             $this->lang->load('organization', $data['language']);
             $this->lang->load('treeview', $data['language']);
             $data['help'] = '';
-            $data['logged_in'] = FALSE;
+            $data['logged_in'] = false;
             $this->load->view('organization/select', $data);
         } else {
             setUserContext($this);
@@ -97,11 +97,11 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            $id = $this->input->get('id', TRUE);
-            $text = sanitize($this->input->get('text', TRUE));
+            $id = $this->input->get('id', true);
+            $text = sanitize($this->input->get('text', true));
             $this->load->model('organization_model');
             $this->organization_model->rename($id, $text);
         }
@@ -115,11 +115,11 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            $id = $this->input->get('id', TRUE);
-            $text = sanitize($this->input->get('text', TRUE));
+            $id = $this->input->get('id', true);
+            $text = sanitize($this->input->get('text', true));
             $this->load->model('organization_model');
             $this->organization_model->create($id, $text);
         }
@@ -133,11 +133,11 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            $id = $this->input->get('id', TRUE);
-            $parent = $this->input->get('parent', TRUE);
+            $id = $this->input->get('id', true);
+            $parent = $this->input->get('parent', true);
             $this->load->model('organization_model');
             $this->organization_model->move($id, $parent);
         }
@@ -151,11 +151,11 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            $id = $this->input->get('id', TRUE);
-            $parent = $this->input->get('parent', TRUE);
+            $id = $this->input->get('id', true);
+            $parent = $this->input->get('parent', true);
             $this->load->model('organization_model');
             $this->organization_model->copy($id, $parent);
         }
@@ -168,7 +168,7 @@ class Organization extends CI_Controller
     public function employees(): void
     {
         setUserContext($this);
-        $id = $this->input->get('id', TRUE);
+        $id = $this->input->get('id', true);
         $this->load->model('organization_model');
         $employees = $this->organization_model->employees($id);
 
@@ -200,11 +200,11 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            $id = $this->input->get('user', TRUE);
-            $entity = $this->input->get('entity', TRUE);
+            $id = $this->input->get('user', true);
+            $entity = $this->input->get('entity', true);
             $this->load->model('organization_model');
             echo json_encode($this->organization_model->attachEmployee($id, $entity));
         }
@@ -218,10 +218,10 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            $id = $this->input->get('user', TRUE);
+            $id = $this->input->get('user', true);
             $this->load->model('organization_model');
             echo json_encode($this->organization_model->detachEmployee($id));
         }
@@ -235,12 +235,12 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            $entity = $this->input->get('entity', TRUE);
+            $entityId = $this->input->get('entity', true);
             $this->load->model('organization_model');
-            echo json_encode($this->organization_model->delete($entity));
+            echo json_encode($this->organization_model->delete($entityId));
         }
     }
 
@@ -252,14 +252,14 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $publicCalendar = filter_var($this->config->item('public_calendar'), FILTER_VALIDATE_BOOLEAN, ['' => FILTER_NULL_ON_FAILURE]);
-        if (($publicCalendar === TRUE) && (!$this->session->userdata('logged_in'))) {
+        if (($publicCalendar === true) && (!$this->session->userdata('logged_in'))) {
             //nop
         } else {
             setUserContext($this);
             $this->auth->checkIfOperationIsAllowed('organization_select');
         }
 
-        $id = $this->input->get('id', TRUE);
+        $id = $this->input->get('id', true);
         if ($id == "#") {
             unset($id);
         }
@@ -289,7 +289,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        $entity = $this->input->get('entity', TRUE);
+        $entity = $this->input->get('entity', true);
         if (isset($entity)) {
             $this->load->model('organization_model');
             echo json_encode($this->organization_model->getSupervisor($entity));
@@ -306,15 +306,15 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         setUserContext($this);
-        if ($this->auth->isAllowed('edit_organization') == FALSE) {
+        if ($this->auth->isAllowed('edit_organization') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
-            if ($this->input->get('user', TRUE) == "") {
+            if ($this->input->get('user', true) == "") {
                 $id = NULL;
             } else {
-                $id = $this->input->get('user', TRUE);
+                $id = $this->input->get('user', true);
             }
-            $entity = $this->input->get('entity', TRUE);
+            $entity = $this->input->get('entity', true);
             $this->load->model('organization_model');
             echo json_encode($this->organization_model->setSupervisor($id, $entity));
         }
@@ -342,7 +342,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
@@ -360,7 +360,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
@@ -378,7 +378,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
@@ -395,7 +395,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
@@ -426,7 +426,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
@@ -444,7 +444,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
@@ -462,7 +462,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
@@ -480,7 +480,7 @@ class Organization extends CI_Controller
     {
         header("Content-Type: application/json");
         $data = getCIUserContext();
-        if ($this->auth->isAllowed('organization_lists_index') == FALSE) {
+        if ($this->auth->isAllowed('organization_lists_index') == false) {
             $this->output->set_header("HTTP/1.1 403 Forbidden");
         } else {
             $this->load->model('lists_model');
