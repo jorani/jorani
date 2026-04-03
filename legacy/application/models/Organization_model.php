@@ -105,6 +105,9 @@ class Organization_model extends CI_Model
      */
     public function move(int $entityId, int $parentEntityId): bool
     {
+        if ($entityId == $parentEntityId) {
+            return false;   // Prevent moving an entity into itself
+        }
         $this->db->where('id', $entityId);
         return $this->db->update('organization', ['parent_id' => $parentEntityId]);
     }
@@ -161,6 +164,9 @@ class Organization_model extends CI_Model
      */
     public function rename(int $entityId, string $newName): bool
     {
+        if ($newName == '') {
+            return false;   // Prevent empty name
+        }
         $this->db->where('id', $entityId);
         return $this->db->update('organization', ['name' => $newName]);
     }
