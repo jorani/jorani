@@ -17,7 +17,6 @@ if (!defined('BASEPATH')) {
  */
 class Organization_model extends CI_Model
 {
-
     /**
      * Default constructor
      */

@@ -11,9 +11,9 @@ SetEnv ALLOW_OVERWRITE On
     #RewriteCond %{HTTPS} !=on
     #RewriteRule ^(.*) https://%{SERVER_NAME}%{REQUEST_URI} [R,QSA,L,NE]
 
-    # Correction : Bloquer l'accès aux fichiers à la racine (sauf index.php)
-    # On vérifie que c'est un fichier, qu'on n'appelle pas explicitement index.php
-    # et que la requête ne contient pas de slash (pour rester à la racine)
+    # Block access to files in the root directory (except index.php)
+    # We check that it's a file, that we don't explicitly call index.php
+    # and that the request does not contain a slash (to stay at the root)
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteCond %{REQUEST_URI} !/index\.php$
     RewriteRule ^[^/]+$ - [F]

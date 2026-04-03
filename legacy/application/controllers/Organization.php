@@ -349,7 +349,6 @@ class Organization extends CI_Controller
             $id = (int) $this->lists_model->setLists($this->user_id, $this->input->post('name'));
             echo json_encode($id);
         }
-
     }
 
     /**
@@ -367,7 +366,6 @@ class Organization extends CI_Controller
             $this->lists_model->updateLists($this->input->post('id'), $this->input->post('name'));
             echo json_encode("");
         }
-
     }
 
     /**
