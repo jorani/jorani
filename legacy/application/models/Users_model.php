@@ -95,11 +95,14 @@ class Users_model extends CI_Model
 
     /**
      * Get the name of a given user
-     * @param int $id Identifier of employee
+     * @param ?int $id Identifier of employee
      * @return string firstname and lastname of the employee
      */
-    public function getName(int $id): string
+    public function getName(?int $id): string
     {
+        if ($id === null) {
+            return '';
+        }
         $record = $this->getUsers($id);
         if (!empty($record)) {
             return $record['firstname'] . ' ' . $record['lastname'];

@@ -189,7 +189,7 @@ class Users extends CI_Controller
             redirect('notfound');
         }
 
-        if ($this->form_validation->run() === FALSE) {
+        if ($this->form_validation->run() === false) {
             $this->load->model('roles_model');
             $this->load->model('positions_model');
             $this->load->model('organization_model');
