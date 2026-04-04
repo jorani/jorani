@@ -1,7 +1,8 @@
-FROM composer as composer
+FROM composer:latest AS composer
 WORKDIR /app/legacy
 COPY legacy/composer.json legacy/composer.lock ./
 RUN composer install --ignore-platform-reqs --no-dev
+RUN composer -o dump-autoload
 
 FROM php:8.5-apache
 RUN apt-get update && apt-get install -y zlib1g-dev \
@@ -23,4 +24,4 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 WORKDIR /var/www/html
 COPY --from=composer /app/legacy/vendor ./legacy/vendor
 COPY . .
-RUN chown www-data legacy/application/logs
+RUN chown -R www-data legacy/application/logs

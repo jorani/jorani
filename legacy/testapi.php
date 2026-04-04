@@ -25,7 +25,7 @@
                         class="mdi mdi-home nolink"></i></a></li>
             <li class="nav-item"><a class="nav-link" href="requirements.php">Requirements</a></li>
             <li class="nav-item"><a class="nav-link" href="testmail.php">Email</a></li>
-            <li class="nav-item"><a class="nav-link" href="testldap">LDAP</a></li>
+            <li class="nav-item"><a class="nav-link" href="testldap.php">LDAP</a></li>
             <li class="nav-item"><a class="nav-link active" href="#">API</a></li>
         </ul>
 
