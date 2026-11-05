@@ -144,7 +144,6 @@ class Contracts_model extends CI_Model
             $refDate = date("Y-m-d");
         }
         $refYear = substr($refDate, 0, 4);
-        $refMonth = substr($refDate, 5, 2);
         $nextYear = strval(intval($refYear) + 1);
         $lastYear = strval(intval($refYear) - 1);
 
@@ -154,7 +153,9 @@ class Contracts_model extends CI_Model
                 $startentdate = $refYear . "-" . str_replace("/", "-", $boundaries[0]['startentdate']);
                 $endentdate = $refYear . "-" . str_replace("/", "-", $boundaries[0]['endentdate']);
             } else {
-                if (intval($refMonth) < 6) {
+                $refMonthDay = substr($refDate, 5, 5);
+                $startMonthDay = str_replace("/", "-", $boundaries[0]['startentdate']);
+                if ($refMonthDay < $startMonthDay) {
                     $startentdate = $lastYear . "-" . str_replace("/", "-", $boundaries[0]['startentdate']);
                     $endentdate = $refYear . "-" . str_replace("/", "-", $boundaries[0]['endentdate']);
                 } else {
