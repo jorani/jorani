@@ -28,12 +28,12 @@ class Types_model extends CI_Model
 
     /**
      * Get the list of types or one type
-     * @param int $id optional id of a type
+     * @param int|null $id optional id of a type, the list of types when omitted
      * @return array<string, mixed>|null list of type(s) or NULL if list was not found
      */
-    public function getTypes(int $id = 0): ?array
+    public function getTypes(?int $id = NULL): ?array
     {
-        if ($id === 0) {
+        if ($id === NULL) {
             $query = $this->db->get('types');
             return $query->result_array();
         }
