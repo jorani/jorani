@@ -1,7 +1,7 @@
 <?php
 /**
  * This controller serves all the ICS (webcal, ical) feeds exposed by Jorani.
- * 
+ *
  * @license https://opensource.org/licenses/MIT MIT
  * @since   0.4.0
  */
@@ -107,6 +107,25 @@ class Ics extends CI_Controller
      * @param int $userId identifier of the user wanting to view the list (mind timezone)
      * @param int $contract identifier of a contract
      */
+
+    public function generate_uuidv5(string $string) : string
+    {
+        // Clean and validate the namespace UUID
+        $nhex = str_replace(['{', '}', '-'], '', '4e2962e0-6125-4d6a-b9c3-4b7918113733');
+        // Convert namespace UUID to binary
+        $nstr = pack('H*', $nhex);
+        // Calculate SHA-1 hash of namespace + input string
+        $hash = sha1($nstr . $string);
+        return sprintf('%08s-%04s-%04s-%04s-%12s',
+            substr($hash, 0, 8),
+            substr($hash, 8, 4),
+            // Set variant to RFC 4122 and version to 5
+            (hexdec(substr($hash, 12, 4)) & 0x0fff) | 0x5000,
+            (hexdec(substr($hash, 16, 4)) & 0x3fff) | 0x8000,
+            substr($hash, 20, 12)
+        );
+    }
+
     public function dayoffs(int $userId, int $contract): void
     {
         //Get timezone and language of the user
@@ -139,10 +158,12 @@ class Ics extends CI_Controller
                 //In order to support Outlook, we convert start and end dates to UTC
                 $startdate->setTimezone(new DateTimeZone("UTC"));
                 $enddate->setTimezone(new DateTimeZone("UTC"));
+                $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'jorani.local';
                 $vcalendar->add('VEVENT', array(
                     'SUMMARY' => $event->title,
                     'CATEGORIES' => lang('day off'),
                     'DTSTART' => $startdate,
+                    'UID' => $this->generate_uuidv5('jorani-leave-' . $event['id'] . '@' . $serverName),
                     'DTEND' => $enddate
                 ));
             }
@@ -184,12 +205,14 @@ class Ics extends CI_Controller
                     //In order to support Outlook, we convert start and end dates to UTC
                     $startdate->setTimezone(new DateTimeZone("UTC"));
                     $enddate->setTimezone(new DateTimeZone("UTC"));
+                    $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'jorani.local';
                     $vcalendar->add('VEVENT', array(
                         'SUMMARY' => lang('leave'),
                         'CATEGORIES' => lang('leave'),
                         'DTSTART' => $startdate,
                         'DTEND' => $enddate,
                         'DESCRIPTION' => $event['cause'],
+                        'UID' => $this->generate_uuidv5('jorani-leave-' . $event['id'] . '@' . $serverName),
                         'URL' => base_url() . "leaves/" . $event['id'],
                     ));
                 }
@@ -233,12 +256,14 @@ class Ics extends CI_Controller
                     //In order to support Outlook, we convert start and end dates to UTC
                     $startdate->setTimezone(new DateTimeZone("UTC"));
                     $enddate->setTimezone(new DateTimeZone("UTC"));
+                    $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'jorani.local';
                     $vcalendar->add('VEVENT', array(
                         'SUMMARY' => $event['firstname'] . ' ' . $event['lastname'],
                         'CATEGORIES' => lang('leave'),
                         'DTSTART' => $startdate,
                         'DTEND' => $enddate,
                         'DESCRIPTION' => $event['type'] . ($event['cause'] != '' ? (' / ' . $event['cause']) : ''),
+                        'UID' => $this->generate_uuidv5('jorani-leave-' . $event['id'] . '@' . $serverName),
                         'URL' => base_url() . "leaves/" . $event['id'],
                     ));
                 }
@@ -279,12 +304,14 @@ class Ics extends CI_Controller
                     //In order to support Outlook, we convert start and end dates to UTC
                     $startdate->setTimezone(new DateTimeZone("UTC"));
                     $enddate->setTimezone(new DateTimeZone("UTC"));
+                    $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'jorani.local';
                     $vcalendar->add('VEVENT', array(
                         'SUMMARY' => $event['firstname'] . ' ' . $event['lastname'],
                         'CATEGORIES' => lang('leave'),
                         'DTSTART' => $startdate,
                         'DTEND' => $enddate,
                         'DESCRIPTION' => $event['type_label'] . ($event['cause'] != '' ? (' / ' . $event['cause']) : ''),
+                        'UID' => $this->generate_uuidv5('jorani-leave-' . $event['id'] . '@' . $serverName),
                         'URL' => base_url() . "leaves/" . $event['id'],
                     ));
                 }
@@ -314,12 +341,14 @@ class Ics extends CI_Controller
         $enddate->setTimezone(new DateTimeZone("UTC"));
 
         $vcalendar = new VObject\Component\VCalendar();
+        $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'jorani.local';
         $vcalendar->add('VEVENT', array(
             'SUMMARY' => lang('leave'),
             'CATEGORIES' => lang('leave'),
             'DESCRIPTION' => $leave['cause'],
             'DTSTART' => $startdate,
             'DTEND' => $enddate,
+            'UID' => $this->generate_uuidv5('jorani-leave-' . $event['id'] . '@' . $serverName),
             'URL' => base_url() . "leaves/" . $leaveRequestId,
         ));
         header("Content-Type: text/calendar");
