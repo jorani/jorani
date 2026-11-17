@@ -104,12 +104,12 @@
           echo "<div class='accordion-group'>";
           echo "  <div class='accordion-heading'>";
           echo "    <a class='accordion-toggle' data-toggle='collapse' data-parent='#accordion' href='#collapse$i'>";
-          echo "      $dateFormat : $comments_item->author" . lang('leaves_comment_author_saying');
+          echo "      $dateFormat : " . html_escape($comments_item->author) . lang('leaves_comment_author_saying');
           echo "    </a>";
           echo "  </div>";
           echo "  <div id='collapse$i' class=\"accordion-body collapse $comments_item->in\">";
           echo "    <div class='accordion-inner'>";
-          echo "      $comments_item->value";
+          echo "      " . html_escape($comments_item->value);
           echo "    </div>";
           echo "  </div>";
           echo "</div>";
